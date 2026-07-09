@@ -43,4 +43,3 @@ def test_invalid_boundary_raises_error() -> None:
 
     with pytest.raises(ValueError):
         KitaevChain(params)
-        

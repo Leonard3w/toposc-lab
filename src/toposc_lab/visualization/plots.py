@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+
 def plot_spectrum(eigenvalues: np.ndarray) -> None:
     """Plot eigenvalues as a simple energy spectrum."""
     indices = np.arange(len(eigenvalues))

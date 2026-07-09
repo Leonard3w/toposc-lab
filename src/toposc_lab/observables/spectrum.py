@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def positive_energies(eigenvalues: np.ndarray, tolerance: float = 1e-10) -> np.ndarray:
     """Return positive eigenvalues above a numerical tolerance."""
     return eigenvalues[eigenvalues > tolerance]
