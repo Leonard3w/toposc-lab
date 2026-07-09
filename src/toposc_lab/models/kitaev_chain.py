@@ -16,7 +16,7 @@ class KitaevChainParameters(PydanticBaseModel):
 
 class KitaevChain(BaseModel):
 
-    def __init__(self, params: KitaevChainParameter)->None:
+    def __init__(self, params: KitaevChainParameters)->None:
         self.params = params
         self._validate_boundary()
 
