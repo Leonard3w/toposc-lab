@@ -1,0 +1,39 @@
+[project]
+name = "toposc-lab"
+version = "0.1.0"
+description = "A modular Python toolkit for simulating superconducting and topological superconducting systems."
+authors = [
+    { name = "Leonard Felten" }
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy",
+    "scipy",
+    "matplotlib",
+    "plotly",
+    "pydantic",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ruff",
+    "mypy",
+]
+
+app = [
+    "streamlit",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
