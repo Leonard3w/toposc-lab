@@ -14,6 +14,22 @@ The goal is to provide a clean and extensible framework for:
 
 Version 0.1 focuses on the Kitaev chain.
 
+## Command line interface
+
+After installing the project, scan the Kitaev-chain spectrum with:
+
+```bash
+toposc kitaev-scan --L 60 --mu-min -4 --mu-max 4
+```
+
+The same command is available without installation as:
+
+```bash
+python -m toposc_lab kitaev-scan --L 60 --mu-min -4 --mu-max 4
+```
+
+Use `--num-points`, `--t`, `--delta`, and `--periodic` to adjust the scan.
+
 ## Planned features
 
 - Kitaev chain
