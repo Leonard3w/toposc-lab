@@ -2,11 +2,12 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from toposc_lab.solvers.exact_diagonalization import ExactDiagonalizationSolver
-
 import numpy as np
 
 from toposc_lab.models.kitaev_chain import KitaevChain, KitaevChainParameters
+from toposc_lab.scans.parameter_scan import parameter_scan
+from toposc_lab.solvers.exact_diagonalization import ExactDiagonalizationSolver
+
 
 @dataclass(frozen=True)
 class KitaevScanResult:
@@ -15,6 +16,7 @@ class KitaevScanResult:
     mu_values: np.ndarray
     spectra: np.ndarray
     gaps: np.ndarray
+
 
 def scan_kitaev_mu(
     mu_values: np.ndarray,
@@ -26,13 +28,11 @@ def scan_kitaev_mu(
     """
     Scan the Kitaev chain spectrum as a function of chemical potential mu.
     """
-    spectra = []
-    gaps = []
     solver = ExactDiagonalizationSolver()
 
     boundary = "periodic" if periodic else "open"
 
-    for mu in mu_values:
+    def make_model(mu: float) -> KitaevChain:
         params = KitaevChainParameters(
             n_sites=L,
             hopping=t,
@@ -41,15 +41,23 @@ def scan_kitaev_mu(
             boundary=boundary,
         )
 
-        model = KitaevChain(params)
-        result = solver.solve(model.hamiltonian())
-        eigenvalues = result.eigenvalues
+        return KitaevChain(params)
 
-        spectra.append(eigenvalues)
-        gaps.append(float(np.min(np.abs(eigenvalues))))
+    def solve_spectrum(model: KitaevChain) -> np.ndarray:
+        result = solver.solve(model.hamiltonian())
+        return result.eigenvalues
+
+    scanned_mu_values, spectra_list = parameter_scan(
+        parameter_values=mu_values,
+        model_factory=make_model,
+        solver=solve_spectrum,
+    )
+
+    spectra = np.asarray(spectra_list)
+    gaps = np.min(np.abs(spectra), axis=1)
 
     return KitaevScanResult(
-        mu_values=np.asarray(mu_values),
-        spectra=np.asarray(spectra),
-        gaps=np.asarray(gaps),
+        mu_values=np.asarray(scanned_mu_values),
+        spectra=spectra,
+        gaps=gaps,
     )

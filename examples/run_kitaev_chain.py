@@ -1,7 +1,10 @@
+from __future__ import annotations
+
+import matplotlib.pyplot as plt
+
 from toposc_lab.models.kitaev_chain import KitaevChain, KitaevChainParameters
 from toposc_lab.observables.spectrum import energy_gap
 from toposc_lab.solvers.exact_diagonalization import ExactDiagonalizationSolver
-from toposc_lab.visualization.plots import plot_spectrum
 
 
 def main() -> None:
@@ -24,10 +27,13 @@ def main() -> None:
     print(f"Hamiltonian shape: {hamiltonian.shape}")
     print(f"Energy gap: {gap:.6f}")
 
-    plot_spectrum(result.eigenvalues)
+    plt.figure()
+    plt.plot(result.eigenvalues, marker="o", linestyle="none")
+    plt.xlabel("State index")
+    plt.ylabel("Energy")
+    plt.title("Kitaev chain spectrum")
+    plt.show()
 
 
 if __name__ == "__main__":
     main()
-
-    
