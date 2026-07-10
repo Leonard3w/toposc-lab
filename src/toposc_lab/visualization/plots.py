@@ -5,6 +5,8 @@ import numpy as np
 from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
+from toposc_lab.observables.localization import LocalizationProfile
+
 
 def plot_spectrum_vs_parameter(
     parameter_values: np.ndarray,
@@ -50,6 +52,100 @@ def plot_gap_vs_parameter(
     fig, ax = plt.subplots()
 
     ax.plot(parameter_values, gaps, marker=".")
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_title(title)
+    fig.tight_layout()
+
+    if show:
+        plt.show()
+
+    return fig, ax
+
+""" AB hier Localization zeug test villeicht später eigen Datei """
+
+def plot_localization_1d(
+    profile: LocalizationProfile,
+    component: int | None = None,
+    xlabel: str = "Lattice site",
+    ylabel: str = "Probability density",
+    title: str = "Localization profile",
+    show: bool = True,
+) -> tuple[Figure, Axes]:
+    """
+    Plotte ein 1D-Lokalisierungsprofil.
+
+    Ohne component wird die Gesamtwahrscheinlichkeit pro Gitterplatz gezeigt.
+    Mit component wird nur eine interne Komponente dargestellt.
+    """
+    if profile.probability.ndim != 1:
+        raise ValueError("plot_localization_1d requires a one-dimensional profile")
+
+    if component is None:
+        values = profile.probability
+    else:
+        if not 0 <= component < len(profile.component_labels):
+            raise ValueError("component is outside the available component range")
+
+        values = profile.component_probabilities[:, component]
+        title = f"{title}: {profile.component_labels[component]}"
+
+    fig, ax = plt.subplots()
+
+    sites = np.arange(values.size)
+    ax.bar(sites, values)
+
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_title(title)
+    fig.tight_layout()
+
+    if show:
+        plt.show()
+
+    return fig, ax
+
+
+def plot_localization_2d(
+    profile: LocalizationProfile,
+    component: int | None = None,
+    xlabel: str = "x",
+    ylabel: str = "y",
+    title: str = "Localization profile",
+    cmap: str = "magma",
+    show: bool = True,
+) -> tuple[Figure, Axes]:
+    """
+    Plotte ein 2D-Lokalisierungsprofil als Heatmap.
+
+    Ohne component wird die Gesamtwahrscheinlichkeit gezeigt.
+    Mit component wird nur eine interne Komponente dargestellt.
+    """
+    if profile.probability.ndim != 2:
+        raise ValueError("plot_localization_2d requires a two-dimensional profile")
+
+    if component is None:
+        values = profile.probability
+    else:
+        if not 0 <= component < len(profile.component_labels):
+            raise ValueError("component is outside the available component range")
+
+        values = profile.component_probabilities[:, :, component]
+        title = f"{title}: {profile.component_labels[component]}"
+
+    fig, ax = plt.subplots()
+
+    # Transponieren: Die erste Gitterrichtung x wird horizontal dargestellt.
+    image = ax.imshow(
+        values.T,
+        origin="lower",
+        aspect="equal",
+        cmap=cmap,
+    )
+
+    colorbar = fig.colorbar(image, ax=ax)
+    colorbar.set_label("Probability density")
+
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_title(title)
