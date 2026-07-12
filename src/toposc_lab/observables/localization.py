@@ -26,6 +26,23 @@ def _normalized_probability(probability: np.ndarray) -> np.ndarray:
     return values / total_weight
 
 
+def inverse_participation_ratio(probability: np.ndarray) -> float:
+    """
+    Calculate the inverse participation ratio (IPR).
+
+    Large values indicate that probability is concentrated on few lattice
+    sites, while small values indicate an extended state.
+    """
+    values = _normalized_probability(probability)
+
+    return float(np.sum(values**2))
+
+
+def participation_ratio(probability: np.ndarray) -> float:
+    """Calculate the effective number of lattice sites occupied by a state."""
+    return float(1.0 / inverse_participation_ratio(probability))
+
+
 def _validate_edge_width(
     probability: np.ndarray,
     edge_width: int,
@@ -212,8 +229,8 @@ def localization_profile(
     )
     probability = np.sum(component_probabilities, axis=-1)
 
-    inverse_participation_ratio = float(np.sum(probability**2))
-    participation_ratio = float(1.0 / inverse_participation_ratio)
+    inverse_participation_ratio_value = inverse_participation_ratio(probability)
+    participation_ratio_value = participation_ratio(probability)
 
     # Schwerpunkt: Summe aus Koordinate mal Wahrscheinlichkeit.
     grid_indices = np.indices(lattice_shape)
@@ -234,8 +251,8 @@ def localization_profile(
         probability=probability,
         component_probabilities=component_probabilities,
         center_of_mass=center_of_mass,
-        inverse_participation_ratio=inverse_participation_ratio,
-        participation_ratio=participation_ratio,
+        inverse_participation_ratio=inverse_participation_ratio_value,
+        participation_ratio=participation_ratio_value,
         edge_weight=edge_weight_value,
         bulk_weight=bulk_weight_value,
         is_edge_localized=is_edge_localized(probability, edge_width=edge_width),

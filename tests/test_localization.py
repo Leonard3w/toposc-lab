@@ -4,9 +4,11 @@ import pytest
 from toposc_lab.observables.localization import (
     bulk_weight,
     edge_weight,
+    inverse_participation_ratio,
     is_edge_localized,
     left_edge_weight,
     localization_profile,
+    participation_ratio,
     right_edge_weight,
 )
 
@@ -107,3 +109,23 @@ def test_is_edge_localized_respects_custom_threshold() -> None:
 
     assert is_edge_localized(probability, threshold=0.4)
     assert not is_edge_localized(probability, threshold=0.5)
+
+
+def test_ipr_is_one_for_a_completely_localized_state() -> None:
+    probability = np.array([1.0, 0.0, 0.0, 0.0])
+
+    assert inverse_participation_ratio(probability) == pytest.approx(1.0)
+    assert participation_ratio(probability) == pytest.approx(1.0)
+
+
+def test_ipr_is_small_for_a_uniform_state() -> None:
+    probability = np.ones(4)
+
+    assert inverse_participation_ratio(probability) == pytest.approx(0.25)
+    assert participation_ratio(probability) == pytest.approx(4.0)
+
+
+def test_ipr_normalizes_the_input_probability() -> None:
+    probability = np.array([2.0, 2.0])
+
+    assert inverse_participation_ratio(probability) == pytest.approx(0.5)
