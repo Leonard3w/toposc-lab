@@ -6,6 +6,8 @@ from pydantic import BaseModel as PydanticBaseModel, Field
 from toposc_lab.core.model import BaseModel
 from toposc_lab.lattices.square import SquareLattice
 
+from toposc_lab.core.results import BasisLayout
+
 
 class BHZModelParameters(PydanticBaseModel):
     """Parameter des zweidimensionalen BHZ-Modells."""
@@ -32,6 +34,21 @@ class BHZModel(BaseModel):
             n_y=params.n_y,
             boundary_x=params.boundary_x,
             boundary_y=params.boundary_y,
+        )
+
+    @property
+    def basis_layout(self) -> BasisLayout:
+        """Vier BHZ-Komponenten pro Platz: zwei Orbitale und zwei Spins."""
+        return BasisLayout(
+            spatial_shape=(self.lattice.n_x, self.lattice.n_y),
+            components_per_site=4,
+            ordering="site_major",
+            component_labels=(
+                "E up",
+                "H up",
+                "E down",
+                "H down",
+            ),
         )
 
     def hamiltonian(self) -> np.ndarray:

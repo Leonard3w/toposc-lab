@@ -6,6 +6,8 @@ from pydantic import BaseModel as PydanticBaseModel, Field
 from toposc_lab.core.model import BaseModel
 from toposc_lab.lattices.chain import ChainLattice
 
+from toposc_lab.core.results import BasisLayout
+
 
 class KitaevChainParameters(PydanticBaseModel):
     """Parameter der eindimensionalen Kitaev-Kette."""
@@ -41,6 +43,19 @@ class KitaevChain(BaseModel):
             boundary=params.boundary,
         )
         self._disorder_profile = self._create_disorder_profile()
+
+    @property
+    def basis_layout(self) -> BasisLayout:
+        """
+        Kitaev nutzt eine blockweise BdG-Basis:
+        erst alle Elektronen, dann alle Löcher.
+        """
+        return BasisLayout(
+            spatial_shape=(self.lattice.n_sites,),
+            components_per_site=2,
+            ordering="component_major",
+            component_labels=("electron", "hole"),
+        )
 
     def _create_disorder_profile(self) -> np.ndarray:
         """Erzeuge lokale Abweichungen delta_mu_i des chemischen Potentials."""

@@ -6,6 +6,8 @@ from pydantic import BaseModel as PydanticBaseModel, Field
 from toposc_lab.core.model import BaseModel
 from toposc_lab.lattices.chain import ChainLattice
 
+from toposc_lab.core.results import BasisLayout
+
 
 class SSHChainParameters(PydanticBaseModel):
     """Parameter der Su-Schrieffer-Heeger-Kette."""
@@ -30,6 +32,17 @@ class SSHChain(BaseModel):
             length=2 * params.n_cells,
             boundary=params.boundary,
         )
+    @property
+    def basis_layout(self) -> BasisLayout:
+        """Ein orbitaler Zustand pro Gitterplatz."""
+        return BasisLayout(
+            spatial_shape=(self.lattice.n_sites,),
+            components_per_site=1,
+            ordering="site_major",
+            component_labels=("orbital",),
+        )    
+
+
 
     def hamiltonian(self) -> np.ndarray:
         """Baue die SSH-Hamiltonmatrix."""

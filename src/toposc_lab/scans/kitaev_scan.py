@@ -4,18 +4,31 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from toposc_lab.models.kitaev_chain import KitaevChain, KitaevChainParameters
-from toposc_lab.scans.parameter_scan import parameter_scan
-from toposc_lab.solvers.exact_diagonalization import ExactDiagonalizationSolver
+from toposc_lab.core.results import ParameterScanResult
+from toposc_lab.models.kitaev_chain import (
+    KitaevChain,
+    KitaevChainParameters,
+)
+from toposc_lab.scans.parameter_scan import simulation_scan
 
 
 @dataclass(frozen=True)
 class KitaevScanResult:
-    """Result of a Kitaev chain parameter scan."""
+    """Kitaev-Scan mit standardisierten Einzelergebnissen."""
 
-    mu_values: np.ndarray
-    spectra: np.ndarray
-    gaps: np.ndarray
+    scan: ParameterScanResult
+
+    @property
+    def mu_values(self) -> np.ndarray:
+        return self.scan.parameter_values
+
+    @property
+    def spectra(self) -> np.ndarray:
+        return self.scan.spectra
+
+    @property
+    def gaps(self) -> np.ndarray:
+        return self.scan.gaps
 
 
 def scan_kitaev_mu(
@@ -25,39 +38,30 @@ def scan_kitaev_mu(
     delta: float = 1.0,
     periodic: bool = False,
 ) -> KitaevScanResult:
-    """
-    Scan the Kitaev chain spectrum as a function of chemical potential mu.
-    """
-    solver = ExactDiagonalizationSolver()
-
+    """Scanne das Kitaev-Spektrum über das chemische Potential μ."""
     boundary = "periodic" if periodic else "open"
 
     def make_model(mu: float) -> KitaevChain:
-        params = KitaevChainParameters(
-            n_sites=L,
-            hopping=t,
-            chemical_potential=float(mu),
-            pairing=delta,
-            boundary=boundary,
+        return KitaevChain(
+            KitaevChainParameters(
+                n_sites=L,
+                hopping=t,
+                chemical_potential=mu,
+                pairing=delta,
+                boundary=boundary,
+            )
         )
 
-        return KitaevChain(params)
-
-    def solve_spectrum(model: KitaevChain) -> np.ndarray:
-        result = solver.solve(model.hamiltonian())
-        return result.eigenvalues
-
-    scanned_mu_values, spectra_list = parameter_scan(
+    scan = simulation_scan(
+        parameter_name="chemical_potential",
         parameter_values=mu_values,
         model_factory=make_model,
-        solver=solve_spectrum,
+        metadata={
+            "n_sites": L,
+            "hopping": t,
+            "pairing": delta,
+            "boundary": boundary,
+        },
     )
 
-    spectra = np.asarray(spectra_list)
-    gaps = np.min(np.abs(spectra), axis=1)
-
-    return KitaevScanResult(
-        mu_values=np.asarray(scanned_mu_values),
-        spectra=spectra,
-        gaps=gaps,
-    )
+    return KitaevScanResult(scan=scan)

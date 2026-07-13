@@ -6,6 +6,8 @@ from pydantic import BaseModel as PydanticBaseModel, Field
 from toposc_lab.core.model import BaseModel
 from toposc_lab.lattices.square import SquareLattice
 
+from toposc_lab.core.results import BasisLayout
+
 
 class QWZModelParameters(PydanticBaseModel):
     """Parameter des zweidimensionalen Qi-Wu-Zhang-Modells."""
@@ -27,6 +29,16 @@ class QWZModel(BaseModel):
             n_y=params.n_y,
             boundary_x=params.boundary_x,
             boundary_y=params.boundary_y,
+        )
+
+    @property
+    def basis_layout(self) -> BasisLayout:
+        """Zwei QWZ-Orbitale pro Platz auf dem quadratischen Gitter."""
+        return BasisLayout(
+            spatial_shape=(self.lattice.n_x, self.lattice.n_y),
+            components_per_site=2,
+            ordering="site_major",
+            component_labels=("orbital +", "orbital -"),
         )
 
     def hamiltonian(self) -> np.ndarray:

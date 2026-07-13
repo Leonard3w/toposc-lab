@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from toposc_lab.models.kitaev_chain import KitaevChain, KitaevChainParameters
-from toposc_lab.observables.localization import localization_profile
+from toposc_lab.observables.localization import localization_profile_from_result
 from toposc_lab.solvers.exact_diagonalization import ExactDiagonalizationSolver
 
 
@@ -25,25 +25,18 @@ def main() -> None:
         )
     )
 
-    result = ExactDiagonalizationSolver().solve(model.hamiltonian())
+    # solve_model() speichert neben dem Spektrum auch Modellparameter und
+    # die Basisordnung. Die Lokalisierungsanalyse kann sie später nutzen.
+    result = ExactDiagonalizationSolver().solve_model(model)
 
     # Der Zustand nahe E = 0 ist der Kandidat für einen Majorana-Edge-State.
     state_index = int(np.argmin(np.abs(result.eigenvalues)))
 
-    # Die Kitaev-BdG-Basis ist blockweise gespeichert: erst alle Elektron-
-    # und danach alle Loch-Komponenten. Für die Ortsanalyse ordnen wir sie
-    # platzweise als (Elektron_0, Loch_0, Elektron_1, Loch_1, ...) an.
-    site_major_eigenvectors = np.empty_like(result.eigenvectors)
-    site_major_eigenvectors[0::2, :] = result.eigenvectors[:n_sites, :]
-    site_major_eigenvectors[1::2, :] = result.eigenvectors[n_sites:, :]
-
-    profile = localization_profile(
-        eigenvectors=site_major_eigenvectors,
+    # Die Basis wird automatisch korrekt von component-major nach
+    # site-major umgeordnet. Kein Kitaev-Sondercode mehr im Beispiel.
+    profile = localization_profile_from_result(
+        result=result,
         state_index=state_index,
-        lattice_shape=(n_sites,),
-        # Die BdG-Basis enthält Elektron- und Loch-Komponente pro Gitterplatz.
-        components_per_site=2,
-        component_labels=("electron", "hole"),
         edge_width=2,
     )
 

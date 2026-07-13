@@ -4,17 +4,28 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from toposc_lab.core.results import ParameterScanResult
 from toposc_lab.models.bhz_model import BHZModel, BHZModelParameters
-from toposc_lab.solvers.exact_diagonalization import ExactDiagonalizationSolver
+from toposc_lab.scans.parameter_scan import simulation_scan
 
 
 @dataclass(frozen=True)
 class BHZScanResult:
-    """Ergebnisse eines BHZ-Scans über den Massenparameter."""
+    """BHZ-Massenscan mit vollständigen Einzelergebnissen."""
 
-    mass_values: np.ndarray
-    spectra: np.ndarray
-    gaps: np.ndarray
+    scan: ParameterScanResult
+
+    @property
+    def mass_values(self) -> np.ndarray:
+        return self.scan.parameter_values
+
+    @property
+    def spectra(self) -> np.ndarray:
+        return self.scan.spectra
+
+    @property
+    def gaps(self) -> np.ndarray:
+        return self.scan.gaps
 
 
 def scan_bhz_mass(
@@ -24,36 +35,29 @@ def scan_bhz_mass(
     boundary_x: str = "periodic",
     boundary_y: str = "periodic",
 ) -> BHZScanResult:
-    """
-    Berechne das BHZ-Spektrum für verschiedene Massenwerte.
+    """Scanne das BHZ-Modell über den Massenparameter m."""
 
-    Mit periodischen Rändern wird das Bulk-Spektrum ohne Randzustände
-    berechnet. Die Lücke schließt bei mass = -2, 0 und 2.
-    """
-    solver = ExactDiagonalizationSolver()
-    spectra_list: list[np.ndarray] = []
-    gaps_list: list[float] = []
-
-    for mass in mass_values:
-        model = BHZModel(
+    def make_model(mass: float) -> BHZModel:
+        return BHZModel(
             BHZModelParameters(
                 n_x=n_x,
                 n_y=n_y,
-                mass=float(mass),
+                mass=mass,
                 boundary_x=boundary_x,
                 boundary_y=boundary_y,
             )
         )
 
-        eigenvalues = solver.solve(model.hamiltonian()).eigenvalues
-
-        spectra_list.append(eigenvalues)
-
-        # Kleinster Energiebetrag beschreibt die Lücke um E = 0.
-        gaps_list.append(float(np.min(np.abs(eigenvalues))))
-
-    return BHZScanResult(
-        mass_values=np.asarray(mass_values),
-        spectra=np.asarray(spectra_list),
-        gaps=np.asarray(gaps_list),
+    scan = simulation_scan(
+        parameter_name="mass",
+        parameter_values=mass_values,
+        model_factory=make_model,
+        metadata={
+            "n_x": n_x,
+            "n_y": n_y,
+            "boundary_x": boundary_x,
+            "boundary_y": boundary_y,
+        },
     )
+
+    return BHZScanResult(scan=scan)

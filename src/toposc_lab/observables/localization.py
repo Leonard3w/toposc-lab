@@ -5,6 +5,8 @@ from typing import TypeAlias
 
 import numpy as np
 
+from toposc_lab.core.results import SimulationResult
+
 LatticeShape: TypeAlias = tuple[int, ...]
 
 
@@ -257,4 +259,28 @@ def localization_profile(
         bulk_weight=bulk_weight_value,
         is_edge_localized=is_edge_localized(probability, edge_width=edge_width),
         component_labels=component_labels,
+    )
+
+
+def localization_profile_from_result(
+    result: SimulationResult,
+    state_index: int,
+    edge_width: int = 1,
+) -> LocalizationProfile:
+    """
+    Berechne ein Lokalisierungsprofil direkt aus einem SimulationResult.
+
+    Die gespeicherte Basisordnung wird automatisch in die einheitliche
+    site-major-Ordnung gebracht. Damit funktioniert dieselbe Ortsanalyse
+    ohne Sonderfall für Kitaev, SSH, QWZ und BHZ.
+    """
+    layout = result.basis_layout
+
+    return localization_profile(
+        eigenvectors=result.site_major_eigenvectors(),
+        state_index=state_index,
+        lattice_shape=layout.spatial_shape,
+        components_per_site=layout.components_per_site,
+        component_labels=layout.component_labels,
+        edge_width=edge_width,
     )
