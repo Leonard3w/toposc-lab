@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.colors import PowerNorm
 
 from toposc_lab.models.kitaev_ladder import (
     KitaevLadder,
@@ -62,34 +63,108 @@ def main() -> None:
     print(f"Left-end weight: {left_weight:.4f}")
     print(f"Right-end weight: {right_weight:.4f}")
 
-    figure, axes = plt.subplots(1, 2, figsize=(12, 4))
+    # Einheitliches, zurückhaltendes Layout für eine Publikationsabbildung.
+    figure, axes = plt.subplots(
+        1,
+        2,
+        figsize=(10.5, 3.6),
+        constrained_layout=True,
+    )
 
     # Gesamtes BdG-Energiespektrum.
-    axes[0].plot(
+    axes[0].scatter(
+        np.arange(result.eigenvalues.size),
         result.eigenvalues,
-        marker=".",
-        linestyle="none",
+        s=13,
+        color="#1f77b4",
+        linewidths=0.0,
     )
-    axes[0].axhline(0.0, color="black", linewidth=0.8)
-    axes[0].set_xlabel("State index")
+    axes[0].axhline(
+        0.0,
+        color="0.25",
+        linewidth=0.8,
+        linestyle="--",
+    )
+    axes[0].set_xlabel("Eigenstate index")
     axes[0].set_ylabel("Energy")
-    axes[0].set_title("Kitaev-ladder spectrum")
-
-    # Räumliche Wahrscheinlichkeit des niederenergetischen Zustands.
-    image = axes[1].imshow(
-        profile.probability,
-        origin="lower",
-        aspect="auto",
-        cmap="magma",
+    axes[0].set_title("Spectrum", pad=8)
+    axes[0].text(
+        -0.13,
+        1.04,
+        "(a)",
+        transform=axes[0].transAxes,
+        fontweight="bold",
     )
+
+    # Die Ladder wird als ihre tatsächliche Geometrie gezeichnet.
+    # Dezente Bonds zeigen die Geometrie; die farbigen Punkte tragen die
+    # physikalische Information |ψ_i|².
+    coordinates = model.lattice.coordinates
+    site_probabilities = profile.probability.reshape(-1)
+    maximum_probability = float(np.max(site_probabilities))
+
+    probability_norm = PowerNorm(
+        gamma=0.45,
+        vmin=0.0,
+        vmax=maximum_probability,
+    )
+
+    for bond in model.lattice.bonds:
+        source = coordinates[bond.source]
+        target = coordinates[bond.target]
+        axes[1].plot(
+            [source[0], target[0]],
+            [source[1], target[1]],
+            color="0.55",
+            linewidth=0.8,
+            zorder=1,
+        )
+
+    # Alle Plätze bleiben als neutrale Gitterpunkte sichtbar.
+    axes[1].scatter(
+        coordinates[:, 0],
+        coordinates[:, 1],
+        s=24,
+        facecolors="white",
+        edgecolors="0.25",
+        linewidths=0.55,
+        zorder=2,
+    )
+
+    # Die Wurzel-Skalierung verhindert, dass ein einzelner stark
+    # lokalisierter Punkt die gesamte Leiterzeichnung verdeckt.
+    points = axes[1].scatter(
+        coordinates[:, 0],
+        coordinates[:, 1],
+        c=site_probabilities,
+        s=28.0 + 190.0 * np.sqrt(site_probabilities / maximum_probability),
+        cmap="magma",
+        norm=probability_norm,
+        edgecolors="0.15",
+        linewidths=0.4,
+        zorder=3,
+    )
+
+    axes[1].set_xlim(-1.0, model.params.length)
+    axes[1].set_ylim(-0.35, model.params.n_legs - 0.65)
+    axes[1].set_yticks(range(model.params.n_legs))
     axes[1].set_xlabel("Position along ladder")
     axes[1].set_ylabel("Leg")
-    axes[1].set_title("Lowest-energy state localization")
+    axes[1].set_title("Lowest-energy state", pad=8)
+    axes[1].text(
+        -0.13,
+        1.04,
+        "(b)",
+        transform=axes[1].transAxes,
+        fontweight="bold",
+    )
 
-    colorbar = figure.colorbar(image, ax=axes[1])
-    colorbar.set_label("Probability density")
+    colorbar = figure.colorbar(points, ax=axes[1])
+    colorbar.set_label(r"Site probability $|\psi_i|^2$")
 
-    figure.tight_layout()
+    for axis in axes:
+        axis.tick_params(direction="in", top=True, right=True)
+
     plt.show()
 
 

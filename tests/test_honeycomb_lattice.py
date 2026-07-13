@@ -61,3 +61,23 @@ def test_honeycomb_rejects_invalid_sublattice() -> None:
 
     with pytest.raises(ValueError):
         lattice.site_index(0, 0, "invalid")
+
+
+def test_periodic_honeycomb_has_oriented_next_nearest_neighbors() -> None:
+    lattice = HoneycombLattice(
+        n_x=3,
+        n_y=3,
+        boundary_x="periodic",
+        boundary_y="periodic",
+    )
+
+    next_nearest_bonds = lattice.next_nearest_neighbor_bonds
+
+    # 18 Plätze, jeder mit sechs NNN; jeder Bond wird einmal gezählt.
+    assert len(next_nearest_bonds) == 54
+
+    for bond in next_nearest_bonds:
+        assert lattice.sublattice(bond.source) == lattice.sublattice(
+            bond.target
+        )
+        assert bond.chirality in (-1, 1)
