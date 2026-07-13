@@ -17,6 +17,7 @@ dependencies = [
 
 [project.scripts]
 toposc = "toposc_lab.cli:main"
+toposc-ui = "toposc_lab.app.streamlit_app:main"
 
 [project.optional-dependencies]
 dev = [

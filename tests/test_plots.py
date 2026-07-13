@@ -6,9 +6,23 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from toposc_lab.visualization.plots import (
+    plot_eigenvalue_spectrum,
     plot_gap_vs_parameter,
     plot_spectrum_vs_parameter,
 )
+
+
+def test_plot_eigenvalue_spectrum_returns_figure_and_axes() -> None:
+    figure, axes = plot_eigenvalue_spectrum(
+        np.array([-1.0, 0.0, 1.0]),
+        show=False,
+    )
+
+    assert axes.get_xlabel() == "Eigenstate index"
+    assert axes.get_ylabel() == "Energy"
+    assert len(axes.collections) == 1
+
+    plt.close(figure)
 
 
 def test_plot_spectrum_vs_parameter_returns_figure_and_axes() -> None:

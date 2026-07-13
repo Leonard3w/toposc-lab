@@ -30,6 +30,22 @@ python -m toposc_lab kitaev-scan --L 60 --mu-min -4 --mu-max 4
 
 Use `--num-points`, `--t`, `--delta`, and `--periodic` to adjust the scan.
 
+## Research workspace
+
+The optional graphical workspace exposes every currently registered model and
+its Pydantic parameters. It uses the same solver, observables and plotting
+code as the Python API.
+
+```bash
+pip install -e ".[app]"
+toposc-ui
+```
+
+The first workspace provides single-model simulations, spectra,
+geometry-aware localization plots, core observables, parameter metadata and
+downloadable `.npz` results. Scan and study-comparison workspaces follow as
+the model library grows.
+
 ## Planned features
 
 - Kitaev chain

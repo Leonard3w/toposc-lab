@@ -6,6 +6,50 @@ from matplotlib.axes import Axes
 from matplotlib.figure import Figure
 
 from toposc_lab.observables.localization import LocalizationProfile
+from toposc_lab.visualization.style import paper_style
+
+
+def plot_eigenvalue_spectrum(
+    eigenvalues: np.ndarray,
+    *,
+    axes: Axes | None = None,
+    title: str = "Energy spectrum",
+    show: bool = True,
+) -> tuple[Figure, Axes]:
+    """Plotte das diskrete Spektrum einer einzelnen Simulation.
+
+    Diese Darstellung unterscheidet sich von ``plot_spectrum_vs_parameter``:
+    Die x-Achse ist hier der Eigenzustandsindex statt eines Scanparameters.
+    """
+    values = np.asarray(eigenvalues, dtype=float)
+
+    if values.ndim != 1 or values.size == 0:
+        raise ValueError("eigenvalues must be a non-empty one-dimensional array")
+
+    created_axes = axes is None
+
+    with paper_style():
+        if axes is None:
+            figure, axes = plt.subplots(figsize=(6.2, 4.2), constrained_layout=True)
+        else:
+            figure = axes.figure
+
+        axes.scatter(
+            np.arange(values.size),
+            values,
+            s=14,
+            color="tab:blue",
+            linewidths=0.0,
+        )
+        axes.axhline(0.0, color="0.35", linestyle="--", linewidth=0.9)
+        axes.set_xlabel("Eigenstate index")
+        axes.set_ylabel("Energy")
+        axes.set_title(title)
+
+    if created_axes and show:
+        plt.show()
+
+    return figure, axes
 
 
 def plot_spectrum_vs_parameter(
