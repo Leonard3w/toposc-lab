@@ -77,6 +77,53 @@ class HaldaneModel(BaseModel):
             component_labels=("A sublattice", "B sublattice"),
         )
 
+    def bloch_hamiltonian(self, k_x: float, k_y: float) -> np.ndarray:
+        """
+        Baue die 2 x 2 Bulk-Hamiltonmatrix H(k_x, k_y).
+
+        k_x und k_y sind dimensionslose Impulskoordinaten zu den beiden
+        Einheitszellrichtungen und liegen konventionell im Intervall
+        [-pi, pi). Diese Darstellung wird für Berry-Krümmung und
+        Chern-Zahl mit periodischen Bulk-Randbedingungen verwendet.
+        """
+        nearest_hopping = self.params.nearest_neighbor_hopping
+        next_nearest_hopping = self.params.next_nearest_neighbor_hopping
+        phase = self.params.phase
+        mass = self.params.sublattice_mass
+
+        # Die drei unabhängigen Triangular-Lattice-Vektoren der A- bzw.
+        # B-Sublattice. Die Vorzeichen kodieren die Haldane-Umlaufrichtung
+        # auf der A-Sublattice; auf B ist sie entgegengesetzt.
+        next_nearest_vectors = np.asarray(
+            [
+                (1.0, 0.0),
+                (0.0, 1.0),
+                (1.0, -1.0),
+            ]
+        )
+        a_chiralities = np.asarray((-1.0, 1.0, 1.0))
+        momenta = next_nearest_vectors @ np.asarray((k_x, k_y))
+
+        a_diagonal = mass + 2.0 * next_nearest_hopping * np.sum(
+            np.cos(momenta + a_chiralities * phase)
+        )
+        b_diagonal = -mass + 2.0 * next_nearest_hopping * np.sum(
+            np.cos(momenta - a_chiralities * phase)
+        )
+
+        # Nächste-Nachbar-Graphen-Hopping zwischen A und B.
+        off_diagonal = -nearest_hopping * (
+            1.0 + np.exp(-1.0j * k_x) + np.exp(-1.0j * k_y)
+        )
+
+        return np.asarray(
+            [
+                [a_diagonal, off_diagonal],
+                [off_diagonal.conjugate(), b_diagonal],
+            ],
+            dtype=complex,
+        )
+
     def hamiltonian(self) -> np.ndarray:
         """Baue die hermitesche Haldane-Hamiltonmatrix."""
         dimension = self.lattice.n_sites
