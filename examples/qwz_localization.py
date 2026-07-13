@@ -1,12 +1,11 @@
 from __future__ import annotations
 
-import matplotlib.pyplot as plt
 import numpy as np
 
 from toposc_lab.models.qwz_model import QWZModel, QWZModelParameters
-from toposc_lab.observables.localization import localization_profile
+from toposc_lab.observables.localization import localization_profile_from_result
 from toposc_lab.solvers.exact_diagonalization import ExactDiagonalizationSolver
-from toposc_lab.visualization.plots import plot_localization_2d
+from toposc_lab.visualization.lattice_plots import plot_localization_on_lattice
 
 
 def main() -> None:
@@ -25,17 +24,14 @@ def main() -> None:
         )
     )
 
-    result = ExactDiagonalizationSolver().solve(model.hamiltonian())
+    result = ExactDiagonalizationSolver().solve_model(model)
 
     # Zustand mit der niedrigsten Energie nahe E = 0 auswählen.
     state_index = int(np.argmin(np.abs(result.eigenvalues)))
 
-    profile = localization_profile(
-        eigenvectors=result.eigenvectors,
+    profile = localization_profile_from_result(
+        result=result,
         state_index=state_index,
-        lattice_shape=(n_x, n_y),
-        components_per_site=2,
-        component_labels=("orbital 1", "orbital 2"),
         edge_width=1,
     )
 
@@ -45,13 +41,11 @@ def main() -> None:
     print(f"Edge weight: {profile.edge_weight:.4f}")
 
     # Gesamtwahrscheinlichkeit über beide Orbitale.
-    plot_localization_2d(
+    plot_localization_on_lattice(
+        model.lattice,
         profile,
         title="QWZ edge-state localization",
-        show=False,
     )
-
-    plt.show()
 
 
 if __name__ == "__main__":

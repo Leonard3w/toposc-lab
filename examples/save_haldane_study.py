@@ -12,6 +12,8 @@ from toposc_lab.data.studies import (
     study_from_parameter_scan,
 )
 from toposc_lab.scans.haldane_scan import scan_haldane_mass
+from toposc_lab.visualization.study_plots import plot_study_observable
+from toposc_lab.visualization.style import add_panel_label, paper_style
 
 
 def main() -> None:
@@ -54,23 +56,31 @@ def main() -> None:
     print(f"Created at: {loaded.metadata.created_at.isoformat()}")
     print(f"Package version: {loaded.metadata.package_version}")
 
-    mass_values = loaded.arrays["parameter_values"]
-    bulk_gaps = loaded.arrays["bulk_gaps"]
-    chern_numbers = loaded.arrays["chern_numbers"]
-
-    figure, axes = plt.subplots(1, 2, figsize=(10, 4), constrained_layout=True)
-
-    axes[0].plot(mass_values, bulk_gaps, "o-", markersize=3)
-    axes[0].set_xlabel("Sublattice mass M")
-    axes[0].set_ylabel("Bulk band gap")
-    axes[0].set_title("Loaded bulk-gap data")
-
-    axes[1].step(mass_values, chern_numbers, where="mid", color="tab:red")
-    axes[1].set_xlabel("Sublattice mass M")
-    axes[1].set_ylabel("Chern number")
-    axes[1].set_title("Loaded topological phase")
-
-    plt.show()
+    # Die Plotfunktionen erhalten nur die geladene Studie, keine Arrays.
+    # Daher funktioniert dieselbe Visualisierung auch nach einem Neustart.
+    with paper_style():
+        _, axes = plt.subplots(1, 2, figsize=(10, 4), constrained_layout=True)
+        plot_study_observable(
+            loaded,
+            "bulk_gaps",
+            axes=axes[0],
+            title="Loaded bulk-gap data",
+            xlabel="Sublattice mass M",
+            ylabel="Bulk band gap",
+        )
+        plot_study_observable(
+            loaded,
+            "chern_numbers",
+            axes=axes[1],
+            title="Loaded topological phase",
+            xlabel="Sublattice mass M",
+            ylabel="Chern number",
+            color="tab:red",
+            drawstyle="steps-mid",
+        )
+        add_panel_label(axes[0], "(a)")
+        add_panel_label(axes[1], "(b)")
+        plt.show()
 
 
 if __name__ == "__main__":
