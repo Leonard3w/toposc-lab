@@ -6,15 +6,25 @@ from collections.abc import Iterator
 from contextlib import contextmanager
 
 import matplotlib.pyplot as plt
+from cycler import cycler
 
 
 PAPER_STYLE: dict[str, object] = {
+    "axes.labelpad": 6.0,
     "axes.labelsize": 11,
+    "axes.prop_cycle": cycler(
+        color=("#0072B2", "#D55E00", "#009E73", "#CC79A7", "#56B4E9", "#E69F00")
+    ),
     "axes.titlesize": 13,
+    "axes.titlepad": 10.0,
     "axes.linewidth": 0.9,
+    "figure.dpi": 120,
     "font.size": 11,
+    "legend.frameon": False,
     "legend.fontsize": 9,
     "lines.linewidth": 1.5,
+    "lines.solid_capstyle": "round",
+    "mathtext.fontset": "dejavusans",
     "savefig.bbox": "tight",
     "savefig.dpi": 300,
     "xtick.direction": "in",
@@ -51,6 +61,7 @@ def add_panel_label(
         label,
         transform=axes.transAxes,
         fontweight="bold",
+        fontsize=12,
         ha="left",
         va="bottom",
     )

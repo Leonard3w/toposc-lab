@@ -79,10 +79,13 @@ def plot_study_spectrum(
                 linestyle="none",
                 marker=".",
                 markersize=2.5,
-                color="tab:blue",
+                color="#0072B2",
+                alpha=0.85,
+                rasterized=True,
             )
 
         axes.axhline(0.0, color="0.35", linestyle="--", linewidth=0.9)
+        axes.margins(x=0.02)
         axes.set_xlabel(xlabel or _parameter_label(study))
         axes.set_ylabel("Energy")
         axes.set_title(title or f"{study.metadata.study_name}: spectrum")
@@ -132,8 +135,11 @@ def plot_study_observable(
             color=color,
             marker="o",
             markersize=3.2,
+            markerfacecolor="white",
+            markeredgewidth=0.9,
             drawstyle=drawstyle,
         )
+        axes.margins(x=0.02)
         axes.set_xlabel(xlabel or _parameter_label(study))
         axes.set_ylabel(ylabel or observable_name.replace("_", " "))
         axes.set_title(title or f"{study.metadata.study_name}: {observable_name}")
@@ -180,6 +186,8 @@ def plot_study_comparison(
                 values,
                 marker="o",
                 markersize=3.0,
+                markerfacecolor="white",
+                markeredgewidth=0.9,
                 label=label,
             )
 
@@ -187,7 +195,8 @@ def plot_study_comparison(
         axes.set_xlabel(xlabel or _parameter_label(first_study))
         axes.set_ylabel(ylabel or observable_name.replace("_", " "))
         axes.set_title(title or f"Comparison: {observable_name.replace('_', ' ')}")
-        axes.legend(frameon=False)
+        axes.margins(x=0.02)
+        axes.legend(title="Study")
 
     if created_axes and show:
         plt.show()

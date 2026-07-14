@@ -8,8 +8,8 @@ Streamlit-Code getrennt.
 from __future__ import annotations
 
 from collections.abc import Callable, Iterable, Mapping
-from dataclasses import dataclass
-from typing import Any
+from dataclasses import dataclass, field
+from typing import Any, get_args
 
 from pydantic import BaseModel as PydanticBaseModel
 
@@ -36,6 +36,9 @@ class ModelSpec:
     parameter_model: type[PydanticBaseModel]
     factory: ModelFactory
     default_parameters: Mapping[str, Any]
+    scan_defaults: Mapping[str, tuple[float, float, int]] = field(
+        default_factory=dict
+    )
 
     def validated_default_parameters(self) -> dict[str, Any]:
         """Liefere gueltige Defaultwerte in der Form der Pydantic-Parameter."""
@@ -47,6 +50,31 @@ class ModelSpec:
         """Validiere UI-Werte und erstelle das physikalische Modell."""
         parameters = self.parameter_model.model_validate(parameter_values)
         return self.factory(parameters)
+
+    def scannable_parameter_names(self) -> tuple[str, ...]:
+        """Liefere alle kontinuierlichen Modellparameter fuer 1D-Scans."""
+        names: list[str] = []
+
+        for name, parameter in self.parameter_model.model_fields.items():
+            annotation = parameter.annotation
+            possible_types = (annotation, *get_args(annotation))
+
+            if float in possible_types:
+                names.append(name)
+
+        return tuple(names)
+
+    def scan_default(self, parameter_name: str) -> tuple[float, float, int]:
+        """Liefere eine sinnvolle Startkonfiguration fuer einen UI-Scan."""
+        if parameter_name not in self.scannable_parameter_names():
+            raise ValueError(f"Parameter {parameter_name!r} is not scannable")
+
+        if parameter_name in self.scan_defaults:
+            return self.scan_defaults[parameter_name]
+
+        center = float(self.validated_default_parameters()[parameter_name])
+        span = max(abs(center), 1.0)
+        return center - span, center + span, 61
 
 
 class ModelRegistry:
@@ -100,6 +128,12 @@ MODEL_REGISTRY = ModelRegistry(
                 "disorder_strength": 0.0,
                 "disorder_seed": None,
             },
+            scan_defaults={
+                "hopping": (0.1, 2.0, 61),
+                "chemical_potential": (-4.0, 4.0, 81),
+                "pairing": (0.0, 2.0, 61),
+                "disorder_strength": (0.0, 2.0, 41),
+            },
         ),
         ModelSpec(
             key="ssh-chain",
@@ -114,6 +148,7 @@ MODEL_REGISTRY = ModelRegistry(
                 "w": 1.0,
                 "boundary": "open",
             },
+            scan_defaults={"v": (0.0, 2.0, 81), "w": (0.0, 2.0, 81)},
         ),
         ModelSpec(
             key="kitaev-ladder",
@@ -133,6 +168,13 @@ MODEL_REGISTRY = ModelRegistry(
                 "boundary_length": "open",
                 "boundary_legs": "open",
             },
+            scan_defaults={
+                "hopping": (0.1, 2.0, 61),
+                "chemical_potential": (-4.0, 4.0, 81),
+                "pairing": (0.0, 2.0, 61),
+                "rung_hopping": (0.0, 2.0, 61),
+                "rung_pairing": (0.0, 2.0, 61),
+            },
         ),
         ModelSpec(
             key="qwz-model",
@@ -148,6 +190,7 @@ MODEL_REGISTRY = ModelRegistry(
                 "boundary_x": "open",
                 "boundary_y": "open",
             },
+            scan_defaults={"mass": (-3.0, 3.0, 81)},
         ),
         ModelSpec(
             key="bhz-model",
@@ -163,6 +206,7 @@ MODEL_REGISTRY = ModelRegistry(
                 "boundary_x": "open",
                 "boundary_y": "open",
             },
+            scan_defaults={"mass": (-3.0, 3.0, 81)},
         ),
         ModelSpec(
             key="graphene",
@@ -178,6 +222,7 @@ MODEL_REGISTRY = ModelRegistry(
                 "boundary_x": "open",
                 "boundary_y": "open",
             },
+            scan_defaults={"hopping": (0.1, 2.0, 61)},
         ),
         ModelSpec(
             key="haldane-model",
@@ -195,6 +240,12 @@ MODEL_REGISTRY = ModelRegistry(
                 "sublattice_mass": 0.0,
                 "boundary_x": "open",
                 "boundary_y": "open",
+            },
+            scan_defaults={
+                "nearest_neighbor_hopping": (0.1, 2.0, 61),
+                "next_nearest_neighbor_hopping": (0.0, 0.5, 61),
+                "phase": (0.0, 3.141592653589793, 61),
+                "sublattice_mass": (-2.0, 2.0, 81),
             },
         ),
     )

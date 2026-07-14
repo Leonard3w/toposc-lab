@@ -15,7 +15,9 @@ from toposc_lab.data.studies import (
     StudyMetadata,
     load_study,
     save_study,
+    study_from_bytes,
     study_from_parameter_scan,
+    study_to_bytes,
 )
 
 
@@ -58,6 +60,18 @@ def test_study_rejects_unsafe_object_arrays() -> None:
             metadata=_metadata(),
             arrays={"not_safe": np.array([{"value": 1}], dtype=object)},
         )
+
+
+def test_study_bytes_round_trip_preserves_arrays() -> None:
+    study = StudyData(
+        metadata=_metadata(),
+        arrays={"bulk_gaps": np.array([0.5, 0.0, 0.5])},
+    )
+
+    loaded = study_from_bytes(study_to_bytes(study))
+
+    assert loaded.metadata == study.metadata
+    assert np.array_equal(loaded.arrays["bulk_gaps"], study.arrays["bulk_gaps"])
 
 
 def test_study_from_parameter_scan_stores_standard_and_extra_observables() -> None:

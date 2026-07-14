@@ -37,3 +37,10 @@ def test_registry_rejects_duplicate_model_keys() -> None:
 def test_registry_reports_unknown_key() -> None:
     with pytest.raises(ValueError, match="Unknown model key"):
         MODEL_REGISTRY.get("not-a-model")
+
+
+def test_registered_models_expose_continuous_scan_parameters() -> None:
+    haldane = MODEL_REGISTRY.get("haldane-model")
+
+    assert "sublattice_mass" in haldane.scannable_parameter_names()
+    assert haldane.scan_default("sublattice_mass") == (-2.0, 2.0, 81)

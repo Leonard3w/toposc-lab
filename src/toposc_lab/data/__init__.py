@@ -5,7 +5,9 @@ from toposc_lab.data.studies import (
     StudyMetadata,
     load_study,
     save_study,
+    study_from_bytes,
     study_from_parameter_scan,
+    study_to_bytes,
 )
 
 __all__ = [
@@ -13,5 +15,7 @@ __all__ = [
     "StudyMetadata",
     "load_study",
     "save_study",
+    "study_from_bytes",
     "study_from_parameter_scan",
+    "study_to_bytes",
 ]

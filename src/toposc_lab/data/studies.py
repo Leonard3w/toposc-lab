@@ -17,6 +17,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from importlib.metadata import PackageNotFoundError, version
+from io import BytesIO
 from pathlib import Path
 from typing import Any
 
@@ -125,20 +126,61 @@ def save_study(path: str | Path, study: StudyData) -> Path:
     destination = _normalise_study_path(path)
     destination.parent.mkdir(parents=True, exist_ok=True)
 
+    destination.write_bytes(study_to_bytes(study))
+
+    return destination
+
+
+def study_to_bytes(study: StudyData) -> bytes:
+    """Serialisiere eine Studie fuer einen Download oder ein anderes Backend."""
+    if not isinstance(study, StudyData):
+        raise TypeError("study must be a StudyData instance")
+
     try:
         metadata_json = study.metadata.model_dump_json()
     except (TypeError, ValueError) as error:
         raise ValueError("Study metadata must be JSON serializable") from error
 
+    buffer = BytesIO()
     np.savez_compressed(
-        destination,
+        buffer,
         **{
             _METADATA_KEY: np.asarray(metadata_json),
             **study.arrays,
         },
     )
+    return buffer.getvalue()
 
-    return destination
+
+def _study_from_archive(archive: Any) -> StudyData:
+    """Baue eine StudyData aus einem bereits sicher geoeffneten NPZ-Archiv."""
+    if _METADATA_KEY not in archive.files:
+        raise ValueError("Study file does not contain TopOSC-Lab metadata")
+
+    metadata_value = archive[_METADATA_KEY]
+    if metadata_value.ndim != 0:
+        raise ValueError("Study metadata must be a scalar JSON value")
+
+    metadata = StudyMetadata.model_validate_json(str(metadata_value.item()))
+    arrays = {
+        name: archive[name].copy()
+        for name in archive.files
+        if name != _METADATA_KEY
+    }
+
+    return StudyData(metadata=metadata, arrays=arrays)
+
+
+def study_from_bytes(data: bytes) -> StudyData:
+    """Lade eine Studie aus Bytes, etwa nach einem Browser-Upload."""
+    if not isinstance(data, bytes):
+        raise TypeError("data must be bytes")
+
+    try:
+        with np.load(BytesIO(data), allow_pickle=False) as archive:
+            return _study_from_archive(archive)
+    except (OSError, ValueError) as error:
+        raise ValueError("Could not load study bytes") from error
 
 
 def load_study(path: str | Path) -> StudyData:
@@ -150,23 +192,9 @@ def load_study(path: str | Path) -> StudyData:
 
     try:
         with np.load(source, allow_pickle=False) as archive:
-            if _METADATA_KEY not in archive.files:
-                raise ValueError("Study file does not contain TopOSC-Lab metadata")
-
-            metadata_value = archive[_METADATA_KEY]
-            if metadata_value.ndim != 0:
-                raise ValueError("Study metadata must be a scalar JSON value")
-
-            metadata = StudyMetadata.model_validate_json(str(metadata_value.item()))
-            arrays = {
-                name: archive[name].copy()
-                for name in archive.files
-                if name != _METADATA_KEY
-            }
+            return _study_from_archive(archive)
     except (OSError, ValueError) as error:
         raise ValueError(f"Could not load study file: {source}") from error
-
-    return StudyData(metadata=metadata, arrays=arrays)
 
 
 def study_from_parameter_scan(
