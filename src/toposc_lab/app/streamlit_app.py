@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from toposc_lab.app.registry import MODEL_REGISTRY, ModelSpec
+from toposc_lab.app.model_guides import model_guide, observable_guides
 from toposc_lab.app.study_workspace import (
     common_scalar_observables,
     scan_parameter_name,
@@ -40,6 +41,7 @@ from toposc_lab.scans.analysis import analyze_parameter_scan
 from toposc_lab.scans.model_scan import model_parameter_scan
 from toposc_lab.solvers.exact_diagonalization import ExactDiagonalizationSolver
 from toposc_lab.visualization.lattice_plots import plot_localization_on_lattice
+from toposc_lab.visualization.matrix_plots import plot_matrix
 from toposc_lab.visualization.plots import plot_eigenvalue_spectrum
 from toposc_lab.visualization.study_plots import (
     plot_study_comparison,
@@ -288,6 +290,142 @@ def _add_figure_downloads(
         mime="application/pdf",
         key=f"pdf::{key}",
     )
+
+
+def _format_complex(value: complex, *, precision: int = 3) -> str:
+    """Format a numerical Hamiltonian entry compactly for a matrix table."""
+    real = float(np.real(value))
+    imaginary = float(np.imag(value))
+    threshold = 10.0 ** (-(precision + 2))
+
+    if abs(imaginary) < threshold:
+        return f"{real:.{precision}g}"
+    if abs(real) < threshold:
+        return f"{imaginary:.{precision}g}i"
+    return f"{real:.{precision}g}{imaginary:+.{precision}g}i"
+
+
+def _show_model_guide(
+    streamlit: Any,
+    specification: ModelSpec,
+    parameter_values: dict[str, Any],
+) -> None:
+    """Show the formula, implementation steps and numerical matrix of a model."""
+    guide = model_guide(specification.key)
+    model = specification.build(parameter_values)
+    layout = model.basis_layout
+
+    streamlit.subheader(guide.title)
+    streamlit.write(guide.summary)
+
+    overview_tab, parameters_tab, matrix_tab, observables_tab = streamlit.tabs(
+        ("Hamiltonian", "Parameters and basis", "Numerical matrix", "Observables")
+    )
+
+    with overview_tab:
+        streamlit.latex(guide.hamiltonian_latex)
+        streamlit.markdown("**How the code constructs this matrix**")
+        for index, step in enumerate(guide.construction_steps, start=1):
+            streamlit.markdown(f"{index}. {step}")
+        streamlit.markdown("**Assumptions**")
+        for assumption in guide.assumptions:
+            streamlit.markdown(f"- {assumption}")
+        if guide.reference is not None:
+            streamlit.caption(f"Reference: {guide.reference}")
+
+    with parameters_tab:
+        parameter_rows = []
+        for parameter in guide.parameters:
+            parameter_rows.append(
+                {
+                    "parameter": parameter.name,
+                    "symbol": parameter.symbol,
+                    "current value": parameter_values.get(parameter.name, "-"),
+                    "physical meaning": parameter.meaning,
+                    "effect in the matrix": parameter.numerical_role,
+                }
+            )
+        streamlit.dataframe(parameter_rows, hide_index=True, use_container_width=True)
+        streamlit.markdown("**Basis used by the numerical Hamiltonian**")
+        streamlit.write(guide.basis_description)
+        streamlit.json(
+            {
+                "spatial shape": layout.spatial_shape,
+                "spatial sites": layout.n_sites,
+                "components per site": layout.components_per_site,
+                "components": layout.component_labels,
+                "ordering": layout.ordering,
+                "Hamiltonian dimension": layout.dimension,
+            }
+        )
+
+    with matrix_tab:
+        if layout.dimension > 1024:
+            streamlit.warning(
+                "The selected matrix is larger than 1024 x 1024. Reduce the "
+                "lattice size to inspect its dense numerical representation."
+            )
+        else:
+            hamiltonian = model.hamiltonian()
+            streamlit.caption(
+                "This is the actual H built with the current parameters, not a schematic matrix."
+            )
+            representation_label = streamlit.selectbox(
+                "Matrix representation",
+                options=("Magnitude |H|", "Real part", "Imaginary part", "Phase"),
+                key=f"matrix-representation::{specification.key}",
+            )
+            representations = {
+                "Magnitude |H|": "magnitude",
+                "Real part": "real",
+                "Imaginary part": "imaginary",
+                "Phase": "phase",
+            }
+            figure, _ = plot_matrix(
+                hamiltonian,
+                representation=representations[representation_label],
+                title=f"{guide.title}: {representation_label}",
+                show=False,
+            )
+            streamlit.pyplot(figure)
+            _add_figure_downloads(
+                streamlit,
+                figure,
+                filename_stem=f"{specification.key}_hamiltonian_{representations[representation_label]}",
+                key=f"matrix::{specification.key}::{representation_label}",
+            )
+            plt.close(figure)
+
+            maximum_block = min(layout.dimension, 32)
+            default_block = min(layout.dimension, 12)
+            block_size = int(
+                streamlit.slider(
+                    "Leading matrix block to display",
+                    min_value=1,
+                    max_value=maximum_block,
+                    value=default_block,
+                    key=f"matrix-block::{specification.key}",
+                )
+            )
+            matrix_block = hamiltonian[:block_size, :block_size]
+            formatted_block = np.asarray(
+                [[_format_complex(value) for value in row] for row in matrix_block]
+            )
+            streamlit.markdown(
+                f"**Top-left {block_size} x {block_size} block of H** "
+                "(rows i, columns j)"
+            )
+            streamlit.dataframe(formatted_block, use_container_width=True)
+
+    with observables_tab:
+        streamlit.caption(
+            "These are the definitions used by the Python API, scans and workspace."
+        )
+        for observable in observable_guides():
+            with streamlit.expander(observable.label):
+                streamlit.latex(observable.formula_latex)
+                streamlit.markdown(f"**Calculation:** {observable.calculation}")
+                streamlit.markdown(f"**Meaning:** {observable.interpretation}")
 
 
 def _create_parameter_scan_study(
@@ -694,7 +832,12 @@ def run_app() -> None:
     with streamlit.sidebar:
         workspace_mode = streamlit.radio(
             "Workspace",
-            options=("Single simulation", "Parameter scan", "Study explorer"),
+            options=(
+                "Single simulation",
+                "Parameter scan",
+                "Model guide",
+                "Study explorer",
+            ),
         )
         if workspace_mode == "Study explorer":
             streamlit.header("Study explorer")
@@ -714,6 +857,10 @@ def run_app() -> None:
                 with streamlit.form(f"parameters::{selected_key}"):
                     parameter_values = _render_parameter_inputs(streamlit, specification)
                     run_requested = streamlit.form_submit_button("Run simulation")
+            elif workspace_mode == "Model guide":
+                with streamlit.form(f"guide::{selected_key}"):
+                    parameter_values = _render_parameter_inputs(streamlit, specification)
+                    streamlit.form_submit_button("Update model guide")
             else:
                 scan_options = _scannable_parameter_names(specification)
                 scan_parameter_name = streamlit.selectbox(
@@ -785,6 +932,13 @@ def run_app() -> None:
 
     if workspace_mode == "Study explorer":
         _show_study_explorer(streamlit)
+        return
+
+    if workspace_mode == "Model guide":
+        try:
+            _show_model_guide(streamlit, specification, parameter_values)
+        except (TypeError, ValueError) as error:
+            streamlit.error(f"The selected guide parameters are not valid: {error}")
         return
 
     if workspace_mode == "Parameter scan":

@@ -11,14 +11,17 @@ from toposc_lab.visualization.lattice_plots import (
 )
 from toposc_lab.visualization.plots import plot_eigenvalue_spectrum
 from toposc_lab.visualization.export import figure_to_bytes
+from toposc_lab.visualization.matrix_plots import matrix_values, plot_matrix
 from toposc_lab.visualization.style import add_panel_label, paper_style
 
 __all__ = [
     "add_panel_label",
     "figure_to_bytes",
+    "matrix_values",
     "paper_style",
     "plot_eigenvalue_spectrum",
     "plot_localization_on_lattice",
+    "plot_matrix",
     "plot_study_comparison",
     "plot_study_observable",
     "plot_study_spectrum",
