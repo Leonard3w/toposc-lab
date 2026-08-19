@@ -79,6 +79,8 @@ to explore:
 - a browser-native live material with continuously ramped B and E fields,
   coherent wavepackets, stationary eigenstate densities, probability-current
   arrows and simultaneous level occupations;
+- a nine-step in-app physics tutorial that prepares each experiment and explains
+  what to do, what to observe, the physical picture and the expected result;
 - strip-like Landau-gauge wavefunctions and their guiding centres;
 - electric-field dispersion, wavefunction displacement and a playable
   cyclotron / E-cross-B drift simulation;

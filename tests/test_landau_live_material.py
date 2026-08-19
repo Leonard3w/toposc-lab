@@ -67,3 +67,22 @@ def test_live_material_explains_eigenstates_and_measurement_samples() -> None:
     assert "Born-Messproben" in html
     assert "keine verborgenen klassischen Bahnen" in html
     assert "E×B-Drift" in html
+
+
+def test_live_material_contains_a_guided_physics_tutorial() -> None:
+    html = landau_live_material_html(LandauLevelParameters())
+
+    assert "Geführtes Physik-Tutorial" in html
+    assert 'id="tutorial-action"' in html
+    assert 'id="tutorial-observe"' in html
+    assert 'id="tutorial-physics"' in html
+    assert 'id="tutorial-expect"' in html
+    assert 'id="tutorial-setup"' in html
+    assert "const tutorialSteps" in html
+    assert html.count('setup: "') == 9
+    assert "prepareTutorialStep" in html
+    assert "highlightTutorialTargets" in html
+    assert "Messpunkte sind Born-Proben" in html
+    assert "ω_c = eB/m*" in html
+    assert "v_D = E×B/B²" in html
+    assert "r = √(2m) l_B" in html

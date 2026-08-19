@@ -93,6 +93,25 @@ def landau_live_material_html(parameters: LandauLevelParameters) -> str:
   .metric { background: rgba(3,14,25,.62); border: 1px solid var(--line); border-radius: 12px; padding: 8px 10px; min-width: 0; }
   .metric span { display: block; color: var(--muted); font-size: 9px; text-transform: uppercase; letter-spacing: .09em; margin-bottom: 3px; }
   .metric strong { display: block; color: var(--ink); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tutorial { position: relative; margin-bottom: 11px; padding: 12px; border: 1px solid rgba(100,232,255,.2); border-radius: 16px; background: linear-gradient(135deg,rgba(7,29,47,.94),rgba(32,22,62,.82)); }
+  .tutorial-head { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:9px; }
+  .tutorial-kicker { color:var(--cyan); font-size:9px; font-weight:850; letter-spacing:.14em; text-transform:uppercase; }
+  .tutorial h2 { margin:2px 0 0; font-size:16px; letter-spacing:-.015em; }
+  .tutorial-status { flex:0 0 auto; color:#bcefdc; background:rgba(88,230,169,.08); border:1px solid rgba(88,230,169,.2); border-radius:999px; padding:6px 9px; font-size:9px; font-weight:750; }
+  .tutorial-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:7px; }
+  .tutorial-card { min-width:0; padding:8px 9px; border-radius:10px; background:rgba(2,12,22,.62); border:1px solid rgba(133,190,219,.13); }
+  .tutorial-card span { display:block; margin-bottom:4px; font-size:8px; font-weight:850; letter-spacing:.08em; text-transform:uppercase; }
+  .tutorial-card p { margin:0; color:#bfd2df; font-size:9.5px; line-height:1.4; }
+  .tutorial-card.action span { color:#ffb66f; }
+  .tutorial-card.observe span { color:#68e8ff; }
+  .tutorial-card.physics span { color:#c6a8ff; }
+  .tutorial-card.expect span { color:#74edb5; }
+  .tutorial-nav { display:flex; align-items:center; gap:7px; margin-top:9px; }
+  .tutorial-progress { display:flex; flex:1; justify-content:center; gap:5px; }
+  .tutorial-dot { width:17px; height:5px; padding:0; border:0; border-radius:999px; background:rgba(141,169,189,.25); }
+  .tutorial-dot.active { width:28px; background:linear-gradient(90deg,var(--cyan),var(--violet)); }
+  .tutorial-target { position:relative; z-index:2; border-color:rgba(100,232,255,.74) !important; box-shadow:0 0 0 2px rgba(100,232,255,.14),0 0 24px rgba(59,130,246,.22); animation:tutorGlow 1.8s ease-in-out infinite; }
+  @keyframes tutorGlow { 50% { box-shadow:0 0 0 3px rgba(100,232,255,.07),0 0 32px rgba(183,148,246,.25); } }
   .stage { position: relative; height: 560px; border: 1px solid var(--line); border-radius: 17px; overflow: hidden; background: rgba(1,8,16,.72); }
   canvas { display: block; width: 100%; height: 100%; }
   .stage-legend { position: absolute; left: 13px; bottom: 12px; display: flex; flex-wrap: wrap; gap: 7px; pointer-events: none; }
@@ -117,6 +136,7 @@ def landau_live_material_html(parameters: LandauLevelParameters) -> str:
   .explain b { color:#d9c5ff; }
   @media (max-width: 820px) {
     .metrics { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .tutorial-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
     .stage { height: 500px; }
     .control-row { grid-template-columns: repeat(2,minmax(0,1fr)); }
   }
@@ -124,6 +144,11 @@ def landau_live_material_html(parameters: LandauLevelParameters) -> str:
     #ll-live { padding: 11px; border-radius: 15px; }
     .head { display:block; }
     .live-pill { display:inline-flex; margin-top:8px; }
+    .tutorial-head { display:block; }
+    .tutorial-status { display:inline-block; margin-top:7px; }
+    .tutorial-grid { grid-template-columns:1fr; }
+    .tutorial-nav { flex-wrap:wrap; }
+    .tutorial-progress { order:3; flex-basis:100%; }
     .stage { height: 540px; }
     .control-row { grid-template-columns: 1fr; }
   }
@@ -148,7 +173,29 @@ def landau_live_material_html(parameters: LandauLevelParameters) -> str:
     <div class="metric"><span>Animationszeit</span><strong id="metric-time">–</strong></div>
   </section>
 
-  <section class="stage">
+  <section class="tutorial" aria-live="polite">
+    <div class="tutorial-head">
+      <div>
+        <div class="tutorial-kicker">Geführtes Physik-Tutorial · <span id="tutorial-count">1 / 9</span></div>
+        <h2 id="tutorial-title">Orientierung: Was ist hier überhaupt real?</h2>
+      </div>
+      <div id="tutorial-status" class="tutorial-status">Schritt lesen und vorbereiten</div>
+    </div>
+    <div class="tutorial-grid">
+      <article class="tutorial-card action"><span>1 · Das machst du</span><p id="tutorial-action"></p></article>
+      <article class="tutorial-card observe"><span>2 · Darauf achtest du</span><p id="tutorial-observe"></p></article>
+      <article class="tutorial-card physics"><span>3 · Physikalische Vorstellung</span><p id="tutorial-physics"></p></article>
+      <article class="tutorial-card expect"><span>4 · Das sollte passieren</span><p id="tutorial-expect"></p></article>
+    </div>
+    <div class="tutorial-nav">
+      <button id="tutorial-prev">← Zurück</button>
+      <div id="tutorial-progress" class="tutorial-progress" aria-label="Tutorial-Fortschritt"></div>
+      <button id="tutorial-setup" class="primary">Versuch vorbereiten</button>
+      <button id="tutorial-next">Weiter →</button>
+    </div>
+  </section>
+
+  <section id="live-stage" class="stage">
     <canvas id="landau-canvas" aria-label="Live-Simulation von Elektronen in Landau-Niveaus"></canvas>
     <div class="stage-legend">
       <span class="tag"><i style="background:#64e8ff"></i>Wahrscheinlichkeitsdichte</span>
@@ -239,6 +286,82 @@ def landau_live_material_html(parameters: LandauLevelParameters) -> str:
     phase: 0, freeTime: 0, last: performance.now(), fps: 60, frameCount: 0, fpsClock: performance.now()
   };
 
+  const tutorialSteps = Object.freeze([
+    {
+      title: "Orientierung: vier Bilder, nicht vier verschiedene Elektronen",
+      action: "Bereite den Versuch vor, beobachte eine Runde und drücke dann Pause.",
+      observe: "Blaue Wolke, oranger Punkt, violettes Leitzentrum und gestrichelte Vergleichsbahn.",
+      physics: "Die Wolke ist |ψ|². Der Punkt ist Paketzentrum bzw. Messprobe; nur die gestrichelte Linie ist ein klassischer Vergleich.",
+      expect: "Das Paket kreist um das ruhende Leitzentrum, während rechts diskrete Energieniveaus stehen.",
+      targets: ["#live-stage", "#play"], setup: "orientation"
+    },
+    {
+      title: "Nullfeld: Warum es ohne B keine Landau-Niveaus gibt",
+      action: "Bereite B = 0 vor und vergleiche sofort Realraum und Energiepanel.",
+      observe: "Die Feldpunkte verschwinden; oben stehen l_B = ∞ und beim Abstand ‚Kontinuum‘.",
+      physics: "Ohne Lorentzkraft fehlt die quantisierte Zyklotronbewegung. Ein freies Teilchen besitzt E ∝ k².",
+      expect: "Das Paket läuft frei; rechts ersetzt eine Parabel die getrennten Landau-Linien.",
+      targets: ["#reset", "#metric-b", "#metric-gap", "#live-stage"], setup: "zero"
+    },
+    {
+      title: "Magnetfeld einschalten: Entstehung der Quantisierung",
+      action: "Bereite den Schritt vor und beobachte während der Feldrampe das aktuelle B.",
+      observe: "Feldsymbole erscheinen, die Bahn krümmt sich und rechts wachsen waagerechte Niveaus auseinander.",
+      physics: "ω_c = eB/m* quantisiert die Kreisbewegung; ΔE = ℏω_c und l_B = √(ℏ/eB).",
+      expect: "B steigt weich auf 1 T, l_B wird endlich und das Paket geht in eine Zyklotronbewegung über.",
+      targets: ["#toggle-b", "#b-target", "#metric-b", "#metric-lb"], setup: "field"
+    },
+    {
+      title: "Dichte, Messung und Strom richtig auseinanderhalten",
+      action: "Pausiere und schalte die vier sichtbaren Ebenen einzeln aus und wieder an.",
+      observe: "Jedes Häkchen entfernt genau eine Information, der zugrunde liegende Zustand bleibt derselbe.",
+      physics: "Messpunkte sind Born-Proben aus |ψ|², keine verborgenen Bahnen. Strompfeile zeigen Wahrscheinlichkeitsfluss.",
+      expect: "Ohne Dichte bleibt der Messpunkt; ohne Messproben bleibt die Wolke; die Vergleichsbahn ist nur eine Hilfslinie.",
+      targets: ["#show-density", "#show-samples", "#show-current", "#show-classical"], setup: "layers"
+    },
+    {
+      title: "B verändern: Länge und Energie reagieren gegensinnig",
+      action: "Starte bei 0,5 T und ziehe das Ziel-Magnetfeld langsam auf 3 T.",
+      observe: "Die magnetische Länge sinkt, während der Landau-Abstand zunimmt.",
+      physics: "Stärkeres B lokalisiert Zustände stärker und erhöht die Zyklotronenergie. Die Zeichenfläche nutzt l_B als Einheit.",
+      expect: "Der Radius kann im normierten Bild ähnlich aussehen, obwohl die reale Ausdehnung in Nanometern schrumpft.",
+      targets: ["#b-target", "#metric-lb", "#metric-gap"], setup: "strength"
+    },
+    {
+      title: "E×B-Drift: Kreisbewegung mit wanderndem Zentrum",
+      action: "Bereite E = 1500 V/m vor; ändere danach das Vorzeichen des E-Feldes.",
+      observe: "Das violette Leitzentrum driftet quer zum E-Pfeil und die Energielinien werden schräg.",
+      physics: "Zur Zyklotronbewegung kommt die Drift v_D = E×B/B². Ihr Betrag ist hier |E|/B.",
+      expect: "Bei umgekehrtem E kehrt die Drift um; bei größerem B wird sie für dasselbe E langsamer.",
+      targets: ["#toggle-e", "#e-target", "#metric-drift", "#live-stage"], setup: "drift"
+    },
+    {
+      title: "Energie & Besetzung: So liest du das rechte Panel",
+      action: "Beobachte n = 0, 1, …; schalte anschließend E kurz an und wieder aus.",
+      observe: "Cyan markiert das gewählte Niveau, Orange den gewählten Zustand, Violett weitere dargestellte Besetzungen.",
+      physics: "Bei E = 0 ist E_n unabhängig vom Leitzentrum. Ein E-Feld macht die Energie vom Impuls k abhängig.",
+      expect: "Ohne E sind die Linien horizontal; mit E kippen sie. Ein aktivierter Zeeman-Term spaltet sie zusätzlich schwach.",
+      targets: ["#live-stage", "#toggle-e"], setup: "energy"
+    },
+    {
+      title: "Landau-Gauge: stationär heißt nicht punktförmig",
+      action: "Bereite den Eigenzustand vor, pausiere und vergleiche Dichte mit den orangefarbenen Messproben.",
+      observe: "Ein ortsfestes Dichteband liegt um x_c; einzelne Born-Proben erscheinen an verschiedenen Positionen.",
+      physics: "|n,k⟩ ist ein Energieeigenzustand. Seine Dichte ist stationär; k bestimmt das Leitzentrum x_c.",
+      expect: "Pause ändert die Dichte nicht. Mit E verschiebt sich das Band und es entsteht ein Driftstrom.",
+      targets: ["#mode", "#live-stage"], setup: "landau"
+    },
+    {
+      title: "Symmetrische Gauge: ein stationärer LLL-Ring",
+      action: "Bereite den LLL-Zustand vor und trenne Ringdichte, Strompfeile und Messproben mit den Häkchen.",
+      observe: "Die Dichte bildet einen Ring; grüne Tangenten zeigen Strom, orange Punkte mögliche Messorte.",
+      physics: "Im Zustand |0,m⟩ liegt das Maximum ungefähr bei r = √(2m) l_B. Strom kann fließen, obwohl |ψ|² stationär ist.",
+      expect: "Der Ring rotiert nicht als feste Materie. Größeres m in der Seitenleiste verschiebt sein Maximum nach außen.",
+      targets: ["#mode", "#show-density", "#show-current", "#show-samples", "#live-stage"], setup: "symmetric"
+    }
+  ]);
+  let tutorialIndex = 0;
+
   const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
   const mix = (a, b, t) => a + (b - a) * t;
   const wrap = (x, extent) => ((x + extent) % (2 * extent) + 2 * extent) % (2 * extent) - extent;
@@ -255,6 +378,95 @@ def landau_live_material_html(parameters: LandauLevelParameters) -> str:
     if (B < 1e-8) return 0;
     return drift(B, E) * (2 * Math.PI / omega(B)) / lB(B);
   };
+
+  function highlightTutorialTargets(selectors) {
+    for (const node of document.querySelectorAll(".tutorial-target")) node.classList.remove("tutorial-target");
+    const highlighted = new Set();
+    for (const selector of selectors) {
+      const node = document.querySelector(selector);
+      if (!node) continue;
+      let target = node;
+      if (node.matches("input, select")) target = node.closest(".control") || node;
+      else if (node.matches("strong")) target = node.closest(".metric") || node;
+      if (!highlighted.has(target)) {
+        target.classList.add("tutorial-target");
+        highlighted.add(target);
+      }
+    }
+  }
+
+  function renderTutorial() {
+    const step = tutorialSteps[tutorialIndex];
+    el("tutorial-count").textContent = `${tutorialIndex + 1} / ${tutorialSteps.length}`;
+    el("tutorial-title").textContent = step.title;
+    el("tutorial-action").textContent = step.action;
+    el("tutorial-observe").textContent = step.observe;
+    el("tutorial-physics").textContent = step.physics;
+    el("tutorial-expect").textContent = step.expect;
+    el("tutorial-status").textContent = "Schritt lesen und vorbereiten";
+    el("tutorial-prev").disabled = tutorialIndex === 0;
+    el("tutorial-next").disabled = tutorialIndex === tutorialSteps.length - 1;
+    const progress = el("tutorial-progress");
+    progress.replaceChildren();
+    tutorialSteps.forEach((item, index) => {
+      const dot = document.createElement("button");
+      dot.className = `tutorial-dot${index === tutorialIndex ? " active" : ""}`;
+      dot.title = `${index + 1}: ${item.title}`;
+      dot.setAttribute("aria-label", dot.title);
+      dot.onclick = () => { tutorialIndex = index; renderTutorial(); };
+      progress.appendChild(dot);
+    });
+    highlightTutorialTargets(step.targets);
+  }
+
+  function prepareTutorialStep() {
+    const setup = tutorialSteps[tutorialIndex].setup;
+    const bMax = Number(ui.b.max);
+    const baseB = clamp(1, .05, bMax);
+    const driftE = clamp(1500, Number(ui.e.min), Number(ui.e.max));
+    ui.density.checked = true;
+    ui.samples.checked = true;
+    ui.current.checked = true;
+    ui.classical.checked = true;
+    ui.ramp.value = 1.5;
+    ui.speed.value = 1;
+    state.running = true;
+    state.phase = 0;
+    state.freeTime = 0;
+    state.eOn = false;
+    state.E = 0;
+    ui.e.value = 0;
+
+    if (setup === "zero") {
+      ui.mode.value = "packet";
+      state.bOn = false;
+      state.B = 0;
+    } else if (setup === "field") {
+      ui.mode.value = "packet";
+      ui.b.value = baseB;
+      state.bOn = true;
+      state.B = 0;
+    } else if (setup === "strength") {
+      ui.mode.value = "packet";
+      ui.b.value = clamp(.5, .05, bMax);
+      state.bOn = true;
+      state.B = Number(ui.b.value);
+    } else if (setup === "drift") {
+      ui.mode.value = "packet";
+      ui.b.value = baseB;
+      ui.e.value = driftE;
+      state.bOn = true;
+      state.B = baseB;
+      state.eOn = true;
+    } else {
+      ui.mode.value = setup === "landau" ? "landau" : setup === "symmetric" ? "symmetric" : "packet";
+      ui.b.value = baseB;
+      state.bOn = true;
+      state.B = baseB;
+    }
+    updateUI();
+    el("tutorial-status").textContent = "Versuch vorbereitet · jetzt beobachten";
+  }
 
   function hermite(n, x) {
     if (n === 0) return 1;
@@ -484,8 +696,11 @@ def landau_live_material_html(parameters: LandauLevelParameters) -> str:
   }
 
   ui.play.onclick=()=>{state.running=!state.running;updateUI();};ui.reset.onclick=()=>{state.running=true;state.bOn=false;state.eOn=false;state.B=0;state.E=0;state.phase=0;state.freeTime=0;updateUI();};ui.toggleB.onclick=()=>{state.bOn=!state.bOn;};ui.toggleE.onclick=()=>{state.eOn=!state.eOn;};
+  el("tutorial-prev").onclick=()=>{if(tutorialIndex>0){tutorialIndex--;renderTutorial();}};
+  el("tutorial-next").onclick=()=>{if(tutorialIndex<tutorialSteps.length-1){tutorialIndex++;renderTutorial();}};
+  el("tutorial-setup").onclick=prepareTutorialStep;
   for(const input of document.querySelectorAll("input,select"))input.addEventListener("input",updateUI);
-  resize();updateUI();requestAnimationFrame(tick);
+  resize();updateUI();renderTutorial();requestAnimationFrame(tick);
 })();
 </script>
 </body>
@@ -501,7 +716,7 @@ def render_landau_live_material(
     streamlit.iframe(
         landau_live_material_html(parameters),
         width="stretch",
-        height=1_020,
+        height=1_240,
     )
 
 
