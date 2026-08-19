@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import numpy as np
 import pytest
 
 from toposc_lab.gases.ideal_quantum_gases import (

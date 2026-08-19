@@ -23,13 +23,6 @@ from toposc_lab.visualization.ensemble_plots import (
     bose_microcanonical_figure,
     classical_ensemble_motion_figure,
 )
-from toposc_lab.visualization.landau_level_plots import (
-    cyclotron_drift_animation,
-    degeneracy_figure,
-    landau_gauge_state_figure,
-    landau_spectrum_figure,
-    symmetric_gauge_state_figure,
-)
 
 __all__ = [
     "add_panel_label",
@@ -37,8 +30,6 @@ __all__ = [
     "bose_grand_canonical_figure",
     "bose_microcanonical_figure",
     "classical_ensemble_motion_figure",
-    "cyclotron_drift_animation",
-    "degeneracy_figure",
     "figure_to_bytes",
     "matrix_values",
     "paper_style",
@@ -49,9 +40,6 @@ __all__ = [
     "plot_study_observable",
     "plot_study_spectrum",
     "profile_site_probabilities",
-    "landau_gauge_state_figure",
-    "landau_spectrum_figure",
     "quantum_gas_state_figure",
     "quantum_statistics_schematic",
-    "symmetric_gauge_state_figure",
 ]

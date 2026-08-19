@@ -7,7 +7,6 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 from toposc_lab.gases.ideal_quantum_gases import (
-    BOLTZMANN_CONSTANT,
     QuantumGasResult,
     momentum_state_slice,
 )

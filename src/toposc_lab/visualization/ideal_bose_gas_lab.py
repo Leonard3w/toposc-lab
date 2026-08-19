@@ -21,7 +21,6 @@ from toposc_lab.bosons.ideal_bose_gas import (
     IdealBoseGasParameters,
     analyze_ideal_bose_einstein_condensation,
     compare_bose_to_classical,
-    ideal_bec_condensate_fraction,
 )
 
 

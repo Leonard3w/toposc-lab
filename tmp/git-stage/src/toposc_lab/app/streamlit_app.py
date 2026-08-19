@@ -20,10 +20,6 @@ import numpy as np
 
 from toposc_lab.app.registry import MODEL_REGISTRY, ModelSpec
 from toposc_lab.app.model_guides import model_guide, observable_guides
-from toposc_lab.app.landau_level_lab import (
-    render_landau_level_inputs,
-    show_landau_level_lab,
-)
 from toposc_lab.bosons.ideal_bose_gas import (
     BOLTZMANN_CONSTANT,
     IdealBoseEinsteinCondensationParameters,
@@ -1725,7 +1721,6 @@ def run_app() -> None:
             "Research area",
             options=(
                 "Topological superconductors",
-                "Quantum Hall / Landau levels",
                 "Quantum gases",
                 "Research studies",
             ),
@@ -1735,10 +1730,6 @@ def run_app() -> None:
             workspace_mode = "Study explorer"
             streamlit.header("Study explorer")
             streamlit.caption("Load, compare and export reproducible studies.")
-        elif project_area == "Quantum Hall / Landau levels":
-            workspace_mode = "Landau levels"
-            streamlit.header("Abschnitt 1.4")
-            landau_level_parameters = render_landau_level_inputs(streamlit)
         elif project_area == "Quantum gases":
             workspace_mode = streamlit.radio(
                 "Quantum-gas workspace",
@@ -1856,9 +1847,6 @@ def run_app() -> None:
     if project_area == "Topological superconductors":
         streamlit.title("TopOSC Lab")
         streamlit.caption("Topological superconductors and lattice-model research workspace")
-    elif project_area == "Quantum Hall / Landau levels":
-        streamlit.title("TopOSC Lab / Quantum Hall")
-        streamlit.caption("Interaktives Lernlabor zu Landau-Niveaus")
     elif project_area == "Quantum gases":
         streamlit.title("TopOSC Lab / Quantum gases")
         streamlit.caption("Ideal-gas equilibrium, ensembles and statistically correct dynamics")
@@ -1868,10 +1856,6 @@ def run_app() -> None:
 
     if workspace_mode == "Study explorer":
         _show_study_explorer(streamlit)
-        return
-
-    if workspace_mode == "Landau levels":
-        show_landau_level_lab(streamlit, landau_level_parameters)
         return
 
     if workspace_mode == "Equilibrium statistics":

@@ -68,26 +68,6 @@ one-dimensional mode set, where every allowed Fock state can be counted
 exactly.  This is preferable to presenting an uncontrolled approximation as
 an exact microcanonical quantum result.
 
-## Landau-level learning laboratory
-
-The Streamlit interface now contains a complete interactive treatment of
-Section 1.4 of David Tong's *The Quantum Hall Effect*
-(arXiv:1606.06687v2). Select **Quantum Hall / Landau levels** in the sidebar
-to explore:
-
-- algebraic quantization and the equally spaced Landau-level spectrum;
-- strip-like Landau-gauge wavefunctions and their guiding centres;
-- electric-field dispersion, wavefunction displacement and a playable
-  cyclotron / E-cross-B drift simulation;
-- lowest-Landau-level ring states in symmetric gauge;
-- flux-controlled degeneracy, guiding-centre noncommutativity and optional
-  Zeeman splitting.
-
-Magnetic and electric fields, effective mass, sample dimensions, quantum
-numbers, g-factor and all display/simulation parameters are adjustable. Every
-static scientific figure can be exported as high-resolution PNG or vector PDF,
-and the full parameter set can be downloaded as JSON.
-
 ## Planned features
 
 - Kitaev chain
