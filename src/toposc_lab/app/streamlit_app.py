@@ -20,6 +20,30 @@ import numpy as np
 
 from toposc_lab.app.registry import MODEL_REGISTRY, ModelSpec
 from toposc_lab.app.model_guides import model_guide, observable_guides
+from toposc_lab.bosons.ideal_bose_gas import (
+    BOLTZMANN_CONSTANT,
+    IdealBoseEinsteinCondensationParameters,
+    IdealBoseGasParameters,
+)
+from toposc_lab.gases.ideal_quantum_gases import (
+    IdealQuantumGasParameters,
+    QuantumGasResult,
+    analyze_ideal_quantum_gas,
+)
+from toposc_lab.gases.ensembles import (
+    BoseGrandCanonicalParameters,
+    BoseMicrocanonicalParameters,
+    ClassicalCanonicalParameters,
+    ClassicalEnsembleResult,
+    ClassicalGrandCanonicalParameters,
+    ClassicalMicrocanonicalParameters,
+    analyze_bose_grand_canonical,
+    analyze_bose_microcanonical,
+    analyze_classical_canonical,
+    analyze_classical_grand_canonical,
+    analyze_classical_microcanonical,
+    sample_classical_particles,
+)
 from toposc_lab.app.study_workspace import (
     common_scalar_observables,
     scan_parameter_name,
@@ -42,6 +66,21 @@ from toposc_lab.scans.model_scan import model_parameter_scan
 from toposc_lab.solvers.exact_diagonalization import ExactDiagonalizationSolver
 from toposc_lab.visualization.lattice_plots import plot_localization_on_lattice
 from toposc_lab.visualization.matrix_plots import plot_matrix
+from toposc_lab.visualization.ideal_bose_gas_lab import (
+    ideal_bec_learning_figure,
+    ideal_bose_gas_live_material,
+)
+from toposc_lab.visualization.quantum_gas_plots import (
+    MODE_OCCUPATION_LOG_RANGE,
+    bose_condensation_figure,
+    quantum_gas_state_figure,
+    quantum_statistics_schematic,
+)
+from toposc_lab.visualization.ensemble_plots import (
+    bose_grand_canonical_figure,
+    bose_microcanonical_figure,
+    classical_ensemble_motion_figure,
+)
 from toposc_lab.visualization.plots import plot_eigenvalue_spectrum
 from toposc_lab.visualization.study_plots import (
     plot_study_comparison,
@@ -428,6 +467,836 @@ def _show_model_guide(
                 streamlit.markdown(f"**Meaning:** {observable.interpretation}")
 
 
+def _render_ideal_bose_gas_lab_inputs(
+    streamlit: Any,
+) -> tuple[IdealBoseGasParameters, IdealBoseEinsteinCondensationParameters]:
+    """Render externally imposed Bose-gas conditions without a scan slider."""
+    streamlit.caption(
+        "Change a condition, then read the Bose-versus-classical comparison below."
+    )
+    temperature_nk = float(
+        streamlit.number_input(
+            "Temperature T (nK)",
+            min_value=1.0,
+            value=80.0,
+            step=1.0,
+            help="Thermal reservoir temperature. Higher T populates more excited modes.",
+            key="bose-lab-temperature",
+        )
+    )
+    chemical_potential_nk = float(
+        streamlit.number_input(
+            "Chemical potential mu/k_B (nK)",
+            min_value=-500.0,
+            max_value=-0.001,
+            value=-25.0,
+            step=1.0,
+            help="For bosons in this box mu must stay below the ground-state energy epsilon_0=0.",
+            key="bose-lab-chemical-potential",
+        )
+    )
+    box_length_um = float(
+        streamlit.number_input(
+            "Periodic box length L (um)",
+            min_value=1.0,
+            value=20.0,
+            step=1.0,
+            help="L sets the momentum spacing: k_i=2 pi n_i/L.",
+            key="bose-lab-box-length",
+        )
+    )
+    mass_amu = float(
+        streamlit.number_input(
+            "Particle mass (u)",
+            min_value=0.1,
+            value=87.0,
+            step=1.0,
+            help="87 u is approximately rubidium-87.",
+            key="bose-lab-mass",
+        )
+    )
+    maximum_mode_index = int(
+        streamlit.number_input(
+            "Maximum momentum quantum number |n_x|, |n_y|",
+            min_value=1,
+            max_value=30,
+            value=7,
+            step=1,
+            help="The visible mode set contains (2 n_max + 1)^2 momentum states.",
+            key="bose-lab-mode-cutoff",
+        )
+    )
+    particle_number = int(
+        streamlit.number_input(
+            "Total particle number N (BEC experiment)",
+            min_value=100,
+            max_value=10_000_000,
+            value=100_000,
+            step=1_000,
+            help="Fixed total particle number used only for the three-dimensional BEC tab.",
+            key="bose-lab-bec-particle-number",
+        )
+    )
+    streamlit.caption(
+        "For the BEC tab, L is interpreted as the side length of a three-dimensional cubic box."
+    )
+    statistics_parameters = IdealBoseGasParameters(
+        temperature=temperature_nk * 1.0e-9,
+        chemical_potential=chemical_potential_nk * 1.0e-9 * BOLTZMANN_CONSTANT,
+        box_length=box_length_um * 1.0e-6,
+        particle_mass_amu=mass_amu,
+        maximum_mode_index=maximum_mode_index,
+    )
+    condensation_parameters = IdealBoseEinsteinCondensationParameters(
+        temperature=temperature_nk * 1.0e-9,
+        particle_number=particle_number,
+        box_length=box_length_um * 1.0e-6,
+        particle_mass_amu=mass_amu,
+    )
+    return statistics_parameters, condensation_parameters
+
+
+def _show_ideal_bose_gas_lab(
+    streamlit: Any,
+    parameters: IdealBoseGasParameters,
+    condensation_parameters: IdealBoseEinsteinCondensationParameters,
+) -> None:
+    """Show an educational Bose-versus-classical statistics experiment."""
+    comparison, figure = ideal_bose_gas_live_material(parameters)
+    result = comparison.bose
+    streamlit.subheader("Why are bosons different? A state-occupation experiment")
+    streamlit.caption(
+        "Every panel uses the same finite two-dimensional box and the same mean number "
+        "of particles. Only the statistical law is different."
+    )
+    metrics = streamlit.columns(5)
+    metrics[0].metric("Expected particle number <N>", f"{result.expected_particle_number:.3f}")
+    metrics[1].metric("Bose fraction in k = 0", f"{comparison.bose_ground_state_fraction:.1%}")
+    metrics[2].metric("Classical fraction in k = 0", f"{comparison.classical_ground_state_fraction:.1%}")
+    metrics[3].metric("Bosonic ground-state enhancement", f"{comparison.ground_state_enhancement:.2f}x")
+    metrics[4].metric("Effectively populated Bose modes", f"{result.effective_number_of_modes:.1f}")
+
+    material_tab, condensation_tab, experiment_tab, equations_tab, reading_tab = streamlit.tabs(
+        (
+            "See the statistics",
+            "Bose-Einstein condensation",
+            "Try these experiments",
+            "Equations and calculation",
+            "How to read it",
+        )
+    )
+    with material_tab:
+        streamlit.plotly_chart(
+            figure,
+            use_container_width=True,
+            config={"displaylogo": False, "responsive": True},
+        )
+        streamlit.caption(
+            "Each square is one momentum state (n_x, n_y). Bright means that a large "
+            "fraction of the gas occupies that state. Panel (c) is the key: red states are "
+            "more populated by bosons than by classical particles; blue states are depleted."
+        )
+
+    with condensation_tab:
+        condensation_result, condensation_figure = ideal_bec_learning_figure(
+            condensation_parameters
+        )
+        condensation_metrics = streamlit.columns(4)
+        condensation_metrics[0].metric(
+            "Critical temperature T_c",
+            f"{condensation_result.critical_temperature / 1.0e-9:.2f} nK",
+        )
+        condensation_metrics[1].metric(
+            "Reduced temperature T / T_c",
+            f"{condensation_result.reduced_temperature:.3f}",
+        )
+        condensation_metrics[2].metric(
+            "Condensate fraction N0 / N",
+            f"{condensation_result.condensate_fraction:.2%}",
+        )
+        condensation_metrics[3].metric(
+            "Condensate population N0",
+            f"{condensation_result.condensate_number:,.0f}",
+        )
+        streamlit.plotly_chart(
+            condensation_figure,
+            use_container_width=True,
+            config={"displaylogo": False, "responsive": True},
+        )
+        streamlit.markdown(
+            "This is the standard **three-dimensional, homogeneous, ideal Bose gas at fixed "
+            "total particle number**. Below \\(T_c\\), thermal excited states cannot hold all "
+            "particles; the remainder occupies the single ground state \\(k=0\\). That "
+            "macroscopic ground-state population is Bose--Einstein condensation.\n\n"
+            "The statistics tab deliberately remains a finite **two-dimensional** box. It shows "
+            "the distribution mechanism clearly, but it does not claim a true finite-temperature "
+            "thermodynamic BEC transition."
+        )
+
+    with experiment_tab:
+        streamlit.markdown(
+            "### First experiment: cool the gas\n"
+            "Keep **mu/k_B = -25 nK** and compare **T = 300 nK**, **120 nK** and **30 nK**. "
+            "At lower temperature the bright centre of panel (a) becomes stronger: bosons "
+            "prefer the lowest momentum states. In panel (d), the red Bose curve rises above "
+            "the dashed blue classical curve at low energy.\n\n"
+            "### Second experiment: move mu toward zero\n"
+            "Keep **T = 120 nK** and compare **mu/k_B = -100 nK**, **-25 nK** and **-2 nK**. "
+            "The k = 0 Bose fraction grows rapidly. This is the finite-box precursor of the "
+            "macroscopic ground-state occupation associated with Bose--Einstein condensation.\n\n"
+            "### Third experiment: change the box size\n"
+            "Keep **T** and **mu** fixed, then compare **L = 10 um** with **L = 40 um**. "
+            "A larger box has more closely spaced momentum states. You can see additional "
+            "low-energy states around the centre."
+        )
+        streamlit.info(
+            "Read one quantity at a time: first the bright centre, then the red/blue excess "
+            "map, then the two curves. The changing pattern is the quantum-statistical effect."
+        )
+
+    with equations_tab:
+        streamlit.latex(r"\hat H=\sum_{\mathbf{k}}\varepsilon_{\mathbf{k}}\,a_{\mathbf{k}}^\dagger a_{\mathbf{k}},\qquad \hat N=\sum_{\mathbf{k}}a_{\mathbf{k}}^\dagger a_{\mathbf{k}}")
+        streamlit.latex(r"\hat K=\hat H-\mu\hat N=\sum_{\mathbf{k}}(\varepsilon_{\mathbf{k}}-\mu)a_{\mathbf{k}}^\dagger a_{\mathbf{k}}")
+        streamlit.latex(r"\varepsilon_{\mathbf{k}}=\frac{\hbar^2|\mathbf{k}|^2}{2m},\qquad k_x=\frac{2\pi n_x}{L},\quad k_y=\frac{2\pi n_y}{L}")
+        streamlit.latex(r"n_{\mathbf{k}}=\langle a_{\mathbf{k}}^\dagger a_{\mathbf{k}}\rangle=\frac{1}{\exp[\beta(\varepsilon_{\mathbf{k}}-\mu)]-1}")
+        streamlit.markdown(
+            "1. The program enumerates every visible integer pair \\(n_x,n_y\\).\n"
+            "2. From it, it calculates momentum and kinetic energy.\n"
+            "3. It inserts \\(T\\) and \\(\\mu\\) into the Bose-Einstein formula for every mode.\n"
+            "4. Summing all \\(n_k\\) gives \\(\\langle N\\rangle\\); summing \\(\\varepsilon_k n_k\\) gives \\(\\langle H\\rangle\\).\n"
+            "5. For a fair comparison, it builds a Maxwell--Boltzmann distribution with the "
+            "same \\(\\langle N\\rangle\\): \\(n_k^{\\mathrm{cl}}\\propto e^{-\\beta\\varepsilon_k}\\)."
+        )
+        streamlit.markdown("### Three-dimensional BEC calculation")
+        streamlit.latex(
+            r"T_c=\frac{2\pi\hbar^2}{m k_B}\left(\frac{N/V}{\zeta(3/2)}\right)^{2/3}"
+        )
+        streamlit.latex(
+            r"\frac{N_0}{N}=\begin{cases}1-(T/T_c)^{3/2}, & T<T_c,\\0, & T\geq T_c.\end{cases}"
+        )
+
+    with reading_tab:
+        streamlit.markdown(
+            "- **Panel (a):** Bose state fractions. The central square is the ground state \\(k=0\\).\n"
+            "- **Panel (b):** a classical gas with exactly the same mean particle number. It is a reference, not a second simulation with different conditions.\n"
+            "- **Panel (c):** red means ‘bosons have moved extra population here’; blue means ‘bosons have removed population from here’. This is bosonic bunching into low-energy states.\n"
+            "- **Panel (d):** every point is a kinetic-energy shell; the plotted value is the occupation of one state in that shell. The red-versus-blue separation at low energy is the cleanest signature.\n"
+            "- **Why no moving particles?** A free homogeneous ideal gas stays uniform in real space. Its informative physics is the occupation of momentum states. Traps, interactions and collisions will make real-space density dynamics meaningful later."
+        )
+
+
+def _render_quantum_gas_lab_inputs(
+    streamlit: Any,
+) -> tuple[IdealQuantumGasParameters, int, str]:
+    """Render one common set of conditions for the three gas calculators."""
+    streamlit.caption(
+        "All three calculators use the same fixed N, T, L and mass. Only the statistical law changes."
+    )
+    temperature_nk = float(
+        streamlit.number_input(
+            "Temperature T (nK)",
+            min_value=1.0,
+            value=80.0,
+            step=1.0,
+            help="Absolute temperature of the thermal reservoir.",
+            key="quantum-gas-temperature",
+        )
+    )
+    particle_number = int(
+        streamlit.number_input(
+            "Total particle number N",
+            min_value=100,
+            max_value=10_000_000,
+            value=100_000,
+            step=1_000,
+            help="The total N is fixed in every calculator; mu is solved from this condition.",
+            key="quantum-gas-particle-number",
+        )
+    )
+    box_length_um = float(
+        streamlit.number_input(
+            "Cubic-box side length L (um)",
+            min_value=1.0,
+            max_value=500.0,
+            value=20.0,
+            step=1.0,
+            help="The volume is V=L^3; periodic boundary conditions are assumed.",
+            key="quantum-gas-box-length",
+        )
+    )
+    mass_amu = float(
+        streamlit.number_input(
+            "Particle mass (u)",
+            min_value=0.1,
+            max_value=1_000.0,
+            value=87.0,
+            step=1.0,
+            help="87 u is approximately rubidium-87. The calculators are one-component gases.",
+            key="quantum-gas-mass",
+        )
+    )
+    maximum_mode_index = int(
+        streamlit.number_input(
+            "Visible momentum range |n_x|, |n_y|",
+            min_value=3,
+            max_value=30,
+            value=12,
+            step=1,
+            help="Only the displayed n_z=0 slice. It does not truncate the thermodynamic calculation.",
+            key="quantum-gas-visible-modes",
+        )
+    )
+    display_scale = streamlit.selectbox(
+        "Occupation colour scale",
+        options=("Automatic contrast", "Locked absolute scale"),
+        help="Automatic contrast makes one calculation readable. Use the locked scale when comparing several parameter settings.",
+        key="quantum-gas-colour-scale",
+    )
+    return (
+        IdealQuantumGasParameters(
+            temperature=temperature_nk * 1.0e-9,
+            particle_number=particle_number,
+            box_length=box_length_um * 1.0e-6,
+            particle_mass_amu=mass_amu,
+        ),
+        maximum_mode_index,
+        "auto" if display_scale == "Automatic contrast" else "fixed",
+    )
+
+
+def _gas_common_metrics(streamlit: Any, result: QuantumGasResult) -> None:
+    """Render quantities that have identical meanings in all gas tabs."""
+    metrics = streamlit.columns(5)
+    metrics[0].metric("Density n", f"{result.number_density:.3e} m^-3")
+    metrics[1].metric("Thermal wavelength lambda_T", f"{result.thermal_wavelength * 1.0e6:.3f} um")
+    metrics[2].metric("Phase-space density n lambda_T^3", f"{result.phase_space_density:.3g}")
+    metrics[3].metric("Chemical potential mu/k_B", f"{result.chemical_potential / BOLTZMANN_CONSTANT / 1.0e-9:.3f} nK")
+    metrics[4].metric(
+        "Mean energy per particle",
+        f"{result.mean_energy_per_particle / BOLTZMANN_CONSTANT / 1.0e-9:.3f} nK",
+    )
+
+
+def _show_classical_gas_calculator(
+    streamlit: Any,
+    result: QuantumGasResult,
+    maximum_mode_index: int,
+    colour_scale_mode: str,
+) -> None:
+    """Render the separate Maxwell--Boltzmann calculator and its validity check."""
+    streamlit.subheader("Classical ideal gas — Maxwell--Boltzmann statistics")
+    streamlit.caption(
+        "Particles are distinguishable for the purpose of counting states; quantum exchange effects are neglected."
+    )
+    _gas_common_metrics(streamlit, result)
+    if result.classical_regime:
+        streamlit.success(
+            "Classical approximation is self-consistent: n lambda_T^3 < 0.1, so quantum-statistical effects are weak."
+        )
+    else:
+        streamlit.warning(
+            "Classical approximation is not reliable here: n lambda_T^3 is not much smaller than one. Compare the Bose-gas tab."
+        )
+    streamlit.plotly_chart(
+        quantum_gas_state_figure(
+            result,
+            maximum_mode_index=maximum_mode_index,
+            scale_mode=colour_scale_mode,
+        ),
+        use_container_width=True,
+        config={"displaylogo": False, "responsive": True},
+    )
+    with streamlit.expander("What this calculator means", expanded=True):
+        streamlit.latex(r"n_{\mathbf{k}}=\exp[-\beta(\varepsilon_{\mathbf{k}}-\mu)]")
+        streamlit.markdown(
+            "**Sketch:** thermal energy spreads the population smoothly over many momentum states. "
+            "There is no upper occupation limit and no special enhancement of an already occupied state.\n\n"
+            "The map is an n_z = 0 slice through three-dimensional momentum space. The colour is "
+            "the mean occupation of one quantum state, on the same fixed scale used in every tab."
+        )
+
+
+def _show_bose_gas_calculator(
+    streamlit: Any,
+    result: QuantumGasResult,
+    maximum_mode_index: int,
+    colour_scale_mode: str,
+) -> None:
+    """Render Bose--Einstein statistics together with the 3D BEC transition."""
+    streamlit.subheader("Ideal Bose gas — Bose--Einstein statistics and condensation")
+    streamlit.caption(
+        "One-component bosons may share a one-particle state without an upper occupation limit."
+    )
+    _gas_common_metrics(streamlit, result)
+    if result.critical_temperature is not None:
+        bose_metrics = streamlit.columns(3)
+        bose_metrics[0].metric("Critical temperature T_c", f"{result.critical_temperature / 1.0e-9:.3f} nK")
+        bose_metrics[1].metric("T / T_c", f"{result.parameters.temperature / result.critical_temperature:.3f}")
+        bose_metrics[2].metric("Condensate fraction N0 / N", f"{result.condensate_fraction:.2%}")
+    streamlit.plotly_chart(
+        quantum_gas_state_figure(
+            result,
+            maximum_mode_index=maximum_mode_index,
+            scale_mode=colour_scale_mode,
+        ),
+        use_container_width=True,
+        config={"displaylogo": False, "responsive": True},
+    )
+    streamlit.plotly_chart(
+        bose_condensation_figure(result),
+        use_container_width=True,
+        config={"displaylogo": False, "responsive": True},
+    )
+    with streamlit.expander("What this calculator means", expanded=True):
+        streamlit.latex(r"n_{\mathbf{k}}=\frac{1}{\exp[\beta(\varepsilon_{\mathbf{k}}-\mu)]-1}")
+        streamlit.latex(r"\frac{N_0}{N}=1-\left(\frac{T}{T_c}\right)^{3/2}\quad (T<T_c)")
+        streamlit.markdown(
+            "**Sketch:** bosons can pile into the same low-energy state. Above T_c, the thermal "
+            "cloud contains all particles. Below T_c, the excited states are saturated and the "
+            "remaining particles form a macroscopic k = 0 condensate.\n\n"
+            "The centre of panel (a) is the k = 0 state. If there is a condensate, it contains N0 "
+            "and becomes bright on the fixed occupation scale."
+        )
+
+
+def _show_quantum_gas_lab(
+    streamlit: Any,
+    parameters: IdealQuantumGasParameters,
+    maximum_mode_index: int,
+    colour_scale_mode: str,
+) -> None:
+    """Render three separated, rigorously comparable quantum-gas calculators."""
+    streamlit.title("Quantum-gas equilibrium laboratory")
+    streamlit.caption(
+        "Two separate calculations under identical conditions. The chemical potential is solved "
+        "for each statistical law so that both calculators have the same total particle number N."
+    )
+    streamlit.info(
+        f"All momentum maps use the fixed scale log10(mean occupation) from "
+        f"{MODE_OCCUPATION_LOG_RANGE[0]:.0f} to {MODE_OCCUPATION_LOG_RANGE[1]:.0f}. "
+        "A colour therefore keeps the same physical meaning when you change T, N, L or mass."
+    )
+    classical_result = analyze_ideal_quantum_gas(parameters, "classical")
+    bose_result = analyze_ideal_quantum_gas(parameters, "boson")
+    classical_tab, bose_tab, guide_tab = streamlit.tabs(
+        ("Classical gas", "Bose gas + BEC", "How to experiment")
+    )
+    with classical_tab:
+        _show_classical_gas_calculator(
+            streamlit,
+            classical_result,
+            maximum_mode_index,
+            colour_scale_mode,
+        )
+    with bose_tab:
+        _show_bose_gas_calculator(
+            streamlit,
+            bose_result,
+            maximum_mode_index,
+            colour_scale_mode,
+        )
+    with guide_tab:
+        streamlit.subheader("The three counting rules")
+        streamlit.caption("Schematic only: it explains the rules; the other tabs contain the calculated data.")
+        streamlit.plotly_chart(
+            quantum_statistics_schematic(),
+            use_container_width=True,
+            config={"displaylogo": False, "responsive": True},
+        )
+        streamlit.markdown(
+            "### A reliable learning sequence\n"
+            "1. Start with **low density**: choose a large L, small N, or high T. "
+            "Then n lambda_T^3 is much smaller than 1, and Bose statistics approaches classical behaviour.\n"
+            "2. Increase density by raising N, reducing L, or cooling. Quantum statistics becomes visible.\n"
+            "3. In the Bose tab, cool below T/T_c = 1: the condensate fraction and the central k = 0 mode grow.\n\n"
+            "### Scope and assumptions\n"
+            "This is a non-interacting, homogeneous, three-dimensional, one-component gas in the "
+            "thermodynamic limit. It correctly describes equilibrium quantum statistics. It does not "
+            "yet include collisions, traps, scattering length, superfluid dynamics or finite-size corrections."
+        )
+
+
+def _render_ensemble_lab_inputs(
+    streamlit: Any,
+) -> tuple[str, str, Any, dict[str, float | int]]:
+    """Select an ensemble and create only its physically independent inputs."""
+    gas_kind = streamlit.selectbox(
+        "Gas",
+        options=("Classical ideal gas", "Ideal Bose gas"),
+        key="ensemble-lab-gas-kind",
+    )
+    ensemble = streamlit.radio(
+        "Ensemble",
+        options=("Canonical", "Grand canonical", "Microcanonical"),
+        key="ensemble-lab-ensemble",
+    )
+    streamlit.caption(
+        "Only independent variables appear below. Derived quantities such as temperature or chemical potential are calculated by the program."
+    )
+
+    box_length_um = float(
+        streamlit.number_input(
+            "Box side length L (um)",
+            min_value=1.0,
+            max_value=500.0,
+            value=20.0,
+            step=1.0,
+            key="ensemble-lab-box-length",
+        )
+    )
+    mass_amu = float(
+        streamlit.number_input(
+            "Particle mass (u)",
+            min_value=0.1,
+            max_value=1_000.0,
+            value=87.0,
+            step=1.0,
+            key="ensemble-lab-mass",
+        )
+    )
+    box_length = box_length_um * 1.0e-6
+    settings: dict[str, float | int] = {}
+
+    if gas_kind == "Classical ideal gas":
+        if ensemble == "Canonical":
+            temperature_nk = float(
+                streamlit.number_input(
+                    "Temperature T (nK)", min_value=1.0, value=80.0, step=1.0,
+                    key="classical-canonical-temperature",
+                )
+            )
+            particle_number = int(
+                streamlit.number_input(
+                    "Fixed particle number N", min_value=2, max_value=100_000, value=200, step=10,
+                    key="classical-canonical-particles",
+                )
+            )
+            parameters: Any = ClassicalCanonicalParameters(
+                temperature=temperature_nk * 1.0e-9,
+                particle_number=particle_number,
+                box_length=box_length,
+                particle_mass_amu=mass_amu,
+            )
+        elif ensemble == "Grand canonical":
+            temperature_nk = float(
+                streamlit.number_input(
+                    "Temperature T (nK)", min_value=1.0, value=80.0, step=1.0,
+                    key="classical-grand-temperature",
+                )
+            )
+            chemical_potential_nk = float(
+                streamlit.number_input(
+                    "Chemical potential mu/k_B (nK)", min_value=-1_000.0, max_value=1_000.0,
+                    value=-300.0, step=10.0, key="classical-grand-mu",
+                )
+            )
+            parameters = ClassicalGrandCanonicalParameters(
+                temperature=temperature_nk * 1.0e-9,
+                chemical_potential=chemical_potential_nk * 1.0e-9 * BOLTZMANN_CONSTANT,
+                box_length=box_length,
+                particle_mass_amu=mass_amu,
+            )
+        else:
+            particle_number = int(
+                streamlit.number_input(
+                    "Fixed particle number N", min_value=2, max_value=100_000, value=200, step=10,
+                    key="classical-micro-particles",
+                )
+            )
+            energy_per_particle_nk = float(
+                streamlit.number_input(
+                    "Fixed energy per particle E/(N k_B) (nK)", min_value=0.1,
+                    value=120.0, step=1.0, key="classical-micro-energy",
+                )
+            )
+            parameters = ClassicalMicrocanonicalParameters(
+                particle_number=particle_number,
+                total_energy=energy_per_particle_nk * particle_number * 1.0e-9 * BOLTZMANN_CONSTANT,
+                box_length=box_length,
+                particle_mass_amu=mass_amu,
+            )
+        settings["visible_particle_count"] = int(
+            streamlit.number_input(
+                "Visible representative particles", min_value=20, max_value=500, value=160, step=10,
+                key="classical-visible-particles",
+            )
+        )
+        settings["duration_ms"] = float(
+            streamlit.number_input(
+                "Displayed motion time (ms)", min_value=0.1, max_value=50.0, value=5.0, step=0.5,
+                key="classical-motion-duration",
+            )
+        )
+        return gas_kind, ensemble, parameters, settings
+
+    if ensemble == "Canonical":
+        temperature_nk = float(
+            streamlit.number_input(
+                "Temperature T (nK)", min_value=1.0, value=80.0, step=1.0,
+                key="bose-canonical-temperature",
+            )
+        )
+        particle_number = int(
+            streamlit.number_input(
+                "Fixed particle number N", min_value=100, max_value=10_000_000, value=100_000, step=1_000,
+                key="bose-canonical-particles",
+            )
+        )
+        parameters = IdealQuantumGasParameters(
+            temperature=temperature_nk * 1.0e-9,
+            particle_number=particle_number,
+            box_length=box_length,
+            particle_mass_amu=mass_amu,
+        )
+        settings["visible_modes"] = int(
+            streamlit.number_input(
+                "Visible momentum range |n_x|, |n_y|", min_value=3, max_value=30, value=12, step=1,
+                key="bose-canonical-visible-modes",
+            )
+        )
+    elif ensemble == "Grand canonical":
+        temperature_nk = float(
+            streamlit.number_input(
+                "Temperature T (nK)", min_value=1.0, value=80.0, step=1.0,
+                key="bose-grand-temperature",
+            )
+        )
+        chemical_potential_nk = float(
+            streamlit.number_input(
+                "Chemical potential mu/k_B (nK)", min_value=-1_000.0, max_value=-0.001,
+                value=-15.0, step=1.0, key="bose-grand-mu",
+                help="Must be below zero. Moving it toward zero increases both occupation and particle-number fluctuations.",
+            )
+        )
+        parameters = BoseGrandCanonicalParameters(
+            temperature=temperature_nk * 1.0e-9,
+            chemical_potential=chemical_potential_nk * 1.0e-9 * BOLTZMANN_CONSTANT,
+            box_length=box_length,
+            particle_mass_amu=mass_amu,
+        )
+        settings["visible_modes"] = int(
+            streamlit.number_input(
+                "Visible momentum range |n_x|, |n_y|", min_value=3, max_value=30, value=12, step=1,
+                key="bose-grand-visible-modes",
+            )
+        )
+    else:
+        particle_number = int(
+            streamlit.number_input(
+                "Fixed particle number N", min_value=1, max_value=14, value=8, step=1,
+                key="bose-micro-particles",
+            )
+        )
+        energy_quanta = int(
+            streamlit.number_input(
+                "Fixed total energy E / epsilon_1", min_value=0, max_value=40, value=8, step=1,
+                key="bose-micro-energy",
+                help="epsilon_1 is the energy of the n = plus or minus 1 box mode.",
+            )
+        )
+        maximum_mode_index = int(
+            streamlit.number_input(
+                "Included modes |n| <=", min_value=1, max_value=6, value=4, step=1,
+                key="bose-micro-cutoff",
+            )
+        )
+        parameters = BoseMicrocanonicalParameters(
+            particle_number=particle_number,
+            energy_quanta=energy_quanta,
+            maximum_mode_index=maximum_mode_index,
+            box_length=box_length,
+            particle_mass_amu=mass_amu,
+        )
+    if ensemble != "Microcanonical":
+        display_scale = streamlit.selectbox(
+            "Occupation colour scale",
+            options=("Automatic contrast", "Locked absolute scale"),
+            help="Automatic contrast is best for understanding one state. Locked scale preserves identical colours while comparing parameter settings.",
+            key=f"bose-{ensemble.lower().replace(' ', '-')}-colour-scale",
+        )
+        settings["colour_scale_mode"] = (
+            "auto" if display_scale == "Automatic contrast" else "fixed"
+        )
+    return gas_kind, ensemble, parameters, settings
+
+
+def _classical_ensemble_table(result: ClassicalEnsembleResult) -> list[dict[str, str]]:
+    """Create a compact fixed-versus-fluctuating dashboard for a classical ensemble."""
+    return [
+        {
+            "Quantity": "Particle number N",
+            "Status": "fixed" if result.particle_number_fixed is not None else "fluctuates",
+            "Mean": f"{result.particle_number_mean:.3g}",
+            "Variance": f"{result.number_variance:.3g}",
+        },
+        {
+            "Quantity": "Total energy E",
+            "Status": "fixed" if result.total_energy_fixed is not None else "fluctuates",
+            "Mean / k_B": f"{result.total_energy_mean / BOLTZMANN_CONSTANT / 1.0e-9:.3g} nK",
+            "Variance": f"{result.energy_variance / (BOLTZMANN_CONSTANT * 1.0e-9) ** 2:.3g} nK^2",
+        },
+        {
+            "Quantity": "Temperature T",
+            "Status": "derived" if result.ensemble == "microcanonical" else "fixed",
+            "Mean": f"{result.temperature / 1.0e-9:.3g} nK",
+            "Variance": "not an independent variable",
+        },
+    ]
+
+
+def _show_classical_ensemble_lab(
+    streamlit: Any,
+    ensemble: str,
+    parameters: Any,
+    settings: dict[str, float | int],
+) -> None:
+    """Render classical ensemble thermodynamics and the physically valid animation."""
+    if ensemble == "Canonical":
+        result = analyze_classical_canonical(parameters)
+    elif ensemble == "Grand canonical":
+        result = analyze_classical_grand_canonical(parameters)
+    else:
+        result = analyze_classical_microcanonical(parameters)
+    sample = sample_classical_particles(
+        result,
+        visible_particle_count=int(settings["visible_particle_count"]),
+    )
+    streamlit.subheader(f"Classical ideal gas - {ensemble.lower()} ensemble")
+    streamlit.caption(
+        "The moving points are a representative x-y projection. In an ideal gas they move ballistically and wrap through periodic boundaries; collisions are intentionally absent."
+    )
+    metrics = streamlit.columns(5)
+    metrics[0].metric("Mean particle number", f"{result.particle_number_mean:.4g}")
+    metrics[1].metric("Temperature", f"{result.temperature / 1.0e-9:.3f} nK")
+    metrics[2].metric("Mean total energy / k_B", f"{result.total_energy_mean / BOLTZMANN_CONSTANT / 1.0e-9:.3g} nK")
+    metrics[3].metric("mu / k_B", f"{result.chemical_potential / BOLTZMANN_CONSTANT / 1.0e-9:.3f} nK")
+    metrics[4].metric("n lambda_T^3", f"{result.phase_space_density:.3g}")
+    streamlit.dataframe(_classical_ensemble_table(result), hide_index=True, use_container_width=True)
+    streamlit.plotly_chart(
+        classical_ensemble_motion_figure(
+            result,
+            sample,
+            duration_ms=float(settings["duration_ms"]),
+        ),
+        use_container_width=True,
+        config={"displaylogo": False, "responsive": True},
+    )
+    streamlit.latex(r"H=\sum_{i=1}^{N}\frac{p_i^2}{2m}")
+    if ensemble == "Canonical":
+        streamlit.markdown(
+            "**Canonical:** T, N and V are fixed. Energy may fluctuate between thermal configurations; the red curve is the Maxwell speed law expected at the imposed temperature."
+        )
+    elif ensemble == "Grand canonical":
+        streamlit.markdown(
+            "**Grand canonical:** T, mu and V are fixed. Both N and E fluctuate. For a classical ideal gas the number distribution is Poisson, so Var(N) = mean(N)."
+        )
+    else:
+        streamlit.markdown(
+            "**Microcanonical:** E, N and V are fixed exactly. The displayed temperature is inferred from how the number of allowed states changes with energy; it is not an input."
+        )
+
+
+def _show_bose_ensemble_lab(
+    streamlit: Any,
+    ensemble: str,
+    parameters: Any,
+    settings: dict[str, float | int],
+) -> None:
+    """Render Bose ensembles without replacing quantum states by fake trajectories."""
+    streamlit.subheader(f"Ideal Bose gas - {ensemble.lower()} ensemble")
+    if ensemble == "Canonical":
+        result = analyze_ideal_quantum_gas(parameters, "boson")
+        metrics = streamlit.columns(5)
+        metrics[0].metric("Fixed N", f"{parameters.particle_number:,}")
+        metrics[1].metric("T / T_c", f"{parameters.temperature / result.critical_temperature:.3f}")
+        metrics[2].metric("Condensate fraction N0 / N", f"{result.condensate_fraction:.2%}")
+        metrics[3].metric("mu / k_B", f"{result.chemical_potential / BOLTZMANN_CONSTANT / 1.0e-9:.3f} nK")
+        metrics[4].metric("Entropy S / k_B", f"{result.entropy_over_kb:.4g}")
+        streamlit.plotly_chart(
+            quantum_gas_state_figure(
+                result,
+                maximum_mode_index=int(settings["visible_modes"]),
+                scale_mode=str(settings["colour_scale_mode"]),
+            ),
+            use_container_width=True,
+            config={"displaylogo": False, "responsive": True},
+        )
+        streamlit.plotly_chart(
+            bose_condensation_figure(result),
+            use_container_width=True,
+            config={"displaylogo": False, "responsive": True},
+        )
+        streamlit.markdown(
+            "**Canonical Bose gas:** T, N and V are fixed. Below T_c, the thermal cloud is saturated and the remaining fixed particles occupy the k = 0 condensate."
+        )
+    elif ensemble == "Grand canonical":
+        result = analyze_bose_grand_canonical(parameters)
+        metrics = streamlit.columns(5)
+        metrics[0].metric("Mean particle number <N>", f"{result.mean_particle_number:.4g}")
+        metrics[1].metric("Number variance", f"{result.number_variance:.4g}")
+        metrics[2].metric("Ground-state occupation n0", f"{result.ground_state_occupation:.4g}")
+        metrics[3].metric("mu / k_B", f"{parameters.chemical_potential / BOLTZMANN_CONSTANT / 1.0e-9:.3f} nK")
+        metrics[4].metric("Entropy S / k_B", f"{result.entropy_over_kb:.4g}")
+        if result.mean_particle_number < 1.0:
+            streamlit.warning(
+                "This setting is a near-vacuum regime: the mean particle number is below one. The faint momentum plot is therefore expected; it is not a dense Bose gas or a condensate. Use the canonical ensemble to study BEC, or move mu closer to zero to study reservoir-driven filling."
+            )
+        streamlit.plotly_chart(
+            bose_grand_canonical_figure(
+                result,
+                maximum_mode_index=int(settings["visible_modes"]),
+                scale_mode=str(settings["colour_scale_mode"]),
+            ),
+            use_container_width=True,
+            config={"displaylogo": False, "responsive": True},
+        )
+        streamlit.latex(r"\langle N\rangle=\frac{V}{\lambda_T^3}g_{3/2}(e^{\beta\mu}),\qquad \mathrm{Var}(N)=\frac{V}{\lambda_T^3}g_{1/2}(e^{\beta\mu})")
+        streamlit.markdown(
+            "**Grand-canonical Bose gas:** T, mu and V are fixed. Move mu toward zero to increase the low-energy occupation and particle-number fluctuations. The exactly singular point mu = 0 is excluded here because a reservoir alone does not determine a finite condensate population."
+        )
+    else:
+        result = analyze_bose_microcanonical(parameters)
+        metrics = streamlit.columns(5)
+        metrics[0].metric("Fixed N", str(parameters.particle_number))
+        metrics[1].metric("Fixed E / epsilon_1", str(parameters.energy_quanta))
+        metrics[2].metric("Exact Fock microstates", f"{result.microstate_count:,}")
+        metrics[3].metric("Entropy S / k_B", f"{result.entropy_over_kb:.4g}")
+        metrics[4].metric(
+            "Inferred temperature",
+            "not resolved" if result.inferred_temperature is None else f"{result.inferred_temperature / 1.0e-9:.3g} nK",
+        )
+        streamlit.plotly_chart(
+            bose_microcanonical_figure(result),
+            use_container_width=True,
+            config={"displaylogo": False, "responsive": True},
+        )
+        streamlit.latex(r"\sum_n n_n=N,\qquad \sum_n n^2 n_n=E/\varepsilon_1")
+        streamlit.markdown(
+            "**Microcanonical Bose gas:** this is an exact, small finite one-dimensional mode calculation. The program enumerates every Fock state consistent with the fixed N and E, then averages occupations uniformly over those states. A stationary equilibrium state does not provide classical particle trajectories; the physically meaningful output is its quantum-state occupation."
+        )
+
+
+def _show_ensemble_dynamics_lab(
+    streamlit: Any,
+    gas_kind: str,
+    ensemble: str,
+    parameters: Any,
+    settings: dict[str, float | int],
+) -> None:
+    """Render the ensemble laboratory with a common, explicit physical scope."""
+    streamlit.title("Ensembles and dynamics laboratory")
+    streamlit.caption(
+        "Choose the ensemble first, then observe which variables are fixed and which fluctuate. The laboratory never treats ensemble labels as cosmetic settings."
+    )
+    if gas_kind == "Classical ideal gas":
+        _show_classical_ensemble_lab(streamlit, ensemble, parameters, settings)
+    else:
+        try:
+            _show_bose_ensemble_lab(streamlit, ensemble, parameters, settings)
+        except ValueError as error:
+            streamlit.error(f"This finite microcanonical system could not be enumerated: {error}")
+
+
 def _create_parameter_scan_study(
     model_key: str,
     serialized_parameters: str,
@@ -793,6 +1662,26 @@ def run_app() -> None:
         layout="wide",
         initial_sidebar_state="expanded",
     )
+    streamlit.markdown(
+        """
+        <style>
+        .stApp { background: #fbfcfe; }
+        [data-testid="stSidebar"] {
+            background: #f4f7fb;
+            border-right: 1px solid #dce4ef;
+        }
+        [data-testid="stMetric"] {
+            background: #ffffff;
+            border: 1px solid #dce4ef;
+            border-radius: 10px;
+            padding: 0.75rem;
+        }
+        h1, h2, h3 { color: #172554; }
+        [data-testid="stTabs"] button { font-weight: 600; }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
     @streamlit.cache_data(show_spinner=False)
     def cached_simulation(model_key: str, serialized_parameters: str) -> Any:
@@ -816,9 +1705,6 @@ def run_app() -> None:
             n_points,
         )
 
-    streamlit.title("TopOSC Lab")
-    streamlit.caption("Interactive workspace for topological quantum models")
-
     specifications = MODEL_REGISTRY.specifications()
     specification_by_key = {specification.key: specification for specification in specifications}
     run_requested = False
@@ -830,19 +1716,47 @@ def run_app() -> None:
     parameter_values: dict[str, Any] = {}
 
     with streamlit.sidebar:
-        workspace_mode = streamlit.radio(
-            "Workspace",
+        streamlit.title("TopOSC Lab")
+        project_area = streamlit.radio(
+            "Research area",
             options=(
-                "Single simulation",
-                "Parameter scan",
-                "Model guide",
-                "Study explorer",
+                "Topological superconductors",
+                "Quantum gases",
+                "Research studies",
             ),
         )
-        if workspace_mode == "Study explorer":
+        streamlit.divider()
+        if project_area == "Research studies":
+            workspace_mode = "Study explorer"
             streamlit.header("Study explorer")
             streamlit.caption("Load, compare and export reproducible studies.")
+        elif project_area == "Quantum gases":
+            workspace_mode = streamlit.radio(
+                "Quantum-gas workspace",
+                options=("Equilibrium statistics", "Ensembles and dynamics"),
+            )
+            if workspace_mode == "Equilibrium statistics":
+                streamlit.header("Common gas conditions")
+                (
+                    quantum_gas_parameters,
+                    quantum_gas_visible_modes,
+                    quantum_gas_colour_scale_mode,
+                ) = (
+                    _render_quantum_gas_lab_inputs(streamlit)
+                )
+            else:
+                streamlit.header("Ensemble setup")
+                (
+                    ensemble_gas_kind,
+                    ensemble_kind,
+                    ensemble_parameters,
+                    ensemble_settings,
+                ) = _render_ensemble_lab_inputs(streamlit)
         else:
+            workspace_mode = streamlit.radio(
+                "Topological workspace",
+                options=("Single simulation", "Parameter scan", "Model guide"),
+            )
             streamlit.header("Simulation setup")
             selected_key = streamlit.selectbox(
                 "Model",
@@ -930,8 +1844,37 @@ def run_app() -> None:
                     "Set a disorder seed before recording a reproducible study."
                 )
 
+    if project_area == "Topological superconductors":
+        streamlit.title("TopOSC Lab")
+        streamlit.caption("Topological superconductors and lattice-model research workspace")
+    elif project_area == "Quantum gases":
+        streamlit.title("TopOSC Lab / Quantum gases")
+        streamlit.caption("Ideal-gas equilibrium, ensembles and statistically correct dynamics")
+    else:
+        streamlit.title("TopOSC Lab / Research studies")
+        streamlit.caption("Load, compare and export reproducible numerical studies")
+
     if workspace_mode == "Study explorer":
         _show_study_explorer(streamlit)
+        return
+
+    if workspace_mode == "Equilibrium statistics":
+        _show_quantum_gas_lab(
+            streamlit,
+            quantum_gas_parameters,
+            quantum_gas_visible_modes,
+            quantum_gas_colour_scale_mode,
+        )
+        return
+
+    if workspace_mode == "Ensembles and dynamics":
+        _show_ensemble_dynamics_lab(
+            streamlit,
+            ensemble_gas_kind,
+            ensemble_kind,
+            ensemble_parameters,
+            ensemble_settings,
+        )
         return
 
     if workspace_mode == "Model guide":
