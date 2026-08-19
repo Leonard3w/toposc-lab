@@ -10,6 +10,7 @@ from typing import Any
 import matplotlib.pyplot as plt
 import numpy as np
 
+from toposc_lab.app.landau_live_material import render_landau_live_material
 from toposc_lab.quantum_hall.landau_levels import (
     BOLTZMANN_CONSTANT,
     LandauLevelParameters,
@@ -334,6 +335,7 @@ def show_landau_level_lab(streamlit: Any, parameters: LandauLevelParameters) -> 
     )
 
     (
+        live_tab,
         overview_tab,
         quantization_tab,
         landau_gauge_tab,
@@ -342,6 +344,7 @@ def show_landau_level_lab(streamlit: Any, parameters: LandauLevelParameters) -> 
         degeneracy_tab,
     ) = streamlit.tabs(
         (
+            "Live-Material",
             "Überblick",
             "Quantisierung",
             "1.4.1 Landau-Gauge",
@@ -350,6 +353,19 @@ def show_landau_level_lab(streamlit: Any, parameters: LandauLevelParameters) -> 
             "Entartung & Spin",
         )
     )
+
+    with live_tab:
+        streamlit.markdown(
+            "**Das Experiment läuft kontinuierlich im Browser.** Schalten Sie B und E "
+            "direkt in der Visualisierung ein oder aus, ändern Sie die Rampenzeit und "
+            "wechseln Sie zwischen bewegtem Wellenpaket und stationären Eigenzuständen."
+        )
+        render_landau_live_material(streamlit, parameters)
+        streamlit.caption(
+            "Die Animationszeit ist in Zyklotronperioden T_B angegeben und für das Auge "
+            "verlangsamt. Physikalische Größen wie l_B, ℏω_B und E×B-Drift werden aus "
+            "den aktuellen Feldern in SI-Einheiten berechnet."
+        )
 
     with overview_tab:
         streamlit.markdown(

@@ -76,6 +76,9 @@ Section 1.4 of David Tong's *The Quantum Hall Effect*
 to explore:
 
 - algebraic quantization and the equally spaced Landau-level spectrum;
+- a browser-native live material with continuously ramped B and E fields,
+  coherent wavepackets, stationary eigenstate densities, probability-current
+  arrows and simultaneous level occupations;
 - strip-like Landau-gauge wavefunctions and their guiding centres;
 - electric-field dispersion, wavefunction displacement and a playable
   cyclotron / E-cross-B drift simulation;
