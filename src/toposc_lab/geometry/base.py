@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from numbers import Integral
@@ -23,7 +24,8 @@ class GeometryEdge:
 
     The orientation does not make the graph directed. It only supplies a
     reference orientation for quantities such as complex hopping phases or an
-    explicitly provided displacement vector.
+    explicitly provided displacement vector. Instances are immutable snapshots;
+    standard mutable containers in ``metadata`` are recursively frozen.
     """
 
     source: int
@@ -54,7 +56,7 @@ class GeometryEdge:
         object.__setattr__(self, "source", source)
         object.__setattr__(self, "target", target)
         object.__setattr__(self, "displacement", displacement)
-        object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
+        object.__setattr__(self, "metadata", _freeze_mapping(self.metadata))
 
 
 @dataclass(frozen=True, slots=True, eq=False)
@@ -65,6 +67,11 @@ class Geometry:
     integers from zero to ``n_sites - 1``. Spatial coordinates, labels, and
     boundary information are optional so the same type can represent embedded
     lattices as well as abstract graphs.
+
+    Instances are immutable snapshots. Constructor inputs are defensively
+    copied and standard mutable metadata containers are recursively frozen.
+    Geometry-changing algorithms must construct a new instance, for example
+    with :func:`dataclasses.replace`, instead of modifying an existing object.
     """
 
     n_sites: int
@@ -138,7 +145,7 @@ class Geometry:
         object.__setattr__(self, "embedding_dimension", dimension)
         object.__setattr__(self, "boundary_sites", boundary_sites)
         object.__setattr__(self, "site_types", site_types)
-        object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
+        object.__setattr__(self, "metadata", _freeze_mapping(self.metadata))
         object.__setattr__(
             self,
             "_neighbors",
@@ -257,8 +264,7 @@ class Geometry:
             raise ValueError("embedding_dimension does not match coordinates")
         if not np.all(np.isfinite(coordinates)):
             raise ValueError("coordinates must contain only finite values")
-        coordinates.setflags(write=False)
-        return coordinates
+        return _immutable_array_copy(coordinates)
 
     def _validated_site(self, site: int) -> int:
         site = _as_integer(site, name="site")
@@ -273,3 +279,31 @@ class Geometry:
     @staticmethod
     def _edge_key(source: int, target: int) -> tuple[int, int]:
         return (source, target) if source < target else (target, source)
+
+
+def _freeze_mapping(values: Mapping[str, Any]) -> Mapping[str, Any]:
+    return MappingProxyType(
+        {key: _freeze_metadata_value(value) for key, value in values.items()}
+    )
+
+
+def _freeze_metadata_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return _freeze_mapping(value)
+    if isinstance(value, np.ndarray):
+        if value.dtype.hasobject:
+            return _freeze_metadata_value(value.tolist())
+        return _immutable_array_copy(value)
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze_metadata_value(item) for item in value)
+    if isinstance(value, (set, frozenset)):
+        return frozenset(_freeze_metadata_value(item) for item in value)
+    if isinstance(value, bytearray):
+        return bytes(value)
+    return deepcopy(value)
+
+
+def _immutable_array_copy(values: np.ndarray) -> np.ndarray:
+    contiguous = np.ascontiguousarray(values)
+    immutable_buffer = contiguous.tobytes(order="C")
+    return np.frombuffer(immutable_buffer, dtype=contiguous.dtype).reshape(contiguous.shape)
