@@ -42,13 +42,7 @@ class GeometryKitaevChain(BaseModel):
 
     def hamiltonian(self) -> np.ndarray:
         """Build the component-major Bogoliubov-de-Gennes Hamiltonian."""
-        normal_hamiltonian = build_tight_binding_hamiltonian(
-            self.geometry,
-            onsite=lambda site: -(
-                self.params.chemical_potential + self._disorder_profile[site]
-            ),
-            hopping=-self.params.hopping,
-        )
+        normal_hamiltonian = self.normal_hamiltonian()
         pairing_matrix = self._pairing_matrix()
 
         upper = np.hstack((normal_hamiltonian, pairing_matrix))
@@ -59,6 +53,18 @@ class GeometryKitaevChain(BaseModel):
             )
         )
         return np.vstack((upper, lower))
+
+    def normal_hamiltonian(self) -> np.ndarray:
+        """Build the particle-sector onsite and hopping matrix on the geometry."""
+        onsite = {
+            site: -(self.params.chemical_potential + self._disorder_profile[site])
+            for site in self.geometry.site_indices
+        }
+        return build_tight_binding_hamiltonian(
+            self.geometry,
+            onsite=onsite,
+            hopping=-self.params.hopping,
+        )
 
     def _create_disorder_profile(self) -> np.ndarray:
         if self.params.disorder_strength == 0.0:

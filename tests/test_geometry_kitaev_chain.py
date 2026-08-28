@@ -50,11 +50,22 @@ def test_geometry_kitaev_hamiltonian_is_hermitian_and_has_expected_shape() -> No
 
 def test_normal_block_contains_onsite_and_graph_hopping_terms() -> None:
     model = GeometryKitaevChain(_parameters())
-    normal_block = model.hamiltonian()[:6, :6]
+    normal_block = model.normal_hamiltonian()
 
+    assert normal_block.shape == (6, 6)
     assert np.allclose(np.diag(normal_block), -0.3)
     assert normal_block[0, 1] == -1.0
     assert normal_block[0, 5] == 0.0
+    assert np.array_equal(model.hamiltonian()[:6, :6], normal_block)
+
+
+def test_periodic_normal_hamiltonian_follows_geometry_closing_edge() -> None:
+    model = GeometryKitaevChain(_parameters(boundary="periodic"))
+    normal_hamiltonian = model.normal_hamiltonian()
+
+    assert normal_hamiltonian[5, 0] == -1.0
+    assert normal_hamiltonian[0, 5] == -1.0
+    assert np.array_equal(normal_hamiltonian, normal_hamiltonian.conj().T)
 
 
 def test_pairing_block_is_antisymmetric_and_follows_edge_orientation() -> None:
