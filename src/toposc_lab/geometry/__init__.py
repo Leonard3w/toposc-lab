@@ -1,6 +1,6 @@
 """General, model-independent discrete geometries."""
 
 from toposc_lab.geometry.base import Geometry, GeometryEdge
-from toposc_lab.geometry.generators import chain
+from toposc_lab.geometry.generators import chain, ring
 
-__all__ = ["Geometry", "GeometryEdge", "chain"]
+__all__ = ["Geometry", "GeometryEdge", "chain", "ring"]
