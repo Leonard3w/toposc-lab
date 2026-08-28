@@ -93,6 +93,42 @@ numbers, g-factor and all display/simulation parameters are adjustable. Every
 static scientific figure can be exported as high-resolution PNG or vector PDF,
 and the full parameter set can be downloaded as JSON.
 
+## Integer quantum Hall learning laboratory
+
+The same Quantum Hall workspace now starts Chapter 2 of Tong's notes with a
+separate **2. Integer quantum Hall effect** laboratory. Its first two roadmap
+stages provide:
+
+- explicit electron-charge and Hall-tensor sign conventions;
+- the filling factor `nu = n_e h/(e B)` and finite-temperature Landau-level
+  occupations obtained from the particle-number equation;
+- a synchronized four-panel dashboard for occupations, broadened density of
+  states, Hall plateaux and longitudinal transition peaks;
+- spinless, unresolved spin-degenerate and Zeeman-resolved modes;
+- a direct comparison between the classical Hall line and quantized response;
+- high-resolution PNG, vector PDF and reproducible JSON parameter exports.
+
+The next completed stage adds the edge-mode physics of Section 2.1.1:
+
+- a smooth adjustable confinement potential and the dispersion
+  `E_n(k) = E_n + V(-k l_B^2)`;
+- Fermi-level crossings, group velocities and opposite chirality on the two
+  sample edges;
+- a browser-native skipping-orbit animation that explicitly distinguishes its
+  semiclassical particles from stationary quantum eigenstates;
+- the quantized edge-current relation `I_y = N (e^2/h) V_H`, including signed
+  Hall bias, channel counting and publication-quality exports.
+
+For the charge, field and tensor convention used by Tong, the signed response
+is `rho_xy = -h/(nu e^2)` and `sigma_xy = +nu e^2/h`. Reversing the field
+reverses both Hall signs.
+
+The finite plateau width, Gaussian DOS broadening and longitudinal peaks are
+clearly labelled as phenomenological controls in this first version. A later
+roadmap stage will replace them with an explicit disorder and localization
+calculation rather than presenting a visual interpolation as microscopic
+physics.
+
 ## Planned features
 
 - Kitaev chain

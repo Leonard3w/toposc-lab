@@ -30,6 +30,10 @@ from toposc_lab.visualization.landau_level_plots import (
     landau_spectrum_figure,
     symmetric_gauge_state_figure,
 )
+from toposc_lab.visualization.integer_quantum_hall_plots import (
+    integer_quantum_hall_dashboard,
+    integer_quantum_hall_edge_figure,
+)
 
 __all__ = [
     "add_panel_label",
@@ -40,6 +44,8 @@ __all__ = [
     "cyclotron_drift_animation",
     "degeneracy_figure",
     "figure_to_bytes",
+    "integer_quantum_hall_dashboard",
+    "integer_quantum_hall_edge_figure",
     "matrix_values",
     "paper_style",
     "plot_eigenvalue_spectrum",

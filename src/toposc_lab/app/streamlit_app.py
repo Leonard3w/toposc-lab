@@ -24,6 +24,10 @@ from toposc_lab.app.landau_level_lab import (
     render_landau_level_inputs,
     show_landau_level_lab,
 )
+from toposc_lab.app.integer_quantum_hall_lab import (
+    render_integer_quantum_hall_inputs,
+    show_integer_quantum_hall_lab,
+)
 from toposc_lab.bosons.ideal_bose_gas import (
     BOLTZMANN_CONSTANT,
     IdealBoseEinsteinCondensationParameters,
@@ -1736,9 +1740,18 @@ def run_app() -> None:
             streamlit.header("Study explorer")
             streamlit.caption("Load, compare and export reproducible studies.")
         elif project_area == "Quantum Hall / Landau levels":
-            workspace_mode = "Landau levels"
-            streamlit.header("Abschnitt 1.4")
-            landau_level_parameters = render_landau_level_inputs(streamlit)
+            workspace_mode = streamlit.radio(
+                "Quantum-Hall-Labor",
+                options=("1.4 Landau levels", "2. Integer quantum Hall effect"),
+            )
+            if workspace_mode == "1.4 Landau levels":
+                streamlit.header("Abschnitt 1.4")
+                landau_level_parameters = render_landau_level_inputs(streamlit)
+            else:
+                streamlit.header("Kapitel 2 - Etappen 0 bis 2")
+                integer_quantum_hall_parameters = render_integer_quantum_hall_inputs(
+                    streamlit
+                )
         elif project_area == "Quantum gases":
             workspace_mode = streamlit.radio(
                 "Quantum-gas workspace",
@@ -1870,8 +1883,12 @@ def run_app() -> None:
         _show_study_explorer(streamlit)
         return
 
-    if workspace_mode == "Landau levels":
+    if workspace_mode == "1.4 Landau levels":
         show_landau_level_lab(streamlit, landau_level_parameters)
+        return
+
+    if workspace_mode == "2. Integer quantum Hall effect":
+        show_integer_quantum_hall_lab(streamlit, integer_quantum_hall_parameters)
         return
 
     if workspace_mode == "Equilibrium statistics":
