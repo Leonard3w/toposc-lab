@@ -1,5 +1,6 @@
 """Hamiltonian builders that are independent of particular solvers."""
 
+from toposc_lab.hamiltonians.bdg import build_bdg_hamiltonian
 from toposc_lab.hamiltonians.disorder import (
     uniform_edge_disorder,
     uniform_site_disorder,
@@ -23,6 +24,7 @@ __all__ = [
     "OnsiteMap",
     "OnsiteTerm",
     "TermValue",
+    "build_bdg_hamiltonian",
     "build_tight_binding_hamiltonian",
     "uniform_edge_disorder",
     "uniform_site_disorder",
