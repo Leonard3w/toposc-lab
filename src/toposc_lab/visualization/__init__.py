@@ -9,6 +9,7 @@ from toposc_lab.visualization.lattice_plots import (
     plot_localization_on_lattice,
     profile_site_probabilities,
 )
+from toposc_lab.visualization.geometry_plots import plot_geometry
 from toposc_lab.visualization.plots import plot_eigenvalue_spectrum
 from toposc_lab.visualization.export import figure_to_bytes
 from toposc_lab.visualization.matrix_plots import matrix_values, plot_matrix
@@ -49,6 +50,7 @@ __all__ = [
     "matrix_values",
     "paper_style",
     "plot_eigenvalue_spectrum",
+    "plot_geometry",
     "plot_localization_on_lattice",
     "plot_matrix",
     "plot_study_comparison",
