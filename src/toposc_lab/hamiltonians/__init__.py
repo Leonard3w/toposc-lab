@@ -2,17 +2,21 @@
 
 from toposc_lab.hamiltonians.nambu import NambuBasis, NambuSector, NambuState
 from toposc_lab.hamiltonians.tight_binding import (
+    HoppingMap,
     HoppingTerm,
+    OnsiteMap,
     OnsiteTerm,
     TermValue,
     build_tight_binding_hamiltonian,
 )
 
 __all__ = [
+    "HoppingMap",
     "HoppingTerm",
     "NambuBasis",
     "NambuSector",
     "NambuState",
+    "OnsiteMap",
     "OnsiteTerm",
     "TermValue",
     "build_tight_binding_hamiltonian",

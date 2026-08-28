@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from numbers import Integral
 from typing import TypeAlias
 
@@ -13,8 +13,10 @@ from toposc_lab.geometry import Geometry, GeometryEdge
 
 
 TermValue: TypeAlias = ArrayLike
-OnsiteTerm: TypeAlias = TermValue | Callable[[int], TermValue]
-HoppingTerm: TypeAlias = TermValue | Callable[[GeometryEdge], TermValue]
+OnsiteMap: TypeAlias = Mapping[int, TermValue]
+HoppingMap: TypeAlias = Mapping[GeometryEdge, TermValue]
+OnsiteTerm: TypeAlias = TermValue | OnsiteMap | Callable[[int], TermValue]
+HoppingTerm: TypeAlias = TermValue | HoppingMap | Callable[[GeometryEdge], TermValue]
 ComplexMatrix: TypeAlias = NDArray[np.complex128]
 
 
@@ -43,14 +45,16 @@ def build_tight_binding_hamiltonian(
     A hopping callable is evaluated in each ``GeometryEdge``'s stored
     source-to-target orientation. The reverse block is inserted automatically
     as the Hermitian conjugate, so the hopping block itself need not be
-    Hermitian.
+    Hermitian. Site- and edge-dependent coefficients may be supplied either as
+    callables or as complete mappings keyed by site index and ``GeometryEdge``,
+    respectively. Scalars and matrices remain global coefficients.
     """
     components_per_site = _validate_components_per_site(components_per_site)
     dimension = geometry.n_sites * components_per_site
     hamiltonian = np.zeros((dimension, dimension), dtype=np.complex128)
 
     for site in geometry.site_indices:
-        value = onsite(site) if callable(onsite) else onsite
+        value = _resolve_onsite_term(onsite, site)
         onsite_matrix = _term_matrix(
             value,
             components_per_site=components_per_site,
@@ -63,7 +67,7 @@ def build_tight_binding_hamiltonian(
         hamiltonian[site_block, site_block] += onsite_matrix
 
     for edge in geometry.edges:
-        value = hopping(edge) if callable(hopping) else hopping
+        value = _resolve_hopping_term(hopping, edge)
         hopping_matrix = _term_matrix(
             value,
             components_per_site=components_per_site,
@@ -75,6 +79,31 @@ def build_tight_binding_hamiltonian(
         hamiltonian[target_block, source_block] += hopping_matrix.conj().T
 
     return hamiltonian
+
+
+def _resolve_onsite_term(term: OnsiteTerm, site: int) -> TermValue:
+    if callable(term):
+        return term(site)
+    if isinstance(term, Mapping):
+        try:
+            return term[site]
+        except KeyError as error:
+            raise ValueError(f"onsite mapping has no value for site {site}") from error
+    return term
+
+
+def _resolve_hopping_term(term: HoppingTerm, edge: GeometryEdge) -> TermValue:
+    if callable(term):
+        return term(edge)
+    if isinstance(term, Mapping):
+        try:
+            return term[edge]
+        except KeyError as error:
+            raise ValueError(
+                "hopping mapping has no value for edge "
+                f"({edge.source}, {edge.target})"
+            ) from error
+    return term
 
 
 def _validate_components_per_site(components_per_site: int) -> int:
