@@ -50,6 +50,49 @@ def test_simulation_result_rejects_wrong_dimension() -> None:
         )
 
 
+def test_simulation_result_standardizes_eigenvalue_storage() -> None:
+    layout = BasisLayout(spatial_shape=(2,))
+    source = np.asarray([-1.0, 2.0], dtype=np.float32)
+
+    result = SimulationResult(
+        model_name="Test",
+        eigenvalues=source,
+        eigenvectors=np.eye(2),
+        basis_layout=layout,
+    )
+    source[0] = 99.0
+
+    assert result.eigenvalues.dtype == np.dtype(float)
+    assert result.eigenvalues.shape == (2,)
+    assert np.array_equal(result.eigenvalues, [-1.0, 2.0])
+    assert not result.eigenvalues.flags.writeable
+    assert result.n_states == 2
+
+    with pytest.raises(ValueError, match="read-only"):
+        result.eigenvalues[0] = 0.0
+
+
+@pytest.mark.parametrize(
+    ("eigenvalues", "message"),
+    [
+        (np.zeros((1, 1)), "one-dimensional"),
+        (np.asarray([np.nan]), "must be finite"),
+        (np.asarray([np.inf]), "must be finite"),
+    ],
+)
+def test_simulation_result_rejects_malformed_eigenvalues(
+    eigenvalues: np.ndarray,
+    message: str,
+) -> None:
+    with pytest.raises(ValueError, match=message):
+        SimulationResult(
+            model_name="Test",
+            eigenvalues=eigenvalues,
+            eigenvectors=np.eye(eigenvalues.size),
+            basis_layout=BasisLayout(spatial_shape=(eigenvalues.size,)),
+        )
+
+
 def test_kitaev_result_uses_its_basis_layout_for_localization() -> None:
     """Elektron links und Loch rechts müssen an beiden Rändern erscheinen."""
     layout = BasisLayout(

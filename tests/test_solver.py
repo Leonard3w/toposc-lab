@@ -19,6 +19,15 @@ def test_solver_diagonalizes_hermitian_matrix() -> None:
     assert result.eigenvectors.shape == (2, 2)
 
 
+def test_solver_returns_real_eigenvalues_in_ascending_order() -> None:
+    hamiltonian = np.diag([2.0, -1.0, 0.5]).astype(complex)
+
+    result = ExactDiagonalizationSolver().solve(hamiltonian)
+
+    assert result.eigenvalues.dtype == np.dtype(float)
+    assert np.array_equal(result.eigenvalues, [-1.0, 0.5, 2.0])
+
+
 def test_solver_rejects_non_square_matrix() -> None:
     hamiltonian = np.zeros((2, 3))
 
