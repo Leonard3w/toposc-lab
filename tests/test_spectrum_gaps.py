@@ -39,6 +39,27 @@ def test_lowest_abs_energy_returns_energy_closest_to_zero() -> None:
     assert lowest_abs_energy(eigenvalues) == pytest.approx(0.2)
 
 
+def test_lowest_abs_energy_returns_exact_zero_when_present() -> None:
+    assert lowest_abs_energy(np.asarray([-1.0, 0.0, 2.0])) == 0.0
+
+
+@pytest.mark.parametrize(
+    ("eigenvalues", "message"),
+    [
+        (np.asarray([]), "must not be empty"),
+        (np.zeros((2, 2)), "one-dimensional"),
+        (np.asarray([0.0, np.nan]), "finite values"),
+        (np.asarray([0.0, np.inf]), "finite values"),
+    ],
+)
+def test_lowest_abs_energy_rejects_invalid_spectra(
+    eigenvalues: np.ndarray,
+    message: str,
+) -> None:
+    with pytest.raises(ValueError, match=message):
+        lowest_abs_energy(eigenvalues)
+
+
 def test_count_zero_modes_counts_energies_below_tolerance() -> None:
     eigenvalues = np.array([-2.0, -1e-12, 0.0, 1e-12, 2.0])
 

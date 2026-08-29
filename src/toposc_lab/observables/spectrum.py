@@ -11,11 +11,19 @@ def positive_energies(eigenvalues: np.ndarray, tolerance: float = 1e-10) -> np.n
 
 
 def lowest_abs_energy(eigenvalues: np.ndarray) -> float:
-    """Return the eigenvalue closest to zero in absolute value."""
+    """Return the smallest absolute eigenvalue of a non-empty spectrum.
+
+    This quantity measures proximity to zero only. It is not by itself a bulk
+    gap or evidence for a Majorana mode.
+    """
     energies = np.asarray(eigenvalues, dtype=float)
 
+    if energies.ndim != 1:
+        raise ValueError("eigenvalues must be one-dimensional")
     if energies.size == 0:
-        return 0.0
+        raise ValueError("eigenvalues must not be empty")
+    if not np.all(np.isfinite(energies)):
+        raise ValueError("eigenvalues must contain only finite values")
 
     return float(np.min(np.abs(energies)))
 
