@@ -7,17 +7,22 @@ import numpy as np
 from toposc_lab.core.model import BaseModel
 from toposc_lab.core.results import BasisLayout
 from toposc_lab.geometry import Geometry, chain, ring
-from toposc_lab.hamiltonians import build_tight_binding_hamiltonian
+from toposc_lab.hamiltonians import (
+    NambuBasis,
+    build_bdg_hamiltonian,
+    build_tight_binding_hamiltonian,
+)
 from toposc_lab.models.kitaev_chain import KitaevChainParameters
 
 
 class GeometryKitaevChain(BaseModel):
     """Spinless Kitaev chain whose connectivity is supplied by ``Geometry``.
 
-    This transitional model keeps the established component-major Nambu basis
+    The model keeps the established component-major Nambu basis
     ``(c_0, ..., c_{N-1}, c_0^dagger, ..., c_{N-1}^dagger)``. Its normal block
-    uses the generic tight-binding builder. Pairing remains local to this model
-    until the general BdG builder is introduced in Phase 3.
+    uses the generic tight-binding builder and its doubled matrix uses the
+    generic BdG builder. Pairing remains local to this model until a general
+    edge-based pairing term is introduced.
     """
 
     def __init__(self, params: KitaevChainParameters) -> None:
@@ -28,11 +33,14 @@ class GeometryKitaevChain(BaseModel):
     @property
     def basis_layout(self) -> BasisLayout:
         """Describe the established component-major electron-hole basis."""
-        return BasisLayout(
-            spatial_shape=(self.geometry.n_sites,),
-            components_per_site=2,
+        return self.nambu_basis.basis_layout
+
+    @property
+    def nambu_basis(self) -> NambuBasis:
+        """Explicit particle-hole basis used by the generic BdG builder."""
+        return NambuBasis(
+            n_sites=self.geometry.n_sites,
             ordering="component_major",
-            component_labels=("electron", "hole"),
         )
 
     @property
@@ -44,15 +52,11 @@ class GeometryKitaevChain(BaseModel):
         """Build the component-major Bogoliubov-de-Gennes Hamiltonian."""
         normal_hamiltonian = self.normal_hamiltonian()
         pairing_matrix = self._pairing_matrix()
-
-        upper = np.hstack((normal_hamiltonian, pairing_matrix))
-        lower = np.hstack(
-            (
-                -pairing_matrix.conj(),
-                -normal_hamiltonian.conj(),
-            )
+        return build_bdg_hamiltonian(
+            normal_hamiltonian,
+            pairing_matrix,
+            basis=self.nambu_basis,
         )
-        return np.vstack((upper, lower))
 
     def normal_hamiltonian(self) -> np.ndarray:
         """Build the particle-sector onsite and hopping matrix on the geometry."""

@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 
 from toposc_lab.geometry import Geometry
+from toposc_lab.hamiltonians import NambuBasis
 from toposc_lab.models.geometry_kitaev_chain import GeometryKitaevChain
 from toposc_lab.models.kitaev_chain import KitaevChainParameters
 from toposc_lab.solvers.exact_diagonalization import ExactDiagonalizationSolver
@@ -82,6 +83,10 @@ def test_pairing_block_is_antisymmetric_and_follows_edge_orientation() -> None:
 def test_basis_layout_preserves_legacy_component_major_ordering() -> None:
     model = GeometryKitaevChain(_parameters())
 
+    assert isinstance(model.nambu_basis, NambuBasis)
+    assert model.nambu_basis.n_sites == 6
+    assert model.nambu_basis.particle_indices == tuple(range(6))
+    assert model.nambu_basis.hole_indices == tuple(range(6, 12))
     assert model.basis_layout.spatial_shape == (6,)
     assert model.basis_layout.components_per_site == 2
     assert model.basis_layout.ordering == "component_major"
