@@ -15,6 +15,13 @@ from toposc_lab.hamiltonians.pairing import (
     build_onsite_s_wave_pairing,
     build_spinless_p_wave_pairing,
 )
+from toposc_lab.hamiltonians.rashba import (
+    PlaneAxes,
+    RashbaCoupling,
+    RashbaCouplingMap,
+    build_rashba_term,
+    rashba_hopping_matrix,
+)
 from toposc_lab.hamiltonians.tight_binding import (
     HoppingMap,
     HoppingTerm,
@@ -44,16 +51,21 @@ __all__ = [
     "OnsitePairingTerm",
     "OnsiteTerm",
     "PairingValue",
+    "PlaneAxes",
+    "RashbaCoupling",
+    "RashbaCouplingMap",
     "TermValue",
     "ZeemanField",
     "ZeemanFieldMap",
     "ZeemanTerm",
     "build_bdg_hamiltonian",
     "build_onsite_s_wave_pairing",
+    "build_rashba_term",
     "build_spinless_p_wave_pairing",
     "build_tight_binding_hamiltonian",
     "build_zeeman_term",
     "uniform_edge_disorder",
     "uniform_site_disorder",
+    "rashba_hopping_matrix",
     "zeeman_matrix",
 ]
