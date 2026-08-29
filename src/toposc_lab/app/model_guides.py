@@ -310,6 +310,13 @@ OBSERVABLE_GUIDES: tuple[ObservableGuide, ...] = (
         "Shows where states at a selected energy live; the broadening eta controls energy resolution.",
     ),
     ObservableGuide(
+        "majorana_polarization",
+        "Majorana polarization",
+        r"P_i=\psi_i^\dagger C\psi_i,\qquad C=U_CK",
+        "Use the explicit Nambu basis to exchange matching particle and hole components and evaluate their local antiunitary overlap.",
+        "A polarization magnitude near one diagnoses self-conjugacy in the stated basis convention; it does not alone prove zero energy, boundary localization or topology.",
+    ),
+    ObservableGuide(
         "berry_curvature",
         "Berry curvature",
         r"\Omega(\mathbf{k})=i\left(\langle\partial_{k_x}u|\partial_{k_y}u\rangle-\langle\partial_{k_y}u|\partial_{k_x}u\rangle\right)",
