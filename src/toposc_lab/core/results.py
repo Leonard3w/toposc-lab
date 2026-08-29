@@ -133,7 +133,10 @@ class SimulationResult:
     Einheitliches Ergebnis einer Hamilton-Diagonalisierung.
 
     Es enthält nicht nur Eigenwerte und Eigenvektoren, sondern auch die
-    Basisordnung, Modellparameter und optionale Metadaten.
+    Basisordnung, Modellparameter und optionale Metadaten. Eigenzustände sind
+    Spalten: ``eigenvectors[:, k]`` gehört zu ``eigenvalues[k]``. Die Zeilen
+    folgen ``basis_layout``; ``site_major_eigenvectors()`` liefert bei Bedarf
+    eine explizit umgeordnete Kopie.
     """
 
     model_name: str

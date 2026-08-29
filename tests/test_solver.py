@@ -28,6 +28,24 @@ def test_solver_returns_real_eigenvalues_in_ascending_order() -> None:
     assert np.array_equal(result.eigenvalues, [-1.0, 0.5, 2.0])
 
 
+def test_solver_eigenvector_columns_match_eigenvalues_and_are_orthonormal() -> None:
+    hamiltonian = np.asarray(
+        [
+            [0.4, 1.0 + 0.3j, 0.0],
+            [1.0 - 0.3j, -0.2, 0.5],
+            [0.0, 0.5, 1.1],
+        ],
+        dtype=complex,
+    )
+
+    result = ExactDiagonalizationSolver().solve(hamiltonian)
+
+    for state_index, eigenvalue in enumerate(result.eigenvalues):
+        eigenvector = result.eigenvectors[:, state_index]
+        assert np.allclose(hamiltonian @ eigenvector, eigenvalue * eigenvector)
+    assert np.allclose(result.eigenvectors.conj().T @ result.eigenvectors, np.eye(3))
+
+
 def test_solver_rejects_non_square_matrix() -> None:
     hamiltonian = np.zeros((2, 3))
 

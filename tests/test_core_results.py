@@ -72,6 +72,54 @@ def test_simulation_result_standardizes_eigenvalue_storage() -> None:
         result.eigenvalues[0] = 0.0
 
 
+def test_simulation_result_standardizes_eigenvectors_and_basis_order() -> None:
+    layout = BasisLayout(
+        spatial_shape=(2,),
+        components_per_site=2,
+        ordering="component_major",
+        component_labels=("electron", "hole"),
+    )
+    source = np.asarray(
+        [
+            [1.0, 1.0j],
+            [2.0, 2.0j],
+            [10.0, 10.0j],
+            [20.0, 20.0j],
+        ],
+        dtype=np.complex64,
+    )
+
+    result = SimulationResult(
+        model_name="Test",
+        eigenvalues=np.asarray([-1.0, 1.0]),
+        eigenvectors=source,
+        basis_layout=layout,
+    )
+    source[0, 0] = 99.0
+
+    expected_stored = np.asarray(
+        [
+            [1.0, 1.0j],
+            [2.0, 2.0j],
+            [10.0, 10.0j],
+            [20.0, 20.0j],
+        ]
+    )
+    expected_site_major = expected_stored[[0, 2, 1, 3]]
+
+    assert result.eigenvectors.dtype == np.dtype(complex)
+    assert np.array_equal(result.eigenvectors, expected_stored)
+    assert not result.eigenvectors.flags.writeable
+    assert np.array_equal(result.site_major_eigenvectors(), expected_site_major)
+
+    converted = result.site_major_eigenvectors()
+    converted[0, 0] = -99.0
+    assert result.eigenvectors[0, 0] == 1.0
+
+    with pytest.raises(ValueError, match="read-only"):
+        result.eigenvectors[0, 0] = 0.0
+
+
 @pytest.mark.parametrize(
     ("eigenvalues", "message"),
     [
