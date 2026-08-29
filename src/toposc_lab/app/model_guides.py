@@ -317,6 +317,13 @@ OBSERVABLE_GUIDES: tuple[ObservableGuide, ...] = (
         "A polarization magnitude near one diagnoses self-conjugacy in the stated basis convention; it does not alone prove zero energy, boundary localization or topology.",
     ),
     ObservableGuide(
+        "finite_size_splitting",
+        "Finite-size splitting",
+        r"E_\pm\approx\pm\varepsilon,\qquad \delta E=E_+-E_-\approx2\varepsilon",
+        "Separate numerical zero modes from a nearby particle-hole-symmetric pair and report both its displacement from zero and full level separation.",
+        "A split-pair label is only a candidate; compare its isolation from the remaining spectrum and verify localization and topology independently.",
+    ),
+    ObservableGuide(
         "berry_curvature",
         "Berry curvature",
         r"\Omega(\mathbf{k})=i\left(\langle\partial_{k_x}u|\partial_{k_y}u\rangle-\langle\partial_{k_y}u|\partial_{k_x}u\rangle\right)",

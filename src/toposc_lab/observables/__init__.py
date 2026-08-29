@@ -21,7 +21,9 @@ from toposc_lab.observables.localization import (
     site_probability_density_from_result,
 )
 from toposc_lab.observables.majorana import (
+    FiniteSizeSplittingDiagnostics,
     MajoranaDiagnostics,
+    finite_size_splitting_diagnostics,
     majorana_diagnostics,
     majorana_diagnostics_from_result,
 )
@@ -29,6 +31,7 @@ from toposc_lab.observables.majorana import (
 __all__ = [
     "BerryCurvatureResult",
     "LocalDensityOfStates",
+    "FiniteSizeSplittingDiagnostics",
     "MajoranaDiagnostics",
     "SiteProbabilityDensity",
     "berry_curvature",
@@ -36,6 +39,7 @@ __all__ = [
     "boundary_weight_from_geometry",
     "boundary_weight_from_result",
     "chern_number",
+    "finite_size_splitting_diagnostics",
     "inverse_participation_ratio",
     "is_boundary_localized",
     "is_boundary_localized_from_geometry",
