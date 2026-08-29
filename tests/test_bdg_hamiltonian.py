@@ -96,3 +96,71 @@ def test_builder_rejects_nonfinite_values() -> None:
             pairing,
             basis=NambuBasis(n_sites=2),
         )
+
+
+def test_builder_rejects_nonhermitian_normal_state() -> None:
+    normal_state = np.asarray([[0.0, 1.0], [0.0, 0.0]], dtype=complex)
+
+    with pytest.raises(
+        ValueError,
+        match=r"normal_state must be Hermitian.*maximum residual",
+    ):
+        build_bdg_hamiltonian(
+            normal_state,
+            np.zeros((2, 2)),
+            basis=NambuBasis(n_sites=2),
+        )
+
+
+def test_builder_rejects_nonantisymmetric_pairing() -> None:
+    pairing = np.asarray([[0.0, 1.0], [1.0, 0.0]], dtype=complex)
+
+    with pytest.raises(
+        ValueError,
+        match=r"pairing must be antisymmetric.*maximum residual",
+    ):
+        build_bdg_hamiltonian(
+            np.eye(2),
+            pairing,
+            basis=NambuBasis(n_sites=2),
+        )
+
+
+def test_validation_tolerance_accepts_small_numerical_residuals() -> None:
+    normal_state = np.asarray([[0.0, 1.0e-12], [0.0, 0.0]], dtype=complex)
+
+    hamiltonian = build_bdg_hamiltonian(
+        normal_state,
+        np.zeros((2, 2)),
+        basis=NambuBasis(n_sites=2),
+        validation_tolerance=1.0e-10,
+    )
+
+    assert np.allclose(
+        hamiltonian,
+        hamiltonian.conj().T,
+        rtol=0.0,
+        atol=1.0e-10,
+    )
+
+
+@pytest.mark.parametrize("tolerance", [-1.0, np.inf, np.nan])
+def test_invalid_validation_tolerance_is_rejected(tolerance: float) -> None:
+    with pytest.raises(ValueError, match="finite and non-negative"):
+        build_bdg_hamiltonian(
+            np.eye(2),
+            np.zeros((2, 2)),
+            basis=NambuBasis(n_sites=2),
+            validation_tolerance=tolerance,
+        )
+
+
+@pytest.mark.parametrize("tolerance", [True, "strict"])
+def test_nonreal_validation_tolerance_is_rejected(tolerance: object) -> None:
+    with pytest.raises(TypeError, match="real number"):
+        build_bdg_hamiltonian(
+            np.eye(2),
+            np.zeros((2, 2)),
+            basis=NambuBasis(n_sites=2),
+            validation_tolerance=tolerance,  # type: ignore[arg-type]
+        )
