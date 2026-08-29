@@ -6,6 +6,7 @@ from numbers import Real
 import numpy as np
 
 from toposc_lab.core.results import BasisLayout, SimulationResult
+from toposc_lab.observables.results import ObservableRecord
 
 
 @dataclass(frozen=True)
@@ -16,6 +17,18 @@ class LocalDensityOfStates:
     values: np.ndarray
     component_values: np.ndarray
     component_labels: tuple[str, ...]
+
+    def to_observable_record(self) -> ObservableRecord:
+        """Return a standardized numerical LDOS record."""
+        return ObservableRecord(
+            kind="local_density_of_states",
+            arrays={
+                "energy_values": self.energy_values,
+                "values": self.values,
+                "component_values": self.component_values,
+            },
+            metadata={"component_labels": self.component_labels},
+        )
 
 
 def local_density_of_states(

@@ -5,6 +5,7 @@ from dataclasses import dataclass
 import numpy as np
 
 from toposc_lab.hamiltonians.nambu import NambuBasis
+from toposc_lab.observables.results import ObservableRecord
 
 
 @dataclass(frozen=True)
@@ -15,6 +16,18 @@ class SymmetryCheckResult:
     satisfied: bool
     residual: float
     tolerance: float
+
+    def to_observable_record(self) -> ObservableRecord:
+        """Return a standardized numerical symmetry-check record."""
+        return ObservableRecord(
+            kind="symmetry_check",
+            scalars={
+                "satisfied": self.satisfied,
+                "residual": self.residual,
+                "tolerance": self.tolerance,
+            },
+            metadata={"name": self.name},
+        )
 
 
 def _validate_square_matrix(matrix: np.ndarray, name: str) -> np.ndarray:

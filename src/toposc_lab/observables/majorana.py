@@ -10,6 +10,7 @@ import numpy as np
 
 from toposc_lab.core.results import SimulationResult
 from toposc_lab.hamiltonians.nambu import NambuBasis
+from toposc_lab.observables.results import ObservableRecord
 
 SplittingClassification: TypeAlias = Literal[
     "numerical_zero_modes",
@@ -46,6 +47,30 @@ class MajoranaDiagnostics:
     particle_weight: float
     hole_weight: float
 
+    def to_observable_record(self) -> ObservableRecord:
+        """Return a standardized numerical Majorana-polarization record."""
+        return ObservableRecord(
+            kind="majorana_diagnostics",
+            scalars={
+                "total_polarization_real": self.total_polarization.real,
+                "total_polarization_imag": self.total_polarization.imag,
+                "self_conjugacy": self.self_conjugacy,
+                "polarization_norm": self.polarization_norm,
+                "particle_weight": self.particle_weight,
+                "hole_weight": self.hole_weight,
+            },
+            arrays={
+                "site_probability": self.site_probability,
+                "particle_probability": self.particle_probability,
+                "hole_probability": self.hole_probability,
+                "polarization": self.polarization,
+                "polarization_magnitude": self.polarization_magnitude,
+            },
+            metadata={
+                "particle_hole_convention": "unrotated_matching_components",
+            },
+        )
+
 
 @dataclass(frozen=True)
 class FiniteSizeSplittingDiagnostics:
@@ -74,6 +99,43 @@ class FiniteSizeSplittingDiagnostics:
     next_excitation_energy: float | None
     isolation_gap: float | None
     isolation_ratio: float | None
+
+    def to_observable_record(self) -> ObservableRecord:
+        """Return a standardized finite-size splitting record."""
+        classification_labels = (
+            "no_near_zero_structure",
+            "numerical_zero_modes",
+            "split_pair_candidate",
+        )
+        return ObservableRecord(
+            kind="finite_size_splitting",
+            scalars={
+                "classification_code": classification_labels.index(
+                    self.classification
+                ),
+                "zero_mode_count": len(self.zero_mode_indices),
+                "negative_index": self.negative_index,
+                "positive_index": self.positive_index,
+                "negative_energy": self.negative_energy,
+                "positive_energy": self.positive_energy,
+                "quasiparticle_energy": self.quasiparticle_energy,
+                "pair_level_separation": self.pair_level_separation,
+                "pair_center_offset": self.pair_center_offset,
+                "particle_hole_mismatch": self.particle_hole_mismatch,
+                "is_particle_hole_pair": self.is_particle_hole_pair,
+                "is_split_pair_candidate": self.is_split_pair_candidate,
+                "next_excitation_energy": self.next_excitation_energy,
+                "isolation_gap": self.isolation_gap,
+                "isolation_ratio": self.isolation_ratio,
+            },
+            arrays={
+                "zero_mode_indices": np.asarray(
+                    self.zero_mode_indices,
+                    dtype=np.int64,
+                ),
+            },
+            metadata={"classification_labels": classification_labels},
+        )
 
 
 def majorana_diagnostics(

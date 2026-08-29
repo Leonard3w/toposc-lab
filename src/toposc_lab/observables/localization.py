@@ -9,6 +9,7 @@ import numpy as np
 
 from toposc_lab.core.results import BasisLayout, SimulationResult
 from toposc_lab.geometry.base import Geometry
+from toposc_lab.observables.results import ObservableRecord
 
 LatticeShape: TypeAlias = tuple[int, ...]
 
@@ -252,6 +253,17 @@ class SiteProbabilityDensity:
     component_probabilities: np.ndarray
     component_labels: tuple[str, ...]
 
+    def to_observable_record(self) -> ObservableRecord:
+        """Return a standardized site-probability record."""
+        return ObservableRecord(
+            kind="site_probability_density",
+            arrays={
+                "probability": self.probability,
+                "component_probabilities": self.component_probabilities,
+            },
+            metadata={"component_labels": self.component_labels},
+        )
+
 
 def site_probability_density(
     eigenvectors: np.ndarray,
@@ -330,6 +342,25 @@ class LocalizationProfile:
 
     # Labels der internen Komponenten.
     component_labels: tuple[str, ...]
+
+    def to_observable_record(self) -> ObservableRecord:
+        """Return a standardized localization record."""
+        return ObservableRecord(
+            kind="localization_profile",
+            scalars={
+                "inverse_participation_ratio": self.inverse_participation_ratio,
+                "participation_ratio": self.participation_ratio,
+                "edge_weight": self.edge_weight,
+                "bulk_weight": self.bulk_weight,
+                "is_edge_localized": self.is_edge_localized,
+            },
+            arrays={
+                "probability": self.probability,
+                "component_probabilities": self.component_probabilities,
+                "center_of_mass": self.center_of_mass,
+            },
+            metadata={"component_labels": self.component_labels},
+        )
 
 
 def localization_profile(

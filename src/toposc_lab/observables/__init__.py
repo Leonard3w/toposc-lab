@@ -27,13 +27,20 @@ from toposc_lab.observables.majorana import (
     majorana_diagnostics,
     majorana_diagnostics_from_result,
 )
+from toposc_lab.observables.results import (
+    ObservableRecord,
+    StandardizedObservable,
+    stack_observable_records,
+)
 
 __all__ = [
     "BerryCurvatureResult",
     "LocalDensityOfStates",
     "FiniteSizeSplittingDiagnostics",
     "MajoranaDiagnostics",
+    "ObservableRecord",
     "SiteProbabilityDensity",
+    "StandardizedObservable",
     "berry_curvature",
     "boundary_weight",
     "boundary_weight_from_geometry",
@@ -50,4 +57,5 @@ __all__ = [
     "participation_ratio",
     "site_probability_density",
     "site_probability_density_from_result",
+    "stack_observable_records",
 ]

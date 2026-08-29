@@ -5,6 +5,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from toposc_lab.observables.results import ObservableRecord
+
 BlochHamiltonian = Callable[[float, float], np.ndarray]
 
 
@@ -22,6 +24,19 @@ class BerryCurvatureResult:
     berry_flux: np.ndarray
     berry_curvature: np.ndarray
     chern_number: float
+
+    def to_observable_record(self) -> ObservableRecord:
+        """Return a standardized numerical Berry-curvature record."""
+        return ObservableRecord(
+            kind="berry_curvature",
+            scalars={"chern_number": self.chern_number},
+            arrays={
+                "k_x": self.k_x,
+                "k_y": self.k_y,
+                "berry_flux": self.berry_flux,
+                "berry_curvature": self.berry_curvature,
+            },
+        )
 
 
 def _occupied_subspace(
@@ -70,7 +85,7 @@ def _link_variable(
             "Momentum grid is too coarse: occupied subspaces have zero overlap"
         )
 
-    return determinant / magnitude
+    return complex(determinant / magnitude)
 
 
 def berry_curvature(
