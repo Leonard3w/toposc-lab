@@ -9,7 +9,10 @@ from toposc_lab.hamiltonians.nambu import NambuBasis, NambuSector, NambuState
 from toposc_lab.hamiltonians.pairing import (
     EdgePairingMap,
     EdgePairingTerm,
+    OnsitePairingMap,
+    OnsitePairingTerm,
     PairingValue,
+    build_onsite_s_wave_pairing,
     build_spinless_p_wave_pairing,
 )
 from toposc_lab.hamiltonians.tight_binding import (
@@ -30,10 +33,13 @@ __all__ = [
     "NambuSector",
     "NambuState",
     "OnsiteMap",
+    "OnsitePairingMap",
+    "OnsitePairingTerm",
     "OnsiteTerm",
     "PairingValue",
     "TermValue",
     "build_bdg_hamiltonian",
+    "build_onsite_s_wave_pairing",
     "build_spinless_p_wave_pairing",
     "build_tight_binding_hamiltonian",
     "uniform_edge_disorder",

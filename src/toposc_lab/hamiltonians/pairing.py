@@ -16,6 +16,10 @@ EdgePairingMap: TypeAlias = Mapping[GeometryEdge, PairingValue]
 EdgePairingTerm: TypeAlias = (
     PairingValue | EdgePairingMap | Callable[[GeometryEdge], PairingValue]
 )
+OnsitePairingMap: TypeAlias = Mapping[int, PairingValue]
+OnsitePairingTerm: TypeAlias = (
+    PairingValue | OnsitePairingMap | Callable[[int], PairingValue]
+)
 ComplexMatrix: TypeAlias = NDArray[np.complex128]
 
 
@@ -51,6 +55,46 @@ def build_spinless_p_wave_pairing(
     return pairing_matrix
 
 
+def build_onsite_s_wave_pairing(
+    geometry: Geometry,
+    *,
+    pairing: OnsitePairingTerm,
+) -> ComplexMatrix:
+    r"""Build onsite spin-singlet s-wave pairing in a spin-up/down basis.
+
+    The returned normal-state pairing block has dimension ``2 * n_sites`` and
+    uses site-major order ``(site 0 up, site 0 down, site 1 up, ...)``. At each
+    site ``i`` it contains
+
+    .. math::
+
+        \Delta_i i\sigma_y =
+        \begin{pmatrix}0 & \Delta_i \\ -\Delta_i & 0\end{pmatrix},
+
+    which is antisymmetric as required for a local even-parity spin singlet.
+    ``pairing`` may be a global scalar, a complete site-index mapping, or a
+    callable evaluated for every site.
+    """
+    normal_dimension = 2 * geometry.n_sites
+    pairing_matrix = np.zeros(
+        (normal_dimension, normal_dimension),
+        dtype=np.complex128,
+    )
+
+    for site in geometry.site_indices:
+        value = _resolve_onsite_pairing(pairing, site)
+        coefficient = _complex_scalar(
+            value,
+            name=f"onsite pairing term at site {site}",
+        )
+        spin_up = 2 * site
+        spin_down = spin_up + 1
+        pairing_matrix[spin_up, spin_down] += coefficient
+        pairing_matrix[spin_down, spin_up] -= coefficient
+
+    return pairing_matrix
+
+
 def _resolve_edge_pairing(
     term: EdgePairingTerm,
     edge: GeometryEdge,
@@ -64,6 +108,22 @@ def _resolve_edge_pairing(
             raise ValueError(
                 "pairing mapping has no value for edge "
                 f"({edge.source}, {edge.target})"
+            ) from error
+    return term
+
+
+def _resolve_onsite_pairing(
+    term: OnsitePairingTerm,
+    site: int,
+) -> PairingValue:
+    if callable(term):
+        return term(site)
+    if isinstance(term, Mapping):
+        try:
+            return term[site]
+        except KeyError as error:
+            raise ValueError(
+                f"onsite pairing mapping has no value for site {site}"
             ) from error
     return term
 
