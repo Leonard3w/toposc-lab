@@ -10,6 +10,14 @@ from toposc_lab.topology.pfaffian import (
     one_dimensional_pfaffian_invariant,
     pfaffian,
 )
+from toposc_lab.topology.results import (
+    InvariantGroup,
+    NumericalConfidence,
+    TopologyDiagnosticResult,
+    TopologyMethod,
+    TopologyResult,
+    unify_topology_result,
+)
 from toposc_lab.topology.spectral_localizer import (
     SpectralLocalizerResult,
     spectral_localizer,
@@ -36,13 +44,18 @@ __all__ = [
     "AntiunitarySymmetry",
     "AntiunitarySymmetryKind",
     "BottIndexResult",
+    "InvariantGroup",
     "LocalChernMarkerResult",
+    "NumericalConfidence",
     "PfaffianInvariantResult",
     "RealSpaceWindingResult",
     "SpectralLocalizerResult",
     "SymmetryClassification",
     "SymmetryOperators",
     "SymmetryValidationResult",
+    "TopologyDiagnosticResult",
+    "TopologyMethod",
+    "TopologyResult",
     "bott_index",
     "classify_altland_zirnbauer",
     "local_chern_marker",
@@ -50,5 +63,6 @@ __all__ = [
     "pfaffian",
     "real_space_winding_invariant",
     "spectral_localizer",
+    "unify_topology_result",
     "validate_symmetry_classification",
 ]
