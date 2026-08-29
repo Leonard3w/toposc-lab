@@ -1,5 +1,6 @@
 """Real-space and symmetry-aware topological analysis infrastructure."""
 
+from toposc_lab.topology.bott import BottIndexResult, bott_index
 from toposc_lab.topology.pfaffian import (
     PfaffianInvariantResult,
     one_dimensional_pfaffian_invariant,
@@ -26,11 +27,13 @@ __all__ = [
     "AltlandZirnbauerClass",
     "AntiunitarySymmetry",
     "AntiunitarySymmetryKind",
+    "BottIndexResult",
     "PfaffianInvariantResult",
     "RealSpaceWindingResult",
     "SymmetryClassification",
     "SymmetryOperators",
     "SymmetryValidationResult",
+    "bott_index",
     "classify_altland_zirnbauer",
     "one_dimensional_pfaffian_invariant",
     "pfaffian",
