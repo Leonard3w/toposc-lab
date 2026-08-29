@@ -290,10 +290,10 @@ OBSERVABLE_GUIDES: tuple[ObservableGuide, ...] = (
     ),
     ObservableGuide(
         "edge_weight",
-        "Edge weight",
+        "Grid-edge weight",
         r"w_{\mathrm{edge}}=\sum_{i\in\partial\Lambda}p_i",
         "Add p_i on all sites within the selected edge width of at least one lattice boundary.",
-        "Values near one indicate boundary localization. With periodic boundaries it is only a grid-based diagnostic.",
+        "This legacy raster diagnostic is not a physical boundary definition for periodic or irregular geometries; use explicitly declared geometry boundary sites there.",
     ),
     ObservableGuide(
         "bulk_weight",

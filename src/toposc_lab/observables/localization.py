@@ -1,11 +1,14 @@
 from __future__ import annotations
 
+from collections.abc import Collection
 from dataclasses import dataclass
+from numbers import Integral, Real
 from typing import TypeAlias
 
 import numpy as np
 
 from toposc_lab.core.results import BasisLayout, SimulationResult
+from toposc_lab.geometry.base import Geometry
 
 LatticeShape: TypeAlias = tuple[int, ...]
 
@@ -67,6 +70,95 @@ def participation_ratio(
             component_axis=component_axis,
         )
     )
+
+
+def boundary_weight(
+    probability: np.ndarray,
+    boundary_sites: Collection[int],
+) -> float:
+    """Return normalized weight on explicitly declared physical boundary sites.
+
+    Site indices refer to the flattened canonical site order. No boundary is
+    inferred from coordination number, connectivity, or spatial coordinates.
+    An empty collection therefore represents a geometry without a boundary.
+    """
+    values = _normalized_probability(probability).reshape(-1)
+    sites = _validated_boundary_sites(boundary_sites, n_sites=values.size)
+    if not sites:
+        return 0.0
+    return float(np.sum(values[np.asarray(sites, dtype=np.intp)]))
+
+
+def boundary_weight_from_geometry(
+    probability: np.ndarray,
+    geometry: Geometry,
+) -> float:
+    """Return boundary weight using only a geometry's explicit boundary sites."""
+    values = np.asarray(probability)
+    if values.size != geometry.n_sites:
+        raise ValueError("probability must contain one value per geometry site")
+    return boundary_weight(values, geometry.boundary_sites)
+
+
+def boundary_weight_from_result(
+    result: SimulationResult,
+    state_index: int,
+    geometry: Geometry,
+) -> float:
+    """Map an eigenstate to sites and evaluate its explicit boundary weight."""
+    density = site_probability_density_from_result(result, state_index)
+    return boundary_weight_from_geometry(density.probability, geometry)
+
+
+def is_boundary_localized(
+    probability: np.ndarray,
+    boundary_sites: Collection[int],
+    threshold: float = 0.5,
+) -> bool:
+    """Classify localization using an explicit boundary and weight threshold."""
+    threshold = _validated_localization_threshold(threshold)
+    return boundary_weight(probability, boundary_sites) >= threshold
+
+
+def is_boundary_localized_from_geometry(
+    probability: np.ndarray,
+    geometry: Geometry,
+    threshold: float = 0.5,
+) -> bool:
+    """Classify localization on a geometry's explicitly declared boundary."""
+    threshold = _validated_localization_threshold(threshold)
+    return boundary_weight_from_geometry(probability, geometry) >= threshold
+
+
+def _validated_boundary_sites(
+    boundary_sites: Collection[int],
+    *,
+    n_sites: int,
+) -> tuple[int, ...]:
+    if isinstance(boundary_sites, (str, bytes)) or not isinstance(
+        boundary_sites,
+        Collection,
+    ):
+        raise TypeError("boundary_sites must be a collection of integers")
+
+    sites: set[int] = set()
+    for site in boundary_sites:
+        if isinstance(site, bool) or not isinstance(site, Integral):
+            raise TypeError("boundary_sites must contain only integers")
+        site = int(site)
+        if not 0 <= site < n_sites:
+            raise ValueError("boundary site is outside the probability array")
+        sites.add(site)
+    return tuple(sorted(sites))
+
+
+def _validated_localization_threshold(threshold: float) -> float:
+    if isinstance(threshold, bool) or not isinstance(threshold, Real):
+        raise TypeError("threshold must be a real number")
+    threshold = float(threshold)
+    if not np.isfinite(threshold) or not 0.0 <= threshold <= 1.0:
+        raise ValueError("threshold must be finite and between zero and one")
+    return threshold
 
 
 def _validate_edge_width(
