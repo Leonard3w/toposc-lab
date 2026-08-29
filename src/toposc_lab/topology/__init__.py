@@ -1,6 +1,13 @@
 """Real-space and symmetry-aware topological analysis infrastructure."""
 
 from toposc_lab.topology.bott import BottIndexResult, bott_index
+from toposc_lab.topology.dispatch import (
+    TopologyCapability,
+    TopologyDispatchContext,
+    TopologyDispatchDecision,
+    dispatch_topology_calculation,
+    dispatch_topology_methods,
+)
 from toposc_lab.topology.local_chern import (
     LocalChernMarkerResult,
     local_chern_marker,
@@ -54,10 +61,15 @@ __all__ = [
     "SymmetryOperators",
     "SymmetryValidationResult",
     "TopologyDiagnosticResult",
+    "TopologyCapability",
+    "TopologyDispatchContext",
+    "TopologyDispatchDecision",
     "TopologyMethod",
     "TopologyResult",
     "bott_index",
     "classify_altland_zirnbauer",
+    "dispatch_topology_calculation",
+    "dispatch_topology_methods",
     "local_chern_marker",
     "one_dimensional_pfaffian_invariant",
     "pfaffian",
