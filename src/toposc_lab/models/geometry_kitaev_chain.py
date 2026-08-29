@@ -10,6 +10,7 @@ from toposc_lab.geometry import Geometry, chain, ring
 from toposc_lab.hamiltonians import (
     NambuBasis,
     build_bdg_hamiltonian,
+    build_spinless_p_wave_pairing,
     build_tight_binding_hamiltonian,
 )
 from toposc_lab.models.kitaev_chain import KitaevChainParameters
@@ -21,8 +22,8 @@ class GeometryKitaevChain(BaseModel):
     The model keeps the established component-major Nambu basis
     ``(c_0, ..., c_{N-1}, c_0^dagger, ..., c_{N-1}^dagger)``. Its normal block
     uses the generic tight-binding builder and its doubled matrix uses the
-    generic BdG builder. Pairing remains local to this model until a general
-    edge-based pairing term is introduced.
+    generic BdG builder. Its spinless p-wave pairing is assembled from the
+    geometry's oriented edges by the generic pairing builder.
     """
 
     def __init__(self, params: KitaevChainParameters) -> None:
@@ -82,14 +83,10 @@ class GeometryKitaevChain(BaseModel):
         )
 
     def _pairing_matrix(self) -> np.ndarray:
-        pairing_matrix = np.zeros(
-            (self.geometry.n_sites, self.geometry.n_sites),
-            dtype=complex,
+        return build_spinless_p_wave_pairing(
+            self.geometry,
+            pairing=self.params.pairing,
         )
-        for edge in self.geometry.edges:
-            pairing_matrix[edge.source, edge.target] += self.params.pairing
-            pairing_matrix[edge.target, edge.source] -= self.params.pairing
-        return pairing_matrix
 
 
 def _chain_geometry(n_sites: int, *, boundary: str) -> Geometry:

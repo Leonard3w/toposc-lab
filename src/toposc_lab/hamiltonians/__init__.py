@@ -6,6 +6,12 @@ from toposc_lab.hamiltonians.disorder import (
     uniform_site_disorder,
 )
 from toposc_lab.hamiltonians.nambu import NambuBasis, NambuSector, NambuState
+from toposc_lab.hamiltonians.pairing import (
+    EdgePairingMap,
+    EdgePairingTerm,
+    PairingValue,
+    build_spinless_p_wave_pairing,
+)
 from toposc_lab.hamiltonians.tight_binding import (
     HoppingMap,
     HoppingTerm,
@@ -16,6 +22,8 @@ from toposc_lab.hamiltonians.tight_binding import (
 )
 
 __all__ = [
+    "EdgePairingMap",
+    "EdgePairingTerm",
     "HoppingMap",
     "HoppingTerm",
     "NambuBasis",
@@ -23,8 +31,10 @@ __all__ = [
     "NambuState",
     "OnsiteMap",
     "OnsiteTerm",
+    "PairingValue",
     "TermValue",
     "build_bdg_hamiltonian",
+    "build_spinless_p_wave_pairing",
     "build_tight_binding_hamiltonian",
     "uniform_edge_disorder",
     "uniform_site_disorder",
