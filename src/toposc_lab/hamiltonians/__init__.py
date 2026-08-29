@@ -13,6 +13,7 @@ from toposc_lab.hamiltonians.pairing import (
     OnsitePairingTerm,
     PairingValue,
     build_chiral_p_wave_pairing,
+    build_d_wave_pairing,
     build_onsite_s_wave_pairing,
     build_spinless_p_wave_pairing,
 )
@@ -61,6 +62,7 @@ __all__ = [
     "ZeemanTerm",
     "build_bdg_hamiltonian",
     "build_chiral_p_wave_pairing",
+    "build_d_wave_pairing",
     "build_onsite_s_wave_pairing",
     "build_rashba_term",
     "build_spinless_p_wave_pairing",

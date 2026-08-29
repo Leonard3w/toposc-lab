@@ -142,6 +142,60 @@ def build_chiral_p_wave_pairing(
     )
 
 
+def build_d_wave_pairing(
+    geometry: Geometry,
+    *,
+    pairing: EdgePairingTerm,
+    plane_axes: tuple[int, int] = (0, 1),
+) -> ComplexMatrix:
+    r"""Build nearest-neighbor spin-singlet ``d_x2-y2`` edge pairing.
+
+    The spatial form factor is ``d_x**2 - d_y**2`` for each unit edge
+    direction in the selected embedding plane. It is even under reversal of
+    the edge direction. Each spatial bond is multiplied by ``i sigma_y`` in
+    the site-major spin basis ``(up, down)``, making the complete pairing block
+    antisymmetric under transposition.
+    """
+    axes = _validate_plane_axes(plane_axes)
+    normal_dimension = 2 * geometry.n_sites
+    pairing_matrix = np.zeros(
+        (normal_dimension, normal_dimension),
+        dtype=np.complex128,
+    )
+
+    for edge in geometry.edges:
+        try:
+            direction = geometry.direction(edge.source, edge.target)
+        except ValueError as error:
+            raise ValueError(
+                "d-wave pairing requires spatial coordinates or explicit "
+                "nonzero edge displacements"
+            ) from error
+        if max(axes) >= direction.size:
+            raise ValueError(
+                f"pairing plane axes {axes} are outside direction dimension "
+                f"{direction.size}"
+            )
+        amplitude = _complex_scalar(
+            _resolve_edge_pairing(pairing, edge),
+            name=f"pairing term on edge ({edge.source}, {edge.target})",
+        )
+        form_factor = direction[axes[0]] ** 2 - direction[axes[1]] ** 2
+        coefficient = complex(amplitude * form_factor)
+
+        source_up = 2 * edge.source
+        source_down = source_up + 1
+        target_up = 2 * edge.target
+        target_down = target_up + 1
+
+        pairing_matrix[source_up, target_down] += coefficient
+        pairing_matrix[source_down, target_up] -= coefficient
+        pairing_matrix[target_up, source_down] += coefficient
+        pairing_matrix[target_down, source_up] -= coefficient
+
+    return pairing_matrix
+
+
 def _resolve_edge_pairing(
     term: EdgePairingTerm,
     edge: GeometryEdge,
