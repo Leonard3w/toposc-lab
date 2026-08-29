@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping
+from numbers import Integral
 from typing import TypeAlias
 
 import numpy as np
@@ -95,6 +96,52 @@ def build_onsite_s_wave_pairing(
     return pairing_matrix
 
 
+def build_chiral_p_wave_pairing(
+    geometry: Geometry,
+    *,
+    pairing: EdgePairingTerm,
+    chirality: int = 1,
+    plane_axes: tuple[int, int] = (0, 1),
+) -> ComplexMatrix:
+    r"""Build spinless chiral ``p_x + i chirality p_y`` edge pairing.
+
+    For the unit direction from an edge's stored source to target, the resolved
+    edge amplitude is multiplied by ``d_x + 1j * chirality * d_y``. The two
+    spatial components are selected by ``plane_axes`` from an arbitrary-
+    dimensional embedding. Coordinates or explicit edge displacements are
+    required; spatial directions are never invented for abstract graphs.
+    """
+    chirality = _validate_chirality(chirality)
+    axes = _validate_plane_axes(plane_axes)
+
+    def directional_pairing(edge: GeometryEdge) -> complex:
+        try:
+            direction = geometry.direction(edge.source, edge.target)
+        except ValueError as error:
+            raise ValueError(
+                "chiral p-wave pairing requires spatial coordinates or "
+                "explicit nonzero edge displacements"
+            ) from error
+        if max(axes) >= direction.size:
+            raise ValueError(
+                f"pairing plane axes {axes} are outside direction dimension "
+                f"{direction.size}"
+            )
+        amplitude = _complex_scalar(
+            _resolve_edge_pairing(pairing, edge),
+            name=f"pairing term on edge ({edge.source}, {edge.target})",
+        )
+        return complex(
+            amplitude
+            * (direction[axes[0]] + 1.0j * chirality * direction[axes[1]])
+        )
+
+    return build_spinless_p_wave_pairing(
+        geometry,
+        pairing=directional_pairing,
+    )
+
+
 def _resolve_edge_pairing(
     term: EdgePairingTerm,
     edge: GeometryEdge,
@@ -140,3 +187,25 @@ def _complex_scalar(value: PairingValue, *, name: str) -> complex:
     if not np.isfinite(coefficient):
         raise ValueError(f"{name} must be finite")
     return coefficient
+
+
+def _validate_chirality(chirality: int) -> int:
+    if isinstance(chirality, bool) or not isinstance(chirality, Integral):
+        raise TypeError("chirality must be either +1 or -1")
+    chirality = int(chirality)
+    if chirality not in (-1, 1):
+        raise ValueError("chirality must be either +1 or -1")
+    return chirality
+
+
+def _validate_plane_axes(plane_axes: tuple[int, int]) -> tuple[int, int]:
+    if not isinstance(plane_axes, tuple) or len(plane_axes) != 2:
+        raise TypeError("plane_axes must be a pair of integer axes")
+    if any(isinstance(axis, bool) or not isinstance(axis, Integral) for axis in plane_axes):
+        raise TypeError("plane_axes must be a pair of integer axes")
+    axes = (int(plane_axes[0]), int(plane_axes[1]))
+    if axes[0] < 0 or axes[1] < 0:
+        raise ValueError("plane_axes must be non-negative")
+    if axes[0] == axes[1]:
+        raise ValueError("plane_axes must select two distinct axes")
+    return axes
