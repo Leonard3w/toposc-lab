@@ -67,6 +67,48 @@ def test_count_zero_modes_counts_energies_below_tolerance() -> None:
     assert count_zero_modes(eigenvalues, tolerance=1e-10) == 3
 
 
+def test_count_zero_modes_includes_tolerance_boundary() -> None:
+    eigenvalues = np.array([-1e-3, -1e-4, 0.0, 1e-4, 1e-3])
+
+    assert count_zero_modes(eigenvalues, tolerance=1e-4) == 3
+
+
+def test_count_zero_modes_uses_configurable_tolerance() -> None:
+    eigenvalues = np.array([-1e-5, 0.0, 1e-5])
+
+    assert count_zero_modes(eigenvalues, tolerance=1e-6) == 1
+    assert count_zero_modes(eigenvalues, tolerance=1e-4) == 3
+
+
+@pytest.mark.parametrize(
+    ("eigenvalues", "message"),
+    [
+        (np.asarray([]), "must not be empty"),
+        (np.zeros((2, 2)), "one-dimensional"),
+        (np.asarray([0.0, np.nan]), "finite values"),
+        (np.asarray([0.0, np.inf]), "finite values"),
+    ],
+)
+def test_count_zero_modes_rejects_invalid_spectra(
+    eigenvalues: np.ndarray,
+    message: str,
+) -> None:
+    with pytest.raises(ValueError, match=message):
+        count_zero_modes(eigenvalues)
+
+
+@pytest.mark.parametrize("tolerance", [-1.0, np.inf, np.nan])
+def test_count_zero_modes_rejects_invalid_tolerance(tolerance: float) -> None:
+    with pytest.raises(ValueError, match="tolerance"):
+        count_zero_modes(np.asarray([-1.0, 0.0, 1.0]), tolerance=tolerance)
+
+
+@pytest.mark.parametrize("tolerance", [True, "loose"])
+def test_count_zero_modes_rejects_non_real_tolerance(tolerance: object) -> None:
+    with pytest.raises(TypeError, match="tolerance"):
+        count_zero_modes(np.asarray([-1.0, 0.0, 1.0]), tolerance=tolerance)  # type: ignore[arg-type]
+
+
 def test_edge_gap_is_lowest_abs_energy() -> None:
     eigenvalues = np.array([-2.0, -1e-4, 1e-4, 2.0])
 

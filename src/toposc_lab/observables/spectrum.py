@@ -31,10 +31,21 @@ def lowest_abs_energy(eigenvalues: np.ndarray) -> float:
 
 
 def count_zero_modes(eigenvalues: np.ndarray, tolerance: float = 1e-10) -> int:
-    """Count eigenvalues with absolute value below a numerical tolerance."""
-    energies = np.asarray(eigenvalues, dtype=float)
+    """Count eigenvalues satisfying ``abs(E) <= tolerance``.
 
-    return int(np.sum(np.abs(energies) <= tolerance))
+    This is a numerical classification around zero. The count alone does not
+    establish Majorana character, boundary localization, or topology.
+    """
+    energies = np.asarray(eigenvalues, dtype=float)
+    if energies.ndim != 1:
+        raise ValueError("eigenvalues must be one-dimensional")
+    if energies.size == 0:
+        raise ValueError("eigenvalues must not be empty")
+    if not np.all(np.isfinite(energies)):
+        raise ValueError("eigenvalues must contain only finite values")
+    tolerance = _nonnegative_finite_real(tolerance, name="tolerance")
+
+    return int(np.count_nonzero(np.abs(energies) <= tolerance))
 
 
 def edge_gap(eigenvalues: np.ndarray) -> float:
