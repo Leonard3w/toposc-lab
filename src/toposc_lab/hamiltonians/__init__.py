@@ -23,6 +23,13 @@ from toposc_lab.hamiltonians.tight_binding import (
     TermValue,
     build_tight_binding_hamiltonian,
 )
+from toposc_lab.hamiltonians.zeeman import (
+    ZeemanField,
+    ZeemanFieldMap,
+    ZeemanTerm,
+    build_zeeman_term,
+    zeeman_matrix,
+)
 
 __all__ = [
     "EdgePairingMap",
@@ -38,10 +45,15 @@ __all__ = [
     "OnsiteTerm",
     "PairingValue",
     "TermValue",
+    "ZeemanField",
+    "ZeemanFieldMap",
+    "ZeemanTerm",
     "build_bdg_hamiltonian",
     "build_onsite_s_wave_pairing",
     "build_spinless_p_wave_pairing",
     "build_tight_binding_hamiltonian",
+    "build_zeeman_term",
     "uniform_edge_disorder",
     "uniform_site_disorder",
+    "zeeman_matrix",
 ]
