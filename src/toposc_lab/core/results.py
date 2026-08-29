@@ -239,6 +239,15 @@ class ParameterScanResult:
         )
 
     @property
-    def gaps(self) -> np.ndarray:
-        """Kleinster Energiebetrag für jeden Scanpunkt."""
+    def minimum_abs_energies(self) -> np.ndarray:
+        """Kleinster absoluter Eigenwert für jeden Scanpunkt."""
         return np.min(np.abs(self.spectra), axis=1)
+
+    @property
+    def gaps(self) -> np.ndarray:
+        """Historischer Alias für ``minimum_abs_energies``.
+
+        Diese Werte sind keine vollständigen spektralen Lücken und keine
+        automatisch nullmodenbereinigten Bulk-Gaps.
+        """
+        return self.minimum_abs_energies

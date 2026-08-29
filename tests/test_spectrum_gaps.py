@@ -10,6 +10,7 @@ from toposc_lab.observables.spectrum import (
     energy_gap,
     lowest_abs_energy,
     positive_energies,
+    spectral_gap,
 )
 
 
@@ -76,3 +77,39 @@ def test_bulk_gap_ignores_zero_modes() -> None:
     eigenvalues = np.array([-2.0, -1e-12, 0.0, 1e-12, 0.5, 2.0])
 
     assert bulk_gap(eigenvalues, tolerance=1e-10) == pytest.approx(0.5)
+
+
+def test_spectral_gap_measures_full_separation_across_zero() -> None:
+    eigenvalues = np.asarray([-3.0, -0.2, 0.5, 2.0])
+
+    assert spectral_gap(eigenvalues) == pytest.approx(0.7)
+
+
+def test_bdg_spectral_gap_is_twice_positive_excitation_gap() -> None:
+    eigenvalues = np.asarray([-2.0, -0.4, 0.4, 2.0])
+
+    assert spectral_gap(eigenvalues) == pytest.approx(0.8)
+    assert bulk_gap(eigenvalues) == pytest.approx(0.4)
+
+
+def test_spectral_gap_closes_for_state_at_reference_within_tolerance() -> None:
+    eigenvalues = np.asarray([-2.0, 1.0e-12, 0.5, 2.0])
+
+    assert spectral_gap(eigenvalues, tolerance=1.0e-10) == 0.0
+
+
+def test_spectral_gap_supports_nonzero_reference_energy() -> None:
+    eigenvalues = np.asarray([-1.0, 0.2, 0.8, 2.0])
+
+    assert spectral_gap(eigenvalues, reference_energy=0.5) == pytest.approx(0.6)
+
+
+def test_spectral_gap_requires_states_on_both_sides_of_reference() -> None:
+    with pytest.raises(ValueError, match="both sides"):
+        spectral_gap(np.asarray([0.5, 1.0, 2.0]))
+
+
+@pytest.mark.parametrize("tolerance", [-1.0, np.inf, np.nan])
+def test_spectral_gap_rejects_invalid_tolerance(tolerance: float) -> None:
+    with pytest.raises(ValueError, match="tolerance"):
+        spectral_gap(np.asarray([-1.0, 1.0]), tolerance=tolerance)
