@@ -57,6 +57,7 @@ def test_localization_profile_sums_internal_components_per_site() -> None:
     assert np.allclose(result.probability, [0.5, 0.5])
     assert result.component_probabilities.shape == (2, 2)
     assert result.component_labels == ("up", "down")
+    assert result.inverse_participation_ratio == pytest.approx(0.5)
 
 
 def test_localization_profile_returns_2d_shape() -> None:
@@ -129,3 +130,34 @@ def test_ipr_normalizes_the_input_probability() -> None:
     probability = np.array([2.0, 2.0])
 
     assert inverse_participation_ratio(probability) == pytest.approx(0.5)
+
+
+def test_ipr_sums_internal_components_before_squaring() -> None:
+    component_probabilities = np.full((2, 2), 0.25)
+
+    assert inverse_participation_ratio(
+        component_probabilities,
+        component_axis=-1,
+    ) == pytest.approx(0.5)
+    assert participation_ratio(
+        component_probabilities,
+        component_axis=-1,
+    ) == pytest.approx(2.0)
+
+
+def test_ipr_does_not_treat_components_as_separate_sites() -> None:
+    component_probabilities = np.array([[0.5, 0.5]])
+
+    assert inverse_participation_ratio(
+        component_probabilities,
+        component_axis=1,
+    ) == pytest.approx(1.0)
+
+
+@pytest.mark.parametrize("component_axis", [-3, 2])
+def test_ipr_rejects_component_axis_outside_dimensions(component_axis: int) -> None:
+    with pytest.raises(ValueError, match="component_axis"):
+        inverse_participation_ratio(
+            np.ones((2, 2)),
+            component_axis=component_axis,
+        )

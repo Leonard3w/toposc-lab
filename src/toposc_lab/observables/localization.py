@@ -28,21 +28,45 @@ def _normalized_probability(probability: np.ndarray) -> np.ndarray:
     return values / total_weight
 
 
-def inverse_participation_ratio(probability: np.ndarray) -> float:
-    """
-    Calculate the inverse participation ratio (IPR).
+def inverse_participation_ratio(
+    probability: np.ndarray,
+    *,
+    component_axis: int | None = None,
+) -> float:
+    r"""Calculate the site-resolved inverse participation ratio (IPR).
 
     Large values indicate that probability is concentrated on few lattice
-    sites, while small values indicate an extended state.
+    sites, while small values indicate an extended state. If internal degrees
+    of freedom are present, pass their axis as ``component_axis``. Their
+    probabilities are then combined per physical site before evaluating
+    ``IPR = sum_i p_i**2``, with ``p_i = sum_a |psi_(i,a)|**2``.
     """
     values = _normalized_probability(probability)
+    if component_axis is not None:
+        if isinstance(component_axis, bool) or not isinstance(component_axis, int):
+            raise TypeError("component_axis must be an integer")
+        if values.ndim < 2:
+            raise ValueError("component_axis requires at least one site axis")
+        if not -values.ndim <= component_axis < values.ndim:
+            raise ValueError("component_axis is outside the probability dimensions")
+        values = np.sum(values, axis=component_axis)
 
     return float(np.sum(values**2))
 
 
-def participation_ratio(probability: np.ndarray) -> float:
+def participation_ratio(
+    probability: np.ndarray,
+    *,
+    component_axis: int | None = None,
+) -> float:
     """Calculate the effective number of lattice sites occupied by a state."""
-    return float(1.0 / inverse_participation_ratio(probability))
+    return float(
+        1.0
+        / inverse_participation_ratio(
+            probability,
+            component_axis=component_axis,
+        )
+    )
 
 
 def _validate_edge_width(
