@@ -80,6 +80,28 @@ def test_partner_index_exchanges_particle_and_hole_sectors() -> None:
     assert basis.decode(hole) == NambuState(site=1, component=1, sector="hole")
 
 
+@pytest.mark.parametrize("ordering", ["component_major", "site_major"])
+def test_particle_hole_operator_exchanges_every_nambu_partner(ordering: str) -> None:
+    basis = NambuBasis(
+        n_sites=2,
+        normal_components_per_site=2,
+        ordering=ordering,  # type: ignore[arg-type]
+    )
+    operator = basis.particle_hole_operator
+
+    for index in range(basis.dimension):
+        state = np.zeros(basis.dimension)
+        state[index] = 1.0
+        transformed = operator @ state.conj()
+        expected = np.zeros(basis.dimension)
+        expected[basis.partner_index(index)] = 1.0
+        assert np.array_equal(transformed, expected)
+
+    identity = np.eye(basis.dimension)
+    assert np.array_equal(operator @ operator.conj(), identity)
+    assert np.array_equal(operator @ operator.conj().T, identity)
+
+
 def test_permutation_reorders_states_and_matrices_to_site_major() -> None:
     basis = NambuBasis(n_sites=2, normal_components_per_site=2)
     states = np.arange(8)

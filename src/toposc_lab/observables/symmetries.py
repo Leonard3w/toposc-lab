@@ -4,6 +4,8 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from toposc_lab.hamiltonians.nambu import NambuBasis
+
 
 @dataclass(frozen=True)
 class SymmetryCheckResult:
@@ -99,6 +101,28 @@ def check_particle_hole_symmetry(
     return _result(
         name="Particle-hole symmetry",
         difference=transformed_hamiltonian + hamiltonian,
+        tolerance=tolerance,
+    )
+
+
+def check_bdg_particle_hole_symmetry(
+    hamiltonian: np.ndarray,
+    basis: NambuBasis,
+    tolerance: float = 1e-10,
+) -> SymmetryCheckResult:
+    r"""Check ``C H C^-1 = -H`` using the basis-defined ``C = U_C K``.
+
+    The Hamiltonian must follow the supplied Nambu basis ordering. The returned
+    residual is the largest absolute entry of
+    ``U_C H.conj() U_C^dagger + H``.
+    """
+    hamiltonian = _validate_square_matrix(hamiltonian, "hamiltonian")
+    expected_shape = (basis.dimension, basis.dimension)
+    if hamiltonian.shape != expected_shape:
+        raise ValueError(f"hamiltonian must have shape {expected_shape} for the basis")
+    return check_particle_hole_symmetry(
+        hamiltonian,
+        basis.particle_hole_operator,
         tolerance=tolerance,
     )
 

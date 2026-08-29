@@ -120,6 +120,24 @@ class NambuBasis:
         """Hole indices in site-major normal-state order."""
         return self._sector_indices("hole")
 
+    @property
+    def particle_hole_operator(self) -> NDArray[np.complex128]:
+        r"""Unitary part of the antiunitary operator ``C = U_C K``.
+
+        ``U_C`` exchanges particle and hole states at fixed site and internal
+        component. With the unrotated hole convention used by this basis,
+        ``U_C U_C^* = I`` and therefore ``C^2 = +1``.
+        """
+        operator = np.zeros((self.dimension, self.dimension), dtype=np.complex128)
+        for particle_index, hole_index in zip(
+            self.particle_indices,
+            self.hole_indices,
+            strict=True,
+        ):
+            operator[particle_index, hole_index] = 1.0
+            operator[hole_index, particle_index] = 1.0
+        return operator
+
     def index(
         self,
         site: int,
