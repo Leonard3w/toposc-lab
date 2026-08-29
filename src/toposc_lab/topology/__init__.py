@@ -1,6 +1,10 @@
 """Real-space and symmetry-aware topological analysis infrastructure."""
 
 from toposc_lab.topology.bott import BottIndexResult, bott_index
+from toposc_lab.topology.local_chern import (
+    LocalChernMarkerResult,
+    local_chern_marker,
+)
 from toposc_lab.topology.pfaffian import (
     PfaffianInvariantResult,
     one_dimensional_pfaffian_invariant,
@@ -28,6 +32,7 @@ __all__ = [
     "AntiunitarySymmetry",
     "AntiunitarySymmetryKind",
     "BottIndexResult",
+    "LocalChernMarkerResult",
     "PfaffianInvariantResult",
     "RealSpaceWindingResult",
     "SymmetryClassification",
@@ -35,6 +40,7 @@ __all__ = [
     "SymmetryValidationResult",
     "bott_index",
     "classify_altland_zirnbauer",
+    "local_chern_marker",
     "one_dimensional_pfaffian_invariant",
     "pfaffian",
     "real_space_winding_invariant",
