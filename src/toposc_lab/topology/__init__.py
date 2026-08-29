@@ -17,17 +17,23 @@ from toposc_lab.topology.symmetry_validation import (
     SymmetryValidationResult,
     validate_symmetry_classification,
 )
+from toposc_lab.topology.winding import (
+    RealSpaceWindingResult,
+    real_space_winding_invariant,
+)
 
 __all__ = [
     "AltlandZirnbauerClass",
     "AntiunitarySymmetry",
     "AntiunitarySymmetryKind",
     "PfaffianInvariantResult",
+    "RealSpaceWindingResult",
     "SymmetryClassification",
     "SymmetryOperators",
     "SymmetryValidationResult",
     "classify_altland_zirnbauer",
     "one_dimensional_pfaffian_invariant",
     "pfaffian",
+    "real_space_winding_invariant",
     "validate_symmetry_classification",
 ]
