@@ -5,7 +5,7 @@ from typing import TypeAlias
 
 import numpy as np
 
-from toposc_lab.core.results import SimulationResult
+from toposc_lab.core.results import BasisLayout, SimulationResult
 
 LatticeShape: TypeAlias = tuple[int, ...]
 
@@ -153,6 +153,65 @@ def is_edge_localized(
 
 
 @dataclass(frozen=True)
+class SiteProbabilityDensity:
+    """Normalized probability of one eigenstate on physical sites."""
+
+    probability: np.ndarray
+    component_probabilities: np.ndarray
+    component_labels: tuple[str, ...]
+
+
+def site_probability_density(
+    eigenvectors: np.ndarray,
+    state_index: int,
+    basis_layout: BasisLayout,
+) -> SiteProbabilityDensity:
+    r"""Map one eigenvector from its declared basis to physical sites.
+
+    Eigenstates are columns. The basis layout determines whether internal
+    components are stored site-major or component-major. For each site,
+    ``p_i = sum_a |psi_(i,a)|**2`` is returned after normalization.
+    """
+    vectors = np.asarray(eigenvectors, dtype=complex)
+    if vectors.ndim != 2:
+        raise ValueError("eigenvectors must be a two-dimensional array")
+    if not np.all(np.isfinite(vectors)):
+        raise ValueError("eigenvectors must contain only finite values")
+    if not 0 <= state_index < vectors.shape[1]:
+        raise ValueError("state_index is outside the available eigenvector range")
+
+    site_major_vectors = basis_layout.to_site_major(vectors)
+    component_probabilities = np.abs(site_major_vectors[:, state_index]) ** 2
+    normalization = float(np.sum(component_probabilities))
+    if normalization <= 0.0:
+        raise ValueError("selected eigenvector must have positive norm")
+
+    component_probabilities = component_probabilities.reshape(
+        *basis_layout.spatial_shape,
+        basis_layout.components_per_site,
+    )
+    component_probabilities = component_probabilities / normalization
+
+    return SiteProbabilityDensity(
+        probability=np.sum(component_probabilities, axis=-1),
+        component_probabilities=component_probabilities,
+        component_labels=basis_layout.component_labels,
+    )
+
+
+def site_probability_density_from_result(
+    result: SimulationResult,
+    state_index: int,
+) -> SiteProbabilityDensity:
+    """Map one state from a standardized eigensolver result to physical sites."""
+    return site_probability_density(
+        eigenvectors=result.eigenvectors,
+        state_index=state_index,
+        basis_layout=result.basis_layout,
+    )
+
+
+@dataclass(frozen=True)
 class LocalizationProfile:
     """Räumliche Analyse eines einzelnen Eigenzustands."""
 
@@ -202,58 +261,21 @@ def localization_profile(
     - QWZ: lattice_shape=(n_x, n_y), components_per_site=2
     - BHZ: lattice_shape=(n_x, n_y), components_per_site=4
     """
-    vectors = np.asarray(eigenvectors, dtype=complex)
-
-    if vectors.ndim != 2:
-        raise ValueError("eigenvectors must be a two-dimensional array")
-
-    if not 0 <= state_index < vectors.shape[1]:
-        raise ValueError("state_index is outside the available eigenvector range")
-
-    if not lattice_shape or any(size <= 0 for size in lattice_shape):
-        raise ValueError("lattice_shape must contain positive dimensions")
-
-    if components_per_site <= 0:
-        raise ValueError("components_per_site must be positive")
-
     if edge_width <= 0:
         raise ValueError("edge_width must be positive")
 
-    n_sites = int(np.prod(lattice_shape))
-    expected_dimension = n_sites * components_per_site
-
-    if vectors.shape[0] != expected_dimension:
-        raise ValueError(
-            "Eigenvector dimension does not match lattice_shape and components_per_site"
-        )
-
-    if component_labels is None:
-        component_labels = tuple(
-            f"component {index}" for index in range(components_per_site)
-        )
-
-    if len(component_labels) != components_per_site:
-        raise ValueError("component_labels must match components_per_site")
-
-    # Ein Eigenzustand ist eine Spalte der Eigenvektormatrix.
-    wavefunction = vectors[:, state_index]
-
-    # |psi|² liefert die Wahrscheinlichkeit jeder Basis-Komponente.
-    component_probabilities = np.abs(wavefunction) ** 2
-
-    normalization = float(np.sum(component_probabilities))
-    if normalization <= 0.0:
-        raise ValueError("Selected eigenvector has zero norm")
-
-    # Numerische Normierung: Die Gesamtwahrscheinlichkeit wird exakt eins.
-    component_probabilities /= normalization
-
-    # Interne Komponenten eines Platzes werden zu einer Ortswahrscheinlichkeit addiert.
-    component_probabilities = component_probabilities.reshape(
-        *lattice_shape,
-        components_per_site,
+    layout = BasisLayout(
+        spatial_shape=lattice_shape,
+        components_per_site=components_per_site,
+        component_labels=component_labels or (),
     )
-    probability = np.sum(component_probabilities, axis=-1)
+    density = site_probability_density(
+        eigenvectors=eigenvectors,
+        state_index=state_index,
+        basis_layout=layout,
+    )
+    probability = density.probability
+    component_probabilities = density.component_probabilities
 
     inverse_participation_ratio_value = inverse_participation_ratio(probability)
     participation_ratio_value = participation_ratio(probability)
@@ -282,7 +304,7 @@ def localization_profile(
         edge_weight=edge_weight_value,
         bulk_weight=bulk_weight_value,
         is_edge_localized=is_edge_localized(probability, edge_width=edge_width),
-        component_labels=component_labels,
+        component_labels=density.component_labels,
     )
 
 

@@ -1,6 +1,7 @@
 import numpy as np
 import pytest
 
+from toposc_lab.core.results import BasisLayout, SimulationResult
 from toposc_lab.observables.localization import (
     bulk_weight,
     edge_weight,
@@ -10,6 +11,8 @@ from toposc_lab.observables.localization import (
     localization_profile,
     participation_ratio,
     right_edge_weight,
+    site_probability_density,
+    site_probability_density_from_result,
 )
 
 
@@ -160,4 +163,64 @@ def test_ipr_rejects_component_axis_outside_dimensions(component_axis: int) -> N
         inverse_participation_ratio(
             np.ones((2, 2)),
             component_axis=component_axis,
+        )
+
+
+def test_site_probability_density_maps_component_major_bdg_basis() -> None:
+    vectors = np.zeros((6, 1), dtype=complex)
+    vectors[0, 0] = 1.0 / np.sqrt(2.0)  # electron at site 0
+    vectors[3, 0] = 1.0 / np.sqrt(2.0)  # hole at site 0
+
+    density = site_probability_density(
+        eigenvectors=vectors,
+        state_index=0,
+        basis_layout=BasisLayout(
+            spatial_shape=(3,),
+            components_per_site=2,
+            ordering="component_major",
+            component_labels=("electron", "hole"),
+        ),
+    )
+
+    assert np.allclose(density.probability, [1.0, 0.0, 0.0])
+    assert np.allclose(density.component_probabilities[0], [0.5, 0.5])
+    assert density.component_labels == ("electron", "hole")
+
+
+def test_site_probability_density_normalizes_and_retains_grid_shape() -> None:
+    density = site_probability_density(
+        eigenvectors=np.array([[2.0], [0.0], [0.0], [0.0]]),
+        state_index=0,
+        basis_layout=BasisLayout(spatial_shape=(2, 2)),
+    )
+
+    assert density.probability.shape == (2, 2)
+    assert density.component_probabilities.shape == (2, 2, 1)
+    assert np.sum(density.probability) == pytest.approx(1.0)
+
+
+def test_site_probability_density_from_result_uses_declared_layout() -> None:
+    result = SimulationResult(
+        model_name="BdGTest",
+        eigenvalues=np.array([0.0]),
+        eigenvectors=np.array([[0.0], [1.0], [0.0], [1.0]]),
+        basis_layout=BasisLayout(
+            spatial_shape=(2,),
+            components_per_site=2,
+            ordering="component_major",
+            component_labels=("electron", "hole"),
+        ),
+    )
+
+    density = site_probability_density_from_result(result, state_index=0)
+
+    assert np.allclose(density.probability, [0.0, 1.0])
+
+
+def test_site_probability_density_rejects_zero_norm_state() -> None:
+    with pytest.raises(ValueError, match="positive norm"):
+        site_probability_density(
+            eigenvectors=np.zeros((2, 1)),
+            state_index=0,
+            basis_layout=BasisLayout(spatial_shape=(2,)),
         )
