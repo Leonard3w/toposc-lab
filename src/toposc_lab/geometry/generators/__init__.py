@@ -16,6 +16,10 @@ from toposc_lab.geometry.generators.protocol import (
     GeometryGenerator,
     GeometryGeneratorRegistry,
 )
+from toposc_lab.geometry.generators.random_graph import (
+    DEFAULT_RANDOM_GRAPH_MAX_CANDIDATE_EDGES,
+    random_graph,
+)
 from toposc_lab.geometry.generators.ring import ring
 from toposc_lab.geometry.generators.sierpinski import sierpinski_gasket
 from toposc_lab.geometry.generators.sierpinski_carpet import sierpinski_carpet
@@ -37,6 +41,11 @@ KAGOME_GENERATOR = FunctionGeometryGenerator(key="kagome", builder=kagome)
 MENGER_SPONGE_GENERATOR = FunctionGeometryGenerator(
     key="menger_sponge",
     builder=menger_sponge,
+)
+RANDOM_GRAPH_GENERATOR = FunctionGeometryGenerator(
+    key="random_graph",
+    builder=random_graph,
+    stochastic=True,
 )
 RING_GENERATOR = FunctionGeometryGenerator(key="ring", builder=ring)
 SIERPINSKI_CARPET_GENERATOR = FunctionGeometryGenerator(
@@ -62,6 +71,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
         IRREGULAR_CLUSTER_GENERATOR,
         KAGOME_GENERATOR,
         MENGER_SPONGE_GENERATOR,
+        RANDOM_GRAPH_GENERATOR,
         RING_GENERATOR,
         SIERPINSKI_CARPET_GENERATOR,
         SIERPINSKI_GASKET_GENERATOR,
@@ -76,6 +86,7 @@ __all__ = [
     "CHAIN_GENERATOR",
     "CUBIC_GENERATOR",
     "DEFAULT_MENGER_MAX_SITES",
+    "DEFAULT_RANDOM_GRAPH_MAX_CANDIDATE_EDGES",
     "FunctionGeometryGenerator",
     "GeometryGenerationRequest",
     "GeometryGenerator",
@@ -84,6 +95,7 @@ __all__ = [
     "IRREGULAR_CLUSTER_GENERATOR",
     "KAGOME_GENERATOR",
     "MENGER_SPONGE_GENERATOR",
+    "RANDOM_GRAPH_GENERATOR",
     "RING_GENERATOR",
     "SIERPINSKI_CARPET_GENERATOR",
     "SIERPINSKI_GASKET_GENERATOR",
@@ -96,6 +108,7 @@ __all__ = [
     "irregular_cluster",
     "kagome",
     "menger_sponge",
+    "random_graph",
     "ring",
     "sierpinski_carpet",
     "sierpinski_gasket",
