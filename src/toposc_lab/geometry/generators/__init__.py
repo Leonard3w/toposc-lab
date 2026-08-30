@@ -10,6 +10,7 @@ from toposc_lab.geometry.generators.protocol import (
 )
 from toposc_lab.geometry.generators.ring import ring
 from toposc_lab.geometry.generators.square import square
+from toposc_lab.geometry.generators.triangular import triangular
 
 CHAIN_GENERATOR = FunctionGeometryGenerator(key="chain", builder=chain)
 IRREGULAR_CLUSTER_GENERATOR = FunctionGeometryGenerator(
@@ -18,6 +19,10 @@ IRREGULAR_CLUSTER_GENERATOR = FunctionGeometryGenerator(
 )
 RING_GENERATOR = FunctionGeometryGenerator(key="ring", builder=ring)
 SQUARE_GENERATOR = FunctionGeometryGenerator(key="square", builder=square)
+TRIANGULAR_GENERATOR = FunctionGeometryGenerator(
+    key="triangular",
+    builder=triangular,
+)
 
 BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
     (
@@ -25,6 +30,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
         IRREGULAR_CLUSTER_GENERATOR,
         RING_GENERATOR,
         SQUARE_GENERATOR,
+        TRIANGULAR_GENERATOR,
     )
 )
 
@@ -38,8 +44,10 @@ __all__ = [
     "IRREGULAR_CLUSTER_GENERATOR",
     "RING_GENERATOR",
     "SQUARE_GENERATOR",
+    "TRIANGULAR_GENERATOR",
     "chain",
     "irregular_cluster",
     "ring",
     "square",
+    "triangular",
 ]

@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-from numbers import Integral, Real
-
 import numpy as np
 
 from toposc_lab.geometry.base import Geometry, GeometryEdge
+from toposc_lab.geometry.generators._validation import (
+    validate_axis_size,
+    validate_boundary,
+    validate_spacing,
+)
 
 
 def square(
@@ -21,11 +24,11 @@ def square(
     explicit local displacement vectors, so their geometric length remains
     ``spacing`` instead of spanning the full coordinate extent.
     """
-    n_x = _validate_size(n_x, name="n_x")
-    n_y = _validate_size(n_y, name="n_y")
-    spacing = _validate_spacing(spacing)
-    boundary_x = _validate_boundary(boundary_x, name="boundary_x")
-    boundary_y = _validate_boundary(boundary_y, name="boundary_y")
+    n_x = validate_axis_size(n_x, name="n_x", geometry_name="square lattice")
+    n_y = validate_axis_size(n_y, name="n_y", geometry_name="square lattice")
+    spacing = validate_spacing(spacing)
+    boundary_x = validate_boundary(boundary_x, name="boundary_x")
+    boundary_y = validate_boundary(boundary_y, name="boundary_y")
 
     def site_index(x: int, y: int) -> int:
         return x * n_y + y
@@ -102,27 +105,3 @@ def square(
             "spacing": spacing,
         },
     )
-
-
-def _validate_size(value: int, *, name: str) -> int:
-    if isinstance(value, bool) or not isinstance(value, Integral):
-        raise TypeError(f"{name} must be an integer")
-    value = int(value)
-    if value < 2:
-        raise ValueError(f"{name} must be at least two for a square lattice")
-    return value
-
-
-def _validate_spacing(spacing: float) -> float:
-    if isinstance(spacing, bool) or not isinstance(spacing, Real):
-        raise TypeError("spacing must be a real number")
-    spacing = float(spacing)
-    if not np.isfinite(spacing) or spacing <= 0.0:
-        raise ValueError("spacing must be finite and positive")
-    return spacing
-
-
-def _validate_boundary(boundary: str, *, name: str) -> str:
-    if boundary not in ("open", "periodic"):
-        raise ValueError(f"{name} must be either open or periodic")
-    return boundary

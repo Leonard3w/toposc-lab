@@ -7,6 +7,7 @@ from toposc_lab.geometry.generators import (
     IRREGULAR_CLUSTER_GENERATOR,
     RING_GENERATOR,
     SQUARE_GENERATOR,
+    TRIANGULAR_GENERATOR,
     FunctionGeometryGenerator,
     GeometryGenerationRequest,
     GeometryGenerator,
@@ -15,6 +16,7 @@ from toposc_lab.geometry.generators import (
     irregular_cluster,
     ring,
     square,
+    triangular,
 )
 
 __all__ = [
@@ -29,8 +31,10 @@ __all__ = [
     "IRREGULAR_CLUSTER_GENERATOR",
     "RING_GENERATOR",
     "SQUARE_GENERATOR",
+    "TRIANGULAR_GENERATOR",
     "chain",
     "irregular_cluster",
     "ring",
     "square",
+    "triangular",
 ]
