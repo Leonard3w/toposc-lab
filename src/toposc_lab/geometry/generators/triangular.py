@@ -9,6 +9,7 @@ from toposc_lab.geometry.generators._validation import (
     resolve_axis_index,
     validate_axis_size,
     validate_boundary,
+    validate_periodic_axis_size,
     validate_spacing,
 )
 
@@ -45,8 +46,18 @@ def triangular(
     spacing = validate_spacing(spacing)
     boundary_x = validate_boundary(boundary_x, name="boundary_x")
     boundary_y = validate_boundary(boundary_y, name="boundary_y")
-    _validate_periodic_axis(n_x, boundary_x, name="n_x")
-    _validate_periodic_axis(n_y, boundary_y, name="n_y")
+    validate_periodic_axis_size(
+        n_x,
+        boundary_x,
+        name="n_x",
+        geometry_name="triangular lattice",
+    )
+    validate_periodic_axis_size(
+        n_y,
+        boundary_y,
+        name="n_y",
+        geometry_name="triangular lattice",
+    )
 
     height = np.sqrt(3.0) * spacing / 2.0
     primitive_x = (spacing, 0.0)
@@ -127,8 +138,3 @@ def triangular(
             "primitive_vectors": (primitive_x, primitive_y),
         },
     )
-
-
-def _validate_periodic_axis(size: int, boundary: str, *, name: str) -> None:
-    if boundary == "periodic" and size < 3:
-        raise ValueError(f"{name} must be at least three for a periodic triangular lattice")

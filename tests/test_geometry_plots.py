@@ -7,7 +7,7 @@ matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 
-from toposc_lab.geometry import Geometry, GeometryEdge, chain, irregular_cluster, square
+from toposc_lab.geometry import Geometry, GeometryEdge, chain, cubic, irregular_cluster, square
 from toposc_lab.visualization import plot_geometry
 
 
@@ -83,6 +83,19 @@ def test_plot_geometry_reuses_provided_axes() -> None:
     assert returned_figure is figure
     assert returned_axes is axes
     assert axes.get_title() == "Custom title"
+
+    plt.close(figure)
+
+
+def test_plot_geometry_projects_three_dimensional_coordinates_to_xy() -> None:
+    geometry = cubic(2, 2, 2)
+    figure, axes = plot_geometry(geometry, show=False)
+    positions = np.asarray(axes.collections[0].get_offsets(), dtype=float)
+
+    assert geometry.coordinates is not None
+    assert np.array_equal(positions, geometry.coordinates[:, :2])
+    assert axes.get_xlabel() == "x"
+    assert axes.get_ylabel() == "y"
 
     plt.close(figure)
 

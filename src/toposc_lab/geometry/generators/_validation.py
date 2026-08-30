@@ -39,6 +39,20 @@ def validate_boundary(boundary: str, *, name: str) -> str:
     return boundary
 
 
+def validate_periodic_axis_size(
+    size: int,
+    boundary: str,
+    *,
+    name: str,
+    geometry_name: str,
+) -> None:
+    """Reject periodic axes that require parallel edges in a simple graph."""
+    if boundary == "periodic" and size < 3:
+        raise ValueError(
+            f"{name} must be at least three for a periodic {geometry_name}"
+        )
+
+
 def resolve_axis_index(
     index: int,
     *,

@@ -4,6 +4,7 @@ from toposc_lab.geometry.base import Geometry, GeometryEdge
 from toposc_lab.geometry.generators import (
     BUILTIN_GEOMETRY_GENERATORS,
     CHAIN_GENERATOR,
+    CUBIC_GENERATOR,
     HONEYCOMB_GENERATOR,
     IRREGULAR_CLUSTER_GENERATOR,
     KAGOME_GENERATOR,
@@ -15,6 +16,7 @@ from toposc_lab.geometry.generators import (
     GeometryGenerator,
     GeometryGeneratorRegistry,
     chain,
+    cubic,
     honeycomb,
     irregular_cluster,
     kagome,
@@ -26,6 +28,7 @@ from toposc_lab.geometry.generators import (
 __all__ = [
     "BUILTIN_GEOMETRY_GENERATORS",
     "CHAIN_GENERATOR",
+    "CUBIC_GENERATOR",
     "FunctionGeometryGenerator",
     "Geometry",
     "GeometryEdge",
@@ -39,6 +42,7 @@ __all__ = [
     "SQUARE_GENERATOR",
     "TRIANGULAR_GENERATOR",
     "chain",
+    "cubic",
     "honeycomb",
     "irregular_cluster",
     "kagome",

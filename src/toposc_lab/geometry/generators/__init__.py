@@ -1,6 +1,7 @@
 """Generators for model-independent discrete geometries."""
 
 from toposc_lab.geometry.generators.chain import chain
+from toposc_lab.geometry.generators.cubic import cubic
 from toposc_lab.geometry.generators.honeycomb import honeycomb
 from toposc_lab.geometry.generators.irregular import irregular_cluster
 from toposc_lab.geometry.generators.kagome import kagome
@@ -15,6 +16,7 @@ from toposc_lab.geometry.generators.square import square
 from toposc_lab.geometry.generators.triangular import triangular
 
 CHAIN_GENERATOR = FunctionGeometryGenerator(key="chain", builder=chain)
+CUBIC_GENERATOR = FunctionGeometryGenerator(key="cubic", builder=cubic)
 HONEYCOMB_GENERATOR = FunctionGeometryGenerator(key="honeycomb", builder=honeycomb)
 IRREGULAR_CLUSTER_GENERATOR = FunctionGeometryGenerator(
     key="irregular_cluster",
@@ -31,6 +33,7 @@ TRIANGULAR_GENERATOR = FunctionGeometryGenerator(
 BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
     (
         CHAIN_GENERATOR,
+        CUBIC_GENERATOR,
         HONEYCOMB_GENERATOR,
         IRREGULAR_CLUSTER_GENERATOR,
         KAGOME_GENERATOR,
@@ -43,6 +46,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
 __all__ = [
     "BUILTIN_GEOMETRY_GENERATORS",
     "CHAIN_GENERATOR",
+    "CUBIC_GENERATOR",
     "FunctionGeometryGenerator",
     "GeometryGenerationRequest",
     "GeometryGenerator",
@@ -54,6 +58,7 @@ __all__ = [
     "SQUARE_GENERATOR",
     "TRIANGULAR_GENERATOR",
     "chain",
+    "cubic",
     "honeycomb",
     "irregular_cluster",
     "kagome",
