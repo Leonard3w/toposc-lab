@@ -6,6 +6,7 @@ import numpy as np
 
 from toposc_lab.geometry.base import Geometry, GeometryEdge
 from toposc_lab.geometry.generators._validation import (
+    resolve_axis_index,
     validate_axis_size,
     validate_boundary,
     validate_spacing,
@@ -75,27 +76,27 @@ def triangular(
         for y in range(n_y):
             source = site_index(x, y)
             for delta_x, delta_y, displacement in directions:
-                target_x = x + delta_x
-                target_y = y + delta_y
-                boundary_crossing = False
-
-                if not 0 <= target_x < n_x:
-                    if boundary_x == "open":
-                        continue
-                    target_x %= n_x
-                    boundary_crossing = True
-                if not 0 <= target_y < n_y:
-                    if boundary_y == "open":
-                        continue
-                    target_y %= n_y
-                    boundary_crossing = True
+                resolved_x = resolve_axis_index(
+                    x + delta_x,
+                    size=n_x,
+                    boundary=boundary_x,
+                )
+                resolved_y = resolve_axis_index(
+                    y + delta_y,
+                    size=n_y,
+                    boundary=boundary_y,
+                )
+                if resolved_x is None or resolved_y is None:
+                    continue
+                target_x, crossed_x = resolved_x
+                target_y, crossed_y = resolved_y
 
                 edges.append(
                     GeometryEdge(
                         source,
                         site_index(target_x, target_y),
                         edge_type="nearest_neighbor",
-                        boundary_crossing=boundary_crossing,
+                        boundary_crossing=crossed_x or crossed_y,
                         displacement=displacement,
                         metadata={
                             "lattice_direction": (delta_x, delta_y),

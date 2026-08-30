@@ -1,4 +1,4 @@
-"""Two-dimensional honeycomb-lattice geometry generator."""
+"""Two-dimensional Kagome-lattice geometry generator."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ from toposc_lab.geometry.generators._validation import (
 )
 
 
-def honeycomb(
+def kagome(
     n_x: int,
     n_y: int,
     *,
@@ -21,63 +21,68 @@ def honeycomb(
     boundary_x: str = "open",
     boundary_y: str = "open",
 ) -> Geometry:
-    """Create a honeycomb lattice with two sites per unit cell.
+    """Create a Kagome lattice with three sites per triangular unit cell.
 
-    Site indices are cell-major with sublattice A before B. For cell ``(x, y)``,
-    A has index ``2 * (x * n_y + y)`` and B has the following index. Every A
-    site connects to B in the same cell and to B in the previous x and y cells.
-    Explicit edge displacements preserve the nearest-neighbor distance across
-    periodic boundaries.
+    Site indices are cell-major with sublattices A, B, and C. The chosen basis
+    is the midpoint representation of the three honeycomb bonds anchored at one
+    A site. Consequently, the fully periodic graph is exactly the line graph of
+    a fully periodic honeycomb lattice with the same number of unit cells.
     """
     n_x = validate_axis_size(
         n_x,
         name="n_x",
-        geometry_name="honeycomb lattice",
+        geometry_name="Kagome lattice",
     )
     n_y = validate_axis_size(
         n_y,
         name="n_y",
-        geometry_name="honeycomb lattice",
+        geometry_name="Kagome lattice",
     )
     spacing = validate_spacing(spacing)
     boundary_x = validate_boundary(boundary_x, name="boundary_x")
     boundary_y = validate_boundary(boundary_y, name="boundary_y")
 
-    sqrt_three = np.sqrt(3.0)
-    primitive_x = (sqrt_three * spacing, 0.0)
-    primitive_y = (sqrt_three * spacing / 2.0, 1.5 * spacing)
-    sublattice_offset = (sqrt_three * spacing / 2.0, 0.5 * spacing)
+    height = np.sqrt(3.0) * spacing / 2.0
+    primitive_x = (2.0 * spacing, 0.0)
+    primitive_y = (spacing, 2.0 * height)
+    basis_offsets = (
+        (spacing, height),
+        (0.0, height),
+        (spacing / 2.0, 0.0),
+    )
 
     def site_index(x: int, y: int, sublattice_index: int) -> int:
-        return 2 * (x * n_y + y) + sublattice_index
+        return 3 * (x * n_y + y) + sublattice_index
 
     coordinates = np.asarray(
         [
             (
                 x * primitive_x[0]
                 + y * primitive_y[0]
-                + sublattice_index * sublattice_offset[0],
+                + basis_offsets[sublattice_index][0],
                 x * primitive_x[1]
                 + y * primitive_y[1]
-                + sublattice_index * sublattice_offset[1],
+                + basis_offsets[sublattice_index][1],
             )
             for x in range(n_x)
             for y in range(n_y)
-            for sublattice_index in (0, 1)
+            for sublattice_index in (0, 1, 2)
         ],
         dtype=float,
     )
 
-    neighbor_cells = (
-        (0, 0),
-        (-1, 0),
-        (0, -1),
+    bonds = (
+        (0, 1, 0, 0),
+        (0, 2, 0, 0),
+        (1, 2, 0, 0),
+        (0, 1, 1, 0),
+        (0, 2, 0, 1),
+        (1, 2, -1, 1),
     )
     edges: list[GeometryEdge] = []
     for x in range(n_x):
         for y in range(n_y):
-            source = site_index(x, y, 0)
-            for delta_x, delta_y in neighbor_cells:
+            for source_type, target_type, delta_x, delta_y in bonds:
                 resolved_x = resolve_axis_index(
                     x + delta_x,
                     size=n_x,
@@ -96,15 +101,17 @@ def honeycomb(
                 displacement = (
                     delta_x * primitive_x[0]
                     + delta_y * primitive_y[0]
-                    + sublattice_offset[0],
+                    + basis_offsets[target_type][0]
+                    - basis_offsets[source_type][0],
                     delta_x * primitive_x[1]
                     + delta_y * primitive_y[1]
-                    + sublattice_offset[1],
+                    + basis_offsets[target_type][1]
+                    - basis_offsets[source_type][1],
                 )
                 edges.append(
                     GeometryEdge(
-                        source,
-                        site_index(target_x, target_y, 1),
+                        site_index(x, y, source_type),
+                        site_index(target_x, target_y, target_type),
                         edge_type="nearest_neighbor",
                         boundary_crossing=crossed_x or crossed_y,
                         displacement=displacement,
@@ -114,32 +121,33 @@ def honeycomb(
                     )
                 )
 
-    degrees = [0] * (2 * n_x * n_y)
+    degrees = [0] * (3 * n_x * n_y)
     for edge in edges:
         degrees[edge.source] += 1
         degrees[edge.target] += 1
     boundary_sites = frozenset(
-        site for site, degree in enumerate(degrees) if degree < 3
+        site for site, degree in enumerate(degrees) if degree < 4
     )
 
     return Geometry(
-        n_sites=2 * n_x * n_y,
+        n_sites=3 * n_x * n_y,
         edges=tuple(edges),
         coordinates=coordinates,
         boundary_sites=boundary_sites,
         site_types=tuple(
-            "A" if site % 2 == 0 else "B"
-            for site in range(2 * n_x * n_y)
+            ("A", "B", "C")[site % 3]
+            for site in range(3 * n_x * n_y)
         ),
         metadata={
-            "generator": "honeycomb",
+            "generator": "kagome",
             "shape": (n_x, n_y),
-            "sites_per_cell": 2,
+            "sites_per_cell": 3,
             "boundary_x": boundary_x,
             "boundary_y": boundary_y,
             "intrinsic_dimension": 2,
             "spacing": spacing,
             "primitive_vectors": (primitive_x, primitive_y),
-            "sublattice_offset": sublattice_offset,
+            "basis_offsets": basis_offsets,
+            "construction": "honeycomb_line_graph",
         },
     )

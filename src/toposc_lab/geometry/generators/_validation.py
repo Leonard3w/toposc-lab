@@ -37,3 +37,17 @@ def validate_boundary(boundary: str, *, name: str) -> str:
     if boundary not in ("open", "periodic"):
         raise ValueError(f"{name} must be either open or periodic")
     return boundary
+
+
+def resolve_axis_index(
+    index: int,
+    *,
+    size: int,
+    boundary: str,
+) -> tuple[int, bool] | None:
+    """Resolve an axis index and report whether it crossed a periodic boundary."""
+    if 0 <= index < size:
+        return index, False
+    if boundary == "open":
+        return None
+    return index % size, True
