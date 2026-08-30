@@ -8,6 +8,7 @@ from toposc_lab.geometry.base import (
     GeometryDimensionKind,
     GeometryDimensionScope,
     GeometryEdge,
+    RootedTreeStructure,
 )
 from toposc_lab.geometry.generators import (
     BODY_CENTERED_CUBIC_GENERATOR,
@@ -32,6 +33,7 @@ from toposc_lab.geometry.generators import (
     SIERPINSKI_GASKET_GENERATOR,
     SMALL_WORLD_NETWORK_GENERATOR,
     SQUARE_GENERATOR,
+    TREE_GENERATOR,
     TRIANGULAR_GENERATOR,
     FunctionGeometryGenerator,
     GeometryGenerationRequest,
@@ -52,6 +54,7 @@ from toposc_lab.geometry.generators import (
     sierpinski_gasket,
     small_world_network,
     square,
+    tree,
     triangular,
 )
 
@@ -77,6 +80,7 @@ __all__ = [
     "GeometryGenerationRequest",
     "GeometryGenerator",
     "GeometryGeneratorRegistry",
+    "RootedTreeStructure",
     "HONEYCOMB_GENERATOR",
     "IRREGULAR_CLUSTER_GENERATOR",
     "KAGOME_GENERATOR",
@@ -89,6 +93,7 @@ __all__ = [
     "SIERPINSKI_GASKET_GENERATOR",
     "SMALL_WORLD_NETWORK_GENERATOR",
     "SQUARE_GENERATOR",
+    "TREE_GENERATOR",
     "TRIANGULAR_GENERATOR",
     "body_centered_cubic",
     "chain",
@@ -105,5 +110,6 @@ __all__ = [
     "sierpinski_gasket",
     "small_world_network",
     "square",
+    "tree",
     "triangular",
 ]

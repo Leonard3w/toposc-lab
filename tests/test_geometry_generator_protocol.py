@@ -38,6 +38,7 @@ def test_builtin_generators_implement_common_protocol_in_stable_order() -> None:
         "sierpinski_gasket",
         "small_world_network",
         "square",
+        "tree",
         "triangular",
     )
     assert all(isinstance(generator, GeometryGenerator) for generator in generators)

@@ -111,6 +111,107 @@ class GeometryBoundaryComponent:
 
 
 @dataclass(frozen=True, slots=True)
+class RootedTreeStructure:
+    """Validated rooted hierarchy associated with a tree geometry."""
+
+    root_site: int
+    parents: tuple[int | None, ...]
+    _children: tuple[tuple[int, ...], ...] = field(init=False, repr=False)
+    _depths: tuple[int, ...] = field(init=False, repr=False)
+
+    def __post_init__(self) -> None:
+        parents = tuple(self.parents)
+        if not parents:
+            raise ValueError("rooted tree parents must contain at least one site")
+        root_site = _as_integer(self.root_site, name="root site")
+        if not 0 <= root_site < len(parents):
+            raise ValueError("root site is outside the rooted tree")
+
+        normalized_parents: list[int | None] = []
+        for site, parent in enumerate(parents):
+            if parent is None:
+                if site != root_site:
+                    raise ValueError("only the root site may have no parent")
+                normalized_parents.append(None)
+                continue
+            normalized_parent = _as_integer(parent, name="tree parent")
+            if not 0 <= normalized_parent < len(parents):
+                raise ValueError("tree parent is outside the rooted tree")
+            if normalized_parent == site:
+                raise ValueError("a tree site cannot be its own parent")
+            normalized_parents.append(normalized_parent)
+        if normalized_parents[root_site] is not None:
+            raise ValueError("root site must have no parent")
+
+        children: list[list[int]] = [[] for _ in parents]
+        for site, parent in enumerate(normalized_parents):
+            if parent is not None:
+                children[parent].append(site)
+
+        depths: list[int] = [-1] * len(parents)
+        depths[root_site] = 0
+        for site in range(len(parents)):
+            if depths[site] >= 0:
+                continue
+            current = site
+            path: list[int] = []
+            path_positions: dict[int, int] = {}
+            while depths[current] < 0:
+                if current in path_positions:
+                    raise ValueError("rooted tree parents contain a cycle")
+                path_positions[current] = len(path)
+                path.append(current)
+                parent = normalized_parents[current]
+                if parent is None:
+                    raise ValueError("tree site does not descend from the root")
+                current = parent
+
+            depth = depths[current]
+            for path_site in reversed(path):
+                depth += 1
+                depths[path_site] = depth
+
+        object.__setattr__(self, "root_site", root_site)
+        object.__setattr__(self, "parents", tuple(normalized_parents))
+        object.__setattr__(
+            self,
+            "_children",
+            tuple(tuple(site_children) for site_children in children),
+        )
+        object.__setattr__(self, "_depths", tuple(depths))
+
+    @property
+    def n_sites(self) -> int:
+        """Number of sites in the hierarchy."""
+        return len(self.parents)
+
+    @property
+    def leaf_sites(self) -> frozenset[int]:
+        """Sites with no children, including a singleton root."""
+        return frozenset(
+            site for site, children in enumerate(self._children) if not children
+        )
+
+    def parent(self, site: int) -> int | None:
+        """Return the parent of ``site`` or ``None`` for the root."""
+        return self.parents[self._validated_site(site)]
+
+    def children(self, site: int) -> tuple[int, ...]:
+        """Return children of ``site`` in ascending site order."""
+        return self._children[self._validated_site(site)]
+
+    def depth(self, site: int) -> int:
+        """Return the number of parent edges from the root to ``site``."""
+        return self._depths[self._validated_site(site)]
+
+    def _validated_site(self, site: int) -> int:
+        result = _as_integer(site, name="site")
+        if not 0 <= result < self.n_sites:
+            raise ValueError(f"site {result} is outside the rooted tree")
+        return result
+
+
+@dataclass(frozen=True, slots=True)
 class GeometryEdge:
     """An undirected edge with a fixed source-to-target orientation.
 
@@ -174,6 +275,7 @@ class Geometry:
     boundary_components: tuple[GeometryBoundaryComponent, ...] = ()
     site_types: tuple[str | None, ...] | None = None
     dimension_records: tuple[GeometryDimension, ...] = ()
+    rooted_tree: RootedTreeStructure | None = None
     metadata: Mapping[str, Any] = field(default_factory=dict)
     _neighbors: tuple[tuple[int, ...], ...] = field(init=False, repr=False)
     _edge_lookup: Mapping[tuple[int, int], GeometryEdge] = field(init=False, repr=False)
@@ -262,6 +364,13 @@ class Geometry:
         if len(set(dimension_keys)) != len(dimension_keys):
             raise ValueError("dimension_records must not contain duplicate records")
 
+        rooted_tree = self.rooted_tree
+        if rooted_tree is not None:
+            if not isinstance(rooted_tree, RootedTreeStructure):
+                raise TypeError("rooted_tree must be a RootedTreeStructure or None")
+            if rooted_tree.n_sites != n_sites:
+                raise ValueError("rooted_tree must contain one parent per geometry site")
+
         neighbor_sets: list[set[int]] = [set() for _ in range(n_sites)]
         edge_lookup: dict[tuple[int, int], GeometryEdge] = {}
         for edge in edges:
@@ -274,6 +383,17 @@ class Geometry:
             neighbor_sets[edge.source].add(edge.target)
             neighbor_sets[edge.target].add(edge.source)
 
+        if rooted_tree is not None:
+            rooted_edge_keys = {
+                self._edge_key(site, parent)
+                for site, parent in enumerate(rooted_tree.parents)
+                if parent is not None
+            }
+            if set(edge_lookup) != rooted_edge_keys:
+                raise ValueError(
+                    "geometry edges must exactly match rooted_tree parent edges"
+                )
+
         object.__setattr__(self, "n_sites", n_sites)
         object.__setattr__(self, "edges", edges)
         object.__setattr__(self, "coordinates", coordinates)
@@ -282,6 +402,7 @@ class Geometry:
         object.__setattr__(self, "boundary_components", boundary_components)
         object.__setattr__(self, "site_types", site_types)
         object.__setattr__(self, "dimension_records", dimension_records)
+        object.__setattr__(self, "rooted_tree", rooted_tree)
         object.__setattr__(self, "metadata", _freeze_mapping(self.metadata))
         object.__setattr__(
             self,

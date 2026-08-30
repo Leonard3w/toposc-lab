@@ -38,6 +38,7 @@ from toposc_lab.geometry.generators.small_world import (
 )
 from toposc_lab.geometry.generators.square import square
 from toposc_lab.geometry.generators.triangular import triangular
+from toposc_lab.geometry.generators.tree import tree
 
 BODY_CENTERED_CUBIC_GENERATOR = FunctionGeometryGenerator(
     key="body_centered_cubic",
@@ -85,6 +86,7 @@ SMALL_WORLD_NETWORK_GENERATOR = FunctionGeometryGenerator(
     stochastic=True,
 )
 SQUARE_GENERATOR = FunctionGeometryGenerator(key="square", builder=square)
+TREE_GENERATOR = FunctionGeometryGenerator(key="tree", builder=tree)
 TRIANGULAR_GENERATOR = FunctionGeometryGenerator(
     key="triangular",
     builder=triangular,
@@ -107,6 +109,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
         SIERPINSKI_GASKET_GENERATOR,
         SMALL_WORLD_NETWORK_GENERATOR,
         SQUARE_GENERATOR,
+        TREE_GENERATOR,
         TRIANGULAR_GENERATOR,
     )
 )
@@ -138,6 +141,7 @@ __all__ = [
     "SIERPINSKI_GASKET_GENERATOR",
     "SMALL_WORLD_NETWORK_GENERATOR",
     "SQUARE_GENERATOR",
+    "TREE_GENERATOR",
     "TRIANGULAR_GENERATOR",
     "body_centered_cubic",
     "chain",
@@ -154,5 +158,6 @@ __all__ = [
     "sierpinski_gasket",
     "small_world_network",
     "square",
+    "tree",
     "triangular",
 ]
