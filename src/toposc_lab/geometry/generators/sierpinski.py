@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from numbers import Integral
-
 import numpy as np
 
 from toposc_lab.geometry.base import Geometry, GeometryDimension, GeometryEdge
-from toposc_lab.geometry.generators._validation import validate_spacing
+from toposc_lab.geometry.generators._validation import (
+    validate_recursion_order,
+    validate_spacing,
+)
 
 _LatticePoint = tuple[int, int]
 _LatticeEdge = tuple[_LatticePoint, _LatticePoint]
@@ -24,11 +25,7 @@ def sierpinski_gasket(
     copies of the previous graph at their corner sites. ``spacing`` is the
     smallest edge length; the outer side length is ``2**order * spacing``.
     """
-    if isinstance(order, bool) or not isinstance(order, Integral):
-        raise TypeError("order must be an integer")
-    order = int(order)
-    if order < 0:
-        raise ValueError("order must be nonnegative")
+    order = validate_recursion_order(order)
     spacing = validate_spacing(spacing)
 
     points: set[_LatticePoint] = {(0, 0), (1, 0), (0, 1)}

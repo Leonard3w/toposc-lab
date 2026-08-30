@@ -22,6 +22,7 @@ GeometryDimensionScope: TypeAlias = Literal[
     "finite_geometry",
     "infinite_family",
 ]
+GeometryBoundaryKind: TypeAlias = Literal["outer", "hole"]
 _DIMENSION_KINDS = (
     "lattice",
     "topological",
@@ -31,6 +32,7 @@ _DIMENSION_KINDS = (
     "walk",
 )
 _DIMENSION_SCOPES = ("finite_geometry", "infinite_family")
+_BOUNDARY_KINDS = ("outer", "hole")
 
 
 def _as_integer(value: object, *, name: str) -> int:
@@ -72,6 +74,40 @@ class GeometryDimension:
 
         object.__setattr__(self, "value", value)
         object.__setattr__(self, "method", self.method.strip())
+
+
+@dataclass(frozen=True, slots=True)
+class GeometryBoundaryComponent:
+    """Sites adjacent to one geometrically distinct boundary component.
+
+    Components may overlap at a site. This is useful for discrete fractals,
+    where one retained cell can touch more than one distinct hole. The
+    aggregate set remains available as ``Geometry.boundary_sites``. The sites
+    need not induce a connected subgraph: cell centers bordering consecutive
+    sides of a hole can meet only diagonally.
+    """
+
+    kind: GeometryBoundaryKind
+    component_index: int
+    sites: frozenset[int]
+
+    def __post_init__(self) -> None:
+        if self.kind not in _BOUNDARY_KINDS:
+            raise ValueError(f"unsupported geometry boundary kind: {self.kind!r}")
+        component_index = _as_integer(
+            self.component_index,
+            name="boundary component index",
+        )
+        if component_index < 0:
+            raise ValueError("boundary component index must be nonnegative")
+        sites = frozenset(
+            _as_integer(site, name="boundary component site") for site in self.sites
+        )
+        if not sites:
+            raise ValueError("boundary component sites must not be empty")
+
+        object.__setattr__(self, "component_index", component_index)
+        object.__setattr__(self, "sites", sites)
 
 
 @dataclass(frozen=True, slots=True)
@@ -135,6 +171,7 @@ class Geometry:
     coordinates: NDArray[np.float64] | None = None
     embedding_dimension: int | None = None
     boundary_sites: frozenset[int] = frozenset()
+    boundary_components: tuple[GeometryBoundaryComponent, ...] = ()
     site_types: tuple[str | None, ...] | None = None
     dimension_records: tuple[GeometryDimension, ...] = ()
     metadata: Mapping[str, Any] = field(default_factory=dict)
@@ -177,6 +214,33 @@ class Geometry:
         for site in boundary_sites:
             self._validate_site_for_size(site, n_sites)
 
+        boundary_components = tuple(self.boundary_components)
+        if not all(
+            isinstance(component, GeometryBoundaryComponent)
+            for component in boundary_components
+        ):
+            raise TypeError(
+                "boundary_components must contain only "
+                "GeometryBoundaryComponent instances"
+            )
+        component_keys = tuple(
+            (component.kind, component.component_index)
+            for component in boundary_components
+        )
+        if len(set(component_keys)) != len(component_keys):
+            raise ValueError("boundary_components must have unique kind/index pairs")
+        component_sites = frozenset(
+            site
+            for component in boundary_components
+            for site in component.sites
+        )
+        for site in component_sites:
+            self._validate_site_for_size(site, n_sites)
+        if boundary_components and component_sites != boundary_sites:
+            raise ValueError(
+                "boundary_sites must equal the union of boundary component sites"
+            )
+
         site_types = None if self.site_types is None else tuple(self.site_types)
         if site_types is not None:
             if len(site_types) != n_sites:
@@ -215,6 +279,7 @@ class Geometry:
         object.__setattr__(self, "coordinates", coordinates)
         object.__setattr__(self, "embedding_dimension", dimension)
         object.__setattr__(self, "boundary_sites", boundary_sites)
+        object.__setattr__(self, "boundary_components", boundary_components)
         object.__setattr__(self, "site_types", site_types)
         object.__setattr__(self, "dimension_records", dimension_records)
         object.__setattr__(self, "metadata", _freeze_mapping(self.metadata))

@@ -1,10 +1,20 @@
-"""Shared validation helpers for regular geometry generators."""
+"""Shared validation helpers for geometry generators."""
 
 from __future__ import annotations
 
 from numbers import Integral, Real
 
 import numpy as np
+
+
+def validate_recursion_order(order: int) -> int:
+    """Return a nonnegative integer recursion order."""
+    if isinstance(order, bool) or not isinstance(order, Integral):
+        raise TypeError("order must be an integer")
+    result = int(order)
+    if result < 0:
+        raise ValueError("order must be nonnegative")
+    return result
 
 
 def validate_axis_size(
