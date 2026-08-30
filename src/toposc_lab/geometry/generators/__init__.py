@@ -6,6 +6,10 @@ from toposc_lab.geometry.generators.cubic import cubic
 from toposc_lab.geometry.generators.honeycomb import honeycomb
 from toposc_lab.geometry.generators.irregular import irregular_cluster
 from toposc_lab.geometry.generators.kagome import kagome
+from toposc_lab.geometry.generators.menger_sponge import (
+    DEFAULT_MENGER_MAX_SITES,
+    menger_sponge,
+)
 from toposc_lab.geometry.generators.protocol import (
     FunctionGeometryGenerator,
     GeometryGenerationRequest,
@@ -30,6 +34,10 @@ IRREGULAR_CLUSTER_GENERATOR = FunctionGeometryGenerator(
     builder=irregular_cluster,
 )
 KAGOME_GENERATOR = FunctionGeometryGenerator(key="kagome", builder=kagome)
+MENGER_SPONGE_GENERATOR = FunctionGeometryGenerator(
+    key="menger_sponge",
+    builder=menger_sponge,
+)
 RING_GENERATOR = FunctionGeometryGenerator(key="ring", builder=ring)
 SIERPINSKI_CARPET_GENERATOR = FunctionGeometryGenerator(
     key="sierpinski_carpet",
@@ -53,6 +61,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
         HONEYCOMB_GENERATOR,
         IRREGULAR_CLUSTER_GENERATOR,
         KAGOME_GENERATOR,
+        MENGER_SPONGE_GENERATOR,
         RING_GENERATOR,
         SIERPINSKI_CARPET_GENERATOR,
         SIERPINSKI_GASKET_GENERATOR,
@@ -66,6 +75,7 @@ __all__ = [
     "BODY_CENTERED_CUBIC_GENERATOR",
     "CHAIN_GENERATOR",
     "CUBIC_GENERATOR",
+    "DEFAULT_MENGER_MAX_SITES",
     "FunctionGeometryGenerator",
     "GeometryGenerationRequest",
     "GeometryGenerator",
@@ -73,6 +83,7 @@ __all__ = [
     "HONEYCOMB_GENERATOR",
     "IRREGULAR_CLUSTER_GENERATOR",
     "KAGOME_GENERATOR",
+    "MENGER_SPONGE_GENERATOR",
     "RING_GENERATOR",
     "SIERPINSKI_CARPET_GENERATOR",
     "SIERPINSKI_GASKET_GENERATOR",
@@ -84,6 +95,7 @@ __all__ = [
     "honeycomb",
     "irregular_cluster",
     "kagome",
+    "menger_sponge",
     "ring",
     "sierpinski_carpet",
     "sierpinski_gasket",

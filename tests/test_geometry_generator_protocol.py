@@ -29,6 +29,7 @@ def test_builtin_generators_implement_common_protocol_in_stable_order() -> None:
         "honeycomb",
         "irregular_cluster",
         "kagome",
+        "menger_sponge",
         "ring",
         "sierpinski_carpet",
         "sierpinski_gasket",
