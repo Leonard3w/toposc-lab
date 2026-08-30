@@ -363,6 +363,66 @@ class LocalizationProfile:
         )
 
 
+def localization_profile_on_geometry(
+    eigenvectors: np.ndarray,
+    state_index: int,
+    basis_layout: BasisLayout,
+    geometry: Geometry,
+    *,
+    boundary_threshold: float = 0.5,
+) -> LocalizationProfile:
+    """Evaluate one eigenstate on an arbitrary discrete geometry.
+
+    Physical sites follow the geometry's canonical flat site order. Internal
+    basis components are combined with ``basis_layout``. Boundary quantities
+    use only explicitly declared ``geometry.boundary_sites``; no boundary is
+    inferred from graph degree or coordinates.
+
+    The center of mass uses the geometry's embedding coordinates in any
+    dimension. For an abstract geometry without coordinates, it is an empty
+    array, explicitly representing an unavailable spatial center.
+    """
+    if basis_layout.n_sites != geometry.n_sites:
+        raise ValueError("basis_layout and geometry must contain the same site count")
+
+    density = site_probability_density(
+        eigenvectors=eigenvectors,
+        state_index=state_index,
+        basis_layout=basis_layout,
+    )
+    probability = density.probability.reshape(geometry.n_sites)
+    component_probabilities = density.component_probabilities.reshape(
+        geometry.n_sites,
+        basis_layout.components_per_site,
+    )
+    ipr = inverse_participation_ratio(probability)
+    boundary_probability = boundary_weight_from_geometry(probability, geometry)
+    boundary_localized = is_boundary_localized_from_geometry(
+        probability,
+        geometry,
+        threshold=boundary_threshold,
+    )
+    if geometry.coordinates is None:
+        center_of_mass = np.empty(0, dtype=float)
+    else:
+        center_of_mass = np.sum(
+            geometry.coordinates * probability[:, np.newaxis],
+            axis=0,
+        )
+
+    return LocalizationProfile(
+        probability=probability,
+        component_probabilities=component_probabilities,
+        center_of_mass=center_of_mass,
+        inverse_participation_ratio=ipr,
+        participation_ratio=1.0 / ipr,
+        edge_weight=boundary_probability,
+        bulk_weight=1.0 - boundary_probability,
+        is_edge_localized=boundary_localized,
+        component_labels=density.component_labels,
+    )
+
+
 def localization_profile(
     eigenvectors: np.ndarray,
     state_index: int,

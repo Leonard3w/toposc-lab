@@ -9,6 +9,11 @@ import numpy as np
 from toposc_lab.evaluation.results import GeometryEvaluation
 from toposc_lab.observables.spectrum import count_zero_modes, spectral_gap
 
+_EIGENSTATE_EVALUATION_PENDING_WARNING = (
+    "low_energy_states were selected by energy proximity only; eigenstate "
+    "diagnostics have not been evaluated."
+)
+
 
 def evaluate_spectrum(
     eigenvalues: np.ndarray,
@@ -60,8 +65,7 @@ def evaluate_spectrum(
         "zero_mode_count uses the stated tolerance and is a numerical energy "
         "classification; it does not establish Majorana character, boundary "
         "localization, or topology.",
-        "low_energy_states were selected by energy proximity only; eigenstate "
-        "diagnostics have not been evaluated.",
+        _EIGENSTATE_EVALUATION_PENDING_WARNING,
     )
     return GeometryEvaluation(
         gap=gap,

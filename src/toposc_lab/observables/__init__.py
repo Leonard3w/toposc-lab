@@ -9,6 +9,7 @@ from toposc_lab.observables.ldos import (
     local_density_of_states_from_result,
 )
 from toposc_lab.observables.localization import (
+    LocalizationProfile,
     SiteProbabilityDensity,
     boundary_weight,
     boundary_weight_from_geometry,
@@ -16,6 +17,7 @@ from toposc_lab.observables.localization import (
     inverse_participation_ratio,
     is_boundary_localized,
     is_boundary_localized_from_geometry,
+    localization_profile_on_geometry,
     participation_ratio,
     site_probability_density,
     site_probability_density_from_result,
@@ -36,6 +38,7 @@ from toposc_lab.observables.results import (
 __all__ = [
     "BerryCurvatureResult",
     "LocalDensityOfStates",
+    "LocalizationProfile",
     "FiniteSizeSplittingDiagnostics",
     "MajoranaDiagnostics",
     "ObservableRecord",
@@ -50,6 +53,7 @@ __all__ = [
     "inverse_participation_ratio",
     "is_boundary_localized",
     "is_boundary_localized_from_geometry",
+    "localization_profile_on_geometry",
     "local_density_of_states",
     "local_density_of_states_from_result",
     "majorana_diagnostics",
