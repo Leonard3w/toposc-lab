@@ -19,11 +19,16 @@ def validate_recursion_order(order: int) -> int:
 
 def validate_graph_size(n_sites: int) -> int:
     """Return a positive integer number of graph sites."""
-    if isinstance(n_sites, bool) or not isinstance(n_sites, Integral):
-        raise TypeError("n_sites must be an integer")
-    result = int(n_sites)
+    return validate_positive_integer(n_sites, name="n_sites")
+
+
+def validate_positive_integer(value: int, *, name: str) -> int:
+    """Return a positive integer parameter."""
+    if isinstance(value, bool) or not isinstance(value, Integral):
+        raise TypeError(f"{name} must be an integer")
+    result = int(value)
     if result < 1:
-        raise ValueError("n_sites must be positive")
+        raise ValueError(f"{name} must be positive")
     return result
 
 

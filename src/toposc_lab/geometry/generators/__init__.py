@@ -20,6 +20,11 @@ from toposc_lab.geometry.generators.random_graph import (
     DEFAULT_RANDOM_GRAPH_MAX_CANDIDATE_EDGES,
     random_graph,
 )
+from toposc_lab.geometry.generators.random_regular import (
+    DEFAULT_RANDOM_REGULAR_MAX_ATTEMPTS,
+    DEFAULT_RANDOM_REGULAR_MAX_EDGES,
+    random_regular_graph,
+)
 from toposc_lab.geometry.generators.ring import ring
 from toposc_lab.geometry.generators.sierpinski import sierpinski_gasket
 from toposc_lab.geometry.generators.sierpinski_carpet import sierpinski_carpet
@@ -47,6 +52,11 @@ RANDOM_GRAPH_GENERATOR = FunctionGeometryGenerator(
     builder=random_graph,
     stochastic=True,
 )
+RANDOM_REGULAR_GRAPH_GENERATOR = FunctionGeometryGenerator(
+    key="random_regular_graph",
+    builder=random_regular_graph,
+    stochastic=True,
+)
 RING_GENERATOR = FunctionGeometryGenerator(key="ring", builder=ring)
 SIERPINSKI_CARPET_GENERATOR = FunctionGeometryGenerator(
     key="sierpinski_carpet",
@@ -72,6 +82,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
         KAGOME_GENERATOR,
         MENGER_SPONGE_GENERATOR,
         RANDOM_GRAPH_GENERATOR,
+        RANDOM_REGULAR_GRAPH_GENERATOR,
         RING_GENERATOR,
         SIERPINSKI_CARPET_GENERATOR,
         SIERPINSKI_GASKET_GENERATOR,
@@ -87,6 +98,8 @@ __all__ = [
     "CUBIC_GENERATOR",
     "DEFAULT_MENGER_MAX_SITES",
     "DEFAULT_RANDOM_GRAPH_MAX_CANDIDATE_EDGES",
+    "DEFAULT_RANDOM_REGULAR_MAX_ATTEMPTS",
+    "DEFAULT_RANDOM_REGULAR_MAX_EDGES",
     "FunctionGeometryGenerator",
     "GeometryGenerationRequest",
     "GeometryGenerator",
@@ -96,6 +109,7 @@ __all__ = [
     "KAGOME_GENERATOR",
     "MENGER_SPONGE_GENERATOR",
     "RANDOM_GRAPH_GENERATOR",
+    "RANDOM_REGULAR_GRAPH_GENERATOR",
     "RING_GENERATOR",
     "SIERPINSKI_CARPET_GENERATOR",
     "SIERPINSKI_GASKET_GENERATOR",
@@ -109,6 +123,7 @@ __all__ = [
     "kagome",
     "menger_sponge",
     "random_graph",
+    "random_regular_graph",
     "ring",
     "sierpinski_carpet",
     "sierpinski_gasket",

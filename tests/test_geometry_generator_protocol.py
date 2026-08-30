@@ -31,6 +31,7 @@ def test_builtin_generators_implement_common_protocol_in_stable_order() -> None:
         "kagome",
         "menger_sponge",
         "random_graph",
+        "random_regular_graph",
         "ring",
         "sierpinski_carpet",
         "sierpinski_gasket",
