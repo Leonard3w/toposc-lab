@@ -36,9 +36,11 @@ valid. A calling experiment that requires connectivity passes
 `report.raise_for_errors()` then provides explicit rejection through
 `GeometryValidationError`.
 
-Valid metadata consists of nested string-keyed mappings and ordered sequences
-containing `None`, booleans, strings, bytes, integers, finite real or complex
-numbers, and supported non-object NumPy arrays. Numeric arrays must be finite.
+Valid metadata consists of nested string-keyed mappings and tuples containing
+`None`, exact Python booleans, strings, bytes, integers, finite floats or
+complex numbers, typed NumPy scalars, and supported non-object NumPy arrays.
+Numeric arrays and scalars must be finite. Arbitrary numeric subclasses are not
+accepted because their type and semantics could not be reconstructed exactly.
 This typed contract preserves scientific metadata without limiting it to JSON,
 while remaining deterministic for exact serialization.
 

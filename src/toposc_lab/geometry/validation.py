@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 from dataclasses import dataclass
-from numbers import Integral, Real
+from numbers import Integral
 from typing import Any, Literal, TypeAlias
 
 import numpy as np
@@ -187,6 +187,15 @@ def _validate_structure(
         )
         if source is None or target is None:
             continue
+        if not isinstance(edge.boundary_crossing, bool):
+            issues.append(
+                GeometryValidationIssue(
+                    "invalid_boundary_crossing",
+                    "error",
+                    "boundary_crossing must be a boolean",
+                    f"{edge_path}.boundary_crossing",
+                )
+            )
         if source == target:
             issues.append(
                 GeometryValidationIssue(
@@ -605,24 +614,28 @@ def _validate_metadata_value(
             )
         )
         return
-    if value is None or isinstance(value, (bool, str, bytes, Integral)):
-        return
-    if isinstance(value, Real):
-        if not np.isfinite(float(value)):
+    if isinstance(value, np.generic):
+        if value.dtype.kind not in _SUPPORTED_ARRAY_KINDS:
+            issues.append(
+                GeometryValidationIssue(
+                    "invalid_metadata_scalar",
+                    "error",
+                    "NumPy metadata scalars must have a supported dtype",
+                    path,
+                )
+            )
+        elif value.dtype.kind in "fc" and not np.isfinite(value):
             _append_nonfinite_metadata_issue(path=path, issues=issues)
         return
-    if isinstance(value, complex):
+    if value is None or type(value) in (bool, str, bytes, int):
+        return
+    if type(value) is float:
+        if not np.isfinite(value):
+            _append_nonfinite_metadata_issue(path=path, issues=issues)
+        return
+    if type(value) is complex:
         if not np.isfinite(value.real) or not np.isfinite(value.imag):
             _append_nonfinite_metadata_issue(path=path, issues=issues)
-        return
-    if isinstance(value, np.generic):
-        _validate_metadata_value(
-            value.item(),
-            path=path,
-            active_containers=active_containers,
-            depth=depth,
-            issues=issues,
-        )
         return
     if isinstance(value, np.ndarray):
         if value.dtype.hasobject or value.dtype.kind not in _SUPPORTED_ARRAY_KINDS:
@@ -667,7 +680,7 @@ def _validate_metadata_value(
         finally:
             active_containers.remove(id(value))
         return
-    if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):
+    if isinstance(value, (list, tuple)):
         if not _enter_metadata_container(
             value,
             path=path,

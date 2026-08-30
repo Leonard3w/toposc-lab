@@ -236,6 +236,8 @@ class GeometryEdge:
 
         if self.edge_type is not None and not isinstance(self.edge_type, str):
             raise TypeError("edge_type must be a string or None")
+        if not isinstance(self.boundary_crossing, bool):
+            raise TypeError("boundary_crossing must be a boolean")
 
         displacement: tuple[float, ...] | None = None
         if self.displacement is not None:

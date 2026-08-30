@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from fractions import Fraction
 from types import MappingProxyType
 from typing import Any
 
@@ -339,6 +340,25 @@ def test_unsupported_metadata_values_are_invalid(bad_value: object) -> None:
 
     codes = _issue_codes(geometry)
     assert {"invalid_metadata_type", "invalid_metadata_array"} & set(codes)
+
+
+@pytest.mark.parametrize(
+    "bad_value",
+    (
+        Fraction(1, 3),
+        range(3),
+        np.datetime64("2026-08-30"),
+    ),
+)
+def test_metadata_rejects_values_without_exact_archive_semantics(
+    bad_value: object,
+) -> None:
+    geometry = Geometry(n_sites=1, metadata={"bad": bad_value})
+
+    assert {
+        "invalid_metadata_type",
+        "invalid_metadata_scalar",
+    } & set(_issue_codes(geometry))
 
 
 def test_geometry_edge_and_face_metadata_are_both_validated() -> None:
