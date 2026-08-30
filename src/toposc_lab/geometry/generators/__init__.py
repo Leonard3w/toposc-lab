@@ -24,6 +24,12 @@ from toposc_lab.geometry.generators.fibonacci_chain import (
 )
 from toposc_lab.geometry.generators.honeycomb import honeycomb
 from toposc_lab.geometry.generators.irregular import irregular_cluster
+from toposc_lab.geometry.generators.k_nearest_neighbor import (
+    DEFAULT_K_NEAREST_MAX_EDGES,
+    DEFAULT_K_NEAREST_MAX_NEIGHBOR_SELECTIONS,
+    KNearestSymmetrization,
+    k_nearest_neighbor_graph,
+)
 from toposc_lab.geometry.generators.kagome import kagome
 from toposc_lab.geometry.generators.menger_sponge import (
     DEFAULT_MENGER_MAX_SITES,
@@ -91,6 +97,10 @@ IRREGULAR_CLUSTER_GENERATOR = FunctionGeometryGenerator(
     key="irregular_cluster",
     builder=irregular_cluster,
 )
+K_NEAREST_NEIGHBOR_GRAPH_GENERATOR = FunctionGeometryGenerator(
+    key="k_nearest_neighbor_graph",
+    builder=k_nearest_neighbor_graph,
+)
 KAGOME_GENERATOR = FunctionGeometryGenerator(key="kagome", builder=kagome)
 MENGER_SPONGE_GENERATOR = FunctionGeometryGenerator(
     key="menger_sponge",
@@ -147,6 +157,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
         FIBONACCI_CHAIN_GENERATOR,
         HONEYCOMB_GENERATOR,
         IRREGULAR_CLUSTER_GENERATOR,
+        K_NEAREST_NEIGHBOR_GRAPH_GENERATOR,
         KAGOME_GENERATOR,
         MENGER_SPONGE_GENERATOR,
         RANDOM_GRAPH_GENERATOR,
@@ -177,6 +188,8 @@ __all__ = [
     "DEFAULT_AMMANN_BEENKER_MAX_CANDIDATES",
     "DEFAULT_AMMANN_BEENKER_MAX_SITES",
     "DEFAULT_FIBONACCI_CHAIN_MAX_SITES",
+    "DEFAULT_K_NEAREST_MAX_EDGES",
+    "DEFAULT_K_NEAREST_MAX_NEIGHBOR_SELECTIONS",
     "DEFAULT_MENGER_MAX_SITES",
     "DEFAULT_RANDOM_GRAPH_MAX_CANDIDATE_EDGES",
     "DEFAULT_RANDOM_REGULAR_MAX_ATTEMPTS",
@@ -192,6 +205,8 @@ __all__ = [
     "GeometryGeneratorRegistry",
     "HONEYCOMB_GENERATOR",
     "IRREGULAR_CLUSTER_GENERATOR",
+    "KNearestSymmetrization",
+    "K_NEAREST_NEIGHBOR_GRAPH_GENERATOR",
     "KAGOME_GENERATOR",
     "MENGER_SPONGE_GENERATOR",
     "RANDOM_GRAPH_GENERATOR",
@@ -215,6 +230,7 @@ __all__ = [
     "fibonacci_chain",
     "honeycomb",
     "irregular_cluster",
+    "k_nearest_neighbor_graph",
     "kagome",
     "menger_sponge",
     "random_graph",

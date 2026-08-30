@@ -32,6 +32,7 @@ def test_builtin_generators_implement_common_protocol_in_stable_order() -> None:
         "fibonacci_chain",
         "honeycomb",
         "irregular_cluster",
+        "k_nearest_neighbor_graph",
         "kagome",
         "menger_sponge",
         "random_graph",
