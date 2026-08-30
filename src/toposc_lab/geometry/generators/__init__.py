@@ -6,6 +6,12 @@ from toposc_lab.geometry.generators.ammann_beenker import (
     DEFAULT_AMMANN_BEENKER_MAX_SITES,
     ammann_beenker_patch,
 )
+from toposc_lab.geometry.generators.artificial_rule import (
+    DEFAULT_ARTIFICIAL_RULE_MAX_APPLICATIONS,
+    DEFAULT_ARTIFICIAL_RULE_MAX_EDGES,
+    DEFAULT_ARTIFICIAL_RULE_MAX_SITES,
+    artificial_rule_graph,
+)
 from toposc_lab.geometry.generators.body_centered_cubic import body_centered_cubic
 from toposc_lab.geometry.generators.cayley_tree import (
     DEFAULT_CAYLEY_TREE_MAX_SITES,
@@ -73,6 +79,10 @@ from toposc_lab.geometry.generators.tree import tree
 AMMANN_BEENKER_PATCH_GENERATOR = FunctionGeometryGenerator(
     key="ammann_beenker_patch",
     builder=ammann_beenker_patch,
+)
+ARTIFICIAL_RULE_GRAPH_GENERATOR = FunctionGeometryGenerator(
+    key="artificial_rule_graph",
+    builder=artificial_rule_graph,
 )
 BODY_CENTERED_CUBIC_GENERATOR = FunctionGeometryGenerator(
     key="body_centered_cubic",
@@ -149,6 +159,7 @@ TRIANGULAR_GENERATOR = FunctionGeometryGenerator(
 BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
     (
         AMMANN_BEENKER_PATCH_GENERATOR,
+        ARTIFICIAL_RULE_GRAPH_GENERATOR,
         BODY_CENTERED_CUBIC_GENERATOR,
         CAYLEY_TREE_GENERATOR,
         CHAIN_GENERATOR,
@@ -177,6 +188,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
 __all__ = [
     "AMMANN_BEENKER_INFLATION_FACTOR",
     "AMMANN_BEENKER_PATCH_GENERATOR",
+    "ARTIFICIAL_RULE_GRAPH_GENERATOR",
     "BUILTIN_GEOMETRY_GENERATORS",
     "BODY_CENTERED_CUBIC_GENERATOR",
     "CAYLEY_TREE_GENERATOR",
@@ -184,6 +196,9 @@ __all__ = [
     "COORDINATE_CUTOFF_GRAPH_GENERATOR",
     "CUBIC_GENERATOR",
     "DEFAULT_CAYLEY_TREE_MAX_SITES",
+    "DEFAULT_ARTIFICIAL_RULE_MAX_APPLICATIONS",
+    "DEFAULT_ARTIFICIAL_RULE_MAX_EDGES",
+    "DEFAULT_ARTIFICIAL_RULE_MAX_SITES",
     "DEFAULT_COORDINATE_CUTOFF_MAX_EDGES",
     "DEFAULT_AMMANN_BEENKER_MAX_CANDIDATES",
     "DEFAULT_AMMANN_BEENKER_MAX_SITES",
@@ -223,6 +238,7 @@ __all__ = [
     "TRIANGULAR_GENERATOR",
     "body_centered_cubic",
     "ammann_beenker_patch",
+    "artificial_rule_graph",
     "cayley_tree",
     "chain",
     "coordinate_cutoff_graph",
