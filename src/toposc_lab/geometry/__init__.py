@@ -87,6 +87,11 @@ from toposc_lab.geometry.generators import (
     tree,
     triangular,
 )
+from toposc_lab.geometry.hashing import (
+    CANONICAL_GRAPH_HASH_ALGORITHM,
+    DEFAULT_CANONICAL_GRAPH_HASH_MAX_REFINEMENT_ROUNDS,
+    canonical_graph_hash,
+)
 from toposc_lab.geometry.serialization import (
     DEFAULT_GEOMETRY_ARCHIVE_MAX_BYTES,
     DEFAULT_GEOMETRY_ARCHIVE_MAX_MEMBERS,
@@ -114,10 +119,12 @@ __all__ = [
     "BODY_CENTERED_CUBIC_GENERATOR",
     "CAYLEY_TREE_GENERATOR",
     "BUILTIN_GEOMETRY_GENERATORS",
+    "CANONICAL_GRAPH_HASH_ALGORITHM",
     "CHAIN_GENERATOR",
     "COORDINATE_CUTOFF_GRAPH_GENERATOR",
     "CUBIC_GENERATOR",
     "DEFAULT_CAYLEY_TREE_MAX_SITES",
+    "DEFAULT_CANONICAL_GRAPH_HASH_MAX_REFINEMENT_ROUNDS",
     "DEFAULT_ARTIFICIAL_RULE_MAX_APPLICATIONS",
     "DEFAULT_ARTIFICIAL_RULE_MAX_EDGES",
     "DEFAULT_ARTIFICIAL_RULE_MAX_SITES",
@@ -180,6 +187,7 @@ __all__ = [
     "body_centered_cubic",
     "ammann_beenker_patch",
     "artificial_rule_graph",
+    "canonical_graph_hash",
     "cayley_tree",
     "chain",
     "coordinate_cutoff_graph",
