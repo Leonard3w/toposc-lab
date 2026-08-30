@@ -252,6 +252,32 @@ class GeometryEdge:
         object.__setattr__(self, "metadata", _freeze_mapping(self.metadata))
 
 
+@dataclass(frozen=True, slots=True)
+class GeometryFace:
+    """An ordered polygonal face bounded by geometry edges.
+
+    ``sites`` follows the polygon boundary in either orientation. The enclosing
+    :class:`Geometry` validates that every consecutive pair, including the
+    closing pair, has a corresponding graph edge.
+    """
+
+    sites: tuple[int, ...]
+    face_type: str | None = None
+    metadata: Mapping[str, Any] = field(default_factory=dict, compare=False, hash=False)
+
+    def __post_init__(self) -> None:
+        sites = tuple(_as_integer(site, name="face site") for site in self.sites)
+        if len(sites) < 3:
+            raise ValueError("a geometry face must contain at least three sites")
+        if len(set(sites)) != len(sites):
+            raise ValueError("a geometry face cannot repeat a site")
+        if self.face_type is not None and not isinstance(self.face_type, str):
+            raise TypeError("face_type must be a string or None")
+
+        object.__setattr__(self, "sites", sites)
+        object.__setattr__(self, "metadata", _freeze_mapping(self.metadata))
+
+
 @dataclass(frozen=True, slots=True, eq=False)
 class Geometry:
     """Model-independent representation of a finite discrete geometry.
@@ -259,7 +285,9 @@ class Geometry:
     ``Geometry`` stores a simple undirected graph. Site indices are contiguous
     integers from zero to ``n_sites - 1``. Spatial coordinates, labels, and
     boundary information are optional so the same type can represent embedded
-    lattices as well as abstract graphs.
+    lattices as well as abstract graphs. Optional ordered polygonal faces extend
+    the graph's one-skeleton into a validated cell complex when a generator has
+    meaningful plaquettes or tiles.
 
     Instances are immutable snapshots. Constructor inputs are defensively
     copied and standard mutable metadata containers are recursively frozen.
@@ -277,6 +305,7 @@ class Geometry:
     dimension_records: tuple[GeometryDimension, ...] = ()
     rooted_tree: RootedTreeStructure | None = None
     metadata: Mapping[str, Any] = field(default_factory=dict)
+    faces: tuple[GeometryFace, ...] = ()
     _neighbors: tuple[tuple[int, ...], ...] = field(init=False, repr=False)
     _edge_lookup: Mapping[tuple[int, int], GeometryEdge] = field(init=False, repr=False)
 
@@ -288,6 +317,9 @@ class Geometry:
         edges = tuple(self.edges)
         if not all(isinstance(edge, GeometryEdge) for edge in edges):
             raise TypeError("edges must contain only GeometryEdge instances")
+        faces = tuple(self.faces)
+        if not all(isinstance(face, GeometryFace) for face in faces):
+            raise TypeError("faces must contain only GeometryFace instances")
 
         dimension = self._validated_dimension()
         coordinates = self._validated_coordinates(n_sites, dimension)
@@ -383,6 +415,25 @@ class Geometry:
             neighbor_sets[edge.source].add(edge.target)
             neighbor_sets[edge.target].add(edge.source)
 
+        face_keys: set[frozenset[int]] = set()
+        for face in faces:
+            for site in face.sites:
+                self._validate_site_for_size(site, n_sites)
+            face_key = frozenset(face.sites)
+            if face_key in face_keys:
+                raise ValueError("duplicate geometry face")
+            face_keys.add(face_key)
+            boundary_pairs = zip(
+                face.sites,
+                face.sites[1:] + face.sites[:1],
+                strict=True,
+            )
+            for source, target in boundary_pairs:
+                if self._edge_key(source, target) not in edge_lookup:
+                    raise ValueError(
+                        "geometry face boundary must consist of geometry edges"
+                    )
+
         if rooted_tree is not None:
             rooted_edge_keys = {
                 self._edge_key(site, parent)
@@ -404,6 +455,7 @@ class Geometry:
         object.__setattr__(self, "dimension_records", dimension_records)
         object.__setattr__(self, "rooted_tree", rooted_tree)
         object.__setattr__(self, "metadata", _freeze_mapping(self.metadata))
+        object.__setattr__(self, "faces", faces)
         object.__setattr__(
             self,
             "_neighbors",
@@ -420,6 +472,11 @@ class Geometry:
     def n_edges(self) -> int:
         """Number of undirected edges."""
         return len(self.edges)
+
+    @property
+    def n_faces(self) -> int:
+        """Number of explicitly stored polygonal faces."""
+        return len(self.faces)
 
     @property
     def dimension(self) -> int | None:
