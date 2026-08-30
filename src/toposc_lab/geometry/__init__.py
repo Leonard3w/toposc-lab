@@ -87,6 +87,13 @@ from toposc_lab.geometry.generators import (
     tree,
     triangular,
 )
+from toposc_lab.geometry.validation import (
+    GeometryValidationError,
+    GeometryValidationIssue,
+    GeometryValidationReport,
+    GeometryValidationSeverity,
+    validate_geometry,
+)
 
 __all__ = [
     "AMMANN_BEENKER_INFLATION_FACTOR",
@@ -129,6 +136,10 @@ __all__ = [
     "GeometryGenerationRequest",
     "GeometryGenerator",
     "GeometryGeneratorRegistry",
+    "GeometryValidationError",
+    "GeometryValidationIssue",
+    "GeometryValidationReport",
+    "GeometryValidationSeverity",
     "RootedTreeStructure",
     "HONEYCOMB_GENERATOR",
     "IRREGULAR_CLUSTER_GENERATOR",
@@ -172,4 +183,5 @@ __all__ = [
     "square",
     "tree",
     "triangular",
+    "validate_geometry",
 ]

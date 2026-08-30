@@ -568,6 +568,8 @@ class Geometry:
         if self.coordinates is None:
             return None
 
+        if np.iscomplexobj(np.asarray(self.coordinates)):
+            raise ValueError("complex coordinates are not supported")
         coordinates = np.array(self.coordinates, dtype=float, copy=True)
         if coordinates.ndim != 2:
             raise ValueError("coordinates must be a two-dimensional array")
