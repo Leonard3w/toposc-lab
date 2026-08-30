@@ -41,6 +41,11 @@ from toposc_lab.geometry.generators.scale_free import (
 )
 from toposc_lab.geometry.generators.sierpinski import sierpinski_gasket
 from toposc_lab.geometry.generators.sierpinski_carpet import sierpinski_carpet
+from toposc_lab.geometry.generators.silver_mean_chain import (
+    DEFAULT_SILVER_MEAN_CHAIN_MAX_SITES,
+    SILVER_MEAN_RATIO,
+    silver_mean_chain,
+)
 from toposc_lab.geometry.generators.small_world import (
     DEFAULT_SMALL_WORLD_MAX_EDGES,
     small_world_network,
@@ -97,6 +102,10 @@ SIERPINSKI_GASKET_GENERATOR = FunctionGeometryGenerator(
     key="sierpinski_gasket",
     builder=sierpinski_gasket,
 )
+SILVER_MEAN_CHAIN_GENERATOR = FunctionGeometryGenerator(
+    key="silver_mean_chain",
+    builder=silver_mean_chain,
+)
 SMALL_WORLD_NETWORK_GENERATOR = FunctionGeometryGenerator(
     key="small_world_network",
     builder=small_world_network,
@@ -126,6 +135,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
         SCALE_FREE_GRAPH_GENERATOR,
         SIERPINSKI_CARPET_GENERATOR,
         SIERPINSKI_GASKET_GENERATOR,
+        SILVER_MEAN_CHAIN_GENERATOR,
         SMALL_WORLD_NETWORK_GENERATOR,
         SQUARE_GENERATOR,
         TREE_GENERATOR,
@@ -146,6 +156,7 @@ __all__ = [
     "DEFAULT_RANDOM_REGULAR_MAX_ATTEMPTS",
     "DEFAULT_RANDOM_REGULAR_MAX_EDGES",
     "DEFAULT_SCALE_FREE_MAX_EDGES",
+    "DEFAULT_SILVER_MEAN_CHAIN_MAX_SITES",
     "DEFAULT_SMALL_WORLD_MAX_EDGES",
     "FunctionGeometryGenerator",
     "FIBONACCI_CHAIN_GENERATOR",
@@ -163,6 +174,8 @@ __all__ = [
     "SCALE_FREE_GRAPH_GENERATOR",
     "SIERPINSKI_CARPET_GENERATOR",
     "SIERPINSKI_GASKET_GENERATOR",
+    "SILVER_MEAN_CHAIN_GENERATOR",
+    "SILVER_MEAN_RATIO",
     "SMALL_WORLD_NETWORK_GENERATOR",
     "SQUARE_GENERATOR",
     "TREE_GENERATOR",
@@ -182,6 +195,7 @@ __all__ = [
     "scale_free_graph",
     "sierpinski_carpet",
     "sierpinski_gasket",
+    "silver_mean_chain",
     "small_world_network",
     "square",
     "tree",
