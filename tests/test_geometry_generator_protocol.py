@@ -24,6 +24,7 @@ def test_builtin_generators_implement_common_protocol_in_stable_order() -> None:
 
     assert tuple(generator.key for generator in generators) == (
         "chain",
+        "honeycomb",
         "irregular_cluster",
         "ring",
         "square",
