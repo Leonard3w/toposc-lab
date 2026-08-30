@@ -12,6 +12,10 @@ from toposc_lab.geometry.generators.cayley_tree import (
     cayley_tree,
 )
 from toposc_lab.geometry.generators.chain import chain
+from toposc_lab.geometry.generators.coordinate_cutoff import (
+    DEFAULT_COORDINATE_CUTOFF_MAX_EDGES,
+    coordinate_cutoff_graph,
+)
 from toposc_lab.geometry.generators.cubic import cubic
 from toposc_lab.geometry.generators.fibonacci_chain import (
     DEFAULT_FIBONACCI_CHAIN_MAX_SITES,
@@ -73,6 +77,10 @@ CAYLEY_TREE_GENERATOR = FunctionGeometryGenerator(
     builder=cayley_tree,
 )
 CHAIN_GENERATOR = FunctionGeometryGenerator(key="chain", builder=chain)
+COORDINATE_CUTOFF_GRAPH_GENERATOR = FunctionGeometryGenerator(
+    key="coordinate_cutoff_graph",
+    builder=coordinate_cutoff_graph,
+)
 CUBIC_GENERATOR = FunctionGeometryGenerator(key="cubic", builder=cubic)
 FIBONACCI_CHAIN_GENERATOR = FunctionGeometryGenerator(
     key="fibonacci_chain",
@@ -134,6 +142,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
         BODY_CENTERED_CUBIC_GENERATOR,
         CAYLEY_TREE_GENERATOR,
         CHAIN_GENERATOR,
+        COORDINATE_CUTOFF_GRAPH_GENERATOR,
         CUBIC_GENERATOR,
         FIBONACCI_CHAIN_GENERATOR,
         HONEYCOMB_GENERATOR,
@@ -161,8 +170,10 @@ __all__ = [
     "BODY_CENTERED_CUBIC_GENERATOR",
     "CAYLEY_TREE_GENERATOR",
     "CHAIN_GENERATOR",
+    "COORDINATE_CUTOFF_GRAPH_GENERATOR",
     "CUBIC_GENERATOR",
     "DEFAULT_CAYLEY_TREE_MAX_SITES",
+    "DEFAULT_COORDINATE_CUTOFF_MAX_EDGES",
     "DEFAULT_AMMANN_BEENKER_MAX_CANDIDATES",
     "DEFAULT_AMMANN_BEENKER_MAX_SITES",
     "DEFAULT_FIBONACCI_CHAIN_MAX_SITES",
@@ -199,6 +210,7 @@ __all__ = [
     "ammann_beenker_patch",
     "cayley_tree",
     "chain",
+    "coordinate_cutoff_graph",
     "cubic",
     "fibonacci_chain",
     "honeycomb",

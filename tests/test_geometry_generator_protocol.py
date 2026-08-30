@@ -27,6 +27,7 @@ def test_builtin_generators_implement_common_protocol_in_stable_order() -> None:
         "body_centered_cubic",
         "cayley_tree",
         "chain",
+        "coordinate_cutoff_graph",
         "cubic",
         "fibonacci_chain",
         "honeycomb",
