@@ -7,6 +7,7 @@ from itertools import product
 import numpy as np
 
 from toposc_lab.geometry.base import Geometry, GeometryEdge
+from toposc_lab.geometry.generators._dimensions import regular_lattice_dimensions
 from toposc_lab.geometry.generators._validation import (
     resolve_axis_index,
     validate_axis_size,
@@ -137,6 +138,7 @@ def body_centered_cubic(
             "A" if site % 2 == 0 else "B"
             for site in range(2 * n_x * n_y * n_z)
         ),
+        dimension_records=regular_lattice_dimensions(3),
         metadata={
             "generator": "body_centered_cubic",
             "lattice_type": "bcc",
@@ -145,7 +147,6 @@ def body_centered_cubic(
             "boundary_x": boundary_x,
             "boundary_y": boundary_y,
             "boundary_z": boundary_z,
-            "intrinsic_dimension": 3,
             "spacing": spacing,
             "conventional_cell_length": cell_length,
             "cell_vectors": cell_vectors,

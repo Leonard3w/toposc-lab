@@ -147,7 +147,8 @@ def test_bcc_metadata_records_conventional_cell_and_roles() -> None:
     assert geometry.metadata["lattice_type"] == "bcc"
     assert geometry.metadata["shape"] == (2, 3, 4)
     assert geometry.metadata["sites_per_cell"] == 2
-    assert geometry.metadata["intrinsic_dimension"] == 3
+    assert geometry.dimension_records[0].kind == "lattice"
+    assert geometry.dimension_records[0].value == 3.0
     assert geometry.metadata["conventional_cell_length"] == pytest.approx(
         expected_cell_length
     )

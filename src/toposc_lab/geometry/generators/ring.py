@@ -5,6 +5,7 @@ from numbers import Integral, Real
 import numpy as np
 
 from toposc_lab.geometry.base import Geometry, GeometryEdge
+from toposc_lab.geometry.generators._dimensions import regular_lattice_dimensions
 
 
 def ring(n_sites: int, *, radius: float = 1.0) -> Geometry:
@@ -45,10 +46,10 @@ def ring(n_sites: int, *, radius: float = 1.0) -> Geometry:
         n_sites=n_sites,
         edges=edges,
         coordinates=coordinates,
+        dimension_records=regular_lattice_dimensions(1),
         metadata={
             "generator": "ring",
             "boundary_condition": "periodic",
-            "intrinsic_dimension": 1,
             "radius": radius,
         },
     )

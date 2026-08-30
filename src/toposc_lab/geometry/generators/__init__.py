@@ -13,6 +13,7 @@ from toposc_lab.geometry.generators.protocol import (
     GeometryGeneratorRegistry,
 )
 from toposc_lab.geometry.generators.ring import ring
+from toposc_lab.geometry.generators.sierpinski import sierpinski_gasket
 from toposc_lab.geometry.generators.square import square
 from toposc_lab.geometry.generators.triangular import triangular
 
@@ -29,6 +30,10 @@ IRREGULAR_CLUSTER_GENERATOR = FunctionGeometryGenerator(
 )
 KAGOME_GENERATOR = FunctionGeometryGenerator(key="kagome", builder=kagome)
 RING_GENERATOR = FunctionGeometryGenerator(key="ring", builder=ring)
+SIERPINSKI_GASKET_GENERATOR = FunctionGeometryGenerator(
+    key="sierpinski_gasket",
+    builder=sierpinski_gasket,
+)
 SQUARE_GENERATOR = FunctionGeometryGenerator(key="square", builder=square)
 TRIANGULAR_GENERATOR = FunctionGeometryGenerator(
     key="triangular",
@@ -44,6 +49,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
         IRREGULAR_CLUSTER_GENERATOR,
         KAGOME_GENERATOR,
         RING_GENERATOR,
+        SIERPINSKI_GASKET_GENERATOR,
         SQUARE_GENERATOR,
         TRIANGULAR_GENERATOR,
     )
@@ -62,6 +68,7 @@ __all__ = [
     "IRREGULAR_CLUSTER_GENERATOR",
     "KAGOME_GENERATOR",
     "RING_GENERATOR",
+    "SIERPINSKI_GASKET_GENERATOR",
     "SQUARE_GENERATOR",
     "TRIANGULAR_GENERATOR",
     "body_centered_cubic",
@@ -71,6 +78,7 @@ __all__ = [
     "irregular_cluster",
     "kagome",
     "ring",
+    "sierpinski_gasket",
     "square",
     "triangular",
 ]

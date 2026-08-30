@@ -5,6 +5,7 @@ from __future__ import annotations
 import numpy as np
 
 from toposc_lab.geometry.base import Geometry, GeometryEdge
+from toposc_lab.geometry.generators._dimensions import regular_lattice_dimensions
 from toposc_lab.geometry.generators._validation import (
     resolve_axis_index,
     validate_axis_size,
@@ -138,13 +139,13 @@ def kagome(
             ("A", "B", "C")[site % 3]
             for site in range(3 * n_x * n_y)
         ),
+        dimension_records=regular_lattice_dimensions(2),
         metadata={
             "generator": "kagome",
             "shape": (n_x, n_y),
             "sites_per_cell": 3,
             "boundary_x": boundary_x,
             "boundary_y": boundary_y,
-            "intrinsic_dimension": 2,
             "spacing": spacing,
             "primitive_vectors": (primitive_x, primitive_y),
             "basis_offsets": basis_offsets,

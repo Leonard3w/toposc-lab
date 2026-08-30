@@ -53,6 +53,5 @@ def irregular_cluster() -> Geometry:
         metadata={
             "generator": "irregular_cluster",
             "name": "seven_site_reference",
-            "intrinsic_dimension": 2,
         },
     )

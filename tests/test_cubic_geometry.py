@@ -104,7 +104,8 @@ def test_cubic_metadata_records_three_dimensional_basis() -> None:
 
     assert geometry.metadata["generator"] == "cubic"
     assert geometry.metadata["shape"] == (2, 3, 4)
-    assert geometry.metadata["intrinsic_dimension"] == 3
+    assert geometry.dimension_records[0].kind == "lattice"
+    assert geometry.dimension_records[0].value == 3.0
     assert geometry.metadata["primitive_vectors"] == (
         (2.0, 0.0, 0.0),
         (0.0, 2.0, 0.0),

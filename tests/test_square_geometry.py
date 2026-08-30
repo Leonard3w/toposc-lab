@@ -16,7 +16,8 @@ def test_open_square_has_expected_sites_coordinates_and_edges() -> None:
     assert geometry.neighbors(0) == (1, 4)
     assert geometry.neighbors(5) == (1, 4, 6, 9)
     assert geometry.metadata["shape"] == (3, 4)
-    assert geometry.metadata["intrinsic_dimension"] == 2
+    assert geometry.dimension_records[0].kind == "lattice"
+    assert geometry.dimension_records[0].value == 2.0
 
 
 def test_open_square_marks_its_perimeter_as_boundary() -> None:

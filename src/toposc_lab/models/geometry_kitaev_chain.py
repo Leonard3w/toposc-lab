@@ -102,9 +102,9 @@ def _chain_geometry(n_sites: int, *, boundary: str) -> Geometry:
         n_sites=n_sites,
         edges=open_chain.edges,
         coordinates=open_chain.coordinates,
+        dimension_records=open_chain.dimension_records,
         metadata={
             "generator": "two_site_periodic_chain",
             "boundary_condition": "periodic",
-            "intrinsic_dimension": 1,
         },
     )

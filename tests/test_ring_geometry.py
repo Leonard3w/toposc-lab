@@ -35,7 +35,8 @@ def test_ring_has_no_boundary_sites_and_marks_periodic_closing_edge() -> None:
         True,
     ]
     assert geometry.metadata["boundary_condition"] == "periodic"
-    assert geometry.metadata["intrinsic_dimension"] == 1
+    assert geometry.dimension_records[0].kind == "lattice"
+    assert geometry.dimension_records[0].value == 1.0
 
 
 def test_ring_coordinates_lie_on_requested_radius() -> None:

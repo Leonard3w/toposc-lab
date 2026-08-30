@@ -5,6 +5,7 @@ from numbers import Integral, Real
 import numpy as np
 
 from toposc_lab.geometry.base import Geometry, GeometryEdge
+from toposc_lab.geometry.generators._dimensions import regular_lattice_dimensions
 
 
 def chain(n_sites: int, *, spacing: float = 1.0) -> Geometry:
@@ -45,6 +46,7 @@ def chain(n_sites: int, *, spacing: float = 1.0) -> Geometry:
         edges=edges,
         coordinates=coordinates,
         boundary_sites=frozenset({0, n_sites - 1}),
+        dimension_records=regular_lattice_dimensions(1),
         metadata={
             "generator": "chain",
             "boundary_condition": "open",

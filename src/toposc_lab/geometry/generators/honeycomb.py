@@ -5,6 +5,7 @@ from __future__ import annotations
 import numpy as np
 
 from toposc_lab.geometry.base import Geometry, GeometryEdge
+from toposc_lab.geometry.generators._dimensions import regular_lattice_dimensions
 from toposc_lab.geometry.generators._validation import (
     resolve_axis_index,
     validate_axis_size,
@@ -131,13 +132,13 @@ def honeycomb(
             "A" if site % 2 == 0 else "B"
             for site in range(2 * n_x * n_y)
         ),
+        dimension_records=regular_lattice_dimensions(2),
         metadata={
             "generator": "honeycomb",
             "shape": (n_x, n_y),
             "sites_per_cell": 2,
             "boundary_x": boundary_x,
             "boundary_y": boundary_y,
-            "intrinsic_dimension": 2,
             "spacing": spacing,
             "primitive_vectors": (primitive_x, primitive_y),
             "sublattice_offset": sublattice_offset,

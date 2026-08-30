@@ -5,6 +5,7 @@ from __future__ import annotations
 import numpy as np
 
 from toposc_lab.geometry.base import Geometry, GeometryEdge
+from toposc_lab.geometry.generators._dimensions import regular_lattice_dimensions
 from toposc_lab.geometry.generators._validation import (
     resolve_axis_index,
     validate_axis_size,
@@ -130,13 +131,13 @@ def cubic(
         edges=tuple(edges),
         coordinates=coordinates,
         boundary_sites=boundary_sites,
+        dimension_records=regular_lattice_dimensions(3),
         metadata={
             "generator": "cubic",
             "shape": (n_x, n_y, n_z),
             "boundary_x": boundary_x,
             "boundary_y": boundary_y,
             "boundary_z": boundary_z,
-            "intrinsic_dimension": 3,
             "spacing": spacing,
             "primitive_vectors": (
                 (spacing, 0.0, 0.0),

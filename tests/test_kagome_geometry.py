@@ -175,7 +175,8 @@ def test_kagome_metadata_describes_canonical_unit_cell() -> None:
     assert geometry.metadata["generator"] == "kagome"
     assert geometry.metadata["shape"] == (2, 3)
     assert geometry.metadata["sites_per_cell"] == 3
-    assert geometry.metadata["intrinsic_dimension"] == 2
+    assert geometry.dimension_records[0].kind == "lattice"
+    assert geometry.dimension_records[0].value == 2.0
     assert geometry.metadata["construction"] == "honeycomb_line_graph"
     assert geometry.metadata["primitive_vectors"] == (
         (4.0, 0.0),

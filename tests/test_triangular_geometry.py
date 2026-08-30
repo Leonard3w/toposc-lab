@@ -93,7 +93,8 @@ def test_triangular_metadata_records_lattice_basis() -> None:
 
     assert geometry.metadata["generator"] == "triangular"
     assert geometry.metadata["shape"] == (2, 3)
-    assert geometry.metadata["intrinsic_dimension"] == 2
+    assert geometry.dimension_records[0].kind == "lattice"
+    assert geometry.dimension_records[0].value == 2.0
     assert geometry.metadata["primitive_vectors"] == (
         (2.0, 0.0),
         (1.0, np.sqrt(3.0)),

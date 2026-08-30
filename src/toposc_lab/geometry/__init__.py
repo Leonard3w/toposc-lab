@@ -1,6 +1,12 @@
 """General, model-independent discrete geometries."""
 
-from toposc_lab.geometry.base import Geometry, GeometryEdge
+from toposc_lab.geometry.base import (
+    Geometry,
+    GeometryDimension,
+    GeometryDimensionKind,
+    GeometryDimensionScope,
+    GeometryEdge,
+)
 from toposc_lab.geometry.generators import (
     BODY_CENTERED_CUBIC_GENERATOR,
     BUILTIN_GEOMETRY_GENERATORS,
@@ -10,6 +16,7 @@ from toposc_lab.geometry.generators import (
     IRREGULAR_CLUSTER_GENERATOR,
     KAGOME_GENERATOR,
     RING_GENERATOR,
+    SIERPINSKI_GASKET_GENERATOR,
     SQUARE_GENERATOR,
     TRIANGULAR_GENERATOR,
     FunctionGeometryGenerator,
@@ -23,6 +30,7 @@ from toposc_lab.geometry.generators import (
     irregular_cluster,
     kagome,
     ring,
+    sierpinski_gasket,
     square,
     triangular,
 )
@@ -34,6 +42,9 @@ __all__ = [
     "CUBIC_GENERATOR",
     "FunctionGeometryGenerator",
     "Geometry",
+    "GeometryDimension",
+    "GeometryDimensionKind",
+    "GeometryDimensionScope",
     "GeometryEdge",
     "GeometryGenerationRequest",
     "GeometryGenerator",
@@ -42,6 +53,7 @@ __all__ = [
     "IRREGULAR_CLUSTER_GENERATOR",
     "KAGOME_GENERATOR",
     "RING_GENERATOR",
+    "SIERPINSKI_GASKET_GENERATOR",
     "SQUARE_GENERATOR",
     "TRIANGULAR_GENERATOR",
     "body_centered_cubic",
@@ -51,6 +63,7 @@ __all__ = [
     "irregular_cluster",
     "kagome",
     "ring",
+    "sierpinski_gasket",
     "square",
     "triangular",
 ]

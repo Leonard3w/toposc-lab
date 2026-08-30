@@ -5,6 +5,7 @@ from __future__ import annotations
 import numpy as np
 
 from toposc_lab.geometry.base import Geometry, GeometryEdge
+from toposc_lab.geometry.generators._dimensions import regular_lattice_dimensions
 from toposc_lab.geometry.generators._validation import (
     resolve_axis_index,
     validate_axis_size,
@@ -128,12 +129,12 @@ def triangular(
         edges=tuple(edges),
         coordinates=coordinates,
         boundary_sites=boundary_sites,
+        dimension_records=regular_lattice_dimensions(2),
         metadata={
             "generator": "triangular",
             "shape": (n_x, n_y),
             "boundary_x": boundary_x,
             "boundary_y": boundary_y,
-            "intrinsic_dimension": 2,
             "spacing": spacing,
             "primitive_vectors": (primitive_x, primitive_y),
         },

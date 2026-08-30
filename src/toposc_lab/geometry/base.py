@@ -3,12 +3,34 @@ from __future__ import annotations
 from copy import deepcopy
 from collections.abc import Mapping
 from dataclasses import dataclass, field
-from numbers import Integral
+from numbers import Integral, Real
 from types import MappingProxyType
-from typing import Any, cast
+from typing import Any, Literal, TypeAlias, cast
 
 import numpy as np
 from numpy.typing import NDArray
+
+GeometryDimensionKind: TypeAlias = Literal[
+    "lattice",
+    "topological",
+    "hausdorff",
+    "box_counting",
+    "spectral",
+    "walk",
+]
+GeometryDimensionScope: TypeAlias = Literal[
+    "finite_geometry",
+    "infinite_family",
+]
+_DIMENSION_KINDS = (
+    "lattice",
+    "topological",
+    "hausdorff",
+    "box_counting",
+    "spectral",
+    "walk",
+)
+_DIMENSION_SCOPES = ("finite_geometry", "infinite_family")
 
 
 def _as_integer(value: object, *, name: str) -> int:
@@ -16,6 +38,40 @@ def _as_integer(value: object, *, name: str) -> int:
     if isinstance(value, bool) or not isinstance(value, Integral):
         raise TypeError(f"{name} must be an integer")
     return int(value)
+
+
+@dataclass(frozen=True, slots=True)
+class GeometryDimension:
+    """One explicitly named and sourced dimension of a geometry or family.
+
+    This record never describes coordinate embedding; that remains
+    ``Geometry.embedding_dimension``. It also must not be used implicitly as
+    the physical dimension of a topology calculation.
+    """
+
+    kind: GeometryDimensionKind
+    value: float
+    scope: GeometryDimensionScope
+    method: str
+    exact: bool = False
+
+    def __post_init__(self) -> None:
+        if self.kind not in _DIMENSION_KINDS:
+            raise ValueError(f"unsupported geometry dimension kind: {self.kind!r}")
+        if isinstance(self.value, bool) or not isinstance(self.value, Real):
+            raise TypeError("geometry dimension value must be a real number")
+        value = float(self.value)
+        if not np.isfinite(value) or value < 0.0:
+            raise ValueError("geometry dimension value must be finite and nonnegative")
+        if self.scope not in _DIMENSION_SCOPES:
+            raise ValueError(f"unsupported geometry dimension scope: {self.scope!r}")
+        if not isinstance(self.method, str) or not self.method.strip():
+            raise ValueError("geometry dimension method must be a non-empty string")
+        if not isinstance(self.exact, bool):
+            raise TypeError("geometry dimension exact flag must be a boolean")
+
+        object.__setattr__(self, "value", value)
+        object.__setattr__(self, "method", self.method.strip())
 
 
 @dataclass(frozen=True, slots=True)
@@ -80,6 +136,7 @@ class Geometry:
     embedding_dimension: int | None = None
     boundary_sites: frozenset[int] = frozenset()
     site_types: tuple[str | None, ...] | None = None
+    dimension_records: tuple[GeometryDimension, ...] = ()
     metadata: Mapping[str, Any] = field(default_factory=dict)
     _neighbors: tuple[tuple[int, ...], ...] = field(init=False, repr=False)
     _edge_lookup: Mapping[tuple[int, int], GeometryEdge] = field(init=False, repr=False)
@@ -127,6 +184,20 @@ class Geometry:
             if not all(site_type is None or isinstance(site_type, str) for site_type in site_types):
                 raise TypeError("site_types entries must be strings or None")
 
+        dimension_records = tuple(self.dimension_records)
+        if not all(
+            isinstance(record, GeometryDimension) for record in dimension_records
+        ):
+            raise TypeError(
+                "dimension_records must contain only GeometryDimension instances"
+            )
+        dimension_keys = tuple(
+            (record.kind, record.scope, record.method)
+            for record in dimension_records
+        )
+        if len(set(dimension_keys)) != len(dimension_keys):
+            raise ValueError("dimension_records must not contain duplicate records")
+
         neighbor_sets: list[set[int]] = [set() for _ in range(n_sites)]
         edge_lookup: dict[tuple[int, int], GeometryEdge] = {}
         for edge in edges:
@@ -145,6 +216,7 @@ class Geometry:
         object.__setattr__(self, "embedding_dimension", dimension)
         object.__setattr__(self, "boundary_sites", boundary_sites)
         object.__setattr__(self, "site_types", site_types)
+        object.__setattr__(self, "dimension_records", dimension_records)
         object.__setattr__(self, "metadata", _freeze_mapping(self.metadata))
         object.__setattr__(
             self,
