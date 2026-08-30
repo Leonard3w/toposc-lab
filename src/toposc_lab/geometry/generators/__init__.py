@@ -28,6 +28,10 @@ from toposc_lab.geometry.generators.random_regular import (
 from toposc_lab.geometry.generators.ring import ring
 from toposc_lab.geometry.generators.sierpinski import sierpinski_gasket
 from toposc_lab.geometry.generators.sierpinski_carpet import sierpinski_carpet
+from toposc_lab.geometry.generators.small_world import (
+    DEFAULT_SMALL_WORLD_MAX_EDGES,
+    small_world_network,
+)
 from toposc_lab.geometry.generators.square import square
 from toposc_lab.geometry.generators.triangular import triangular
 
@@ -66,6 +70,11 @@ SIERPINSKI_GASKET_GENERATOR = FunctionGeometryGenerator(
     key="sierpinski_gasket",
     builder=sierpinski_gasket,
 )
+SMALL_WORLD_NETWORK_GENERATOR = FunctionGeometryGenerator(
+    key="small_world_network",
+    builder=small_world_network,
+    stochastic=True,
+)
 SQUARE_GENERATOR = FunctionGeometryGenerator(key="square", builder=square)
 TRIANGULAR_GENERATOR = FunctionGeometryGenerator(
     key="triangular",
@@ -86,6 +95,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
         RING_GENERATOR,
         SIERPINSKI_CARPET_GENERATOR,
         SIERPINSKI_GASKET_GENERATOR,
+        SMALL_WORLD_NETWORK_GENERATOR,
         SQUARE_GENERATOR,
         TRIANGULAR_GENERATOR,
     )
@@ -100,6 +110,7 @@ __all__ = [
     "DEFAULT_RANDOM_GRAPH_MAX_CANDIDATE_EDGES",
     "DEFAULT_RANDOM_REGULAR_MAX_ATTEMPTS",
     "DEFAULT_RANDOM_REGULAR_MAX_EDGES",
+    "DEFAULT_SMALL_WORLD_MAX_EDGES",
     "FunctionGeometryGenerator",
     "GeometryGenerationRequest",
     "GeometryGenerator",
@@ -113,6 +124,7 @@ __all__ = [
     "RING_GENERATOR",
     "SIERPINSKI_CARPET_GENERATOR",
     "SIERPINSKI_GASKET_GENERATOR",
+    "SMALL_WORLD_NETWORK_GENERATOR",
     "SQUARE_GENERATOR",
     "TRIANGULAR_GENERATOR",
     "body_centered_cubic",
@@ -127,6 +139,7 @@ __all__ = [
     "ring",
     "sierpinski_carpet",
     "sierpinski_gasket",
+    "small_world_network",
     "square",
     "triangular",
 ]
