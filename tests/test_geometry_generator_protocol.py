@@ -27,6 +27,7 @@ def test_builtin_generators_implement_common_protocol_in_stable_order() -> None:
         "cayley_tree",
         "chain",
         "cubic",
+        "fibonacci_chain",
         "honeycomb",
         "irregular_cluster",
         "kagome",

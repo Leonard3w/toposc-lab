@@ -7,6 +7,11 @@ from toposc_lab.geometry.generators.cayley_tree import (
 )
 from toposc_lab.geometry.generators.chain import chain
 from toposc_lab.geometry.generators.cubic import cubic
+from toposc_lab.geometry.generators.fibonacci_chain import (
+    DEFAULT_FIBONACCI_CHAIN_MAX_SITES,
+    FIBONACCI_GOLDEN_RATIO,
+    fibonacci_chain,
+)
 from toposc_lab.geometry.generators.honeycomb import honeycomb
 from toposc_lab.geometry.generators.irregular import irregular_cluster
 from toposc_lab.geometry.generators.kagome import kagome
@@ -54,6 +59,10 @@ CAYLEY_TREE_GENERATOR = FunctionGeometryGenerator(
 )
 CHAIN_GENERATOR = FunctionGeometryGenerator(key="chain", builder=chain)
 CUBIC_GENERATOR = FunctionGeometryGenerator(key="cubic", builder=cubic)
+FIBONACCI_CHAIN_GENERATOR = FunctionGeometryGenerator(
+    key="fibonacci_chain",
+    builder=fibonacci_chain,
+)
 HONEYCOMB_GENERATOR = FunctionGeometryGenerator(key="honeycomb", builder=honeycomb)
 IRREGULAR_CLUSTER_GENERATOR = FunctionGeometryGenerator(
     key="irregular_cluster",
@@ -106,6 +115,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
         CAYLEY_TREE_GENERATOR,
         CHAIN_GENERATOR,
         CUBIC_GENERATOR,
+        FIBONACCI_CHAIN_GENERATOR,
         HONEYCOMB_GENERATOR,
         IRREGULAR_CLUSTER_GENERATOR,
         KAGOME_GENERATOR,
@@ -130,6 +140,7 @@ __all__ = [
     "CHAIN_GENERATOR",
     "CUBIC_GENERATOR",
     "DEFAULT_CAYLEY_TREE_MAX_SITES",
+    "DEFAULT_FIBONACCI_CHAIN_MAX_SITES",
     "DEFAULT_MENGER_MAX_SITES",
     "DEFAULT_RANDOM_GRAPH_MAX_CANDIDATE_EDGES",
     "DEFAULT_RANDOM_REGULAR_MAX_ATTEMPTS",
@@ -137,6 +148,8 @@ __all__ = [
     "DEFAULT_SCALE_FREE_MAX_EDGES",
     "DEFAULT_SMALL_WORLD_MAX_EDGES",
     "FunctionGeometryGenerator",
+    "FIBONACCI_CHAIN_GENERATOR",
+    "FIBONACCI_GOLDEN_RATIO",
     "GeometryGenerationRequest",
     "GeometryGenerator",
     "GeometryGeneratorRegistry",
@@ -158,6 +171,7 @@ __all__ = [
     "cayley_tree",
     "chain",
     "cubic",
+    "fibonacci_chain",
     "honeycomb",
     "irregular_cluster",
     "kagome",
