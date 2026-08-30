@@ -1,5 +1,6 @@
 """Generators for model-independent discrete geometries."""
 
+from toposc_lab.geometry.generators.body_centered_cubic import body_centered_cubic
 from toposc_lab.geometry.generators.chain import chain
 from toposc_lab.geometry.generators.cubic import cubic
 from toposc_lab.geometry.generators.honeycomb import honeycomb
@@ -15,6 +16,10 @@ from toposc_lab.geometry.generators.ring import ring
 from toposc_lab.geometry.generators.square import square
 from toposc_lab.geometry.generators.triangular import triangular
 
+BODY_CENTERED_CUBIC_GENERATOR = FunctionGeometryGenerator(
+    key="body_centered_cubic",
+    builder=body_centered_cubic,
+)
 CHAIN_GENERATOR = FunctionGeometryGenerator(key="chain", builder=chain)
 CUBIC_GENERATOR = FunctionGeometryGenerator(key="cubic", builder=cubic)
 HONEYCOMB_GENERATOR = FunctionGeometryGenerator(key="honeycomb", builder=honeycomb)
@@ -32,6 +37,7 @@ TRIANGULAR_GENERATOR = FunctionGeometryGenerator(
 
 BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
     (
+        BODY_CENTERED_CUBIC_GENERATOR,
         CHAIN_GENERATOR,
         CUBIC_GENERATOR,
         HONEYCOMB_GENERATOR,
@@ -45,6 +51,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
 
 __all__ = [
     "BUILTIN_GEOMETRY_GENERATORS",
+    "BODY_CENTERED_CUBIC_GENERATOR",
     "CHAIN_GENERATOR",
     "CUBIC_GENERATOR",
     "FunctionGeometryGenerator",
@@ -57,6 +64,7 @@ __all__ = [
     "RING_GENERATOR",
     "SQUARE_GENERATOR",
     "TRIANGULAR_GENERATOR",
+    "body_centered_cubic",
     "chain",
     "cubic",
     "honeycomb",

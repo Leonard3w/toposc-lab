@@ -2,6 +2,7 @@
 
 from toposc_lab.geometry.base import Geometry, GeometryEdge
 from toposc_lab.geometry.generators import (
+    BODY_CENTERED_CUBIC_GENERATOR,
     BUILTIN_GEOMETRY_GENERATORS,
     CHAIN_GENERATOR,
     CUBIC_GENERATOR,
@@ -15,6 +16,7 @@ from toposc_lab.geometry.generators import (
     GeometryGenerationRequest,
     GeometryGenerator,
     GeometryGeneratorRegistry,
+    body_centered_cubic,
     chain,
     cubic,
     honeycomb,
@@ -26,6 +28,7 @@ from toposc_lab.geometry.generators import (
 )
 
 __all__ = [
+    "BODY_CENTERED_CUBIC_GENERATOR",
     "BUILTIN_GEOMETRY_GENERATORS",
     "CHAIN_GENERATOR",
     "CUBIC_GENERATOR",
@@ -41,6 +44,7 @@ __all__ = [
     "RING_GENERATOR",
     "SQUARE_GENERATOR",
     "TRIANGULAR_GENERATOR",
+    "body_centered_cubic",
     "chain",
     "cubic",
     "honeycomb",
