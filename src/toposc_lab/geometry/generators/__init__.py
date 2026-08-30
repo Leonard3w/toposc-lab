@@ -26,6 +26,10 @@ from toposc_lab.geometry.generators.random_regular import (
     random_regular_graph,
 )
 from toposc_lab.geometry.generators.ring import ring
+from toposc_lab.geometry.generators.scale_free import (
+    DEFAULT_SCALE_FREE_MAX_EDGES,
+    scale_free_graph,
+)
 from toposc_lab.geometry.generators.sierpinski import sierpinski_gasket
 from toposc_lab.geometry.generators.sierpinski_carpet import sierpinski_carpet
 from toposc_lab.geometry.generators.small_world import (
@@ -62,6 +66,11 @@ RANDOM_REGULAR_GRAPH_GENERATOR = FunctionGeometryGenerator(
     stochastic=True,
 )
 RING_GENERATOR = FunctionGeometryGenerator(key="ring", builder=ring)
+SCALE_FREE_GRAPH_GENERATOR = FunctionGeometryGenerator(
+    key="scale_free_graph",
+    builder=scale_free_graph,
+    stochastic=True,
+)
 SIERPINSKI_CARPET_GENERATOR = FunctionGeometryGenerator(
     key="sierpinski_carpet",
     builder=sierpinski_carpet,
@@ -93,6 +102,7 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
         RANDOM_GRAPH_GENERATOR,
         RANDOM_REGULAR_GRAPH_GENERATOR,
         RING_GENERATOR,
+        SCALE_FREE_GRAPH_GENERATOR,
         SIERPINSKI_CARPET_GENERATOR,
         SIERPINSKI_GASKET_GENERATOR,
         SMALL_WORLD_NETWORK_GENERATOR,
@@ -110,6 +120,7 @@ __all__ = [
     "DEFAULT_RANDOM_GRAPH_MAX_CANDIDATE_EDGES",
     "DEFAULT_RANDOM_REGULAR_MAX_ATTEMPTS",
     "DEFAULT_RANDOM_REGULAR_MAX_EDGES",
+    "DEFAULT_SCALE_FREE_MAX_EDGES",
     "DEFAULT_SMALL_WORLD_MAX_EDGES",
     "FunctionGeometryGenerator",
     "GeometryGenerationRequest",
@@ -122,6 +133,7 @@ __all__ = [
     "RANDOM_GRAPH_GENERATOR",
     "RANDOM_REGULAR_GRAPH_GENERATOR",
     "RING_GENERATOR",
+    "SCALE_FREE_GRAPH_GENERATOR",
     "SIERPINSKI_CARPET_GENERATOR",
     "SIERPINSKI_GASKET_GENERATOR",
     "SMALL_WORLD_NETWORK_GENERATOR",
@@ -137,6 +149,7 @@ __all__ = [
     "random_graph",
     "random_regular_graph",
     "ring",
+    "scale_free_graph",
     "sierpinski_carpet",
     "sierpinski_gasket",
     "small_world_network",

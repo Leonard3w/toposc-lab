@@ -33,6 +33,7 @@ def test_builtin_generators_implement_common_protocol_in_stable_order() -> None:
         "random_graph",
         "random_regular_graph",
         "ring",
+        "scale_free_graph",
         "sierpinski_carpet",
         "sierpinski_gasket",
         "small_world_network",
