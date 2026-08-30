@@ -12,9 +12,11 @@ from toposc_lab.geometry.base import (
 )
 from toposc_lab.geometry.generators import (
     BODY_CENTERED_CUBIC_GENERATOR,
+    CAYLEY_TREE_GENERATOR,
     BUILTIN_GEOMETRY_GENERATORS,
     CHAIN_GENERATOR,
     CUBIC_GENERATOR,
+    DEFAULT_CAYLEY_TREE_MAX_SITES,
     DEFAULT_MENGER_MAX_SITES,
     DEFAULT_RANDOM_GRAPH_MAX_CANDIDATE_EDGES,
     DEFAULT_RANDOM_REGULAR_MAX_ATTEMPTS,
@@ -40,6 +42,7 @@ from toposc_lab.geometry.generators import (
     GeometryGenerator,
     GeometryGeneratorRegistry,
     body_centered_cubic,
+    cayley_tree,
     chain,
     cubic,
     honeycomb,
@@ -60,9 +63,11 @@ from toposc_lab.geometry.generators import (
 
 __all__ = [
     "BODY_CENTERED_CUBIC_GENERATOR",
+    "CAYLEY_TREE_GENERATOR",
     "BUILTIN_GEOMETRY_GENERATORS",
     "CHAIN_GENERATOR",
     "CUBIC_GENERATOR",
+    "DEFAULT_CAYLEY_TREE_MAX_SITES",
     "DEFAULT_MENGER_MAX_SITES",
     "DEFAULT_RANDOM_GRAPH_MAX_CANDIDATE_EDGES",
     "DEFAULT_RANDOM_REGULAR_MAX_ATTEMPTS",
@@ -96,6 +101,7 @@ __all__ = [
     "TREE_GENERATOR",
     "TRIANGULAR_GENERATOR",
     "body_centered_cubic",
+    "cayley_tree",
     "chain",
     "cubic",
     "honeycomb",
