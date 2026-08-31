@@ -25,6 +25,12 @@ from toposc_lab.robustness.onsite import (
     UNIFORM_ONSITE_DISORDER_VERSION,
     apply_uniform_onsite_disorder,
 )
+from toposc_lab.robustness.pairing import (
+    UNIFORM_PAIRING_DISORDER_KEY,
+    UNIFORM_PAIRING_DISORDER_VERSION,
+    PairingDisorderChannel,
+    apply_uniform_pairing_disorder,
+)
 
 __all__ = [
     "DISORDER_RNG_ALGORITHM",
@@ -33,6 +39,8 @@ __all__ = [
     "UNIFORM_HOPPING_DISORDER_VERSION",
     "UNIFORM_ONSITE_DISORDER_KEY",
     "UNIFORM_ONSITE_DISORDER_VERSION",
+    "UNIFORM_PAIRING_DISORDER_KEY",
+    "UNIFORM_PAIRING_DISORDER_VERSION",
     "DisorderParameterValue",
     "DisorderProvenance",
     "DisorderRealization",
@@ -42,8 +50,10 @@ __all__ = [
     "DisorderTarget",
     "DisorderTransform",
     "FunctionDisorderTransform",
+    "PairingDisorderChannel",
     "apply_uniform_hopping_disorder",
     "apply_uniform_onsite_disorder",
+    "apply_uniform_pairing_disorder",
     "exact_hamiltonian_id",
     "realize_disorder",
 ]
