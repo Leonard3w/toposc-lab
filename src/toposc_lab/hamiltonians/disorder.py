@@ -66,7 +66,30 @@ def uniform_edge_disorder(
     """
     width = _validate_width(width)
     generator = np.random.default_rng(_validate_seed(seed))
-    values = generator.uniform(-width / 2.0, width / 2.0, geometry.n_edges)
+    return sample_uniform_edge_disorder(
+        geometry,
+        width=width,
+        rng=generator,
+    )
+
+
+def sample_uniform_edge_disorder(
+    geometry: Geometry,
+    *,
+    width: float,
+    rng: np.random.Generator,
+) -> dict[GeometryEdge, float]:
+    r"""Sample edge offsets using an explicitly owned NumPy generator.
+
+    Keys are the geometry's stored, oriented edge objects in their original
+    order. This function never creates or reads random state itself.
+    """
+    if not isinstance(geometry, Geometry):
+        raise TypeError("geometry must be Geometry")
+    if not isinstance(rng, np.random.Generator):
+        raise TypeError("rng must be numpy.random.Generator")
+    width = _validate_width(width)
+    values = rng.uniform(-width / 2.0, width / 2.0, geometry.n_edges)
     return dict(zip(geometry.edges, values.tolist(), strict=True))
 
 

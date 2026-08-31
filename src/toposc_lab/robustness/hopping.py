@@ -1,4 +1,4 @@
-"""Concrete additive onsite disorder on finite Hamiltonian matrices."""
+"""Concrete additive hopping disorder on finite Hamiltonian matrices."""
 
 from __future__ import annotations
 
@@ -8,8 +8,8 @@ from numbers import Real
 import numpy as np
 
 from toposc_lab.evaluation.reproducibility import exact_geometry_id
-from toposc_lab.geometry import Geometry
-from toposc_lab.hamiltonians.disorder import sample_uniform_site_disorder
+from toposc_lab.geometry import Geometry, GeometryEdge
+from toposc_lab.hamiltonians.disorder import sample_uniform_edge_disorder
 from toposc_lab.hamiltonians.nambu import NambuBasis
 from toposc_lab.robustness._matrix_disorder import (
     nonnegative_finite_real,
@@ -25,11 +25,11 @@ from toposc_lab.robustness.disorder import (
     realize_disorder,
 )
 
-UNIFORM_ONSITE_DISORDER_KEY = "uniform_onsite_disorder"
-UNIFORM_ONSITE_DISORDER_VERSION = 1
+UNIFORM_HOPPING_DISORDER_KEY = "uniform_hopping_disorder"
+UNIFORM_HOPPING_DISORDER_VERSION = 1
 
 
-def apply_uniform_onsite_disorder(
+def apply_uniform_hopping_disorder(
     geometry: Geometry,
     hamiltonian: np.ndarray,
     *,
@@ -38,12 +38,12 @@ def apply_uniform_onsite_disorder(
     components_per_site: int | None = None,
     nambu_basis: NambuBasis | None = None,
 ) -> DisorderRealization:
-    r"""Add one uniform scalar onsite offset per physical site.
+    r"""Add one real uniform hopping offset per stored oriented edge.
 
-    Without ``nambu_basis``, the matrix must use undoubled site-major order.
-    The sampled offset is added to every internal component at its site. With
-    an explicit Nambu basis, it is added to particle states and subtracted
-    from their hole partners, preserving the declared BdG convention.
+    The forward block follows each ``GeometryEdge`` source-to-target
+    orientation and the reverse block receives its Hermitian conjugate. With
+    an explicit Nambu basis, the normal hopping perturbation is embedded with
+    opposite particle/hole signs.
     """
     if not isinstance(geometry, Geometry):
         raise TypeError("geometry must be Geometry")
@@ -60,12 +60,16 @@ def apply_uniform_onsite_disorder(
             "width": width,
             "geometry_id": exact_geometry_id(geometry),
             "n_sites": geometry.n_sites,
+            "n_edges": geometry.n_edges,
             "representation": basis_contract.representation,
             "normal_components_per_site": (
                 basis_contract.normal_components_per_site
             ),
             "basis_ordering": basis_contract.ordering,
             "particle_hole_embedding": basis_contract.particle_hole_embedding,
+            "edge_application": (
+                "oriented_forward_plus_hermitian_conjugate"
+            ),
         },
     )
 
@@ -77,14 +81,14 @@ def apply_uniform_onsite_disorder(
         assert isinstance(source, np.ndarray)
         parameter_width = parameters["width"]
         if isinstance(parameter_width, bool) or not isinstance(parameter_width, Real):
-            raise TypeError("recorded onsite width must be a real number")
-        offsets = sample_uniform_site_disorder(
+            raise TypeError("recorded hopping width must be a real number")
+        offsets = sample_uniform_edge_disorder(
             geometry,
             width=float(parameter_width),
             rng=rng,
         )
         if basis_contract.nambu_basis is None:
-            return _apply_normal_onsite_offsets(
+            return _apply_normal_hopping_offsets(
                 source,
                 offsets,
                 n_sites=geometry.n_sites,
@@ -92,15 +96,15 @@ def apply_uniform_onsite_disorder(
                     basis_contract.normal_components_per_site
                 ),
             )
-        return _apply_nambu_onsite_offsets(
+        return _apply_nambu_hopping_offsets(
             source,
             offsets,
             basis=basis_contract.nambu_basis,
         )
 
     disorder_transform = FunctionDisorderTransform(
-        key=UNIFORM_ONSITE_DISORDER_KEY,
-        version=UNIFORM_ONSITE_DISORDER_VERSION,
+        key=UNIFORM_HOPPING_DISORDER_KEY,
+        version=UNIFORM_HOPPING_DISORDER_VERSION,
         target=DisorderTarget.HAMILTONIAN,
         function=transform,
     )
@@ -111,9 +115,9 @@ def apply_uniform_onsite_disorder(
     )
 
 
-def _apply_normal_onsite_offsets(
+def _apply_normal_hopping_offsets(
     source: np.ndarray,
-    offsets: Mapping[int, float],
+    offsets: Mapping[GeometryEdge, float],
     *,
     n_sites: int,
     components_per_site: int,
@@ -131,17 +135,20 @@ def _apply_normal_onsite_offsets(
         dtype=np.result_type(source.dtype, np.float64),
         copy=True,
     )
-    for site, offset in offsets.items():
-        start = site * components_per_site
+    for edge, offset in offsets.items():
+        source_start = edge.source * components_per_site
+        target_start = edge.target * components_per_site
         for component in range(components_per_site):
-            index = start + component
-            result[index, index] += offset
+            source_index = source_start + component
+            target_index = target_start + component
+            result[source_index, target_index] += offset
+            result[target_index, source_index] += offset
     return result
 
 
-def _apply_nambu_onsite_offsets(
+def _apply_nambu_hopping_offsets(
     source: np.ndarray,
-    offsets: Mapping[int, float],
+    offsets: Mapping[GeometryEdge, float],
     *,
     basis: NambuBasis,
 ) -> np.ndarray:
@@ -154,10 +161,14 @@ def _apply_nambu_onsite_offsets(
         dtype=np.result_type(source.dtype, np.float64),
         copy=True,
     )
-    for site, offset in offsets.items():
+    for edge, offset in offsets.items():
         for component in range(basis.normal_components_per_site):
-            particle = basis.particle_index(site, component=component)
-            hole = basis.hole_index(site, component=component)
-            result[particle, particle] += offset
-            result[hole, hole] -= offset
+            particle_source = basis.particle_index(edge.source, component=component)
+            particle_target = basis.particle_index(edge.target, component=component)
+            hole_source = basis.hole_index(edge.source, component=component)
+            hole_target = basis.hole_index(edge.target, component=component)
+            result[particle_source, particle_target] += offset
+            result[particle_target, particle_source] += offset
+            result[hole_source, hole_target] -= offset
+            result[hole_target, hole_source] -= offset
     return result
