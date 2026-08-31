@@ -73,6 +73,12 @@ from toposc_lab.robustness.parameters import (
     UNIFORM_PARAMETER_PERTURBATION_VERSION,
     apply_uniform_parameter_perturbation,
 )
+from toposc_lab.robustness.uncertainty import (
+    ROBUSTNESS_UNCERTAINTY_VERSION,
+    RobustnessUncertaintyEstimate,
+    RobustnessUncertaintyMethod,
+    estimate_robustness_uncertainty,
+)
 
 __all__ = [
     "DISORDER_RNG_ALGORITHM",
@@ -83,6 +89,7 @@ __all__ = [
     "RANDOM_EDGE_REMOVAL_VERSION",
     "RANDOM_NODE_REMOVAL_KEY",
     "RANDOM_NODE_REMOVAL_VERSION",
+    "ROBUSTNESS_UNCERTAINTY_VERSION",
     "UNIFORM_COORDINATE_PERTURBATION_KEY",
     "UNIFORM_COORDINATE_PERTURBATION_VERSION",
     "UNIFORM_HOPPING_DISORDER_KEY",
@@ -116,6 +123,8 @@ __all__ = [
     "RobustnessFractionMetric",
     "RobustnessSuccessCriterion",
     "RobustnessSuccessPredicate",
+    "RobustnessUncertaintyEstimate",
+    "RobustnessUncertaintyMethod",
     "apply_random_edge_removal",
     "apply_random_node_removal",
     "apply_uniform_coordinate_perturbation",
@@ -124,6 +133,7 @@ __all__ = [
     "apply_uniform_pairing_disorder",
     "apply_uniform_parameter_perturbation",
     "compute_robustness_fraction",
+    "estimate_robustness_uncertainty",
     "exact_hamiltonian_id",
     "exact_model_parameter_set_id",
     "execute_disorder_ensemble",
