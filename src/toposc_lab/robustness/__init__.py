@@ -1,5 +1,10 @@
 """Reproducible robustness-testing contracts."""
 
+from toposc_lab.robustness.coordinate import (
+    UNIFORM_COORDINATE_PERTURBATION_KEY,
+    UNIFORM_COORDINATE_PERTURBATION_VERSION,
+    apply_uniform_coordinate_perturbation,
+)
 from toposc_lab.robustness.disorder import (
     DISORDER_RNG_ALGORITHM,
     HAMILTONIAN_ID_SCHEME,
@@ -50,6 +55,8 @@ __all__ = [
     "RANDOM_EDGE_REMOVAL_VERSION",
     "RANDOM_NODE_REMOVAL_KEY",
     "RANDOM_NODE_REMOVAL_VERSION",
+    "UNIFORM_COORDINATE_PERTURBATION_KEY",
+    "UNIFORM_COORDINATE_PERTURBATION_VERSION",
     "UNIFORM_HOPPING_DISORDER_KEY",
     "UNIFORM_HOPPING_DISORDER_VERSION",
     "UNIFORM_ONSITE_DISORDER_KEY",
@@ -69,6 +76,7 @@ __all__ = [
     "PairingDisorderChannel",
     "apply_random_edge_removal",
     "apply_random_node_removal",
+    "apply_uniform_coordinate_perturbation",
     "apply_uniform_hopping_disorder",
     "apply_uniform_onsite_disorder",
     "apply_uniform_pairing_disorder",
