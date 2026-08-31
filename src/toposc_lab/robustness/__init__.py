@@ -45,6 +45,12 @@ from toposc_lab.robustness.hopping import (
     UNIFORM_HOPPING_DISORDER_VERSION,
     apply_uniform_hopping_disorder,
 )
+from toposc_lab.robustness.metrics import (
+    RobustnessFractionMetric,
+    RobustnessSuccessCriterion,
+    RobustnessSuccessPredicate,
+    compute_robustness_fraction,
+)
 from toposc_lab.robustness.node_removal import (
     RANDOM_NODE_REMOVAL_KEY,
     RANDOM_NODE_REMOVAL_VERSION,
@@ -107,6 +113,9 @@ __all__ = [
     "ModelParameterSet",
     "NodeRemovalRealization",
     "PairingDisorderChannel",
+    "RobustnessFractionMetric",
+    "RobustnessSuccessCriterion",
+    "RobustnessSuccessPredicate",
     "apply_random_edge_removal",
     "apply_random_node_removal",
     "apply_uniform_coordinate_perturbation",
@@ -114,6 +123,7 @@ __all__ = [
     "apply_uniform_onsite_disorder",
     "apply_uniform_pairing_disorder",
     "apply_uniform_parameter_perturbation",
+    "compute_robustness_fraction",
     "exact_hamiltonian_id",
     "exact_model_parameter_set_id",
     "execute_disorder_ensemble",
