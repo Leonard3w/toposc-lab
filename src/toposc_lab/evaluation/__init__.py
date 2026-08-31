@@ -23,12 +23,33 @@ from toposc_lab.evaluation.topology import (
     TopologyIntegrationInput,
     integrate_topology_results,
 )
+from toposc_lab.evaluation.validity import (
+    CandidateFailureStage,
+    CandidateIssueCategory,
+    CandidateIssueSeverity,
+    CandidateStageFailure,
+    CandidateValidityIssue,
+    CandidateValidityPolicy,
+    CandidateValidityReport,
+    InvalidCandidateError,
+    ModelGeometryRequirements,
+    validate_candidate,
+)
 
 __all__ = [
     "BasicScalarScore",
     "BasicScoreComponent",
+    "CandidateFailureStage",
+    "CandidateIssueCategory",
+    "CandidateIssueSeverity",
+    "CandidateStageFailure",
+    "CandidateValidityIssue",
+    "CandidateValidityPolicy",
+    "CandidateValidityReport",
     "DescriptorScalar",
     "GeometryEvaluation",
+    "InvalidCandidateError",
+    "ModelGeometryRequirements",
     "MultiObjectiveEvaluation",
     "ObjectiveDirection",
     "ObjectiveQuantity",
@@ -43,4 +64,5 @@ __all__ = [
     "evaluate_multi_objectives",
     "evaluate_spectrum",
     "integrate_topology_results",
+    "validate_candidate",
 ]
