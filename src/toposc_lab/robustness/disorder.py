@@ -29,10 +29,12 @@ DisorderParameterValue: TypeAlias = (
     | Mapping[str, "DisorderParameterValue"]
 )
 HamiltonianArray: TypeAlias = NDArray[np.generic]
-DisorderState: TypeAlias = Geometry | HamiltonianArray
+ModelParameterSet: TypeAlias = Mapping[str, DisorderParameterValue]
+DisorderState: TypeAlias = Geometry | HamiltonianArray | ModelParameterSet
 
 DISORDER_RNG_ALGORITHM = "numpy.random.PCG64"
 HAMILTONIAN_ID_SCHEME = "toposc-hamiltonian-array-v1-sha256"
+MODEL_PARAMETER_SET_ID_SCHEME = "toposc-model-parameter-set-v1-sha256"
 _DISORDER_KEY_PATTERN = re.compile(r"^[a-z][a-z0-9_]*$")
 
 
@@ -41,6 +43,7 @@ class DisorderTarget(str, Enum):
 
     GEOMETRY = "geometry"
     HAMILTONIAN = "hamiltonian"
+    MODEL_PARAMETERS = "model_parameters"
 
 
 @dataclass(frozen=True, slots=True)
@@ -219,6 +222,13 @@ def realize_disorder(
         assert isinstance(prepared_result, np.ndarray)
         if prepared_result.shape != prepared_source.shape:
             raise ValueError("Hamiltonian disorder must preserve the matrix shape")
+    elif transform.target is DisorderTarget.MODEL_PARAMETERS:
+        assert isinstance(prepared_source, Mapping)
+        assert isinstance(prepared_result, Mapping)
+        if tuple(prepared_result) != tuple(prepared_source):
+            raise ValueError(
+                "model-parameter disorder must preserve the parameter keys"
+            )
     result_snapshot = _snapshot(prepared_result, target=transform.target)
     provenance = DisorderProvenance(
         disorder_key=transform.key,
@@ -251,6 +261,20 @@ def exact_hamiltonian_id(hamiltonian: HamiltonianArray) -> str:
     return f"{HAMILTONIAN_ID_SCHEME}:{digest.hexdigest()}"
 
 
+def exact_model_parameter_set_id(parameters: ModelParameterSet) -> str:
+    """Hash a deeply normalized parameter mapping with explicit scalar types."""
+    prepared = _prepare_model_parameter_set(parameters)
+    payload = json.dumps(
+        _encode_parameter_value(prepared),
+        allow_nan=False,
+        ensure_ascii=True,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("utf-8")
+    digest = hashlib.sha256(payload).hexdigest()
+    return f"{MODEL_PARAMETER_SET_ID_SCHEME}:{digest}"
+
+
 def _prepare_state(state: DisorderState, *, target: DisorderTarget) -> DisorderState:
     if not isinstance(target, DisorderTarget):
         raise TypeError("transform target must be DisorderTarget")
@@ -258,9 +282,15 @@ def _prepare_state(state: DisorderState, *, target: DisorderTarget) -> DisorderS
         if not isinstance(state, Geometry):
             raise TypeError("geometry disorder requires and returns Geometry")
         return state
-    if not isinstance(state, np.ndarray):
-        raise TypeError("Hamiltonian disorder requires and returns numpy.ndarray")
-    return _prepare_hamiltonian(state)
+    if target is DisorderTarget.HAMILTONIAN:
+        if not isinstance(state, np.ndarray):
+            raise TypeError("Hamiltonian disorder requires and returns numpy.ndarray")
+        return _prepare_hamiltonian(state)
+    if not isinstance(state, Mapping):
+        raise TypeError(
+            "model-parameter disorder requires and returns a parameter mapping"
+        )
+    return _prepare_model_parameter_set(state)
 
 
 def _prepare_hamiltonian(hamiltonian: HamiltonianArray) -> HamiltonianArray:
@@ -279,6 +309,12 @@ def _prepare_hamiltonian(hamiltonian: HamiltonianArray) -> HamiltonianArray:
     )
 
 
+def _prepare_model_parameter_set(
+    parameters: ModelParameterSet,
+) -> ModelParameterSet:
+    return _freeze_parameter_mapping(parameters, name="model_parameters")
+
+
 def _snapshot(state: DisorderState, *, target: DisorderTarget) -> DisorderSnapshot:
     if target is DisorderTarget.GEOMETRY:
         assert isinstance(state, Geometry)
@@ -287,11 +323,18 @@ def _snapshot(state: DisorderState, *, target: DisorderTarget) -> DisorderSnapsh
             identifier=exact_geometry_id(state),
             scheme=GEOMETRY_ID_SCHEME,
         )
-    assert isinstance(state, np.ndarray)
+    if target is DisorderTarget.HAMILTONIAN:
+        assert isinstance(state, np.ndarray)
+        return DisorderSnapshot(
+            target=target,
+            identifier=exact_hamiltonian_id(state),
+            scheme=HAMILTONIAN_ID_SCHEME,
+        )
+    assert isinstance(state, Mapping)
     return DisorderSnapshot(
         target=target,
-        identifier=exact_hamiltonian_id(state),
-        scheme=HAMILTONIAN_ID_SCHEME,
+        identifier=exact_model_parameter_set_id(state),
+        scheme=MODEL_PARAMETER_SET_ID_SCHEME,
     )
 
 
@@ -364,3 +407,30 @@ def _freeze_parameter_value(
             for index, item in enumerate(value)
         )
     raise TypeError(f"{name} has unsupported type {type(value).__name__}")
+
+
+def _encode_parameter_value(value: DisorderParameterValue) -> object:
+    if value is None:
+        return {"type": "none"}
+    if isinstance(value, str):
+        return {"type": "string", "value": value}
+    if isinstance(value, bool):
+        return {"type": "boolean", "value": value}
+    if isinstance(value, Integral):
+        return {"type": "integer", "value": str(int(value))}
+    if isinstance(value, float):
+        return {"type": "float", "value": value.hex()}
+    if isinstance(value, Mapping):
+        return {
+            "type": "mapping",
+            "items": [
+                [key, _encode_parameter_value(value[key])]
+                for key in sorted(value)
+            ],
+        }
+    if isinstance(value, tuple):
+        return {
+            "type": "tuple",
+            "items": [_encode_parameter_value(item) for item in value],
+        }
+    raise TypeError(f"unsupported prepared parameter type {type(value).__name__}")

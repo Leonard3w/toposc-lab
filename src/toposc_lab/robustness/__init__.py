@@ -8,6 +8,7 @@ from toposc_lab.robustness.coordinate import (
 from toposc_lab.robustness.disorder import (
     DISORDER_RNG_ALGORITHM,
     HAMILTONIAN_ID_SCHEME,
+    MODEL_PARAMETER_SET_ID_SCHEME,
     DisorderParameterValue,
     DisorderProvenance,
     DisorderRealization,
@@ -17,7 +18,9 @@ from toposc_lab.robustness.disorder import (
     DisorderTarget,
     DisorderTransform,
     FunctionDisorderTransform,
+    ModelParameterSet,
     exact_hamiltonian_id,
+    exact_model_parameter_set_id,
     realize_disorder,
 )
 from toposc_lab.robustness.edge_removal import (
@@ -47,10 +50,16 @@ from toposc_lab.robustness.pairing import (
     PairingDisorderChannel,
     apply_uniform_pairing_disorder,
 )
+from toposc_lab.robustness.parameters import (
+    UNIFORM_PARAMETER_PERTURBATION_KEY,
+    UNIFORM_PARAMETER_PERTURBATION_VERSION,
+    apply_uniform_parameter_perturbation,
+)
 
 __all__ = [
     "DISORDER_RNG_ALGORITHM",
     "HAMILTONIAN_ID_SCHEME",
+    "MODEL_PARAMETER_SET_ID_SCHEME",
     "RANDOM_EDGE_REMOVAL_KEY",
     "RANDOM_EDGE_REMOVAL_VERSION",
     "RANDOM_NODE_REMOVAL_KEY",
@@ -63,6 +72,8 @@ __all__ = [
     "UNIFORM_ONSITE_DISORDER_VERSION",
     "UNIFORM_PAIRING_DISORDER_KEY",
     "UNIFORM_PAIRING_DISORDER_VERSION",
+    "UNIFORM_PARAMETER_PERTURBATION_KEY",
+    "UNIFORM_PARAMETER_PERTURBATION_VERSION",
     "DisorderParameterValue",
     "DisorderProvenance",
     "DisorderRealization",
@@ -72,6 +83,7 @@ __all__ = [
     "DisorderTarget",
     "DisorderTransform",
     "FunctionDisorderTransform",
+    "ModelParameterSet",
     "NodeRemovalRealization",
     "PairingDisorderChannel",
     "apply_random_edge_removal",
@@ -80,6 +92,8 @@ __all__ = [
     "apply_uniform_hopping_disorder",
     "apply_uniform_onsite_disorder",
     "apply_uniform_pairing_disorder",
+    "apply_uniform_parameter_perturbation",
     "exact_hamiltonian_id",
+    "exact_model_parameter_set_id",
     "realize_disorder",
 ]
