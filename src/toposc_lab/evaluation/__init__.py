@@ -1,6 +1,13 @@
 """Scientific result aggregation for geometry evaluations."""
 
 from toposc_lab.evaluation.descriptors import evaluate_geometry_descriptors
+from toposc_lab.evaluation.evaluate import (
+    GeometryEvaluationConfig,
+    GeometryEvaluationContext,
+    GeometryEvaluationRun,
+    GeometryModelAdapter,
+    evaluate_geometry,
+)
 from toposc_lab.evaluation.eigenstates import evaluate_eigenstates
 from toposc_lab.evaluation.majorana import evaluate_majorana_diagnostics
 from toposc_lab.evaluation.objectives import (
@@ -48,6 +55,10 @@ __all__ = [
     "CandidateValidityReport",
     "DescriptorScalar",
     "GeometryEvaluation",
+    "GeometryEvaluationConfig",
+    "GeometryEvaluationContext",
+    "GeometryEvaluationRun",
+    "GeometryModelAdapter",
     "InvalidCandidateError",
     "ModelGeometryRequirements",
     "MultiObjectiveEvaluation",
@@ -59,6 +70,7 @@ __all__ = [
     "TopologyIntegrationInput",
     "compute_basic_scalar_score",
     "evaluate_geometry_descriptors",
+    "evaluate_geometry",
     "evaluate_eigenstates",
     "evaluate_majorana_diagnostics",
     "evaluate_multi_objectives",
