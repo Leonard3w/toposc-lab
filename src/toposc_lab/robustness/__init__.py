@@ -15,6 +15,11 @@ from toposc_lab.robustness.disorder import (
     exact_hamiltonian_id,
     realize_disorder,
 )
+from toposc_lab.robustness.edge_removal import (
+    RANDOM_EDGE_REMOVAL_KEY,
+    RANDOM_EDGE_REMOVAL_VERSION,
+    apply_random_edge_removal,
+)
 from toposc_lab.robustness.hopping import (
     UNIFORM_HOPPING_DISORDER_KEY,
     UNIFORM_HOPPING_DISORDER_VERSION,
@@ -35,6 +40,8 @@ from toposc_lab.robustness.pairing import (
 __all__ = [
     "DISORDER_RNG_ALGORITHM",
     "HAMILTONIAN_ID_SCHEME",
+    "RANDOM_EDGE_REMOVAL_KEY",
+    "RANDOM_EDGE_REMOVAL_VERSION",
     "UNIFORM_HOPPING_DISORDER_KEY",
     "UNIFORM_HOPPING_DISORDER_VERSION",
     "UNIFORM_ONSITE_DISORDER_KEY",
@@ -51,6 +58,7 @@ __all__ = [
     "DisorderTransform",
     "FunctionDisorderTransform",
     "PairingDisorderChannel",
+    "apply_random_edge_removal",
     "apply_uniform_hopping_disorder",
     "apply_uniform_onsite_disorder",
     "apply_uniform_pairing_disorder",
