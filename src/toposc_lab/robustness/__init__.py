@@ -28,6 +28,18 @@ from toposc_lab.robustness.edge_removal import (
     RANDOM_EDGE_REMOVAL_VERSION,
     apply_random_edge_removal,
 )
+from toposc_lab.robustness.ensemble import (
+    DISORDER_ENSEMBLE_EXECUTION_VERSION,
+    DisorderEnsembleFailure,
+    DisorderEnsembleFailureStage,
+    DisorderEnsembleMember,
+    DisorderEnsembleRequest,
+    DisorderEnsembleResult,
+    DisorderEvaluationFactory,
+    DisorderOutcome,
+    DisorderRealizationFactory,
+    execute_disorder_ensemble,
+)
 from toposc_lab.robustness.hopping import (
     UNIFORM_HOPPING_DISORDER_KEY,
     UNIFORM_HOPPING_DISORDER_VERSION,
@@ -58,6 +70,7 @@ from toposc_lab.robustness.parameters import (
 
 __all__ = [
     "DISORDER_RNG_ALGORITHM",
+    "DISORDER_ENSEMBLE_EXECUTION_VERSION",
     "HAMILTONIAN_ID_SCHEME",
     "MODEL_PARAMETER_SET_ID_SCHEME",
     "RANDOM_EDGE_REMOVAL_KEY",
@@ -75,9 +88,17 @@ __all__ = [
     "UNIFORM_PARAMETER_PERTURBATION_KEY",
     "UNIFORM_PARAMETER_PERTURBATION_VERSION",
     "DisorderParameterValue",
+    "DisorderEnsembleFailure",
+    "DisorderEnsembleFailureStage",
+    "DisorderEnsembleMember",
+    "DisorderEnsembleRequest",
+    "DisorderEnsembleResult",
+    "DisorderEvaluationFactory",
+    "DisorderOutcome",
     "DisorderProvenance",
     "DisorderRealization",
     "DisorderRequest",
+    "DisorderRealizationFactory",
     "DisorderSnapshot",
     "DisorderState",
     "DisorderTarget",
@@ -95,5 +116,6 @@ __all__ = [
     "apply_uniform_parameter_perturbation",
     "exact_hamiltonian_id",
     "exact_model_parameter_set_id",
+    "execute_disorder_ensemble",
     "realize_disorder",
 ]
