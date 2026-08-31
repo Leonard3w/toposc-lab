@@ -4,6 +4,11 @@ from toposc_lab.evaluation.descriptors import evaluate_geometry_descriptors
 from toposc_lab.evaluation.eigenstates import evaluate_eigenstates
 from toposc_lab.evaluation.majorana import evaluate_majorana_diagnostics
 from toposc_lab.evaluation.results import DescriptorScalar, GeometryEvaluation
+from toposc_lab.evaluation.score import (
+    BasicScalarScore,
+    BasicScoreComponent,
+    compute_basic_scalar_score,
+)
 from toposc_lab.evaluation.spectral import evaluate_spectrum
 from toposc_lab.evaluation.topology import (
     TopologyIntegrationInput,
@@ -11,9 +16,12 @@ from toposc_lab.evaluation.topology import (
 )
 
 __all__ = [
+    "BasicScalarScore",
+    "BasicScoreComponent",
     "DescriptorScalar",
     "GeometryEvaluation",
     "TopologyIntegrationInput",
+    "compute_basic_scalar_score",
     "evaluate_geometry_descriptors",
     "evaluate_eigenstates",
     "evaluate_majorana_diagnostics",
