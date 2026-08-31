@@ -2,6 +2,7 @@
 
 from toposc_lab.hamiltonians.bdg import build_bdg_hamiltonian
 from toposc_lab.hamiltonians.disorder import (
+    sample_uniform_site_disorder,
     uniform_edge_disorder,
     uniform_site_disorder,
 )
@@ -68,6 +69,7 @@ __all__ = [
     "build_spinless_p_wave_pairing",
     "build_tight_binding_hamiltonian",
     "build_zeeman_term",
+    "sample_uniform_site_disorder",
     "uniform_edge_disorder",
     "uniform_site_disorder",
     "rashba_hopping_matrix",

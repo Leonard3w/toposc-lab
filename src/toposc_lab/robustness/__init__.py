@@ -15,10 +15,17 @@ from toposc_lab.robustness.disorder import (
     exact_hamiltonian_id,
     realize_disorder,
 )
+from toposc_lab.robustness.onsite import (
+    UNIFORM_ONSITE_DISORDER_KEY,
+    UNIFORM_ONSITE_DISORDER_VERSION,
+    apply_uniform_onsite_disorder,
+)
 
 __all__ = [
     "DISORDER_RNG_ALGORITHM",
     "HAMILTONIAN_ID_SCHEME",
+    "UNIFORM_ONSITE_DISORDER_KEY",
+    "UNIFORM_ONSITE_DISORDER_VERSION",
     "DisorderParameterValue",
     "DisorderProvenance",
     "DisorderRealization",
@@ -28,6 +35,7 @@ __all__ = [
     "DisorderTarget",
     "DisorderTransform",
     "FunctionDisorderTransform",
+    "apply_uniform_onsite_disorder",
     "exact_hamiltonian_id",
     "realize_disorder",
 ]
