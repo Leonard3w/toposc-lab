@@ -40,6 +40,14 @@ from toposc_lab.robustness.ensemble import (
     DisorderRealizationFactory,
     execute_disorder_ensemble,
 )
+from toposc_lab.robustness.finite_size import (
+    FINITE_SIZE_SCALING_VERSION,
+    FiniteSizeRobustnessPoint,
+    FiniteSizeScalingMethod,
+    FiniteSizeScalingResult,
+    FiniteSizeScalingSpec,
+    fit_finite_size_scaling,
+)
 from toposc_lab.robustness.hopping import (
     UNIFORM_HOPPING_DISORDER_KEY,
     UNIFORM_HOPPING_DISORDER_VERSION,
@@ -83,6 +91,7 @@ from toposc_lab.robustness.uncertainty import (
 __all__ = [
     "DISORDER_RNG_ALGORITHM",
     "DISORDER_ENSEMBLE_EXECUTION_VERSION",
+    "FINITE_SIZE_SCALING_VERSION",
     "HAMILTONIAN_ID_SCHEME",
     "MODEL_PARAMETER_SET_ID_SCHEME",
     "RANDOM_EDGE_REMOVAL_KEY",
@@ -116,6 +125,10 @@ __all__ = [
     "DisorderState",
     "DisorderTarget",
     "DisorderTransform",
+    "FiniteSizeRobustnessPoint",
+    "FiniteSizeScalingMethod",
+    "FiniteSizeScalingResult",
+    "FiniteSizeScalingSpec",
     "FunctionDisorderTransform",
     "ModelParameterSet",
     "NodeRemovalRealization",
@@ -137,5 +150,6 @@ __all__ = [
     "exact_hamiltonian_id",
     "exact_model_parameter_set_id",
     "execute_disorder_ensemble",
+    "fit_finite_size_scaling",
     "realize_disorder",
 ]
