@@ -92,6 +92,10 @@ from toposc_lab.geometry.hashing import (
     DEFAULT_CANONICAL_GRAPH_HASH_MAX_REFINEMENT_ROUNDS,
     canonical_graph_hash,
 )
+from toposc_lab.geometry.descriptors import (
+    GeometryDescriptorScalar,
+    extract_geometry_descriptors,
+)
 from toposc_lab.geometry.serialization import (
     DEFAULT_GEOMETRY_ARCHIVE_MAX_BYTES,
     DEFAULT_GEOMETRY_ARCHIVE_MAX_MEMBERS,
@@ -153,6 +157,7 @@ __all__ = [
     "GeometryDimension",
     "GeometryDimensionKind",
     "GeometryDimensionScope",
+    "GeometryDescriptorScalar",
     "GeometryEdge",
     "GeometryFace",
     "GeometryGenerationRequest",
@@ -193,6 +198,7 @@ __all__ = [
     "coordinate_cutoff_graph",
     "cubic",
     "fibonacci_chain",
+    "extract_geometry_descriptors",
     "geometry_from_bytes",
     "geometry_to_bytes",
     "honeycomb",
