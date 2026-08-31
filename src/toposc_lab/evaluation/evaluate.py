@@ -6,7 +6,7 @@ from collections.abc import Callable, Iterable
 from dataclasses import dataclass, replace
 import math
 from numbers import Integral, Real
-from typing import TypeAlias
+from typing import Any, TypeAlias
 
 import numpy as np
 
@@ -15,6 +15,10 @@ from toposc_lab.core.results import BasisLayout, SimulationResult
 from toposc_lab.evaluation.descriptors import evaluate_geometry_descriptors
 from toposc_lab.evaluation.eigenstates import evaluate_eigenstates
 from toposc_lab.evaluation.majorana import evaluate_majorana_diagnostics
+from toposc_lab.evaluation.reproducibility import (
+    ReproducibilityRecord,
+    create_reproducibility_record,
+)
 from toposc_lab.evaluation.results import GeometryEvaluation
 from toposc_lab.evaluation.spectral import evaluate_spectrum
 from toposc_lab.evaluation.topology import (
@@ -155,6 +159,7 @@ class GeometryEvaluationRun:
     simulation_result: SimulationResult | None
     evaluation: GeometryEvaluation | None
     validity: CandidateValidityReport
+    reproducibility: ReproducibilityRecord | None = None
     failure: CandidateStageFailure | None = None
 
     def __post_init__(self) -> None:
@@ -170,16 +175,28 @@ class GeometryEvaluationRun:
             raise TypeError("evaluation must be GeometryEvaluation or None")
         if not isinstance(self.validity, CandidateValidityReport):
             raise TypeError("validity must be CandidateValidityReport")
+        if self.reproducibility is not None and not isinstance(
+            self.reproducibility,
+            ReproducibilityRecord,
+        ):
+            raise TypeError(
+                "reproducibility must be ReproducibilityRecord or None"
+            )
         if self.failure is not None and not isinstance(
             self.failure,
             CandidateStageFailure,
         ):
             raise TypeError("failure must be CandidateStageFailure or None")
-        if self.evaluation is not None and self.simulation_result is None:
-            raise ValueError("an evaluation requires a simulation_result")
+        if self.evaluation is not None and (
+            self.simulation_result is None or self.reproducibility is None
+        ):
+            raise ValueError(
+                "an evaluation requires simulation and reproducibility results"
+            )
         if self.validity.is_valid and (
             self.simulation_result is None
             or self.evaluation is None
+            or self.reproducibility is None
             or self.failure is not None
         ):
             raise ValueError(
@@ -204,6 +221,8 @@ def evaluate_geometry(
     solver: ExactDiagonalizationSolver | None = None,
     topology_hook: TopologyEvaluationHook | None = None,
     topology_dispatch: TopologyDispatchDecision | None = None,
+    seed: int | None = None,
+    code_version: str | None = None,
 ) -> GeometryEvaluationRun:
     """Run the Phase 7 evaluation stages for one explicitly adapted geometry.
 
@@ -233,6 +252,7 @@ def evaluate_geometry(
         raise TypeError("topology_dispatch must be TopologyDispatchDecision or None")
     if (topology_hook is None) != (topology_dispatch is None):
         raise ValueError("topology_hook and topology_dispatch must be supplied together")
+    _validate_reproducibility_inputs(seed=seed, code_version=code_version)
 
     policy = _validity_policy(adapter=adapter, config=config)
     execution_policy = replace(
@@ -253,6 +273,8 @@ def evaluate_geometry(
     matrix: np.ndarray | None = None
     simulation_result: SimulationResult | None = None
     evaluation: GeometryEvaluation | None = None
+    reproducibility: ReproducibilityRecord | None = None
+    model_parameters: dict[str, Any] | None = None
     try:
         model = adapter.model_factory(geometry)
         if not isinstance(model, BaseModel):
@@ -260,6 +282,17 @@ def evaluate_geometry(
         basis_layout = model.basis_layout
         if not isinstance(basis_layout, BasisLayout):
             raise TypeError("model.basis_layout must return BasisLayout")
+        model_parameters = model.parameters
+        reproducibility = create_reproducibility_record(
+            geometry,
+            seed=seed,
+            model_name=model.model_name,
+            model_parameters=model_parameters,
+            solver_name=f"{type(solver).__module__}.{type(solver).__qualname__}",
+            solver_settings=_solver_settings(solver),
+            evaluation_settings=_evaluation_settings(config),
+            code_version=code_version,
+        )
     except Exception as error:
         return _failed_run(
             geometry,
@@ -269,6 +302,8 @@ def evaluate_geometry(
         )
     assert model is not None
     assert basis_layout is not None
+    assert model_parameters is not None
+    assert reproducibility is not None
 
     try:
         matrix = np.asarray(model.hamiltonian(), dtype=complex).copy()
@@ -280,6 +315,7 @@ def evaluate_geometry(
             stage=CandidateFailureStage.HAMILTONIAN_CONSTRUCTION,
             error=error,
             basis_layout=basis_layout,
+            reproducibility=reproducibility,
         )
     assert matrix is not None
 
@@ -294,6 +330,7 @@ def evaluate_geometry(
             simulation_result=None,
             evaluation=None,
             validity=presolve,
+            reproducibility=reproducibility,
         )
 
     try:
@@ -303,7 +340,7 @@ def evaluate_geometry(
             eigenvalues=eigensystem.eigenvalues,
             eigenvectors=eigensystem.eigenvectors,
             basis_layout=basis_layout,
-            parameters=model.parameters,
+            parameters=model_parameters,
         )
     except Exception as error:
         return _failed_run(
@@ -313,6 +350,7 @@ def evaluate_geometry(
             error=error,
             basis_layout=basis_layout,
             hamiltonian=matrix,
+            reproducibility=reproducibility,
         )
     assert simulation_result is not None
 
@@ -328,6 +366,7 @@ def evaluate_geometry(
             simulation_result=simulation_result,
             evaluation=None,
             validity=postsolve,
+            reproducibility=reproducibility,
         )
 
     try:
@@ -372,6 +411,7 @@ def evaluate_geometry(
             hamiltonian=matrix,
             simulation_result=simulation_result,
             evaluation=evaluation,
+            reproducibility=reproducibility,
         )
     assert evaluation is not None
 
@@ -408,6 +448,7 @@ def evaluate_geometry(
                 hamiltonian=matrix,
                 simulation_result=simulation_result,
                 evaluation=evaluation,
+                reproducibility=reproducibility,
             )
 
     final_validity = validate_candidate(
@@ -422,6 +463,7 @@ def evaluate_geometry(
         simulation_result=simulation_result,
         evaluation=evaluation,
         validity=final_validity,
+        reproducibility=reproducibility,
     )
 
 
@@ -435,6 +477,7 @@ def _failed_run(
     hamiltonian: np.ndarray | None = None,
     simulation_result: SimulationResult | None = None,
     evaluation: GeometryEvaluation | None = None,
+    reproducibility: ReproducibilityRecord | None = None,
 ) -> GeometryEvaluationRun:
     failure = CandidateStageFailure.from_exception(stage, error)
     validity = validate_candidate(
@@ -450,6 +493,7 @@ def _failed_run(
         simulation_result=simulation_result,
         evaluation=evaluation,
         validity=validity,
+        reproducibility=reproducibility,
         failure=failure,
     )
 
@@ -475,6 +519,51 @@ def _append_pipeline_warning(
     if warning in evaluation.warnings:
         return evaluation
     return replace(evaluation, warnings=evaluation.warnings + (warning,))
+
+
+def _solver_settings(
+    solver: ExactDiagonalizationSolver,
+) -> dict[str, object]:
+    if type(solver) is ExactDiagonalizationSolver:
+        return {
+            "backend": "numpy.linalg.eigh",
+            "spectrum": "full",
+        }
+    return {}
+
+
+def _evaluation_settings(
+    config: GeometryEvaluationConfig,
+) -> dict[str, object]:
+    return {
+        "reference_energy": config.reference_energy,
+        "zero_mode_tolerance": config.zero_mode_tolerance,
+        "low_energy_count": config.low_energy_count,
+        "boundary_localization_threshold": (
+            config.boundary_localization_threshold
+        ),
+        "numerical_tolerance": config.numerical_tolerance,
+        "require_resolved_topology": config.require_resolved_topology,
+        "require_topology_convergence": config.require_topology_convergence,
+        "topology_convergence_checked": config.topology_convergence_checked,
+    }
+
+
+def _validate_reproducibility_inputs(
+    *,
+    seed: int | None,
+    code_version: str | None,
+) -> None:
+    if seed is not None:
+        if isinstance(seed, bool) or not isinstance(seed, Integral):
+            raise TypeError("seed must be an integer or None")
+        if int(seed) < 0:
+            raise ValueError("seed must be non-negative")
+    if code_version is not None:
+        if not isinstance(code_version, str):
+            raise TypeError("code_version must be a string or None")
+        if not code_version.strip():
+            raise ValueError("code_version must be a non-empty string or None")
 
 
 def _finite_real(value: float, *, name: str) -> float:

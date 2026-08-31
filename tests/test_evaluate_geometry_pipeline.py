@@ -187,7 +187,16 @@ def test_pipeline_produces_separated_complete_core_results() -> None:
     assert any("no Nambu-basis resolver" in item for item in run.evaluation.warnings)
     assert any("no topology hook" in item for item in run.evaluation.warnings)
     assert not hasattr(run, "score")
-    assert not hasattr(run, "reproducibility")
+    assert run.reproducibility is not None
+    assert run.reproducibility.model_name == "_GeometryModel"
+    assert run.reproducibility.geometry_id.startswith(
+        "toposc-geometry-archive-v1-sha256:"
+    )
+    assert run.reproducibility.solver_settings == {
+        "backend": "numpy.linalg.eigh",
+        "spectrum": "full",
+    }
+    assert run.reproducibility.evaluation_settings["low_energy_count"] == 2
 
 
 def test_nambu_adapter_enables_majorana_stage_explicitly() -> None:
