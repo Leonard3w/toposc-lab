@@ -35,6 +35,8 @@ _BUILTIN_VALIDATION_REQUESTS: dict[str, tuple[dict[str, Any], int | None]] = {
     "cubic": ({"n_x": 2, "n_y": 2, "n_z": 2}, None),
     "fibonacci_chain": ({"order": 2}, None),
     "honeycomb": ({"n_x": 2, "n_y": 2}, None),
+    "hard_core_planar_graph": ({}, 9_799_900),
+    "hard_core_planar_reference": ({}, 9_799_901),
     "irregular_cluster": ({}, None),
     "k_nearest_neighbor_graph": (
         {"coordinates": [[0.0], [1.0], [2.0]], "k": 1},

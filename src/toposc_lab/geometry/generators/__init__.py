@@ -29,6 +29,14 @@ from toposc_lab.geometry.generators.fibonacci_chain import (
     fibonacci_chain,
 )
 from toposc_lab.geometry.generators.honeycomb import honeycomb
+from toposc_lab.geometry.generators.hard_core_planar import (
+    HARD_CORE_PLANAR_GENERATOR_VERSION,
+    HARD_CORE_PLANAR_MAX_COMPLETE_ATTEMPTS,
+    HARD_CORE_PLANAR_MAX_POINT_PROPOSALS,
+    HardCorePlanarGenerationError,
+    hard_core_planar_graph,
+    hard_core_planar_reference,
+)
 from toposc_lab.geometry.generators.irregular import irregular_cluster
 from toposc_lab.geometry.generators.k_nearest_neighbor import (
     DEFAULT_K_NEAREST_MAX_EDGES,
@@ -103,6 +111,18 @@ FIBONACCI_CHAIN_GENERATOR = FunctionGeometryGenerator(
     builder=fibonacci_chain,
 )
 HONEYCOMB_GENERATOR = FunctionGeometryGenerator(key="honeycomb", builder=honeycomb)
+HARD_CORE_PLANAR_GRAPH_GENERATOR = FunctionGeometryGenerator(
+    key="hard_core_planar_graph",
+    builder=hard_core_planar_graph,
+    version=HARD_CORE_PLANAR_GENERATOR_VERSION,
+    stochastic=True,
+)
+HARD_CORE_PLANAR_REFERENCE_GENERATOR = FunctionGeometryGenerator(
+    key="hard_core_planar_reference",
+    builder=hard_core_planar_reference,
+    version=HARD_CORE_PLANAR_GENERATOR_VERSION,
+    stochastic=True,
+)
 IRREGULAR_CLUSTER_GENERATOR = FunctionGeometryGenerator(
     key="irregular_cluster",
     builder=irregular_cluster,
@@ -167,6 +187,8 @@ BUILTIN_GEOMETRY_GENERATORS = GeometryGeneratorRegistry(
         CUBIC_GENERATOR,
         FIBONACCI_CHAIN_GENERATOR,
         HONEYCOMB_GENERATOR,
+        HARD_CORE_PLANAR_GRAPH_GENERATOR,
+        HARD_CORE_PLANAR_REFERENCE_GENERATOR,
         IRREGULAR_CLUSTER_GENERATOR,
         K_NEAREST_NEIGHBOR_GRAPH_GENERATOR,
         KAGOME_GENERATOR,
@@ -218,6 +240,12 @@ __all__ = [
     "GeometryGenerationRequest",
     "GeometryGenerator",
     "GeometryGeneratorRegistry",
+    "HARD_CORE_PLANAR_GENERATOR_VERSION",
+    "HARD_CORE_PLANAR_GRAPH_GENERATOR",
+    "HARD_CORE_PLANAR_MAX_COMPLETE_ATTEMPTS",
+    "HARD_CORE_PLANAR_MAX_POINT_PROPOSALS",
+    "HARD_CORE_PLANAR_REFERENCE_GENERATOR",
+    "HardCorePlanarGenerationError",
     "HONEYCOMB_GENERATOR",
     "IRREGULAR_CLUSTER_GENERATOR",
     "KNearestSymmetrization",
@@ -245,6 +273,8 @@ __all__ = [
     "cubic",
     "fibonacci_chain",
     "honeycomb",
+    "hard_core_planar_graph",
+    "hard_core_planar_reference",
     "irregular_cluster",
     "k_nearest_neighbor_graph",
     "kagome",
