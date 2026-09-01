@@ -11,6 +11,16 @@ from toposc_lab.search.batch_evaluation import (
     CandidateEvaluator,
     execute_evaluation_batch,
 )
+from toposc_lab.search.baseline_statistics import (
+    BASELINE_STATISTICS_VERSION,
+    BaselineSuccessCriterion,
+    BaselineSuccessPredicate,
+    BaselineUncertaintyMethod,
+    SearchBaselineStatistics,
+    SearchBaselineTrial,
+    SearchBaselineTrialOutcome,
+    compute_search_baseline_statistics,
+)
 from toposc_lab.search.candidate_storage import (
     DEFAULT_CANDIDATE_ARCHIVE_MAX_BYTES,
     DEFAULT_CANDIDATE_ARCHIVE_MAX_MEMBERS,
@@ -62,6 +72,7 @@ from toposc_lab.search.random_model_parameters import (
 )
 
 __all__ = [
+    "BASELINE_STATISTICS_VERSION",
     "BATCH_EVALUATION_EXECUTION_VERSION",
     "CANDIDATE_RANKING_VERSION",
     "DEFAULT_CANDIDATE_ARCHIVE_MAX_BYTES",
@@ -80,6 +91,9 @@ __all__ = [
     "BatchEvaluationMember",
     "BatchEvaluationRequest",
     "BatchEvaluationResult",
+    "BaselineSuccessCriterion",
+    "BaselineSuccessPredicate",
+    "BaselineUncertaintyMethod",
     "CandidateEvaluator",
     "CandidateRankingConfig",
     "CandidateRankingCriterion",
@@ -100,6 +114,9 @@ __all__ = [
     "RandomModelParameterSamplingError",
     "RandomModelParameterSamplingResult",
     "RankingScalar",
+    "SearchBaselineStatistics",
+    "SearchBaselineTrial",
+    "SearchBaselineTrialOutcome",
     "StoredCandidateOutcome",
     "StoredEvaluatedCandidate",
     "StoredEvaluatedCandidateBatch",
@@ -109,6 +126,7 @@ __all__ = [
     "sample_random_geometries",
     "sample_random_model_parameters",
     "execute_evaluation_batch",
+    "compute_search_baseline_statistics",
     "load_evaluated_candidate_batch",
     "rank_evaluated_candidates",
     "save_evaluated_candidate_batch",
