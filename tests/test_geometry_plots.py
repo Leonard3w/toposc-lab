@@ -87,6 +87,26 @@ def test_plot_geometry_reuses_provided_axes() -> None:
     plt.close(figure)
 
 
+def test_plot_geometry_can_display_stored_edge_orientation() -> None:
+    geometry = Geometry(
+        n_sites=2,
+        edges=(GeometryEdge(1, 0),),
+        coordinates=np.asarray(((0.0, 0.0), (1.0, 0.0))),
+    )
+
+    figure, axes = plot_geometry(
+        geometry,
+        show_edge_orientation=True,
+        show=False,
+    )
+
+    arrows = [text for text in axes.texts if getattr(text, "arrow_patch", None) is not None]
+    assert len(arrows) == 1
+    assert np.allclose(arrows[0].xy, (0.38, 0.0))
+    assert np.allclose(arrows[0].xyann, (0.62, 0.0))
+    plt.close(figure)
+
+
 def test_plot_geometry_projects_three_dimensional_coordinates_to_xy() -> None:
     geometry = cubic(2, 2, 2)
     figure, axes = plot_geometry(geometry, show=False)

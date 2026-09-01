@@ -21,6 +21,7 @@ def plot_geometry(
     show_site_indices: bool = False,
     show_boundary_sites: bool = True,
     show_periodic_edges: bool = False,
+    show_edge_orientation: bool = False,
     site_size: float = 48.0,
     show: bool = True,
 ) -> tuple[Figure, Axes]:
@@ -31,6 +32,8 @@ def plot_geometry(
     are absent, a deterministic circular layout is used. Periodic edges whose
     endpoint coordinates span a unit-cell seam are hidden by default because a
     straight line between those endpoints would be geometrically misleading.
+    Optional arrowheads expose the stored ``GeometryEdge`` orientation without
+    changing the underlying geometry.
     """
     if not np.isfinite(site_size) or site_size <= 0.0:
         raise ValueError("site_size must be finite and positive")
@@ -49,6 +52,7 @@ def plot_geometry(
             geometry,
             positions,
             show_periodic_edges=show_periodic_edges,
+            show_edge_orientation=show_edge_orientation,
         )
         _draw_sites(axes, geometry, positions, site_size=site_size)
 
@@ -116,6 +120,7 @@ def _draw_edges(
     positions: np.ndarray,
     *,
     show_periodic_edges: bool,
+    show_edge_orientation: bool,
 ) -> None:
     typed_edges = sorted(
         {edge.edge_type for edge in geometry.edges if edge.edge_type is not None}
@@ -140,19 +145,40 @@ def _draw_edges(
             label = f"Edge type: {edge.edge_type}"
             labeled_types.add(edge.edge_type)
 
+        edge_color = (
+            type_colors[edge.edge_type]
+            if color_by_type and edge.edge_type is not None
+            else "0.60"
+        )
+        edge_style = "--" if edge.boundary_crossing else "-"
         axes.plot(
             [source[0], target[0]],
             [source[1], target[1]],
-            color=(
-                type_colors[edge.edge_type]
-                if color_by_type and edge.edge_type is not None
-                else "0.60"
-            ),
-            linestyle="--" if edge.boundary_crossing else "-",
+            color=edge_color,
+            linestyle=edge_style,
             linewidth=1.1,
             label=label,
             zorder=1,
         )
+        if show_edge_orientation:
+            displacement = target - source
+            arrow_start = source + 0.38 * displacement
+            arrow_end = source + 0.62 * displacement
+            axes.annotate(
+                "",
+                xy=arrow_end,
+                xytext=arrow_start,
+                arrowprops={
+                    "arrowstyle": "-|>",
+                    "color": edge_color,
+                    "linestyle": edge_style,
+                    "linewidth": 1.1,
+                    "mutation_scale": 9.0,
+                    "shrinkA": 0.0,
+                    "shrinkB": 0.0,
+                },
+                zorder=2,
+            )
 
 
 def _draw_sites(

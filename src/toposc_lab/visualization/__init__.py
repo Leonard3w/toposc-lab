@@ -1,5 +1,9 @@
 """Plots fuer Spektren, Observablen und Gittergeometrien."""
 
+from toposc_lab.visualization.candidate_plots import (
+    TopCandidateVisualization,
+    plot_top_ranked_candidates,
+)
 from toposc_lab.visualization.study_plots import (
     plot_study_comparison,
     plot_study_observable,
@@ -62,4 +66,6 @@ __all__ = [
     "quantum_gas_state_figure",
     "quantum_statistics_schematic",
     "symmetric_gauge_state_figure",
+    "TopCandidateVisualization",
+    "plot_top_ranked_candidates",
 ]
