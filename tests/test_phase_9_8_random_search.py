@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import replace
 import json
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -339,6 +340,39 @@ def test_full_run_rejects_a_code_commit_that_is_not_head(tmp_path: Path) -> None
         run_phase_9_8_random_search(destination, code_commit="a" * 40)
 
     assert not destination.exists()
+
+
+def test_git_preflight_preserves_porcelain_leading_status_space(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    code_commit = "b" * 40
+    outputs = iter(
+        (
+            f"{code_commit}\n",
+            (
+                " M src/toposc_lab/observables/__pycache__/"
+                "__init__.cpython-314.pyc\n"
+                " M src/toposc_lab/observables/__pycache__/"
+                "spectrum.cpython-314.pyc\n"
+                "?? geometry_demo.npz\n"
+            ),
+        )
+    )
+
+    def fake_run(
+        *_args: object,
+        **_kwargs: object,
+    ) -> subprocess.CompletedProcess[str]:
+        return subprocess.CompletedProcess(
+            args=(),
+            returncode=0,
+            stdout=next(outputs),
+            stderr="",
+        )
+
+    monkeypatch.setattr(experiment_module.subprocess, "run", fake_run)
+
+    experiment_module._verify_committed_worktree(code_commit)
 
 
 def test_full_run_never_overwrites_an_existing_directory(

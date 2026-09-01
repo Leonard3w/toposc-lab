@@ -1543,9 +1543,9 @@ def _verify_committed_worktree(code_commit: str) -> None:
             raise RuntimeError(
                 "the accepted Phase-9.8 run requires a readable Git worktree"
             ) from error
-        return completed.stdout.strip()
+        return completed.stdout
 
-    head_commit = git("rev-parse", "HEAD")
+    head_commit = git("rev-parse", "HEAD").strip()
     if head_commit != code_commit:
         raise RuntimeError(
             "code_commit does not match the exact Git HEAD used for execution"
