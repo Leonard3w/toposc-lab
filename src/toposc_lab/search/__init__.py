@@ -11,6 +11,19 @@ from toposc_lab.search.batch_evaluation import (
     CandidateEvaluator,
     execute_evaluation_batch,
 )
+from toposc_lab.search.candidate_storage import (
+    DEFAULT_CANDIDATE_ARCHIVE_MAX_BYTES,
+    DEFAULT_CANDIDATE_ARCHIVE_MAX_MEMBERS,
+    DEFAULT_CANDIDATE_ARCHIVE_MAX_UNCOMPRESSED_BYTES,
+    EVALUATED_CANDIDATE_ARCHIVE_FORMAT,
+    EVALUATED_CANDIDATE_ARCHIVE_SCHEMA_VERSION,
+    EvaluatedCandidateStorageError,
+    StoredCandidateOutcome,
+    StoredEvaluatedCandidate,
+    StoredEvaluatedCandidateBatch,
+    load_evaluated_candidate_batch,
+    save_evaluated_candidate_batch,
+)
 from toposc_lab.search.random_geometry import (
     RANDOM_GEOMETRY_SAMPLER_RNG_ALGORITHM,
     RANDOM_GEOMETRY_SAMPLER_VERSION,
@@ -38,6 +51,11 @@ from toposc_lab.search.random_model_parameters import (
 
 __all__ = [
     "BATCH_EVALUATION_EXECUTION_VERSION",
+    "DEFAULT_CANDIDATE_ARCHIVE_MAX_BYTES",
+    "DEFAULT_CANDIDATE_ARCHIVE_MAX_MEMBERS",
+    "DEFAULT_CANDIDATE_ARCHIVE_MAX_UNCOMPRESSED_BYTES",
+    "EVALUATED_CANDIDATE_ARCHIVE_FORMAT",
+    "EVALUATED_CANDIDATE_ARCHIVE_SCHEMA_VERSION",
     "RANDOM_GEOMETRY_SAMPLER_RNG_ALGORITHM",
     "RANDOM_GEOMETRY_SAMPLER_VERSION",
     "RANDOM_MODEL_PARAMETER_SAMPLER_RNG_ALGORITHM",
@@ -50,6 +68,7 @@ __all__ = [
     "BatchEvaluationRequest",
     "BatchEvaluationResult",
     "CandidateEvaluator",
+    "EvaluatedCandidateStorageError",
     "GeometrySamplingFailureStage",
     "GeometrySamplingRecipe",
     "ModelParameterDistribution",
@@ -61,9 +80,14 @@ __all__ = [
     "RandomModelParameterSamplingConfig",
     "RandomModelParameterSamplingError",
     "RandomModelParameterSamplingResult",
+    "StoredCandidateOutcome",
+    "StoredEvaluatedCandidate",
+    "StoredEvaluatedCandidateBatch",
     "UniformFloatDistribution",
     "UniformIntegerDistribution",
     "sample_random_geometries",
     "sample_random_model_parameters",
     "execute_evaluation_batch",
+    "load_evaluated_candidate_batch",
+    "save_evaluated_candidate_batch",
 ]
