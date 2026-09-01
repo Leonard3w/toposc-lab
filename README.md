@@ -22,6 +22,31 @@ After installing the project, scan the Kitaev-chain spectrum with:
 toposc kitaev-scan --L 60 --mu-min -4 --mu-max 4
 ```
 
+### Phase 9.8 selbst ausführen
+
+Der kurze Test nutzt ausschließlich die zehn reservierten Geometrie-Dry-Run-Seeds. Er
+berechnet keine Hamiltonians und öffnet keine wissenschaftlichen Such-, Validierungs-
+oder Confirmation-Seeds:
+
+```powershell
+$env:PYTHONDONTWRITEBYTECODE='1'
+.venv\Scripts\toposc.exe phase-9-8 --dry-run
+```
+
+Ein vollständiger Lauf verwendet das eingefrorene Phase-9.8-Protokoll und schreibt in
+ein automatisch zeitgestempeltes, neues Ergebnisverzeichnis:
+
+```powershell
+$env:PYTHONDONTWRITEBYTECODE='1'
+.venv\Scripts\toposc.exe phase-9-8 --full
+```
+
+Ein eigener, noch nicht vorhandener Ausgabeordner kann mit
+`--output results/mein_phase_9_8_lauf` angegeben werden. Während des Laufs zeigt die
+Konsole Abschnitt, Fortschritt, verstrichene Zeit, geschätzte Restzeit, mittlere
+CPU-Nutzung sowie aktuellen und maximalen Prozessspeicher. Diese Messwerte sind reine
+Laufzeitbeobachtungen und verändern weder Seeds noch wissenschaftliche Ergebnisse.
+
 The same command is available without installation as:
 
 ```bash

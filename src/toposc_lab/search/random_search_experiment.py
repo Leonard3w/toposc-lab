@@ -130,6 +130,44 @@ class Phase98DisorderChannel(str, Enum):
     NODE_REMOVAL = "node_removal"
 
 
+class Phase98ProgressStage(str, Enum):
+    """Observable execution stages that do not affect scientific decisions."""
+
+    STARTING = "starting"
+    DRY_RUN = "dry_run"
+    REFERENCES = "references"
+    SEARCH = "search"
+    SELECTION = "selection"
+    VALIDATION = "validation"
+    CONFIRMATION = "confirmation"
+    COMPLETE = "complete"
+
+
+@dataclass(frozen=True, slots=True)
+class Phase98ProgressEvent:
+    """One immutable, best-effort progress notification from the runner."""
+
+    stage: Phase98ProgressStage
+    completed: int
+    total: int
+    message: str
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.stage, Phase98ProgressStage):
+            raise TypeError("stage must be Phase98ProgressStage")
+        if isinstance(self.completed, bool) or not isinstance(self.completed, int):
+            raise TypeError("completed must be an integer")
+        if isinstance(self.total, bool) or not isinstance(self.total, int):
+            raise TypeError("total must be an integer")
+        if self.completed < 0 or self.total < 0 or self.completed > self.total:
+            raise ValueError("progress requires 0 <= completed <= total")
+        if not isinstance(self.message, str) or not self.message.strip():
+            raise ValueError("progress message must be non-empty")
+
+
+Phase98ProgressCallback: TypeAlias = Callable[[Phase98ProgressEvent], None]
+
+
 @dataclass(frozen=True, slots=True)
 class Phase98DryRunRecord:
     seed: int
@@ -212,10 +250,20 @@ class Phase98ExperimentResult:
     experiment_version: int = field(default=PHASE_9_8_EXPERIMENT_VERSION, init=False)
 
 
-def run_phase_9_8_dry_run() -> tuple[Phase98DryRunRecord, ...]:
+def run_phase_9_8_dry_run(
+    *,
+    progress: Phase98ProgressCallback | None = None,
+) -> tuple[Phase98DryRunRecord, ...]:
     """Exercise only the ten reserved direct generator seeds, without physics or files."""
     records: list[Phase98DryRunRecord] = []
-    for seed in PHASE_9_8_DRY_RUN_SEEDS:
+    _emit_progress(
+        progress,
+        stage=Phase98ProgressStage.DRY_RUN,
+        completed=0,
+        total=len(PHASE_9_8_DRY_RUN_SEEDS),
+        message="reservierte Geometrieprüfungen gestartet",
+    )
+    for seed_index, seed in enumerate(PHASE_9_8_DRY_RUN_SEEDS):
         first = BUILTIN_GEOMETRY_GENERATORS.generate(
             "hard_core_planar_graph",
             seed=seed,
@@ -246,6 +294,13 @@ def run_phase_9_8_dry_run() -> tuple[Phase98DryRunRecord, ...]:
                 proposal_count=_metadata_integer(first, "proposal_count"),
             )
         )
+        _emit_progress(
+            progress,
+            stage=Phase98ProgressStage.DRY_RUN,
+            completed=seed_index + 1,
+            total=len(PHASE_9_8_DRY_RUN_SEEDS),
+            message=f"reservierter Seed {seed} abgeschlossen",
+        )
     return tuple(records)
 
 
@@ -253,6 +308,7 @@ def run_phase_9_8_random_search(
     output_directory: str | Path,
     *,
     code_commit: str,
+    progress: Phase98ProgressCallback | None = None,
 ) -> Phase98ExperimentResult:
     """Execute the complete frozen random-search, validation, and confirmation policy."""
     prepared_code_commit = _validate_full_run_environment(code_commit)
@@ -262,14 +318,36 @@ def run_phase_9_8_random_search(
             "Phase-9.8 output directory already exists; accepted runs never overwrite"
         )
 
-    dry_run = run_phase_9_8_dry_run()
+    _emit_progress(
+        progress,
+        stage=Phase98ProgressStage.STARTING,
+        completed=0,
+        total=1,
+        message="Umgebungs- und Git-Prüfung bestanden",
+    )
+    dry_run = run_phase_9_8_dry_run(progress=progress)
     destination.mkdir(parents=True)
     (destination / "candidate_archives").mkdir()
     (destination / "trial_manifests").mkdir()
     (destination / "disorder_manifests").mkdir()
 
+    reference_total = 1 + len(PHASE_9_8_AMORPHOUS_REFERENCE_SEEDS) + 2
+    _emit_progress(
+        progress,
+        stage=Phase98ProgressStage.REFERENCES,
+        completed=0,
+        total=reference_total,
+        message="Auswertung der primären und beschreibenden Referenzen gestartet",
+    )
     references, descriptive_payloads = _evaluate_references(
         code_commit=prepared_code_commit
+    )
+    _emit_progress(
+        progress,
+        stage=Phase98ProgressStage.REFERENCES,
+        completed=reference_total,
+        total=reference_total,
+        message="primäre und beschreibende Referenzen abgeschlossen",
     )
     eligible_references = tuple(
         record for record in references if record.scientific.clean_eligible
@@ -302,6 +380,13 @@ def run_phase_9_8_random_search(
     trials: list[Phase98TrialRecord] = []
     baseline_trials: list[SearchBaselineTrial] = []
     criterion = _screening_criterion(reference_threshold)
+    _emit_progress(
+        progress,
+        stage=Phase98ProgressStage.SEARCH,
+        completed=0,
+        total=len(PHASE_9_8_SEARCH_TRIAL_SEEDS),
+        message="eingefrorene Random-Search-Trials gestartet",
+    )
     for trial_index, master_seed in enumerate(PHASE_9_8_SEARCH_TRIAL_SEEDS):
         trial = _execute_search_trial(
             destination,
@@ -317,6 +402,13 @@ def run_phase_9_8_random_search(
                 ranking=trial.ranking,
             )
         )
+        _emit_progress(
+            progress,
+            stage=Phase98ProgressStage.SEARCH,
+            completed=trial_index + 1,
+            total=len(PHASE_9_8_SEARCH_TRIAL_SEEDS),
+            message=f"Suchtrial {trial_index + 1} versiegelt",
+        )
 
     baseline_statistics = compute_search_baseline_statistics(
         baseline_trials,
@@ -326,6 +418,13 @@ def run_phase_9_8_random_search(
     selected = _select_validation_candidates(
         tuple(trials),
         criterion=criterion,
+    )
+    _emit_progress(
+        progress,
+        stage=Phase98ProgressStage.SELECTION,
+        completed=len(selected),
+        total=PHASE_9_8_MAXIMUM_SELECTION_COUNT,
+        message=f"unveränderliche Auswahl enthält {len(selected)} Kandidaten",
     )
     selection_manifest = destination / "validation_selection_v1.json"
     _write_json_exclusive(
@@ -361,6 +460,8 @@ def run_phase_9_8_random_search(
             code_commit=prepared_code_commit,
             minimum_successes=PHASE_9_8_VALIDATION_MINIMUM_SUCCESSES,
             minimum_wilson_lower=PHASE_9_8_VALIDATION_MINIMUM_WILSON_LOWER,
+            progress=progress,
+            progress_stage=Phase98ProgressStage.VALIDATION,
         )
         validation_comparisons = _reference_channel_comparisons(validation)
         passing_candidate_keys = _passing_candidate_keys(validation)
@@ -379,8 +480,33 @@ def run_phase_9_8_random_search(
                 code_commit=prepared_code_commit,
                 minimum_successes=PHASE_9_8_CONFIRMATION_MINIMUM_SUCCESSES,
                 minimum_wilson_lower=PHASE_9_8_CONFIRMATION_MINIMUM_WILSON_LOWER,
+                progress=progress,
+                progress_stage=Phase98ProgressStage.CONFIRMATION,
             )
             confirmation_comparisons = _reference_channel_comparisons(confirmation)
+        else:
+            _emit_progress(
+                progress,
+                stage=Phase98ProgressStage.CONFIRMATION,
+                completed=0,
+                total=0,
+                message="Bestätigung übersprungen: kein Kandidat bestand die Validierung",
+            )
+    else:
+        _emit_progress(
+            progress,
+            stage=Phase98ProgressStage.VALIDATION,
+            completed=0,
+            total=0,
+            message="Validierung übersprungen: die unveränderliche Auswahl ist leer",
+        )
+        _emit_progress(
+            progress,
+            stage=Phase98ProgressStage.CONFIRMATION,
+            completed=0,
+            total=0,
+            message="Bestätigung übersprungen: Validierung wurde nicht ausgelöst",
+        )
 
     summary_manifest = destination / "phase_9_8_summary_v1.json"
     artifact_paths = (
@@ -436,6 +562,13 @@ def run_phase_9_8_random_search(
                 "A high rank or a passed screen is not a scientific discovery.",
             ],
         },
+    )
+    _emit_progress(
+        progress,
+        stage=Phase98ProgressStage.COMPLETE,
+        completed=1,
+        total=1,
+        message="Zusammenfassungsmanifest versiegelt",
     )
     return Phase98ExperimentResult(
         output_directory=destination,
@@ -788,21 +921,37 @@ def _execute_disorder_stage(
     code_commit: str,
     minimum_successes: int,
     minimum_wilson_lower: float,
+    progress: Phase98ProgressCallback | None = None,
+    progress_stage: Phase98ProgressStage,
 ) -> tuple[Phase98DisorderChannelSummary, ...]:
     summaries: list[Phase98DisorderChannelSummary] = []
+    total = len(targets) * len(Phase98DisorderChannel)
+    _emit_progress(
+        progress,
+        stage=progress_stage,
+        completed=0,
+        total=total,
+        message=f"Disorder-Kanäle für {seed_role} gestartet",
+    )
     for target in targets:
         for channel in Phase98DisorderChannel:
-            summaries.append(
-                _execute_disorder_channel(
-                    destination,
-                    target=target,
-                    channel=channel,
-                    seed_role=seed_role,
-                    seeds=seeds,
-                    code_commit=code_commit,
-                    minimum_successes=minimum_successes,
-                    minimum_wilson_lower=minimum_wilson_lower,
-                )
+            summary = _execute_disorder_channel(
+                destination,
+                target=target,
+                channel=channel,
+                seed_role=seed_role,
+                seeds=seeds,
+                code_commit=code_commit,
+                minimum_successes=minimum_successes,
+                minimum_wilson_lower=minimum_wilson_lower,
+            )
+            summaries.append(summary)
+            _emit_progress(
+                progress,
+                stage=progress_stage,
+                completed=len(summaries),
+                total=total,
+                message=f"{seed_role}: {target.role_key}/{channel.value} versiegelt",
             )
     return tuple(summaries)
 
@@ -1504,6 +1653,29 @@ def _environment_record() -> dict[str, _JSONValue]:
         "rng_algorithm": "numpy.random.PCG64",
         "execution_order": "sequential_stored_request_order",
     }
+
+
+def _emit_progress(
+    callback: Phase98ProgressCallback | None,
+    *,
+    stage: Phase98ProgressStage,
+    completed: int,
+    total: int,
+    message: str,
+) -> None:
+    """Notify an observer without allowing observer failures to alter the run."""
+    if callback is None:
+        return
+    event = Phase98ProgressEvent(
+        stage=stage,
+        completed=completed,
+        total=total,
+        message=message,
+    )
+    try:
+        callback(event)
+    except Exception:
+        return
 
 
 def _validate_full_run_environment(code_commit: str) -> str:

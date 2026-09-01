@@ -27,6 +27,8 @@ from toposc_lab.search import (
     GeometrySamplingRecipe,
     Phase98DisorderChannel,
     Phase98GeometryApplicability,
+    Phase98ProgressEvent,
+    Phase98ProgressStage,
     RandomGeometrySamplingConfig,
     build_phase_9_8_primary_topology_inputs,
     build_phase_9_8_ammann_beenker_topology_inputs,
@@ -83,9 +85,13 @@ def test_frozen_generators_are_registered_stochastic_version_one() -> None:
 
 
 def test_reserved_dry_run_is_exact_reproducible_and_contract_valid() -> None:
-    records = run_phase_9_8_dry_run()
+    progress: list[Phase98ProgressEvent] = []
+    records = run_phase_9_8_dry_run(progress=progress.append)
 
     assert tuple(record.seed for record in records) == PHASE_9_8_DRY_RUN_SEEDS
+    assert all(event.stage is Phase98ProgressStage.DRY_RUN for event in progress)
+    assert tuple(event.completed for event in progress) == tuple(range(11))
+    assert all(event.total == 10 for event in progress)
     assert len({record.exact_geometry_id for record in records}) == len(records)
     assert all(record.complete_attempt_count >= 1 for record in records)
     assert all(record.proposal_count >= 64 for record in records)
@@ -105,6 +111,19 @@ def test_reserved_dry_run_is_exact_reproducible_and_contract_valid() -> None:
         assert min(len(geometry.neighbors(site)) for site in geometry.site_indices) == 2
         assert max(len(geometry.neighbors(site)) for site in geometry.site_indices) == 4
         assert 24 <= len(geometry.boundary_sites) <= 32
+
+
+def test_progress_observer_failure_cannot_change_runner_control_flow() -> None:
+    def broken_observer(_event: Phase98ProgressEvent) -> None:
+        raise RuntimeError("display failed")
+
+    experiment_module._emit_progress(
+        broken_observer,
+        stage=Phase98ProgressStage.SEARCH,
+        completed=1,
+        total=32,
+        message="trial sealed",
+    )
 
 
 def test_phase_9_1_sampler_remains_the_only_derived_seed_api() -> None:

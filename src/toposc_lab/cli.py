@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 from collections.abc import Sequence
+from pathlib import Path
 
 import numpy as np
 
@@ -58,6 +59,28 @@ def build_parser() -> argparse.ArgumentParser:
         help="Use periodic instead of open boundary conditions.",
     )
 
+    phase_9_8_parser = subparsers.add_parser(
+        "phase-9-8",
+        help="Run Phase 9.8 with simple progress and resource monitoring.",
+    )
+    mode = phase_9_8_parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Run only the ten reserved geometry checks; no scientific search.",
+    )
+    mode.add_argument(
+        "--full",
+        dest="full_run",
+        action="store_true",
+        help="Run the complete frozen search and any triggered disorder stages.",
+    )
+    phase_9_8_parser.add_argument(
+        "--output",
+        type=Path,
+        help="Fresh output directory; full runs default to a timestamped results path.",
+    )
+
     return parser
 
 
@@ -107,7 +130,14 @@ def main(argv: Sequence[str] | None = None) -> int:
     try:
         if args.command == "kitaev-scan":
             run_kitaev_scan(args)
-    except ValueError as error:
+        elif args.command == "phase-9-8":
+            from toposc_lab.phase_9_8_cli import run_phase_9_8_command
+
+            return run_phase_9_8_command(args)
+    except (FileExistsError, RuntimeError, ValueError) as error:
         parser.error(str(error))
+    except KeyboardInterrupt:
+        print("\nAbbruch durch Benutzer; bereits versiegelte Artefakte bleiben erhalten.")
+        return 130
 
     return 0
