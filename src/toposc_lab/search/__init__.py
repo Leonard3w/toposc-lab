@@ -1,5 +1,16 @@
 """Search infrastructure kept separate from physics and persistence."""
 
+from toposc_lab.search.batch_evaluation import (
+    BATCH_EVALUATION_EXECUTION_VERSION,
+    BatchEvaluationCandidate,
+    BatchEvaluationFailure,
+    BatchEvaluationFailureStage,
+    BatchEvaluationMember,
+    BatchEvaluationRequest,
+    BatchEvaluationResult,
+    CandidateEvaluator,
+    execute_evaluation_batch,
+)
 from toposc_lab.search.random_geometry import (
     RANDOM_GEOMETRY_SAMPLER_RNG_ALGORITHM,
     RANDOM_GEOMETRY_SAMPLER_VERSION,
@@ -26,11 +37,19 @@ from toposc_lab.search.random_model_parameters import (
 )
 
 __all__ = [
+    "BATCH_EVALUATION_EXECUTION_VERSION",
     "RANDOM_GEOMETRY_SAMPLER_RNG_ALGORITHM",
     "RANDOM_GEOMETRY_SAMPLER_VERSION",
     "RANDOM_MODEL_PARAMETER_SAMPLER_RNG_ALGORITHM",
     "RANDOM_MODEL_PARAMETER_SAMPLER_VERSION",
     "CategoricalDistribution",
+    "BatchEvaluationCandidate",
+    "BatchEvaluationFailure",
+    "BatchEvaluationFailureStage",
+    "BatchEvaluationMember",
+    "BatchEvaluationRequest",
+    "BatchEvaluationResult",
+    "CandidateEvaluator",
     "GeometrySamplingFailureStage",
     "GeometrySamplingRecipe",
     "ModelParameterDistribution",
@@ -46,4 +65,5 @@ __all__ = [
     "UniformIntegerDistribution",
     "sample_random_geometries",
     "sample_random_model_parameters",
+    "execute_evaluation_batch",
 ]
