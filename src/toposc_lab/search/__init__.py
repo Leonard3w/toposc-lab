@@ -56,6 +56,7 @@ from toposc_lab.search.geometry_genome import (
     geometry_to_genome,
     validate_geometry_genome,
 )
+from toposc_lab.search.geometry_mutations import add_edge_mutation
 from toposc_lab.search.random_geometry import (
     RANDOM_GEOMETRY_SAMPLER_RNG_ALGORITHM,
     RANDOM_GEOMETRY_SAMPLER_VERSION,
@@ -209,6 +210,7 @@ __all__ = [
     "UniformFloatDistribution",
     "UniformIntegerDistribution",
     "UnrankedCandidateReason",
+    "add_edge_mutation",
     "sample_random_geometries",
     "sample_random_model_parameters",
     "build_phase_9_8_ammann_beenker_topology_inputs",
