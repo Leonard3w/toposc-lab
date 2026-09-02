@@ -57,7 +57,10 @@ from toposc_lab.search.geometry_genome import (
     validate_geometry_genome,
 )
 from toposc_lab.search.geometry_mutations import (
+    BoundaryComponentKey,
+    NodeCoordinate,
     add_edge_mutation,
+    add_node_mutation,
     remove_edge_mutation,
 )
 from toposc_lab.search.random_geometry import (
@@ -159,6 +162,7 @@ __all__ = [
     "BatchEvaluationMember",
     "BatchEvaluationRequest",
     "BatchEvaluationResult",
+    "BoundaryComponentKey",
     "BaselineSuccessCriterion",
     "BaselineSuccessPredicate",
     "BaselineUncertaintyMethod",
@@ -177,6 +181,7 @@ __all__ = [
     "GeometryGenomeValidationIssue",
     "GeometryGenomeValidationReport",
     "ModelParameterDistribution",
+    "NodeCoordinate",
     "RandomGeometrySample",
     "RandomGeometrySamplingConfig",
     "RandomGeometrySamplingError",
@@ -214,6 +219,7 @@ __all__ = [
     "UniformIntegerDistribution",
     "UnrankedCandidateReason",
     "add_edge_mutation",
+    "add_node_mutation",
     "sample_random_geometries",
     "sample_random_model_parameters",
     "build_phase_9_8_ammann_beenker_topology_inputs",

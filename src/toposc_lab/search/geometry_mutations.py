@@ -2,14 +2,27 @@
 
 from __future__ import annotations
 
+from collections.abc import Iterable, Sequence
 from dataclasses import replace
 from numbers import Integral
+from typing import TypeAlias, cast
 
-from toposc_lab.geometry import GeometryEdge, GeometryFace
+import numpy as np
+from numpy.typing import NDArray
+
+from toposc_lab.geometry import (
+    GeometryBoundaryComponent,
+    GeometryBoundaryKind,
+    GeometryEdge,
+    GeometryFace,
+)
 from toposc_lab.search.geometry_genome import (
     GeometryGenome,
     geometry_from_genome,
 )
+
+NodeCoordinate: TypeAlias = Sequence[float] | NDArray[np.float64]
+BoundaryComponentKey: TypeAlias = tuple[GeometryBoundaryKind, int]
 
 
 def add_edge_mutation(
@@ -73,6 +86,47 @@ def remove_edge_mutation(
     return mutated
 
 
+def add_node_mutation(
+    genome: GeometryGenome,
+    *,
+    coordinate: NodeCoordinate | None = None,
+    site_type: str | None = None,
+    boundary: bool = False,
+    boundary_component_keys: Iterable[BoundaryComponentKey] = (),
+) -> GeometryGenome:
+    """Return a new genome with one explicitly described isolated site.
+
+    The site receives index ``genome.n_sites``. Coordinate and site-type columns
+    remain complete when present, while missing columns are never synthesized
+    for older sites. Boundary membership is caller-declared and may reference
+    only existing boundary components. No edge or physical interpretation is
+    added implicitly.
+    """
+    if not isinstance(genome, GeometryGenome):
+        raise TypeError("genome must be a GeometryGenome instance")
+    geometry_from_genome(genome)
+
+    coordinates = _coordinates_with_added_site(genome, coordinate=coordinate)
+    site_types = _site_types_with_added_site(genome, site_type=site_type)
+    component_keys = _boundary_component_key_set(boundary_component_keys)
+    boundary_sites, boundary_components = _boundaries_with_added_site(
+        genome,
+        boundary=boundary,
+        component_keys=component_keys,
+    )
+    mutated = replace(
+        genome,
+        n_sites=genome.n_sites + 1,
+        coordinates=coordinates,
+        boundary_sites=boundary_sites,
+        boundary_components=boundary_components,
+        site_types=site_types,
+        rooted_tree=None,
+    )
+    geometry_from_genome(mutated)
+    return mutated
+
+
 def _stored_edge_index(value: int, *, edge_count: int) -> int:
     if isinstance(value, bool) or not isinstance(value, Integral):
         raise TypeError("edge_index must be an integer")
@@ -82,6 +136,111 @@ def _stored_edge_index(value: int, *, edge_count: int) -> int:
             f"edge_index {result} is outside the stored edge sequence of length {edge_count}"
         )
     return result
+
+
+def _coordinates_with_added_site(
+    genome: GeometryGenome,
+    *,
+    coordinate: NodeCoordinate | None,
+) -> NDArray[np.float64] | None:
+    if genome.coordinates is None:
+        if coordinate is not None:
+            raise ValueError("coordinate must be None when the genome has no coordinate table")
+        return None
+    if coordinate is None:
+        raise ValueError("coordinate is required when the genome has a coordinate table")
+    raw_coordinate = np.asarray(coordinate)
+    if np.iscomplexobj(raw_coordinate):
+        raise ValueError("coordinate must contain real values")
+    try:
+        values = np.asarray(coordinate, dtype=np.float64)
+    except (TypeError, ValueError) as error:
+        raise ValueError("coordinate must be a finite real vector") from error
+    expected_shape = (genome.coordinates.shape[1],)
+    if values.shape != expected_shape:
+        raise ValueError(f"coordinate must have shape {expected_shape}")
+    if not np.all(np.isfinite(values)):
+        raise ValueError("coordinate must contain only finite values")
+    return np.vstack((genome.coordinates, values))
+
+
+def _site_types_with_added_site(
+    genome: GeometryGenome,
+    *,
+    site_type: str | None,
+) -> tuple[str | None, ...] | None:
+    if site_type is not None and not isinstance(site_type, str):
+        raise TypeError("site_type must be a string or None")
+    if genome.site_types is None:
+        if site_type is not None:
+            raise ValueError("site_type must be None when the genome has no site-type column")
+        return None
+    return genome.site_types + (site_type,)
+
+
+def _boundary_component_key_set(
+    values: Iterable[BoundaryComponentKey],
+) -> frozenset[BoundaryComponentKey]:
+    if isinstance(values, (str, bytes, bytearray)) or not isinstance(values, Iterable):
+        raise TypeError("boundary_component_keys must be an iterable of component keys")
+    keys: list[BoundaryComponentKey] = []
+    for value in values:
+        if (
+            isinstance(value, (str, bytes, bytearray))
+            or not isinstance(value, Sequence)
+            or len(value) != 2
+        ):
+            raise TypeError("boundary component keys must be (kind, component_index) pairs")
+        kind, component_index = value
+        if kind not in ("outer", "hole"):
+            raise ValueError(f"unsupported boundary component kind: {kind!r}")
+        if isinstance(component_index, bool) or not isinstance(component_index, Integral):
+            raise TypeError("boundary component index must be an integer")
+        normalized_index = int(component_index)
+        if normalized_index < 0:
+            raise ValueError("boundary component index must be nonnegative")
+        keys.append((cast(GeometryBoundaryKind, kind), normalized_index))
+    if len(set(keys)) != len(keys):
+        raise ValueError("boundary_component_keys must not contain duplicates")
+    return frozenset(keys)
+
+
+def _boundaries_with_added_site(
+    genome: GeometryGenome,
+    *,
+    boundary: bool,
+    component_keys: frozenset[BoundaryComponentKey],
+) -> tuple[frozenset[int], tuple[GeometryBoundaryComponent, ...]]:
+    if not isinstance(boundary, bool):
+        raise TypeError("boundary must be a boolean")
+    if not boundary and component_keys:
+        raise ValueError("boundary_component_keys require boundary=True")
+
+    existing_keys = frozenset(
+        (component.kind, component.component_index) for component in genome.boundary_components
+    )
+    if component_keys - existing_keys:
+        unknown = sorted(component_keys - existing_keys)
+        raise ValueError(f"unknown boundary component keys: {unknown!r}")
+    if not genome.boundary_components and component_keys:
+        raise ValueError("a component key requires existing boundary components")
+    if boundary and genome.boundary_components and not component_keys:
+        raise ValueError("a boundary site requires component keys when components are present")
+
+    new_site = genome.n_sites
+    boundary_sites = (
+        genome.boundary_sites | frozenset((new_site,)) if boundary else genome.boundary_sites
+    )
+    boundary_components = tuple(
+        replace(
+            component,
+            sites=component.sites | frozenset((new_site,)),
+        )
+        if (component.kind, component.component_index) in component_keys
+        else component
+        for component in genome.boundary_components
+    )
+    return boundary_sites, boundary_components
 
 
 def _face_uses_edge(face: GeometryFace, *, edge: GeometryEdge) -> bool:
