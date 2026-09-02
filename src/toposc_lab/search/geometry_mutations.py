@@ -127,6 +127,88 @@ def add_node_mutation(
     return mutated
 
 
+def remove_node_mutation(
+    genome: GeometryGenome,
+    site_index: int,
+) -> GeometryGenome:
+    """Return a new genome without one stored site and its incident data.
+
+    Surviving sites retain their original order and are compactly reindexed.
+    Surviving edges keep their source-to-target orientation and every non-endpoint
+    attribute. Faces containing the removed site and empty boundary components
+    are dropped. No replacement boundary, edge, coordinate, or physical meaning
+    is inferred.
+    """
+    if not isinstance(genome, GeometryGenome):
+        raise TypeError("genome must be a GeometryGenome instance")
+    prepared_index = _stored_site_index(site_index, site_count=genome.n_sites)
+
+    geometry_from_genome(genome)
+    if genome.n_sites == 1:
+        raise ValueError("cannot remove the only site from a geometry genome")
+
+    surviving_edges = tuple(
+        replace(
+            edge,
+            source=_site_after_removal(edge.source, removed_site=prepared_index),
+            target=_site_after_removal(edge.target, removed_site=prepared_index),
+        )
+        for edge in genome.edges
+        if edge.source != prepared_index and edge.target != prepared_index
+    )
+    coordinates = (
+        None
+        if genome.coordinates is None
+        else np.delete(genome.coordinates, prepared_index, axis=0)
+    )
+    boundary_sites = frozenset(
+        _site_after_removal(site, removed_site=prepared_index)
+        for site in genome.boundary_sites
+        if site != prepared_index
+    )
+    boundary_components = tuple(
+        replace(
+            component,
+            sites=frozenset(
+                _site_after_removal(site, removed_site=prepared_index)
+                for site in component.sites
+                if site != prepared_index
+            ),
+        )
+        for component in genome.boundary_components
+        if component.sites != frozenset((prepared_index,))
+    )
+    site_types = (
+        None
+        if genome.site_types is None
+        else genome.site_types[:prepared_index] + genome.site_types[prepared_index + 1 :]
+    )
+    surviving_faces = tuple(
+        replace(
+            face,
+            sites=tuple(
+                _site_after_removal(site, removed_site=prepared_index)
+                for site in face.sites
+            ),
+        )
+        for face in genome.faces
+        if prepared_index not in face.sites
+    )
+    mutated = replace(
+        genome,
+        n_sites=genome.n_sites - 1,
+        edges=surviving_edges,
+        coordinates=coordinates,
+        boundary_sites=boundary_sites,
+        boundary_components=boundary_components,
+        site_types=site_types,
+        rooted_tree=None,
+        faces=surviving_faces,
+    )
+    geometry_from_genome(mutated)
+    return mutated
+
+
 def _stored_edge_index(value: int, *, edge_count: int) -> int:
     if isinstance(value, bool) or not isinstance(value, Integral):
         raise TypeError("edge_index must be an integer")
@@ -136,6 +218,21 @@ def _stored_edge_index(value: int, *, edge_count: int) -> int:
             f"edge_index {result} is outside the stored edge sequence of length {edge_count}"
         )
     return result
+
+
+def _stored_site_index(value: int, *, site_count: int) -> int:
+    if isinstance(value, bool) or not isinstance(value, Integral):
+        raise TypeError("site_index must be an integer")
+    result = int(value)
+    if not 0 <= result < site_count:
+        raise IndexError(
+            f"site_index {result} is outside the stored site sequence of length {site_count}"
+        )
+    return result
+
+
+def _site_after_removal(site: int, *, removed_site: int) -> int:
+    return site if site < removed_site else site - 1
 
 
 def _coordinates_with_added_site(

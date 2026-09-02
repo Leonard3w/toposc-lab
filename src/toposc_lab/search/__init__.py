@@ -62,6 +62,7 @@ from toposc_lab.search.geometry_mutations import (
     add_edge_mutation,
     add_node_mutation,
     remove_edge_mutation,
+    remove_node_mutation,
 )
 from toposc_lab.search.random_geometry import (
     RANDOM_GEOMETRY_SAMPLER_RNG_ALGORITHM,
@@ -233,6 +234,7 @@ __all__ = [
     "load_evaluated_candidate_batch",
     "rank_evaluated_candidates",
     "remove_edge_mutation",
+    "remove_node_mutation",
     "save_evaluated_candidate_batch",
     "evaluate_phase_9_8_descriptive_geometry",
     "evaluate_phase_9_8_primary_geometry",
