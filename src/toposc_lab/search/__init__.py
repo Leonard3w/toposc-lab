@@ -46,6 +46,16 @@ from toposc_lab.search.candidate_ranking import (
     UnrankedCandidateReason,
     rank_evaluated_candidates,
 )
+from toposc_lab.search.geometry_genome import (
+    GEOMETRY_GENOME_SCHEMA_VERSION,
+    GeometryGenome,
+    GeometryGenomeValidationError,
+    GeometryGenomeValidationIssue,
+    GeometryGenomeValidationReport,
+    geometry_from_genome,
+    geometry_to_genome,
+    validate_geometry_genome,
+)
 from toposc_lab.search.random_geometry import (
     RANDOM_GEOMETRY_SAMPLER_RNG_ALGORITHM,
     RANDOM_GEOMETRY_SAMPLER_VERSION,
@@ -123,6 +133,7 @@ __all__ = [
     "DEFAULT_CANDIDATE_ARCHIVE_MAX_UNCOMPRESSED_BYTES",
     "EVALUATED_CANDIDATE_ARCHIVE_FORMAT",
     "EVALUATED_CANDIDATE_ARCHIVE_SCHEMA_VERSION",
+    "GEOMETRY_GENOME_SCHEMA_VERSION",
     "RANDOM_GEOMETRY_SAMPLER_RNG_ALGORITHM",
     "RANDOM_GEOMETRY_SAMPLER_VERSION",
     "RANDOM_MODEL_PARAMETER_SAMPLER_RNG_ALGORITHM",
@@ -157,6 +168,10 @@ __all__ = [
     "EvaluatedCandidateStorageError",
     "GeometrySamplingFailureStage",
     "GeometrySamplingRecipe",
+    "GeometryGenome",
+    "GeometryGenomeValidationError",
+    "GeometryGenomeValidationIssue",
+    "GeometryGenomeValidationReport",
     "ModelParameterDistribution",
     "RandomGeometrySample",
     "RandomGeometrySamplingConfig",
@@ -201,6 +216,8 @@ __all__ = [
     "build_phase_9_8_primary_topology_inputs",
     "build_phase_9_8_sierpinski_topology_inputs",
     "execute_evaluation_batch",
+    "geometry_from_genome",
+    "geometry_to_genome",
     "compute_search_baseline_statistics",
     "load_evaluated_candidate_batch",
     "rank_evaluated_candidates",
@@ -212,4 +229,5 @@ __all__ = [
     "run_phase_9_8_dry_run",
     "run_phase_9_8_random_search",
     "validate_phase_9_8_geometry",
+    "validate_geometry_genome",
 ]
