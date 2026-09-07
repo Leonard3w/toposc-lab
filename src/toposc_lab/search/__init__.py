@@ -141,6 +141,13 @@ from toposc_lab.search.population_fitness import (
     ScalarFitnessDefinition,
     evaluate_population_fitness,
 )
+from toposc_lab.search.population_elitism import (
+    POPULATION_ELITISM_VERSION,
+    EliteTier,
+    ElitismConfig,
+    PopulationElitismResult,
+    identify_population_elites,
+)
 from toposc_lab.search.population_selection import (
     TOURNAMENT_SELECTION_RNG_ALGORITHM,
     TOURNAMENT_SELECTION_VERSION,
@@ -196,6 +203,7 @@ __all__ = [
     "PHASE_9_8_PROTOCOL_IDENTIFIER",
     "PHASE_9_8_SEARCH_TRIAL_SEEDS",
     "PHASE_9_8_VALIDATION_SEEDS",
+    "POPULATION_ELITISM_VERSION",
     "POPULATION_FITNESS_VERSION",
     "TOURNAMENT_SELECTION_RNG_ALGORITHM",
     "TOURNAMENT_SELECTION_VERSION",
@@ -218,6 +226,8 @@ __all__ = [
     "CandidateRankingValueFactory",
     "CandidateRankingValueKind",
     "EvaluatedCandidateStorageError",
+    "EliteTier",
+    "ElitismConfig",
     "GeometrySamplingFailureStage",
     "GeometrySamplingRecipe",
     "GeometryGenome",
@@ -262,6 +272,7 @@ __all__ = [
     "Phase98TopologyInputs",
     "Phase98TrialRecord",
     "PopulationEvaluator",
+    "PopulationElitismResult",
     "PopulationFitness",
     "PopulationFitnessDefinition",
     "PopulationFitnessFailure",
@@ -295,6 +306,7 @@ __all__ = [
     "execute_evaluation_batch",
     "geometry_from_genome",
     "geometry_to_genome",
+    "identify_population_elites",
     "compute_search_baseline_statistics",
     "create_initial_population",
     "load_evaluated_candidate_batch",
