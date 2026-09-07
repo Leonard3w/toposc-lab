@@ -37,6 +37,11 @@ class InitialPopulationMember:
         if not self.validity.is_valid:
             raise ValueError("an initial population member requires a valid report")
 
+    @property
+    def generation_index(self) -> int:
+        """Fixed generation-zero index for the common population-member interface."""
+        return 0
+
 
 @dataclass(frozen=True, slots=True)
 class InitialPopulation:

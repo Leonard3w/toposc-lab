@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from numbers import Real
 from types import MappingProxyType
-from typing import TypeAlias
+from typing import Any, TypeAlias, overload
 
 from toposc_lab.evaluation import (
     BasicScalarScore,
@@ -21,6 +21,10 @@ from toposc_lab.evaluation import (
     evaluate_multi_objectives,
 )
 from toposc_lab.evaluation.reproducibility import exact_geometry_id
+from toposc_lab.search.generation_population import (
+    GenerationPopulation,
+    GenerationPopulationMember,
+)
 from toposc_lab.search.initial_population import (
     InitialPopulation,
     InitialPopulationMember,
@@ -103,6 +107,10 @@ PopulationFitnessDefinition: TypeAlias = (
     ScalarFitnessDefinition | MultiObjectiveFitnessDefinition
 )
 PopulationFitness: TypeAlias = BasicScalarScore | MultiObjectiveEvaluation
+FitnessPopulation: TypeAlias = InitialPopulation | GenerationPopulation
+FitnessPopulationMember: TypeAlias = (
+    InitialPopulationMember | GenerationPopulationMember
+)
 
 
 class PopulationFitnessStatus(str, Enum):
@@ -161,15 +169,18 @@ class PopulationFitnessFailure:
 class PopulationFitnessMember:
     """One source population member and its retained fitness outcome."""
 
-    population_member: InitialPopulationMember
+    population_member: FitnessPopulationMember
     status: PopulationFitnessStatus
     evaluation: GeometryEvaluationRun | None
     fitness: PopulationFitness | None
     failure: PopulationFitnessFailure | None
 
     def __post_init__(self) -> None:
-        if not isinstance(self.population_member, InitialPopulationMember):
-            raise TypeError("population_member must be InitialPopulationMember")
+        if not isinstance(
+            self.population_member,
+            (InitialPopulationMember, GenerationPopulationMember),
+        ):
+            raise TypeError("population_member must be a supported population member")
         if not isinstance(self.status, PopulationFitnessStatus):
             raise TypeError("status must be PopulationFitnessStatus")
         if self.evaluation is not None and not isinstance(
@@ -191,8 +202,13 @@ class PopulationFitnessMember:
 
     @property
     def member_index(self) -> int:
-        """Original generation-zero index retained without renumbering."""
+        """Index retained from the source generation without renumbering."""
         return self.population_member.member_index
+
+    @property
+    def generation_index(self) -> int:
+        """Generation containing the source population member."""
+        return self.population_member.generation_index
 
     @property
     def is_available(self) -> bool:
@@ -204,7 +220,7 @@ class PopulationFitnessMember:
 class PopulationFitnessResult:
     """Complete population-order ledger without ranking or selection."""
 
-    population: InitialPopulation
+    population: FitnessPopulation
     definition: PopulationFitnessDefinition
     members: tuple[PopulationFitnessMember, ...]
     version: int = field(default=POPULATION_FITNESS_VERSION, init=False)
@@ -214,8 +230,8 @@ class PopulationFitnessResult:
     )
 
     def __post_init__(self) -> None:
-        if not isinstance(self.population, InitialPopulation):
-            raise TypeError("population must be InitialPopulation")
+        if not isinstance(self.population, (InitialPopulation, GenerationPopulation)):
+            raise TypeError("population must be a supported geometry population")
         _require_fitness_definition(self.definition)
         if isinstance(self.members, (str, bytes, bytearray)) or not isinstance(
             self.members,
@@ -224,7 +240,7 @@ class PopulationFitnessResult:
             raise TypeError("members must be an iterable of PopulationFitnessMember")
         members = tuple(self.members)
         if len(members) != self.population.population_size:
-            raise ValueError("members must retain every initial population member")
+            raise ValueError("members must retain every source population member")
         if not all(isinstance(member, PopulationFitnessMember) for member in members):
             raise TypeError("members must contain only PopulationFitnessMember values")
         for member, source_member in zip(
@@ -253,16 +269,33 @@ class PopulationFitnessResult:
 
 
 PopulationEvaluator: TypeAlias = Callable[
-    [InitialPopulationMember],
-    GeometryEvaluationRun,
+    [FitnessPopulationMember], GeometryEvaluationRun
 ]
 
 
+@overload
 def evaluate_population_fitness(
     population: InitialPopulation,
     *,
     definition: PopulationFitnessDefinition,
-    evaluator: PopulationEvaluator,
+    evaluator: Callable[[InitialPopulationMember], GeometryEvaluationRun],
+) -> PopulationFitnessResult: ...
+
+
+@overload
+def evaluate_population_fitness(
+    population: GenerationPopulation,
+    *,
+    definition: PopulationFitnessDefinition,
+    evaluator: Callable[[GenerationPopulationMember], GeometryEvaluationRun],
+) -> PopulationFitnessResult: ...
+
+
+def evaluate_population_fitness(
+    population: FitnessPopulation,
+    *,
+    definition: PopulationFitnessDefinition,
+    evaluator: Callable[[Any], GeometryEvaluationRun],
 ) -> PopulationFitnessResult:
     """Evaluate and construct fitness once per member in population order.
 
@@ -271,8 +304,8 @@ def evaluate_population_fitness(
     mismatched reproducibility identities, and malformed definitions are API
     contract errors and raise without producing a partial result.
     """
-    if not isinstance(population, InitialPopulation):
-        raise TypeError("population must be InitialPopulation")
+    if not isinstance(population, (InitialPopulation, GenerationPopulation)):
+        raise TypeError("population must be a supported geometry population")
     _require_fitness_definition(definition)
     if not callable(evaluator):
         raise TypeError("evaluator must be callable")
@@ -420,7 +453,7 @@ def _validate_member_state(member: PopulationFitnessMember) -> None:
 def _validate_evaluation_correspondence(
     evaluation: GeometryEvaluationRun,
     *,
-    population_member: InitialPopulationMember,
+    population_member: FitnessPopulationMember,
 ) -> None:
     reproducibility = evaluation.reproducibility
     if reproducibility is None:
