@@ -209,6 +209,54 @@ def remove_node_mutation(
     return mutated
 
 
+def move_node_mutation(
+    genome: GeometryGenome,
+    site_index: int,
+    *,
+    coordinate: NodeCoordinate,
+) -> GeometryGenome:
+    """Return a new genome with one site's explicit coordinate replaced.
+
+    The graph and all non-spatial annotations remain unchanged. Explicit
+    oriented displacements incident to the moved site receive the corresponding
+    target-minus-source coordinate offset so periodic image vectors remain
+    consistent. Implicit displacements remain implicit. The operation performs
+    no coordinate sampling or search-space checks.
+    """
+    if not isinstance(genome, GeometryGenome):
+        raise TypeError("genome must be a GeometryGenome instance")
+    prepared_index = _stored_site_index(site_index, site_count=genome.n_sites)
+
+    geometry_from_genome(genome)
+    if genome.coordinates is None:
+        raise ValueError("move-node mutation requires an explicit coordinate table")
+
+    prepared_coordinate = _validated_moved_coordinate(
+        coordinate,
+        expected_shape=(genome.coordinates.shape[1],),
+    )
+    coordinates = genome.coordinates.copy()
+    previous_coordinate = coordinates[prepared_index].copy()
+    coordinates[prepared_index] = prepared_coordinate
+    with np.errstate(over="ignore", invalid="ignore"):
+        offset = prepared_coordinate - previous_coordinate
+    edges = tuple(
+        _edge_after_node_move(
+            edge,
+            site_index=prepared_index,
+            offset=offset,
+        )
+        for edge in genome.edges
+    )
+    mutated = replace(
+        genome,
+        edges=edges,
+        coordinates=coordinates,
+    )
+    geometry_from_genome(mutated)
+    return mutated
+
+
 def _stored_edge_index(value: int, *, edge_count: int) -> int:
     if isinstance(value, bool) or not isinstance(value, Integral):
         raise TypeError("edge_index must be an integer")
@@ -259,6 +307,53 @@ def _coordinates_with_added_site(
     if not np.all(np.isfinite(values)):
         raise ValueError("coordinate must contain only finite values")
     return np.vstack((genome.coordinates, values))
+
+
+def _validated_moved_coordinate(
+    coordinate: NodeCoordinate,
+    *,
+    expected_shape: tuple[int],
+) -> NDArray[np.float64]:
+    try:
+        raw_coordinate = np.asarray(coordinate)
+    except (TypeError, ValueError, OverflowError) as error:
+        raise ValueError("coordinate must be a finite real vector") from error
+    if np.iscomplexobj(raw_coordinate):
+        raise ValueError("coordinate must contain real values")
+    try:
+        values = np.asarray(coordinate, dtype=np.float64)
+    except (TypeError, ValueError, OverflowError) as error:
+        raise ValueError("coordinate must be a finite real vector") from error
+    if values.shape != expected_shape:
+        raise ValueError(f"coordinate must have shape {expected_shape}")
+    if not np.all(np.isfinite(values)):
+        raise ValueError("coordinate must contain only finite values")
+    return values
+
+
+def _edge_after_node_move(
+    edge: GeometryEdge,
+    *,
+    site_index: int,
+    offset: NDArray[np.float64],
+) -> GeometryEdge:
+    if edge.displacement is None:
+        return edge
+    if edge.source == site_index:
+        signed_offset = -offset
+    elif edge.target == site_index:
+        signed_offset = offset
+    else:
+        return edge
+
+    with np.errstate(over="ignore", invalid="ignore"):
+        displacement = np.asarray(edge.displacement, dtype=np.float64) + signed_offset
+    if not np.all(np.isfinite(displacement)):
+        raise ValueError("move-node mutation produced a non-finite edge displacement")
+    return replace(
+        edge,
+        displacement=tuple(float(value) for value in displacement),
+    )
 
 
 def _site_types_with_added_site(

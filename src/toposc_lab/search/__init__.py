@@ -61,6 +61,7 @@ from toposc_lab.search.geometry_mutations import (
     NodeCoordinate,
     add_edge_mutation,
     add_node_mutation,
+    move_node_mutation,
     remove_edge_mutation,
     remove_node_mutation,
 )
@@ -221,6 +222,7 @@ __all__ = [
     "UnrankedCandidateReason",
     "add_edge_mutation",
     "add_node_mutation",
+    "move_node_mutation",
     "sample_random_geometries",
     "sample_random_model_parameters",
     "build_phase_9_8_ammann_beenker_topology_inputs",
