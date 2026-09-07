@@ -66,6 +66,14 @@ from toposc_lab.search.geometry_mutations import (
     remove_node_mutation,
     rewire_edge_mutation,
 )
+from toposc_lab.search.mutation_validity import (
+    InvalidGeometryMutationError,
+    MutationMeasurement,
+    MutationValidityIssue,
+    MutationValidityPolicy,
+    MutationValidityReport,
+    validate_geometry_mutation,
+)
 from toposc_lab.search.random_geometry import (
     RANDOM_GEOMETRY_SAMPLER_RNG_ALGORITHM,
     RANDOM_GEOMETRY_SAMPLER_VERSION,
@@ -183,7 +191,12 @@ __all__ = [
     "GeometryGenomeValidationError",
     "GeometryGenomeValidationIssue",
     "GeometryGenomeValidationReport",
+    "InvalidGeometryMutationError",
     "ModelParameterDistribution",
+    "MutationMeasurement",
+    "MutationValidityIssue",
+    "MutationValidityPolicy",
+    "MutationValidityReport",
     "NodeCoordinate",
     "RandomGeometrySample",
     "RandomGeometrySamplingConfig",
@@ -248,4 +261,5 @@ __all__ = [
     "run_phase_9_8_random_search",
     "validate_phase_9_8_geometry",
     "validate_geometry_genome",
+    "validate_geometry_mutation",
 ]
