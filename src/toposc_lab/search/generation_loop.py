@@ -9,6 +9,13 @@ from typing import TypeAlias
 
 import numpy as np
 
+from toposc_lab.search.diversity_preservation import (
+    DiversityFamilyClassifier,
+    DiversityPreservationPolicy,
+    PopulationDiversityReport,
+    assess_population_diversity,
+    validate_diversity_history,
+)
 from toposc_lab.search.generation_population import (
     GenerationPopulation,
     GenerationPopulationMember,
@@ -38,7 +45,7 @@ from toposc_lab.search.population_selection import (
     select_population_members,
 )
 
-GENERATION_LOOP_VERSION = 1
+GENERATION_LOOP_VERSION = 2
 GENERATION_LOOP_RNG_ALGORITHM = "numpy.random.PCG64"
 
 _GENERATION_LOOP_WARNINGS = (
@@ -55,8 +62,8 @@ _GENERATION_LOOP_WARNINGS = (
         "not filtered, repaired, replaced, or retried."
     ),
     (
-        "Duplicate genomes are retained; diversity and novelty policies are not part "
-        "of this phase."
+        "Duplicate genomes are retained; an optional explicit diversity family-"
+        "occupancy gate does not deduplicate candidates or define novelty."
     ),
     "Checkpointing, resume behavior, and persistence remain separate contracts.",
 )
@@ -69,6 +76,7 @@ class GenerationLoopConfig:
     generation_count: int
     selection: TournamentSelectionConfig
     elitism: ElitismConfig
+    diversity: DiversityPreservationPolicy | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(
@@ -80,6 +88,13 @@ class GenerationLoopConfig:
             raise TypeError("selection must be a TournamentSelectionConfig")
         if not isinstance(self.elitism, ElitismConfig):
             raise TypeError("elitism must be an ElitismConfig")
+        if self.diversity is not None and not isinstance(
+            self.diversity,
+            DiversityPreservationPolicy,
+        ):
+            raise TypeError(
+                "diversity must be a DiversityPreservationPolicy or None"
+            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -141,6 +156,7 @@ class GenerationReproductionRequest:
     required_offspring_count: int
     seed: int
     validity_policy: MutationValidityPolicy
+    source_diversity: PopulationDiversityReport | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.source, PopulationFitnessResult):
@@ -168,6 +184,17 @@ class GenerationReproductionRequest:
             raise TypeError("validity_policy must be a MutationValidityPolicy")
         if self.validity_policy is not self.source.population.validity_policy:
             raise ValueError("validity_policy must be the source population policy")
+        if self.source_diversity is not None:
+            if not isinstance(self.source_diversity, PopulationDiversityReport):
+                raise TypeError(
+                    "source_diversity must be a PopulationDiversityReport or None"
+                )
+            if self.source_diversity.population is not self.source.population:
+                raise ValueError(
+                    "source_diversity must classify the exact source population"
+                )
+            if not self.source_diversity.satisfies_policy:
+                raise ValueError("source_diversity must satisfy its occupancy policy")
         object.__setattr__(
             self,
             "target_generation_index",
@@ -245,6 +272,7 @@ class GenerationTransition:
     offspring: tuple[GenerationOffspringRecord, ...]
     population: GenerationPopulation
     fitness: PopulationFitnessResult
+    diversity: PopulationDiversityReport | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.source_fitness, PopulationFitnessResult):
@@ -277,6 +305,15 @@ class GenerationTransition:
             raise TypeError("population must be a GenerationPopulation")
         if not isinstance(self.fitness, PopulationFitnessResult):
             raise TypeError("fitness must be a PopulationFitnessResult")
+        if self.diversity is not None:
+            if not isinstance(self.diversity, PopulationDiversityReport):
+                raise TypeError(
+                    "diversity must be a PopulationDiversityReport or None"
+                )
+            if self.diversity.population is not self.population:
+                raise ValueError("diversity must classify the exact target population")
+            if not self.diversity.satisfies_policy:
+                raise ValueError("target diversity must satisfy its occupancy policy")
 
         source_population = self.source_fitness.population
         expected_offspring_count = source_population.population_size - self.elitism.elite_count
@@ -336,6 +373,8 @@ class GenerationLoopResult:
     producer_identifier: str
     initial_fitness: PopulationFitnessResult
     transitions: tuple[GenerationTransition, ...]
+    initial_diversity: PopulationDiversityReport | None = None
+    family_classifier_identifier: str | None = None
     rng_algorithm: str = field(default=GENERATION_LOOP_RNG_ALGORITHM, init=False)
     version: int = field(default=GENERATION_LOOP_VERSION, init=False)
     warnings: tuple[str, ...] = field(default=_GENERATION_LOOP_WARNINGS, init=False)
@@ -356,6 +395,36 @@ class GenerationLoopResult:
             raise ValueError("initial_fitness must evaluate the exact initial population")
         if self.initial_fitness.definition is not self.definition:
             raise ValueError("initial_fitness must use the exact stored definition")
+        classifier_identifier = self.family_classifier_identifier
+        if self.config.diversity is None:
+            if self.initial_diversity is not None or classifier_identifier is not None:
+                raise ValueError(
+                    "diversity records and classifier identifier require a policy"
+                )
+        else:
+            if not isinstance(self.initial_diversity, PopulationDiversityReport):
+                raise TypeError(
+                    "a configured diversity policy requires initial_diversity"
+                )
+            classifier_identifier = _nonempty_string(
+                classifier_identifier,
+                name="family_classifier_identifier",
+            )
+            if self.initial_diversity.population is not self.initial_population:
+                raise ValueError(
+                    "initial_diversity must classify the exact initial population"
+                )
+            if self.initial_diversity.policy is not self.config.diversity:
+                raise ValueError("initial_diversity must use the configured policy")
+            if (
+                self.initial_diversity.classifier_identifier
+                != classifier_identifier
+            ):
+                raise ValueError(
+                    "initial_diversity must use the stored classifier identifier"
+                )
+            if not self.initial_diversity.satisfies_policy:
+                raise ValueError("initial_diversity must satisfy the configured policy")
         if isinstance(self.transitions, (str, bytes, bytearray)) or not isinstance(
             self.transitions,
             Iterable,
@@ -369,6 +438,9 @@ class GenerationLoopResult:
 
         expected_seeds = _derive_transition_seeds(seed, len(transitions))
         previous_fitness = self.initial_fitness
+        diversity_reports: list[PopulationDiversityReport] = []
+        if self.initial_diversity is not None:
+            diversity_reports.append(self.initial_diversity)
         for transition_index, (transition, expected) in enumerate(
             zip(transitions, expected_seeds, strict=True)
         ):
@@ -389,9 +461,37 @@ class GenerationLoopResult:
                 transition.selection.config is not self.config.selection
             ):
                 raise ValueError("every selection must use the stored selection config")
+            if self.config.diversity is None:
+                if transition.diversity is not None:
+                    raise ValueError(
+                        "transition diversity records require a configured policy"
+                    )
+            else:
+                if not isinstance(transition.diversity, PopulationDiversityReport):
+                    raise TypeError(
+                        "every transition requires a target diversity report"
+                    )
+                if transition.diversity.policy is not self.config.diversity:
+                    raise ValueError(
+                        "every diversity report must use the configured policy"
+                    )
+                if (
+                    transition.diversity.classifier_identifier
+                    != classifier_identifier
+                ):
+                    raise ValueError(
+                        "every diversity report must use the stored classifier"
+                    )
+                diversity_reports.append(transition.diversity)
             previous_fitness = transition.fitness
+        validate_diversity_history(diversity_reports)
         object.__setattr__(self, "seed", seed)
         object.__setattr__(self, "producer_identifier", producer_identifier)
+        object.__setattr__(
+            self,
+            "family_classifier_identifier",
+            classifier_identifier,
+        )
         object.__setattr__(self, "transitions", transitions)
 
     @property
@@ -430,6 +530,8 @@ def run_generation_loop(
     seed: int,
     offspring_producer: OffspringProducer,
     producer_identifier: str,
+    family_classifier: DiversityFamilyClassifier | None = None,
+    family_classifier_identifier: str | None = None,
 ) -> GenerationLoopResult:
     """Compose fixed-size generations without inventing a variation policy.
 
@@ -452,6 +554,37 @@ def run_generation_loop(
         producer_identifier,
         name="producer_identifier",
     )
+    diversity_policy = config.diversity
+    prepared_classifier_identifier: str | None = None
+    if diversity_policy is None:
+        if family_classifier is not None or family_classifier_identifier is not None:
+            raise ValueError(
+                "family classifier inputs require config.diversity"
+            )
+    else:
+        if not callable(family_classifier):
+            raise TypeError(
+                "a configured diversity policy requires a callable family_classifier"
+            )
+        prepared_classifier_identifier = _nonempty_string(
+            family_classifier_identifier,
+            name="family_classifier_identifier",
+        )
+
+    initial_diversity: PopulationDiversityReport | None = None
+    diversity_history: list[PopulationDiversityReport] = []
+    if diversity_policy is not None:
+        assert family_classifier is not None
+        assert prepared_classifier_identifier is not None
+        initial_diversity = assess_population_diversity(
+            initial_population,
+            policy=diversity_policy,
+            classifier=family_classifier,
+            classifier_identifier=prepared_classifier_identifier,
+        )
+        validate_diversity_history((initial_diversity,))
+        initial_diversity.raise_for_violations()
+        diversity_history.append(initial_diversity)
 
     current_fitness = evaluate_population_fitness(
         initial_population,
@@ -459,6 +592,7 @@ def run_generation_loop(
         evaluator=evaluator,
     )
     initial_fitness = current_fitness
+    current_diversity = initial_diversity
     transition_seeds = _derive_transition_seeds(
         prepared_seed,
         config.generation_count,
@@ -491,6 +625,7 @@ def run_generation_loop(
                 required_offspring_count=required_offspring_count,
                 seed=reproduction_seed,
                 validity_policy=source_population.validity_policy,
+                source_diversity=current_diversity,
             )
             proposals = _collect_proposals(
                 offspring_producer(request),
@@ -513,6 +648,18 @@ def run_generation_loop(
             offspring=offspring_records,
             target_generation_index=target_generation_index,
         )
+        target_diversity: PopulationDiversityReport | None = None
+        if diversity_policy is not None:
+            assert family_classifier is not None
+            assert prepared_classifier_identifier is not None
+            target_diversity = assess_population_diversity(
+                population,
+                policy=diversity_policy,
+                classifier=family_classifier,
+                classifier_identifier=prepared_classifier_identifier,
+            )
+            validate_diversity_history((*diversity_history, target_diversity))
+            target_diversity.raise_for_violations()
         target_fitness = evaluate_population_fitness(
             population,
             definition=definition,
@@ -528,9 +675,13 @@ def run_generation_loop(
             offspring=offspring_records,
             population=population,
             fitness=target_fitness,
+            diversity=target_diversity,
         )
         transitions.append(transition)
         current_fitness = target_fitness
+        current_diversity = target_diversity
+        if target_diversity is not None:
+            diversity_history.append(target_diversity)
 
     return GenerationLoopResult(
         initial_population=initial_population,
@@ -540,6 +691,8 @@ def run_generation_loop(
         producer_identifier=prepared_identifier,
         initial_fitness=initial_fitness,
         transitions=tuple(transitions),
+        initial_diversity=initial_diversity,
+        family_classifier_identifier=prepared_classifier_identifier,
     )
 
 
