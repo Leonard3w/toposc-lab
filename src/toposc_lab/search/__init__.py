@@ -66,6 +66,13 @@ from toposc_lab.search.geometry_mutations import (
     remove_node_mutation,
     rewire_edge_mutation,
 )
+from toposc_lab.search.initial_population import (
+    INITIAL_POPULATION_VERSION,
+    InitialPopulation,
+    InitialPopulationError,
+    InitialPopulationMember,
+    create_initial_population,
+)
 from toposc_lab.search.mutation_validity import (
     InvalidGeometryMutationError,
     MutationMeasurement,
@@ -152,6 +159,7 @@ __all__ = [
     "EVALUATED_CANDIDATE_ARCHIVE_FORMAT",
     "EVALUATED_CANDIDATE_ARCHIVE_SCHEMA_VERSION",
     "GEOMETRY_GENOME_SCHEMA_VERSION",
+    "INITIAL_POPULATION_VERSION",
     "RANDOM_GEOMETRY_SAMPLER_RNG_ALGORITHM",
     "RANDOM_GEOMETRY_SAMPLER_VERSION",
     "RANDOM_MODEL_PARAMETER_SAMPLER_RNG_ALGORITHM",
@@ -192,6 +200,9 @@ __all__ = [
     "GeometryGenomeValidationIssue",
     "GeometryGenomeValidationReport",
     "InvalidGeometryMutationError",
+    "InitialPopulation",
+    "InitialPopulationError",
+    "InitialPopulationMember",
     "ModelParameterDistribution",
     "MutationMeasurement",
     "MutationValidityIssue",
@@ -247,6 +258,7 @@ __all__ = [
     "geometry_from_genome",
     "geometry_to_genome",
     "compute_search_baseline_statistics",
+    "create_initial_population",
     "load_evaluated_candidate_batch",
     "rank_evaluated_candidates",
     "remove_edge_mutation",
