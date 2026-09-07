@@ -257,6 +257,50 @@ def move_node_mutation(
     return mutated
 
 
+def rewire_edge_mutation(
+    genome: GeometryGenome,
+    edge_index: int,
+    edge: GeometryEdge,
+) -> GeometryGenome:
+    """Return a new genome with one stored edge rewired in place.
+
+    The caller supplies the replacement edge, including its exact orientation
+    and optional attributes. At least one undirected endpoint must change.
+    Faces using the old edge are dropped and rooted-tree structure is cleared;
+    no replacement faces, displacements, or search-space rules are inferred.
+    """
+    if not isinstance(genome, GeometryGenome):
+        raise TypeError("genome must be a GeometryGenome instance")
+    if not isinstance(edge, GeometryEdge):
+        raise TypeError("edge must be a GeometryEdge instance")
+    prepared_index = _stored_edge_index(edge_index, edge_count=len(genome.edges))
+
+    geometry_from_genome(genome)
+    replaced_edge = genome.edges[prepared_index]
+    if _undirected_edge_key(
+        edge.source,
+        edge.target,
+    ) == _undirected_edge_key(replaced_edge.source, replaced_edge.target):
+        raise ValueError("rewire replacement must change an undirected endpoint")
+
+    rewired_edges = (
+        genome.edges[:prepared_index]
+        + (edge,)
+        + genome.edges[prepared_index + 1 :]
+    )
+    retained_faces = tuple(
+        face for face in genome.faces if not _face_uses_edge(face, edge=replaced_edge)
+    )
+    mutated = replace(
+        genome,
+        edges=rewired_edges,
+        faces=retained_faces,
+        rooted_tree=None,
+    )
+    geometry_from_genome(mutated)
+    return mutated
+
+
 def _stored_edge_index(value: int, *, edge_count: int) -> int:
     if isinstance(value, bool) or not isinstance(value, Integral):
         raise TypeError("edge_index must be an integer")
