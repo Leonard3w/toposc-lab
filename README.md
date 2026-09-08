@@ -14,6 +14,24 @@ The goal is to provide a clean and extensible framework for:
 
 Version 0.1 focuses on the Kitaev chain.
 
+### Phase 10: evolutionäre Geometriesuche
+
+Die Python-API enthält Genome, Mutationen, Gültigkeitsprüfung, Fitness, Auswahl,
+Elitismus, eingeschränktes Crossover, Generationen, Diversität, Novelty-Berichte,
+Checkpoint/Resume und einen Vergleich mit Zufallssuche bei gleichem Bewertungsbudget.
+Das ist Suchinfrastruktur, noch kein Nachweis eines physikalischen Suchvorteils.
+
+[Deutsche Anleitung mit Demo, API-Nutzung und Checkpoints](docs/phase_10_usage_de.md)
+
+```powershell
+$env:PYTHONDONTWRITEBYTECODE='1'
+$env:PYTHONPATH='src'
+.venv\Scripts\python.exe examples/phase_10_search_demo.py
+```
+
+Diese kleine Engineering-Demo schreibt keine Dateien und startet kein
+Phase-9.8-Experiment. Phase 11 und spätere Schritte bleiben davon getrennt.
+
 ## Command line interface
 
 After installing the project, scan the Kitaev-chain spectrum with:

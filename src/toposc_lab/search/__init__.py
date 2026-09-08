@@ -1,5 +1,20 @@
 """Search infrastructure kept separate from physics and persistence."""
 
+from toposc_lab.search.search_benchmark import (
+    SEARCH_BENCHMARK_VERSION,
+    BenchmarkArmResult,
+    BenchmarkEvaluator,
+    BenchmarkProgress,
+    BenchmarkSampler,
+    BenchmarkSuccessCriterion,
+    BenchmarkSuccessPredicate,
+    InvalidBenchmarkSampleError,
+    SearchBenchmarkProtocol,
+    SearchBenchmarkResult,
+    SearchBenchmarkTrial,
+    run_search_benchmark,
+)
+
 from toposc_lab.search.batch_evaluation import (
     BATCH_EVALUATION_EXECUTION_VERSION,
     BatchEvaluationCandidate,
@@ -462,4 +477,16 @@ __all__ = [
     "validate_fixed_scaffold_crossover_parents",
     "validate_geometry_mutation",
     "validate_diversity_history",
+    "SEARCH_BENCHMARK_VERSION",
+    "BenchmarkArmResult",
+    "BenchmarkEvaluator",
+    "BenchmarkProgress",
+    "BenchmarkSampler",
+    "BenchmarkSuccessCriterion",
+    "BenchmarkSuccessPredicate",
+    "InvalidBenchmarkSampleError",
+    "SearchBenchmarkProtocol",
+    "SearchBenchmarkResult",
+    "SearchBenchmarkTrial",
+    "run_search_benchmark",
 ]
