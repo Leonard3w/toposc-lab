@@ -73,6 +73,20 @@ Insbesondere ist die endliche Spektrallücke keine automatisch topologische Lüc
 
 ## Eine eigene Suche aufsetzen
 
+Für unseren ersten physikalischen Vergleich ist jetzt das
+[Forschungsprotokoll TOPOSC-P10-EVO-RS-001](decisions/pre_phase_10_research_protocol_v1.md)
+ausgearbeitet. Es legt 32 gepaarte Versuche fest: jeweils Evolution und
+Zufallssuche mit denselben acht Startgeometrien, 64 Knoten, 112 Kanten und
+32 Bewertungsversuchen pro Arm. Einschließlich Referenzen sind das 2.083
+Bewertungsversuche im Hauptlauf. Ziel ist ein Vergleich der Suchtrefferrate;
+Disorder-Robustheit und größere Systeme folgen in separaten Versuchen.
+
+Der neue Befehl `toposc phase-10-research` mit Vorlauf, Live-Fortschritt und
+Wiederaufnahme ist im Protokoll beschrieben, aber **noch nicht implementiert**.
+Zuerst wird das Protokoll separat committed, anschließend die getestete
+Umsetzung. Vorlauf und Hauptlauf startest du danach selbst; sie schreiben in
+ein neues Phase-10-Ergebnisverzeichnis.
+
 Diese fünf Entscheidungen kommen vor dem Start:
 
 1. **Suchraum:** Welche Geometrien sind erlaubt? Ressourcen wie Knotenanzahl,
