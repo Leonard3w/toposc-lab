@@ -60,9 +60,21 @@ from toposc_lab.search.diversity_preservation import (
     assess_population_diversity,
     validate_diversity_history,
 )
+from toposc_lab.search.checkpoint import (
+    DEFAULT_CHECKPOINT_MAX_BYTES,
+    DEFAULT_CHECKPOINT_MAX_UNCOMPRESSED_BYTES,
+    SEARCH_CHECKPOINT_FORMAT,
+    SEARCH_CHECKPOINT_SCHEMA_VERSION,
+    SearchCheckpoint,
+    SearchCheckpointError,
+    create_search_checkpoint,
+    load_search_checkpoint,
+    save_search_checkpoint,
+)
 from toposc_lab.search.generation_loop import (
     GENERATION_LOOP_RNG_ALGORITHM,
     GENERATION_LOOP_VERSION,
+    GenerationCheckpointCallback,
     GenerationLoopConfig,
     GenerationLoopResult,
     GenerationOffspringRecord,
@@ -236,6 +248,16 @@ from toposc_lab.search.random_search_experiment import (
 )
 
 __all__ = [
+    "DEFAULT_CHECKPOINT_MAX_BYTES",
+    "DEFAULT_CHECKPOINT_MAX_UNCOMPRESSED_BYTES",
+    "SEARCH_CHECKPOINT_FORMAT",
+    "SEARCH_CHECKPOINT_SCHEMA_VERSION",
+    "SearchCheckpoint",
+    "SearchCheckpointError",
+    "GenerationCheckpointCallback",
+    "create_search_checkpoint",
+    "load_search_checkpoint",
+    "save_search_checkpoint",
     "BASELINE_STATISTICS_VERSION",
     "BATCH_EVALUATION_EXECUTION_VERSION",
     "CANDIDATE_RANKING_VERSION",

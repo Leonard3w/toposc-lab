@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Iterable
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from numbers import Integral
 from typing import TypeAlias
 
@@ -519,6 +519,7 @@ class GenerationLoopResult:
 OffspringProducer: TypeAlias = Callable[
     [GenerationReproductionRequest], Iterable[OffspringProposal]
 ]
+GenerationCheckpointCallback: TypeAlias = Callable[[GenerationLoopResult], None]
 
 
 def run_generation_loop(
@@ -532,6 +533,7 @@ def run_generation_loop(
     producer_identifier: str,
     family_classifier: DiversityFamilyClassifier | None = None,
     family_classifier_identifier: str | None = None,
+    checkpoint_callback: GenerationCheckpointCallback | None = None,
 ) -> GenerationLoopResult:
     """Compose fixed-size generations without inventing a variation policy.
 
@@ -540,6 +542,11 @@ def run_generation_loop(
     target slots. The caller's producer fills every remaining slot exactly
     once; invalid proposals raise with the complete batch and are never
     repaired, replaced, filtered, or retried.
+
+    When supplied, ``checkpoint_callback`` observes the complete result prefix
+    after generation zero and after every completed target fitness ledger.
+    Its prefix config counts completed transitions; callers retain the planned
+    target separately. Callback exceptions propagate before another transition.
     """
     if not isinstance(initial_population, InitialPopulation):
         raise TypeError("initial_population must be an InitialPopulation")
@@ -550,6 +557,8 @@ def run_generation_loop(
         raise TypeError("evaluator must be callable")
     if not callable(offspring_producer):
         raise TypeError("offspring_producer must be callable")
+    if checkpoint_callback is not None and not callable(checkpoint_callback):
+        raise TypeError("checkpoint_callback must be callable or None")
     prepared_identifier = _nonempty_string(
         producer_identifier,
         name="producer_identifier",
@@ -598,6 +607,22 @@ def run_generation_loop(
         config.generation_count,
     )
     transitions: list[GenerationTransition] = []
+
+    def completed_prefix() -> GenerationLoopResult:
+        return GenerationLoopResult(
+            initial_population=initial_population,
+            config=replace(config, generation_count=len(transitions)),
+            seed=prepared_seed,
+            definition=definition,
+            producer_identifier=prepared_identifier,
+            initial_fitness=initial_fitness,
+            transitions=tuple(transitions),
+            initial_diversity=initial_diversity,
+            family_classifier_identifier=prepared_classifier_identifier,
+        )
+
+    if checkpoint_callback is not None:
+        checkpoint_callback(completed_prefix())
 
     for selection_seed, reproduction_seed in transition_seeds:
         source_population = current_fitness.population
@@ -682,6 +707,8 @@ def run_generation_loop(
         current_diversity = target_diversity
         if target_diversity is not None:
             diversity_history.append(target_diversity)
+        if checkpoint_callback is not None:
+            checkpoint_callback(completed_prefix())
 
     return GenerationLoopResult(
         initial_population=initial_population,
