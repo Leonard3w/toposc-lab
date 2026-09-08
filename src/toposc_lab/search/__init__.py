@@ -225,6 +225,12 @@ from toposc_lab.search.population_selection import (
     TournamentSelectionRecord,
     select_population_members,
 )
+from toposc_lab.search.resume_search import (
+    SEARCH_RESUME_VERSION,
+    IncompatibleSearchCheckpointError,
+    ResumeCheckpointCallback,
+    resume_search,
+)
 from toposc_lab.search.random_search_experiment import (
     PHASE_9_8_AMORPHOUS_REFERENCE_SEEDS,
     PHASE_9_8_CANDIDATES_PER_TRIAL,
@@ -248,6 +254,10 @@ from toposc_lab.search.random_search_experiment import (
 )
 
 __all__ = [
+    "SEARCH_RESUME_VERSION",
+    "IncompatibleSearchCheckpointError",
+    "ResumeCheckpointCallback",
+    "resume_search",
     "DEFAULT_CHECKPOINT_MAX_BYTES",
     "DEFAULT_CHECKPOINT_MAX_UNCOMPRESSED_BYTES",
     "SEARCH_CHECKPOINT_FORMAT",

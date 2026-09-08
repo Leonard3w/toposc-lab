@@ -95,12 +95,6 @@ def create_search_checkpoint(
     """Bind a completed prefix to explicit code and evaluator provenance."""
     if not isinstance(result, GenerationLoopResult):
         raise TypeError("result must be GenerationLoopResult")
-    runtime = {"python": platform.python_version()}
-    for package in ("numpy", "scipy", "toposc-lab"):
-        try:
-            runtime[package] = version(package)
-        except PackageNotFoundError:
-            runtime[package] = "unavailable"
     return SearchCheckpoint(
         result=result,
         requested_generation_count=(
@@ -110,9 +104,20 @@ def create_search_checkpoint(
         ),
         evaluator_identifier=evaluator_identifier,
         code_version=code_version,
-        runtime_versions=runtime,
+        runtime_versions=_current_runtime_versions(),
         novelty_reports=novelty_reports,
     )
+
+
+def _current_runtime_versions() -> dict[str, str]:
+    """Use the same runtime inventory when recording and resuming a checkpoint."""
+    runtime = {"python": platform.python_version()}
+    for package in ("numpy", "scipy", "toposc-lab"):
+        try:
+            runtime[package] = version(package)
+        except PackageNotFoundError:
+            runtime[package] = "unavailable"
+    return runtime
 
 
 def save_search_checkpoint(path: str | Path, checkpoint: SearchCheckpoint) -> Path:

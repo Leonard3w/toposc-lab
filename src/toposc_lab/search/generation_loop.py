@@ -581,7 +581,6 @@ def run_generation_loop(
         )
 
     initial_diversity: PopulationDiversityReport | None = None
-    diversity_history: list[PopulationDiversityReport] = []
     if diversity_policy is not None:
         assert family_classifier is not None
         assert prepared_classifier_identifier is not None
@@ -593,20 +592,69 @@ def run_generation_loop(
         )
         validate_diversity_history((initial_diversity,))
         initial_diversity.raise_for_violations()
-        diversity_history.append(initial_diversity)
 
-    current_fitness = evaluate_population_fitness(
+    initial_fitness = evaluate_population_fitness(
         initial_population,
         definition=definition,
         evaluator=evaluator,
     )
-    initial_fitness = current_fitness
-    current_diversity = initial_diversity
+    prefix = GenerationLoopResult(
+        initial_population=initial_population,
+        config=replace(config, generation_count=0),
+        seed=prepared_seed,
+        definition=definition,
+        producer_identifier=prepared_identifier,
+        initial_fitness=initial_fitness,
+        transitions=(),
+        initial_diversity=initial_diversity,
+        family_classifier_identifier=prepared_classifier_identifier,
+    )
+    if checkpoint_callback is not None:
+        checkpoint_callback(prefix)
+    return _continue_generation_loop(
+        prefix,
+        config=config,
+        evaluator=evaluator,
+        offspring_producer=offspring_producer,
+        family_classifier=family_classifier,
+        checkpoint_callback=checkpoint_callback,
+    )
+
+
+def _continue_generation_loop(
+    prefix: GenerationLoopResult,
+    *,
+    config: GenerationLoopConfig,
+    evaluator: PopulationEvaluator,
+    offspring_producer: OffspringProducer,
+    family_classifier: DiversityFamilyClassifier | None,
+    checkpoint_callback: GenerationCheckpointCallback | None,
+) -> GenerationLoopResult:
+    """Shared transition engine for a fresh run and a checked resume prefix.
+
+    Callers validate external policies first. Only new generations trigger
+    evaluation, classification, offspring production, and checkpoint callbacks.
+    """
+    initial_population = prefix.initial_population
+    initial_fitness = prefix.initial_fitness
+    initial_diversity = prefix.initial_diversity
+    definition = prefix.definition
+    prepared_seed = prefix.seed
+    prepared_identifier = prefix.producer_identifier
+    prepared_classifier_identifier = prefix.family_classifier_identifier
+    diversity_policy = config.diversity
+    diversity_history = [
+        report for report in (
+            initial_diversity, *(transition.diversity for transition in prefix.transitions),
+        ) if report is not None
+    ]
+    current_fitness = prefix.final_fitness
+    current_diversity = diversity_history[-1] if diversity_history else None
     transition_seeds = _derive_transition_seeds(
         prepared_seed,
         config.generation_count,
-    )
-    transitions: list[GenerationTransition] = []
+    )[len(prefix.transitions):]
+    transitions = list(prefix.transitions)
 
     def completed_prefix() -> GenerationLoopResult:
         return GenerationLoopResult(
@@ -620,9 +668,6 @@ def run_generation_loop(
             initial_diversity=initial_diversity,
             family_classifier_identifier=prepared_classifier_identifier,
         )
-
-    if checkpoint_callback is not None:
-        checkpoint_callback(completed_prefix())
 
     for selection_seed, reproduction_seed in transition_seeds:
         source_population = current_fitness.population
