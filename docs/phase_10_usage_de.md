@@ -91,38 +91,47 @@ Phase-10-Ergebnisverzeichnis.
 
 ### Nach dem abgeschlossenen Erstversuch
 
-**Aktuell: Der Größen-/Methodenhauptlauf ist mit 150/150 Bewertungen abgeschlossen.**
+**Aktuell: Der Rand-/Innenhauptlauf ist mit 82/82 Bewertungen abgeschlossen.**
+Alle Kontrollen sind gültig. Die
+[geprüfte Auswertung](decisions/phase_10_edge_location_v1_analysis.md) erklärt,
+warum zentrale Chern-Nähe, lokale Markeränderung und das bisherige Screening
+unterschiedliche Bewertungen ergeben. Der
+[Entwurf zum Messvertrag](decisions/phase_10_measurement_contract_draft_v1.md)
+beschreibt den nächsten methodischen Schritt. Die bestehenden Läufe sind fertig;
+ein neuer Lauf benötigt ein eigenes Validierungsprotokoll. Die folgenden
+Start-/Resume-Befehle dokumentieren die bisherigen Durchführungen.
+
+**Vorheriger Schritt: Der Größen-/Methodenhauptlauf ist mit 150/150 Bewertungen abgeschlossen.**
 Die [räumliche Auswertung mit Grafik](analysis/phase_10_size_methods_spatial_v1/report_de.md)
 zeigt, wo sich die Marker nach Positions- und Kantenänderungen vom Quadrat
 unterscheiden. Alle sechs Kontrollbewertungen sind gültig. Für diesen fertigen
 Lauf ist kein `--resume` und kein erneuter Start nötig; die folgenden Befehle
 dokumentieren die Durchführung.
 
-**Nächster Schritt: Protokoll prüfen und einfrieren.** Der
+**Abgeschlossener Rand-/Innenvergleich.** Der
 [Rand-/Innenvergleich](decisions/pre_phase_10_edge_location_protocol_v1.md)
-plant denselben graderhaltenden Zwei-Kanten-Eingriff an verschiedenen Orten
+verglich denselben graderhaltenden Zwei-Kanten-Eingriff an verschiedenen Orten
 eines 12×12-Quadrats: 6 technische Vorlauf- und 82 Hauptlaufbewertungen.
-Der getrennte Runner ist jetzt implementiert, aber noch nicht committed oder
-gestartet. Ein neuer Operator
-ist nötig, weil der bisherige einzelne Kantentausch im unveränderten Quadrat
-nicht ausschließlich innen beginnen kann. Vor dem Vorlauf die Implementierung
-separat committen. Alte Befehle starten diesen neuen Versuch nicht.
+Das Protokoll ist unter `acf122f9f8cc4e8848f3508766c127b435083f6e`
+eingefroren, die verwendete Implementierung unter
+`62fab4249d22823cf546c0553aca766a09297619` committed. Der bisherige einzelne
+Kantentausch kann im unveränderten Quadrat nicht ausschließlich innen beginnen;
+deshalb wurde der neue Zwei-Kanten-Eingriff ausdrücklich separat untersucht.
 
-Nach dem separaten Implementierungs-Commit startest du selbst zunächst nur die
-sechs Bewertungen des technischen Vorlaufs:
+Der technische Vorlauf mit sechs Bewertungen wurde folgendermaßen gestartet:
 
 ```powershell
 .\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-edge-location --preflight --output results\phase_10_edge_location_v1
 ```
 
-Nur wenn der Bericht 6/6 verfügbare Bewertungen und gültige Kontrollen meldet,
-startest du den 82 Bewertungen umfassenden Hauptlauf:
+Nach bestandenem Vorlauf wurde der Hauptlauf mit 82 Bewertungen gestartet:
 
 ```powershell
 .\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-edge-location --full --output results\phase_10_edge_location_v1
 ```
 
-Nach einem Abbruch, und nur bei unveränderter Umgebung und Code-Revision:
+Nur nach einem Abbruch bei unveränderter Umgebung und Code-Revision; für den
+abgeschlossenen Lauf nicht erforderlich:
 
 ```powershell
 .\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-edge-location --resume --output results\phase_10_edge_location_v1
