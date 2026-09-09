@@ -98,14 +98,23 @@ unterscheiden. Alle sechs Kontrollbewertungen sind gültig. Für diesen fertigen
 Lauf ist kein `--resume` und kein erneuter Start nötig; die folgenden Befehle
 dokumentieren die Durchführung.
 
-**Aktueller Stand nach der Quadratkalibration:** Der Lauf
+**Nächster Schritt: Protokoll prüfen und einfrieren.** Der
+[Rand-/Innenvergleich](decisions/pre_phase_10_edge_location_protocol_v1.md)
+plant denselben graderhaltenden Zwei-Kanten-Eingriff an verschiedenen Orten
+eines 12×12-Quadrats: 6 technische Vorlauf- und 82 Hauptlaufbewertungen.
+Er ist noch nicht implementiert und wurde nicht gestartet. Ein neuer Operator
+ist nötig, weil der bisherige einzelne Kantentausch im unveränderten Quadrat
+nicht ausschließlich innen beginnen kann. Erst den Plan separat committen;
+Umsetzung und eigene Startbefehle folgen danach. Alte Befehle starten diesen
+neuen Versuch nicht.
+
+**Vorheriger Schritt, Quadratkalibration:** Der Lauf
 `results/phase_10_calibration_v1/full` ist mit 386/386 Bewertungen abgeschlossen.
 Von 384 veränderten Fällen bestehen 99 alle bisherigen Gates; zwei gültige
 Nullkontrollen kommen hinzu. Die [geprüfte Auswertung](decisions/phase_10_calibration_v1_analysis.md)
 erklärt Chern-Marker, Bulk-Masken und die Grenzen der Interpretation.
-Der [nächste Größen-/Methodenplan](decisions/pre_phase_10_size_methods_protocol_v1.md)
-sieht 8×8, 10×10 und 12×12 vor. Dieser Plan wird vor der Umsetzung separat
-eingefroren; die folgenden bisherigen Befehle starten diesen neuen Versuch nicht.
+Der [damalige Größen-/Methodenplan](decisions/pre_phase_10_size_methods_protocol_v1.md)
+legte den inzwischen abgeschlossenen Vergleich von 8×8, 10×10 und 12×12 fest.
 Für den abgeschlossenen Kalibrationslauf ist kein `--resume` erforderlich.
 
 Der Größen-/Methodenplan ist unter
