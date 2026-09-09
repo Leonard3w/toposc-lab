@@ -91,6 +91,13 @@ Phase-10-Ergebnisverzeichnis.
 
 ### Nach dem abgeschlossenen Erstversuch
 
+**Aktuell: Der Größen-/Methodenhauptlauf ist mit 150/150 Bewertungen abgeschlossen.**
+Die [räumliche Auswertung mit Grafik](analysis/phase_10_size_methods_spatial_v1/report_de.md)
+zeigt, wo sich die Marker nach Positions- und Kantenänderungen vom Quadrat
+unterscheiden. Alle sechs Kontrollbewertungen sind gültig. Für diesen fertigen
+Lauf ist kein `--resume` und kein erneuter Start nötig; die folgenden Befehle
+dokumentieren die Durchführung.
+
 **Aktueller Stand nach der Quadratkalibration:** Der Lauf
 `results/phase_10_calibration_v1/full` ist mit 386/386 Bewertungen abgeschlossen.
 Von 384 veränderten Fällen bestehen 99 alle bisherigen Gates; zwei gültige
