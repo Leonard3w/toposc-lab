@@ -101,6 +101,14 @@ beschreibt den nächsten methodischen Schritt. Die bestehenden Läufe sind ferti
 ein neuer Lauf benötigt ein eigenes Validierungsprotokoll. Die folgenden
 Start-/Resume-Befehle dokumentieren die bisherigen Durchführungen.
 
+Der [konkrete Validierungsplan](decisions/pre_phase_10_measurement_validation_protocol_v1.md)
+liegt jetzt als Entwurf vor: 6 Kontrollbewertungen auf 12×12 im Vorlauf und
+36 Bewertungen auf 16×16/20×20 im Hauptlauf. Er prüft topologische, triviale
+und erwartbar nicht auswertbare Kontrollfälle sowie die Größenstabilität des
+Rand-/Innenvergleichs. Das feste Budget endet mit einer expliziten Entscheidung
+über den begrenzten Messvertrag. Zuerst diesen Plan separat einfrieren;
+Runner und Startbefehle folgen erst nach der Implementierung.
+
 **Vorheriger Schritt: Der Größen-/Methodenhauptlauf ist mit 150/150 Bewertungen abgeschlossen.**
 Die [räumliche Auswertung mit Grafik](analysis/phase_10_size_methods_spatial_v1/report_de.md)
 zeigt, wo sich die Marker nach Positions- und Kantenänderungen vom Quadrat
