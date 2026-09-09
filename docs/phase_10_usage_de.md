@@ -101,13 +101,39 @@ beschreibt den nächsten methodischen Schritt. Die bestehenden Läufe sind ferti
 ein neuer Lauf benötigt ein eigenes Validierungsprotokoll. Die folgenden
 Start-/Resume-Befehle dokumentieren die bisherigen Durchführungen.
 
-Der [konkrete Validierungsplan](decisions/pre_phase_10_measurement_validation_protocol_v1.md)
-liegt jetzt als Entwurf vor: 6 Kontrollbewertungen auf 12×12 im Vorlauf und
+Der [eingefrorene Validierungsplan](decisions/pre_phase_10_measurement_validation_protocol_v1.md)
+umfasst 6 Kontrollbewertungen auf 12×12 im Vorlauf und
 36 Bewertungen auf 16×16/20×20 im Hauptlauf. Er prüft topologische, triviale
 und erwartbar nicht auswertbare Kontrollfälle sowie die Größenstabilität des
 Rand-/Innenvergleichs. Das feste Budget endet mit einer expliziten Entscheidung
-über den begrenzten Messvertrag. Zuerst diesen Plan separat einfrieren;
-Runner und Startbefehle folgen erst nach der Implementierung.
+über den begrenzten Messvertrag. Der Runner versiegelt Eingaben und Ergebnisse,
+trennt Methodenfehler und unterstützt eine geprüfte Wiederaufnahme. Die
+Implementierung muss vor dem ersten Lauf separat committed sein.
+
+Nach diesem Implementierungscommit und mit den vier Threadvariablen auf 1 startest
+du den Vorlauf selbst:
+
+```powershell
+$env:PYTHONDONTWRITEBYTECODE='1'
+$env:PYTHONPATH='src'
+$env:OMP_NUM_THREADS='1'
+$env:OPENBLAS_NUM_THREADS='1'
+$env:MKL_NUM_THREADS='1'
+$env:BLIS_NUM_THREADS='1'
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-measurement-validation --preflight --output results\phase_10_measurement_validation_v1
+```
+
+Nur wenn `preflight_passed` wahr ist, startest du anschließend den Hauptlauf:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-measurement-validation --full --output results\phase_10_measurement_validation_v1
+```
+
+Nur nach einem Abbruch bei unveränderter Revision und Umgebung:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-measurement-validation --resume --output results\phase_10_measurement_validation_v1
+```
 
 **Vorheriger Schritt: Der Größen-/Methodenhauptlauf ist mit 150/150 Bewertungen abgeschlossen.**
 Die [räumliche Auswertung mit Grafik](analysis/phase_10_size_methods_spatial_v1/report_de.md)

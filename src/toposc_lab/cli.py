@@ -143,6 +143,26 @@ def build_parser() -> argparse.ArgumentParser:
     edge_location_parser.add_argument(
         "--output", type=Path, default=Path("results/phase_10_edge_location_v1")
     )
+
+    measurement_parser = subparsers.add_parser(
+        "phase-10-measurement-validation",
+        help="Run the frozen bounded measurement-contract validation with live progress.",
+    )
+    measurement_mode = measurement_parser.add_mutually_exclusive_group(required=True)
+    measurement_mode.add_argument(
+        "--preflight", dest="measurement_mode", action="store_const", const="preflight"
+    )
+    measurement_mode.add_argument(
+        "--full", dest="measurement_mode", action="store_const", const="full"
+    )
+    measurement_mode.add_argument(
+        "--resume", dest="measurement_mode", action="store_const", const="resume"
+    )
+    measurement_parser.add_argument(
+        "--output",
+        type=Path,
+        default=Path("results/phase_10_measurement_validation_v1"),
+    )
     return parser
 
 
@@ -217,6 +237,15 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
 
             report = run_edge_location_campaign(args.output, mode=args.edge_location_mode)
+            print(f"Bericht: {report.resolve()}", flush=True)
+        elif args.command == "phase-10-measurement-validation":
+            from toposc_lab.search.phase_10_measurement_validation_campaign import (
+                run_measurement_validation_campaign,
+            )
+
+            report = run_measurement_validation_campaign(
+                args.output, mode=args.measurement_mode
+            )
             print(f"Bericht: {report.resolve()}", flush=True)
         elif args.command == "phase-9-8":
             from toposc_lab.phase_9_8_cli import run_phase_9_8_command
