@@ -193,6 +193,8 @@ def _execute_stage(
     metadata = {
         "protocol_id": RESEARCH_PROTOCOL_ID,
         "protocol_commit": RESEARCH_PROTOCOL_COMMIT,
+        "storage_amendment": "TOPOSC-P10-EVO-RS-001-A1",
+        "checkpoint_layout": "immutable-generation-files.v1",
         "environment": environment,
         "mode": mode,
         "total_evaluation_attempts": total,
@@ -617,13 +619,14 @@ def _trial(
         started = time.perf_counter()
         try:
             save_search_checkpoint(
-                ledger.execution / "checkpoint.zip",
+                ledger.execution / f"checkpoint_generation_{prefix.config.generation_count:04d}.zip",
                 create_search_checkpoint(
                     prefix,
                     requested_generation_count=3,
                     evaluator_identifier=DERIVATION_ID,
                     code_version=protocol.code_version,
                 ),
+                overwrite=False,
             )
         except Exception as error:
             raise ResearchAbort(f"checkpoint failed: {error}") from error

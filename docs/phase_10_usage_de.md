@@ -93,6 +93,14 @@ Phase-10-Ergebnisverzeichnis.
 
 Im Projektverzeichnis, nach dem Implementierungs-Commit, in PowerShell:
 
+**Nach dem Windows-Speicherfix vom 09.09.2026:** zuerst den Fix committen.
+Die beiden abgebrochenen Vorlaufversuche in `results/phase_10_research_v1`
+bleiben unverändert als Fehlernachweis erhalten. Mit dem neuen Code dort nicht
+`--resume` verwenden: Der Code-Commit passt absichtlich nicht mehr. Die Befehle
+unten starten den dokumentierten technischen Wiederholungsvorlauf in einem
+neuen Ordner; wissenschaftliche Parameter und Seeds bleiben unverändert.
+Siehe [Speicher-Amendment A1](decisions/phase_10_research_storage_amendment_a1.md).
+
 ```powershell
 $env:PYTHONDONTWRITEBYTECODE='1'
 $env:PYTHONPATH='src'
@@ -100,7 +108,7 @@ $env:OMP_NUM_THREADS='1'
 $env:OPENBLAS_NUM_THREADS='1'
 $env:MKL_NUM_THREADS='1'
 $env:BLIS_NUM_THREADS='1'
-.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-research --preflight --output results\phase_10_research_v1
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-research --preflight --output results\phase_10_research_v1_storage_fix1
 ```
 
 Diese Thread-Einstellungen müssen vor dem Pythonstart gelten. Sie gehören zum
@@ -118,7 +126,7 @@ bei diesem Start unbenutzt.
 In einer zweiten PowerShell kannst du parallel mitlesen:
 
 ```powershell
-Get-Content results\phase_10_research_v1\events.jsonl -Wait
+Get-Content results\phase_10_research_v1_storage_fix1\events.jsonl -Wait
 ```
 
 Die erste Konsole zeigt Versuch, Arm, Generation, Bewertungsslot, Treffer,
@@ -131,7 +139,7 @@ Wenn der Vorlauf bestanden ist, startest du im selben vorbereiteten Terminal
 den Hauptlauf ausdrücklich:
 
 ```powershell
-.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-research --full --output results\phase_10_research_v1
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-research --full --output results\phase_10_research_v1_storage_fix1
 ```
 
 Das berechnet 32 Versuchspaare mit jeweils 32 Bewertungen pro Arm und das feste
@@ -143,7 +151,7 @@ Bei `Ctrl+C`, Stromausfall oder geschlossenem Terminal setzt du mit denselben
 Umgebungsvariablen und unverändertem Code fort:
 
 ```powershell
-.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-research --resume --output results\phase_10_research_v1
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-research --resume --output results\phase_10_research_v1_storage_fix1
 ```
 
 Versiegelte Referenzen und Versuchspaare werden geladen und geprüft. Ein
@@ -165,6 +173,13 @@ Die einzelnen Ordner enthalten verlustfreie Eingaben, wissenschaftliche Grids,
 Pipelineergebnisse und Fehler sowie Generationen-Checkpoints. Der Bericht
 beantwortet die Frage nach Suchleistung bei 64 Knoten. Eine statistische
 Unterscheidung der Arme belegt noch keinen physikalischen Robustheitsvorteil.
+
+Der Forschungsrunner veröffentlicht seit Amendment A1 je Generation eine eigene
+`checkpoint_generation_0000.zip` bis `checkpoint_generation_0003.zip`.
+Keine vorhandene Checkpoint-Datei wird ersetzt. Das benötigt mehr Speicherplatz
+als ein einzelner letzter Checkpoint, erhält aber alle abgeschlossenen Präfixe.
+Die unten beschriebene allgemeine API behält ihr bisheriges Ersetzungsverhalten;
+mit `save_search_checkpoint(..., overwrite=False)` ist exklusives Speichern möglich.
 
 ### Eine andere Suche über die Python-API definieren
 

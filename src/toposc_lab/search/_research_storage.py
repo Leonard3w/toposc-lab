@@ -154,11 +154,7 @@ class AttemptLedger:
         for execution in executions:
             if not execution.is_dir() or execution.is_symlink():
                 raise ResearchAbort("invalid execution directory")
-            checkpoint = execution / "checkpoint.zip"
-            if checkpoint.exists():
-                from toposc_lab.search.checkpoint import load_search_checkpoint
-
-                load_search_checkpoint(checkpoint)
+            _validate_execution_checkpoints(execution)
             for path in sorted(execution.glob("*.json")):
                 value = load_record(path)
                 data = encode_record(value)
@@ -234,20 +230,26 @@ def load_sealed(directory: Path) -> Any:
             raise ResearchAbort("sealed artifact hash differs")
         if path.suffix == ".json":
             current[filename] = encode_record(load_record(path))
-        else:
-            from toposc_lab.search.checkpoint import load_search_checkpoint
-
-            load_search_checkpoint(path)
+    _validate_execution_checkpoints(execution)
     for previous in directory.glob("execution_*"):
         if previous.is_symlink():
             raise ResearchAbort("symlinked execution is unsupported")
         if previous != execution:
-            checkpoint = previous / "checkpoint.zip"
-            if checkpoint.exists():
-                from toposc_lab.search.checkpoint import load_search_checkpoint
-
-                load_search_checkpoint(checkpoint)
+            _validate_execution_checkpoints(previous)
             for path in previous.glob("*.json"):
                 if current.get(path.name) != encode_record(load_record(path)):
                     raise ResearchAbort("superseded execution contradicts sealed outcomes")
     return sealed["result"]
+
+
+def _validate_execution_checkpoints(execution: Path) -> None:
+    """Read every retained generation, including the legacy latest-only filename."""
+    from toposc_lab.search.checkpoint import load_search_checkpoint
+
+    for path in sorted(execution.glob("*.zip")):
+        if path.is_symlink():
+            raise ResearchAbort("symlinked checkpoint is unsupported")
+        checkpoint = load_search_checkpoint(path)
+        expected = f"checkpoint_generation_{checkpoint.completed_generation_index:04d}.zip"
+        if path.name not in ("checkpoint.zip", expected):
+            raise ResearchAbort("checkpoint filename differs from its retained generation")

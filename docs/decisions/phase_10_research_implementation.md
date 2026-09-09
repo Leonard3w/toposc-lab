@@ -69,9 +69,12 @@ writers and releases automatically on process exit.
 versioned, checksum-protected campaign artifacts. It does not deserialize pickle
 or import classes named by a file. Publication writes and fsyncs a local temporary
 file, then creates the destination exclusively. Completed artifacts are never
-replaced. Generation checkpoints are the explicitly replaceable exception:
-within the current execution, the existing atomic checkpoint writer retains the
-latest completed evolution generation.
+replaced. Since [storage amendment A1](phase_10_research_storage_amendment_a1.md),
+generation checkpoints are also immutable: the campaign publishes one exclusive
+`checkpoint_generation_NNNN.zip` per completed generation. The existing writer
+has an opt-in `overwrite=False` mode; its default replacement API and version-1
+ZIP payload remain compatible. Replay validates both legacy `checkpoint.zip`
+and all retained generation files, including their generation/name agreement.
 
 Input records precede physics evaluation; outcomes follow immediately. Each
 unit's attempts live in separate `execution_XXXX` directories. Completed panels

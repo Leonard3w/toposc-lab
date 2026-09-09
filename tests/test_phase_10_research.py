@@ -391,6 +391,10 @@ def toy_campaign(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Path:
 def test_user_preflight_full_and_completed_resume(
     toy_campaign: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
+    def deny_replacement(*args: Any) -> None:
+        raise PermissionError("simulated Windows replacement denial")
+
+    monkeypatch.setattr("toposc_lab.search.checkpoint.os.replace", deny_replacement)
     path = campaign.run_research_campaign(toy_campaign, mode="preflight")
     assert path.is_file()
     assert (path.parent / "hit_curves.png").is_file()
@@ -398,6 +402,13 @@ def test_user_preflight_full_and_completed_resume(
     assert preflight["total_evaluation_attempts"] == 129
     assert len(preflight["arms"]["evolution"]["trials"]) == 2
     assert not (toy_campaign / "full").exists()
+    checkpoints = sorted((path.parent / "trial_00/execution_0000").glob("*.zip"))
+    assert [p.name for p in checkpoints] == [
+        f"checkpoint_generation_{generation:04d}.zip" for generation in range(4)
+    ]
+    assert [load_search_checkpoint(p).completed_generation_index for p in checkpoints] == list(
+        range(4)
+    )
     report = campaign.run_research_campaign(toy_campaign, mode="full")
     summary = load_record(report.parent / "analysis.json")
     assert summary["total_evaluation_attempts"] == 2083
@@ -580,3 +591,34 @@ def test_full_requires_completed_preflight_without_creating_full_folder(toy_camp
     with pytest.raises(RuntimeError, match="cannot load"):
         campaign.run_research_campaign(toy_campaign, mode="full")
     assert not (toy_campaign / "full").exists()
+
+
+@pytest.mark.parametrize("filename", ["checkpoint.zip", "checkpoint_generation_0003.zip"])
+def test_replay_validates_legacy_and_generation_checkpoints(tmp_path: Path, filename: str) -> None:
+    ledger = AttemptLedger(tmp_path / "unit")
+    checkpoint = create_search_checkpoint(
+        toy_trial().evolution, evaluator_identifier=DERIVATION_ID, code_version="tests.research"
+    )
+    path = save_search_checkpoint(ledger.execution / filename, checkpoint, overwrite=False)
+    ledger.record("input.json", {"seed": 31})
+    replay = AttemptLedger(tmp_path / "unit")
+    replay.record("input.json", {"seed": 31})
+    replay.seal("complete")
+    assert load_sealed(tmp_path / "unit") == "complete"
+    path.write_bytes(b"truncated checkpoint")
+    with pytest.raises(ValueError, match="checkpoint"):
+        AttemptLedger(tmp_path / "unit")
+    with pytest.raises(ValueError, match="checkpoint"):
+        load_sealed(tmp_path / "unit")
+
+
+def test_replay_rejects_mislabelled_checkpoint_generation(tmp_path: Path) -> None:
+    ledger = AttemptLedger(tmp_path / "unit")
+    checkpoint = create_search_checkpoint(
+        toy_trial().evolution, evaluator_identifier=DERIVATION_ID, code_version="tests.research"
+    )
+    save_search_checkpoint(
+        ledger.execution / "checkpoint_generation_0000.zip", checkpoint, overwrite=False
+    )
+    with pytest.raises(ResearchAbort, match="filename differs"):
+        AttemptLedger(tmp_path / "unit")

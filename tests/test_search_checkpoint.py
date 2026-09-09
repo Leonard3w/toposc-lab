@@ -325,6 +325,53 @@ def test_unsupported_metadata_fails_before_destination_write(tmp_path: Path) -> 
     assert path.read_bytes() == before
 
 
+def test_exclusive_generations_publish_with_previous_checkpoint_open(
+    tmp_path: Path, monkeypatch: Any
+) -> None:
+    checkpoint = _checkpoint()
+
+    def denied_replace(*args: Any) -> None:
+        error = PermissionError("simulated Windows checkpoint replacement denial")
+        error.winerror = 5
+        raise error
+
+    monkeypatch.setattr("toposc_lab.search.checkpoint.os.replace", denied_replace)
+    first = save_search_checkpoint(tmp_path / "first.zip", checkpoint, overwrite=False)
+    original = first.read_bytes()
+    with first.open("rb") as held_open:
+        second = save_search_checkpoint(tmp_path / "second.zip", checkpoint, overwrite=False)
+        assert held_open.read() == original
+        assert load_search_checkpoint(second).completed_generation_index == 2
+        with pytest.raises(FileExistsError):
+            save_search_checkpoint(first, checkpoint, overwrite=False)
+    assert first.read_bytes() == second.read_bytes() == original
+    assert sorted(p.name for p in tmp_path.iterdir()) == ["first.zip", "second.zip"]
+
+
+def test_exclusive_publication_failure_cleans_only_its_temporary_file(
+    tmp_path: Path, monkeypatch: Any
+) -> None:
+    checkpoint = _checkpoint()
+    first = save_search_checkpoint(tmp_path / "first.zip", checkpoint, overwrite=False)
+    original = first.read_bytes()
+
+    def fail(*args: Any) -> None:
+        raise PermissionError("publication denied")
+
+    monkeypatch.setattr("toposc_lab.search.checkpoint.os.link", fail)
+    with pytest.raises(PermissionError, match="publication denied"):
+        save_search_checkpoint(tmp_path / "second.zip", checkpoint, overwrite=False)
+    assert first.read_bytes() == original
+    assert list(tmp_path.iterdir()) == [first]
+
+
+@pytest.mark.parametrize("overwrite", [None, 0, "False"])
+def test_invalid_overwrite_flag_fails_before_writing(tmp_path: Path, overwrite: Any) -> None:
+    with pytest.raises(TypeError, match="overwrite must be bool"):
+        save_search_checkpoint(tmp_path / "checkpoint.zip", _checkpoint(), overwrite=overwrite)
+    assert not list(tmp_path.iterdir())
+
+
 @pytest.mark.parametrize(
     "field,value", (("schema_version", 99), ("schema_version", True), ("format", "pickle"))
 )

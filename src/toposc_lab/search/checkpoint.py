@@ -120,17 +120,25 @@ def _current_runtime_versions() -> dict[str, str]:
     return runtime
 
 
-def save_search_checkpoint(path: str | Path, checkpoint: SearchCheckpoint) -> Path:
-    """Validate, fsync, and atomically replace one explicit checkpoint path.
+def save_search_checkpoint(
+    path: str | Path, checkpoint: SearchCheckpoint, *, overwrite: bool = True
+) -> Path:
+    """Validate, fsync, and atomically publish one explicit checkpoint path.
 
     An existing file is replaced only after serialization and validation have
     succeeded. Filesystem errors propagate; the previous file is retained if
     writing or replacement fails. The containing directory must already exist.
+    With ``overwrite=False``, publish exclusively through a same-directory hard
+    link instead of replacing a destination. An existing path raises
+    FileExistsError, including if another writer publishes it concurrently.
+    No delete-then-write fallback is used. The default retains the old contract.
     """
     from toposc_lab.search._checkpoint_codec import decode_checkpoint, encode_checkpoint
 
     if not isinstance(checkpoint, SearchCheckpoint):
         raise TypeError("checkpoint must be SearchCheckpoint")
+    if not isinstance(overwrite, bool):
+        raise TypeError("overwrite must be bool")
     destination = Path(path)
     payload = encode_checkpoint(checkpoint)
     # Reconstruct before any destination write, including all existing invariants.
@@ -157,7 +165,11 @@ def save_search_checkpoint(path: str | Path, checkpoint: SearchCheckpoint) -> Pa
                     archive.writestr(info, data)
             handle.flush()
             os.fsync(handle.fileno())
-        os.replace(temporary, destination)
+        if overwrite:
+            os.replace(temporary, destination)
+        else:
+            os.link(temporary, destination)
+            temporary.unlink()
     except BaseException:
         temporary.unlink(missing_ok=True)
         raise
