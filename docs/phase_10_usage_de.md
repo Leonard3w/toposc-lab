@@ -91,6 +91,16 @@ Phase-10-Ergebnisverzeichnis.
 
 ### Nach dem abgeschlossenen Erstversuch
 
+**Aktueller Stand nach der Quadratkalibration:** Der Lauf
+`results/phase_10_calibration_v1/full` ist mit 386/386 Bewertungen abgeschlossen.
+Von 384 veränderten Fällen bestehen 99 alle bisherigen Gates; zwei gültige
+Nullkontrollen kommen hinzu. Die [geprüfte Auswertung](decisions/phase_10_calibration_v1_analysis.md)
+erklärt Chern-Marker, Bulk-Masken und die Grenzen der Interpretation.
+Der [nächste Größen-/Methodenplan](decisions/pre_phase_10_size_methods_protocol_v1.md)
+sieht 8×8, 10×10 und 12×12 vor. Dieser Plan wird vor der Umsetzung separat
+eingefroren; die folgenden bisherigen Befehle starten diesen neuen Versuch nicht.
+Für den abgeschlossenen Kalibrationslauf ist kein `--resume` erforderlich.
+
 Der Hauptlauf in `results/phase_10_research_v1_storage_fix1/full` ist abgeschlossen:
 Evolution und Zufallssuche hatten jeweils 0/32 Versuchstreffer. Das ist kein
 Nachweis, dass geeignete Geometrien grundsätzlich unmöglich sind.
