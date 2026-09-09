@@ -125,6 +125,24 @@ def build_parser() -> argparse.ArgumentParser:
     size_methods_parser.add_argument(
         "--output", type=Path, default=Path("results/phase_10_size_methods_v1")
     )
+
+    edge_location_parser = subparsers.add_parser(
+        "phase-10-edge-location",
+        help="Run the frozen boundary/interior edge-location comparison with live progress.",
+    )
+    edge_location_mode = edge_location_parser.add_mutually_exclusive_group(required=True)
+    edge_location_mode.add_argument(
+        "--preflight", dest="edge_location_mode", action="store_const", const="preflight"
+    )
+    edge_location_mode.add_argument(
+        "--full", dest="edge_location_mode", action="store_const", const="full"
+    )
+    edge_location_mode.add_argument(
+        "--resume", dest="edge_location_mode", action="store_const", const="resume"
+    )
+    edge_location_parser.add_argument(
+        "--output", type=Path, default=Path("results/phase_10_edge_location_v1")
+    )
     return parser
 
 
@@ -192,6 +210,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
 
             report = run_size_methods_campaign(args.output, mode=args.size_methods_mode)
+            print(f"Bericht: {report.resolve()}", flush=True)
+        elif args.command == "phase-10-edge-location":
+            from toposc_lab.search.phase_10_edge_location_campaign import (
+                run_edge_location_campaign,
+            )
+
+            report = run_edge_location_campaign(args.output, mode=args.edge_location_mode)
             print(f"Bericht: {report.resolve()}", flush=True)
         elif args.command == "phase-9-8":
             from toposc_lab.phase_9_8_cli import run_phase_9_8_command

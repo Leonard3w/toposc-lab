@@ -102,11 +102,31 @@ dokumentieren die Durchführung.
 [Rand-/Innenvergleich](decisions/pre_phase_10_edge_location_protocol_v1.md)
 plant denselben graderhaltenden Zwei-Kanten-Eingriff an verschiedenen Orten
 eines 12×12-Quadrats: 6 technische Vorlauf- und 82 Hauptlaufbewertungen.
-Er ist noch nicht implementiert und wurde nicht gestartet. Ein neuer Operator
+Der getrennte Runner ist jetzt implementiert, aber noch nicht committed oder
+gestartet. Ein neuer Operator
 ist nötig, weil der bisherige einzelne Kantentausch im unveränderten Quadrat
-nicht ausschließlich innen beginnen kann. Erst den Plan separat committen;
-Umsetzung und eigene Startbefehle folgen danach. Alte Befehle starten diesen
-neuen Versuch nicht.
+nicht ausschließlich innen beginnen kann. Vor dem Vorlauf die Implementierung
+separat committen. Alte Befehle starten diesen neuen Versuch nicht.
+
+Nach dem separaten Implementierungs-Commit startest du selbst zunächst nur die
+sechs Bewertungen des technischen Vorlaufs:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-edge-location --preflight --output results\phase_10_edge_location_v1
+```
+
+Nur wenn der Bericht 6/6 verfügbare Bewertungen und gültige Kontrollen meldet,
+startest du den 82 Bewertungen umfassenden Hauptlauf:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-edge-location --full --output results\phase_10_edge_location_v1
+```
+
+Nach einem Abbruch, und nur bei unveränderter Umgebung und Code-Revision:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-edge-location --resume --output results\phase_10_edge_location_v1
+```
 
 **Vorheriger Schritt, Quadratkalibration:** Der Lauf
 `results/phase_10_calibration_v1/full` ist mit 386/386 Bewertungen abgeschlossen.
