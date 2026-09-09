@@ -29,6 +29,11 @@ from toposc_lab.search.initial_population import (
     InitialPopulation,
     InitialPopulationMember,
 )
+from toposc_lab.search.lexicographic_fitness import (
+    LexicographicFitness,
+    LexicographicFitnessDefinition,
+    construct_lexicographic_fitness,
+)
 
 POPULATION_FITNESS_VERSION = 1
 
@@ -104,9 +109,9 @@ class MultiObjectiveFitnessDefinition:
 
 
 PopulationFitnessDefinition: TypeAlias = (
-    ScalarFitnessDefinition | MultiObjectiveFitnessDefinition
+    ScalarFitnessDefinition | MultiObjectiveFitnessDefinition | LexicographicFitnessDefinition
 )
-PopulationFitness: TypeAlias = BasicScalarScore | MultiObjectiveEvaluation
+PopulationFitness: TypeAlias = BasicScalarScore | MultiObjectiveEvaluation | LexicographicFitness
 FitnessPopulation: TypeAlias = InitialPopulation | GenerationPopulation
 FitnessPopulationMember: TypeAlias = (
     InitialPopulationMember | GenerationPopulationMember
@@ -190,7 +195,7 @@ class PopulationFitnessMember:
             raise TypeError("evaluation must be GeometryEvaluationRun or None")
         if self.fitness is not None and not isinstance(
             self.fitness,
-            (BasicScalarScore, MultiObjectiveEvaluation),
+            (BasicScalarScore, MultiObjectiveEvaluation, LexicographicFitness),
         ):
             raise TypeError("fitness has an unsupported result type")
         if self.failure is not None and not isinstance(
@@ -260,6 +265,11 @@ class PopulationFitnessResult:
                     member.fitness,
                     definition=self.definition,
                 )
+                if isinstance(self.definition, LexicographicFitnessDefinition):
+                    assert member.evaluation is not None
+                    expected = construct_lexicographic_fitness(member.evaluation, self.definition)
+                    if expected != member.fitness:
+                        raise ValueError("lexicographic values differ from retained derivations")
         object.__setattr__(self, "members", members)
 
     @property
@@ -387,6 +397,8 @@ def _construct_fitness(
     scientific_evaluation = evaluation.evaluation
     if scientific_evaluation is None:
         raise ValueError("a valid evaluation run must contain a scientific evaluation")
+    if isinstance(definition, LexicographicFitnessDefinition):
+        return construct_lexicographic_fitness(evaluation, definition)
     if isinstance(definition, ScalarFitnessDefinition):
         return compute_basic_scalar_score(
             scientific_evaluation,
@@ -402,7 +414,7 @@ def _construct_fitness(
 def _require_fitness_definition(value: object) -> None:
     if not isinstance(
         value,
-        (ScalarFitnessDefinition, MultiObjectiveFitnessDefinition),
+        (ScalarFitnessDefinition, MultiObjectiveFitnessDefinition, LexicographicFitnessDefinition),
     ):
         raise TypeError(
             "definition must be ScalarFitnessDefinition or "
@@ -470,6 +482,10 @@ def _validate_fitness_against_definition(
     *,
     definition: PopulationFitnessDefinition,
 ) -> None:
+    if isinstance(definition, LexicographicFitnessDefinition):
+        if not isinstance(fitness, LexicographicFitness) or fitness.definition != definition:
+            raise ValueError("lexicographic fitness does not match the definition")
+        return
     if isinstance(definition, ScalarFitnessDefinition):
         if not isinstance(fitness, BasicScalarScore):
             raise TypeError("scalar fitness definition requires BasicScalarScore results")

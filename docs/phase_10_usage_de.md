@@ -15,8 +15,9 @@ Startpopulation → Simulation/Fitness → Auswahl + Eliten → neue Geometrien
 
 Du legst Suchraum, physikalisches Modell, Zielfunktion, Gültigkeitsregeln, Seeds
 und Fortpflanzungsregeln ausdrücklich fest. Das System erfindet diese
-wissenschaftlichen Entscheidungen nicht. Die Schnittstelle ist derzeit Python;
-Phase 10 hat keinen eigenen GUI-Startknopf und keinen neuen `toposc`-CLI-Befehl.
+wissenschaftlichen Entscheidungen nicht. Allgemeine Suchen verwenden die
+Python-Schnittstelle. Für den unten beschriebenen eingefrorenen Forschungsversuch
+gibt es zusätzlich `toposc phase-10-research` mit Live-Fortschritt und Resume.
 
 | Baustein | Kann er | Wichtige Grenze |
 | --- | --- | --- |
@@ -81,11 +82,91 @@ Zufallssuche mit denselben acht Startgeometrien, 64 Knoten, 112 Kanten und
 Bewertungsversuche im Hauptlauf. Ziel ist ein Vergleich der Suchtrefferrate;
 Disorder-Robustheit und größere Systeme folgen in separaten Versuchen.
 
-Der neue Befehl `toposc phase-10-research` mit Vorlauf, Live-Fortschritt und
-Wiederaufnahme ist im Protokoll beschrieben, aber **noch nicht implementiert**.
-Zuerst wird das Protokoll separat committed, anschließend die getestete
-Umsetzung. Vorlauf und Hauptlauf startest du danach selbst; sie schreiben in
-ein neues Phase-10-Ergebnisverzeichnis.
+Das Protokoll ist unter `71e159f9eeb67de17b551cb820c4f3599830ca3b` separat
+eingefroren. Der neue Befehl `toposc phase-10-research` implementiert Vorlauf,
+Live-Fortschritt und Wiederaufnahme. Die Umsetzung muss ebenfalls committed
+sein, bevor du einen Lauf startest. Der Runner prüft Code, Protokoll und Umgebung.
+Vorlauf und Hauptlauf startest du selbst; sie schreiben in ein neues
+Phase-10-Ergebnisverzeichnis.
+
+### Unseren Forschungslauf starten
+
+Im Projektverzeichnis, nach dem Implementierungs-Commit, in PowerShell:
+
+```powershell
+$env:PYTHONDONTWRITEBYTECODE='1'
+$env:PYTHONPATH='src'
+$env:OMP_NUM_THREADS='1'
+$env:OPENBLAS_NUM_THREADS='1'
+$env:MKL_NUM_THREADS='1'
+$env:BLIS_NUM_THREADS='1'
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-research --preflight --output results\phase_10_research_v1
+```
+
+Diese Thread-Einstellungen müssen vor dem Pythonstart gelten. Sie gehören zum
+reproduzierbaren Protokoll; der Versuch nutzt bewusst einen numerischen Thread.
+Es wird kein OpenAI-Modell aufgerufen, und der Physiklauf verbraucht keine
+API-Tokens. Die Modellwahl in Codex betrifft nur unsere Arbeit am Code.
+
+Der Vorlauf prüft zwei vollständige kleine Versuchspaare mit reservierten Seeds,
+das Quadrat als Referenz und acht zusätzliche Geometrien: 129 Physikbewertungen
+plus acht Geometriechecks. Er muss technisch bestehen; gute Treffer oder ein
+Evolutionsvorteil sind dafür nicht erforderlich. Laufzeit und ETA entstehen aus
+den Messungen auf deinem PC. Hauptsuch-Seeds und spätere Disorder-Seeds bleiben
+bei diesem Start unbenutzt.
+
+In einer zweiten PowerShell kannst du parallel mitlesen:
+
+```powershell
+Get-Content results\phase_10_research_v1\events.jsonl -Wait
+```
+
+Die erste Konsole zeigt Versuch, Arm, Generation, Bewertungsslot, Treffer,
+abgeschlossene/verbleibende Arbeit, Zeit/ETA, CPU/RAM und letzten versiegelten
+Stand. Ein Heartbeat läuft auch während längerer Rechnungen. Eine hohe Zahl
+erfolgreicher Bewertungen kann erneut bewertete Eliten enthalten; sie bedeutet
+nicht ebenso viele verschiedene Entdeckungen.
+
+Wenn der Vorlauf bestanden ist, startest du im selben vorbereiteten Terminal
+den Hauptlauf ausdrücklich:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-research --full --output results\phase_10_research_v1
+```
+
+Das berechnet 32 Versuchspaare mit jeweils 32 Bewertungen pro Arm und das feste
+Panel aus 35 Referenzen: 2.083 Bewertungsversuche. Ein einzelner Versuchsslot
+enthält die komplette Topologie- und Randdiagnostik, nicht nur eine
+Diagonalisierung. Keine Disorder- oder Größenvalidierung wird angehängt.
+
+Bei `Ctrl+C`, Stromausfall oder geschlossenem Terminal setzt du mit denselben
+Umgebungsvariablen und unverändertem Code fort:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-research --resume --output results\phase_10_research_v1
+```
+
+Versiegelte Referenzen und Versuchspaare werden geladen und geprüft. Ein
+unvollständiges Paar wird mit denselben Seeds wiederholt; seine alten Dateien
+bleiben erhalten, und widersprüchliche bereits gespeicherte Ergebnisse stoppen
+die Wiederaufnahme. Zusätzliche Arbeit wird separat ausgewiesen. Ein bereits
+vollständiger Lauf wird nur geprüft. Resume startet keinen neuen Hauptlauf
+nach einem fertigen Vorlauf. Dafür verwendest du ausdrücklich `--full`.
+
+Die Berichte liegen unter `preflight/report.md` bzw. `full/report.md` innerhalb
+des Outputverzeichnisses. `summary.json` enthält die Trefferraten, Unsicherheit,
+den gepaarten Vergleich, Rohwertvergleiche, deskriptive Sensitivitätsauswertung
+und höchstens acht nominierte Geometrien je Arm. `hit_curves.png` zeigt, wie viele
+Versuche bis zu jedem Bewertungsslot mindestens einen Treffer gefunden haben.
+Kandidatenabbildungen verwenden die gespeicherten Geometrien; Orange markiert
+die expliziten Randknoten. Leere Kandidatenlisten sind gültige negative Ergebnisse.
+
+Die einzelnen Ordner enthalten verlustfreie Eingaben, wissenschaftliche Grids,
+Pipelineergebnisse und Fehler sowie Generationen-Checkpoints. Der Bericht
+beantwortet die Frage nach Suchleistung bei 64 Knoten. Eine statistische
+Unterscheidung der Arme belegt noch keinen physikalischen Robustheitsvorteil.
+
+### Eine andere Suche über die Python-API definieren
 
 Diese fünf Entscheidungen kommen vor dem Start:
 

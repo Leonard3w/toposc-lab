@@ -25,6 +25,7 @@ from toposc_lab.search import diversity_preservation as diversity
 from toposc_lab.search import generation_loop as loop
 from toposc_lab.search import generation_population as generation
 from toposc_lab.search import initial_population as initial
+from toposc_lab.search import lexicographic_fitness as lexicographic
 from toposc_lab.search import mutation_validity as validity
 from toposc_lab.search import novelty_score as novelty
 from toposc_lab.search import population_elitism as elitism
@@ -38,9 +39,15 @@ from toposc_lab.search.checkpoint import (
     _parse_json,
 )
 from toposc_lab.search.geometry_genome import GEOMETRY_GENOME_SCHEMA_VERSION, GeometryGenome
+from toposc_lab.search.search_benchmark import BenchmarkArmResult, SearchBenchmarkTrial
 from toposc_lab.topology.results import NumericalConfidence, TopologyMethod, TopologyResult
 
 _RECORDS: tuple[type[Any], ...] = (
+    lexicographic.DerivedEvaluationRun,
+    lexicographic.LexicographicFitnessDefinition,
+    lexicographic.LexicographicFitness,
+    BenchmarkArmResult,
+    SearchBenchmarkTrial,
     SearchCheckpoint,
     core.BasisLayout,
     core.SimulationResult,

@@ -12,6 +12,10 @@ from toposc_lab.evaluation import (
     ObjectiveDirection,
     ObjectiveSpec,
 )
+from toposc_lab.search.lexicographic_fitness import (
+    LexicographicFitness,
+    LexicographicFitnessDefinition,
+)
 from toposc_lab.search.population_fitness import (
     MultiObjectiveFitnessDefinition,
     PopulationFitnessMember,
@@ -201,6 +205,16 @@ def _fitness_tiers(
     source: PopulationFitnessResult,
 ) -> tuple[EliteTier, ...]:
     definition = source.definition
+    if isinstance(definition, LexicographicFitnessDefinition):
+        groups: dict[tuple[float, ...], list[PopulationFitnessMember]] = {}
+        for member in members:
+            if not isinstance(member.fitness, LexicographicFitness):
+                raise TypeError("lexicographic elitism requires ordered raw fitness")
+            groups.setdefault(member.fitness.ordering_key, []).append(member)
+        return tuple(
+            EliteTier(index, tuple(groups[key]))
+            for index, key in enumerate(sorted(groups, reverse=True))
+        )
     if isinstance(definition, ScalarFitnessDefinition):
         ordered = sorted(
             members,

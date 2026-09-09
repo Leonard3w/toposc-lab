@@ -4,6 +4,7 @@ from toposc_lab.search.search_benchmark import (
     SEARCH_BENCHMARK_VERSION,
     BenchmarkArmResult,
     BenchmarkEvaluator,
+    DeterministicBenchmarkEvaluator,
     BenchmarkProgress,
     BenchmarkSampler,
     BenchmarkSuccessCriterion,
@@ -13,6 +14,12 @@ from toposc_lab.search.search_benchmark import (
     SearchBenchmarkResult,
     SearchBenchmarkTrial,
     run_search_benchmark,
+)
+from toposc_lab.search.lexicographic_fitness import (
+    DerivedEvaluationRun,
+    LexicographicFitness,
+    LexicographicFitnessDefinition,
+    construct_lexicographic_fitness,
 )
 
 from toposc_lab.search.batch_evaluation import (
@@ -480,6 +487,11 @@ __all__ = [
     "SEARCH_BENCHMARK_VERSION",
     "BenchmarkArmResult",
     "BenchmarkEvaluator",
+    "DeterministicBenchmarkEvaluator",
+    "DerivedEvaluationRun",
+    "LexicographicFitness",
+    "LexicographicFitnessDefinition",
+    "construct_lexicographic_fitness",
     "BenchmarkProgress",
     "BenchmarkSampler",
     "BenchmarkSuccessCriterion",

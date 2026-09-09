@@ -9,6 +9,7 @@ from numbers import Integral
 from typing import Literal, TypeAlias
 
 import numpy as np
+from numpy.typing import NDArray
 from scipy.spatial import Delaunay, QhullError  # type: ignore[import-untyped]
 
 from toposc_lab.geometry.base import (
@@ -81,6 +82,18 @@ def hard_core_planar_graph(*, seed: int) -> Geometry:
 def hard_core_planar_reference(*, seed: int) -> Geometry:
     """Generate the frozen length-completed amorphous reference graph."""
     return _hard_core_planar_geometry(seed=seed, mode="reference")
+
+
+def hard_core_planar_edge_pool(coordinates: NDArray[np.float64]) -> tuple[_Edge, ...]:
+    """Reconstruct the frozen v1 Delaunay pool without sampling or changing coordinates.
+
+    Uses the same Qhull options, degeneracy rejection and length cutoff as both
+    generators. Callers still enforce complete graph and physical-boundary rules.
+    """
+    values = np.asarray(coordinates, dtype=float)
+    if values.ndim != 2 or values.shape[1] != 2 or not np.all(np.isfinite(values)):
+        raise ValueError("edge pool requires finite two-dimensional coordinates")
+    return _delaunay_edges(values)
 
 
 def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode) -> Geometry:

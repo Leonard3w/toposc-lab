@@ -11,7 +11,7 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from math import isfinite
 from numbers import Integral, Real
-from typing import TypeAlias
+from typing import Literal, TypeAlias, cast
 
 import numpy as np
 
@@ -27,6 +27,7 @@ from toposc_lab.search.generation_loop import (
 from toposc_lab.search.generation_population import GenerationPopulation, GenerationPopulationMember
 from toposc_lab.search.geometry_genome import GeometryGenome
 from toposc_lab.search.initial_population import InitialPopulationError, create_initial_population
+from toposc_lab.search.lexicographic_fitness import LexicographicFitnessDefinition
 from toposc_lab.search.mutation_validity import (
     MutationValidityPolicy,
     MutationValidityReport,
@@ -43,9 +44,10 @@ from toposc_lab.search.population_fitness import (
     evaluate_population_fitness,
 )
 
-SEARCH_BENCHMARK_VERSION = 1
+SEARCH_BENCHMARK_VERSION = 2
 BenchmarkSampler: TypeAlias = Callable[[int], GeometryGenome]
 BenchmarkEvaluator: TypeAlias = Callable[[GeometryGenome, int], GeometryEvaluationRun]
+DeterministicBenchmarkEvaluator: TypeAlias = Callable[[GeometryGenome, None], GeometryEvaluationRun]
 BenchmarkSuccessPredicate: TypeAlias = Callable[[PopulationFitnessMember], bool]
 
 
@@ -112,9 +114,12 @@ class SearchBenchmarkProtocol:
     validity_policy: MutationValidityPolicy
     criterion: BenchmarkSuccessCriterion
     family_classifier_identifier: str | None = None
+    evaluation_mode: Literal["seeded", "deterministic"] = "seeded"
     version: int = field(default=SEARCH_BENCHMARK_VERSION, init=False)
 
     def __post_init__(self) -> None:
+        if self.evaluation_mode not in ("seeded", "deterministic"):
+            raise ValueError("evaluation_mode must be seeded or deterministic")
         _labels(
             self,
             (
@@ -137,7 +142,8 @@ class SearchBenchmarkProtocol:
         if not seeds or len(set(seeds)) != len(seeds):
             raise ValueError("trial_seeds must be nonempty and distinct")
         if not isinstance(
-            self.definition, (ScalarFitnessDefinition, MultiObjectiveFitnessDefinition)
+            self.definition,
+            (ScalarFitnessDefinition, MultiObjectiveFitnessDefinition, LexicographicFitnessDefinition),
         ):
             raise TypeError("definition must be a population fitness definition")
         if not isinstance(self.validity_policy, MutationValidityPolicy):
@@ -365,15 +371,17 @@ def run_search_benchmark(
     protocol: SearchBenchmarkProtocol,
     *,
     sampler: BenchmarkSampler,
-    evaluator: BenchmarkEvaluator,
+    evaluator: BenchmarkEvaluator | DeterministicBenchmarkEvaluator,
     offspring_producer: OffspringProducer,
     family_classifier: DiversityFamilyClassifier | None = None,
+    checkpoint_callback: Callable[[GenerationLoopResult], None] | None = None,
 ) -> SearchBenchmarkResult:
     """Run both arms with N*(G+1) evaluator attempts each, per declared seed.
 
     ``sampler(seed)`` draws one valid independent candidate from the declared
     distribution. It receives no fitness/history. ``evaluator(genome, seed)`` is
-    identical for both arms and receives paired per-attempt seeds. Generation zero
+    identical for both arms and receives paired per-attempt seeds in seeded mode,
+    or None in the explicit deterministic mode. Generation zero
     is sampled once but evaluated separately twice. No deduplication or caching.
 
     Ordinary evaluator failures are retained by Phase 10.11. Sampling, offspring,
@@ -421,6 +429,7 @@ def run_search_benchmark(
             producer_identifier=protocol.producer_identifier,
             family_classifier=family_classifier,
             family_classifier_identifier=protocol.family_classifier_identifier,
+            checkpoint_callback=checkpoint_callback,
         )
         random_history = [
             evaluate_population_fitness(
@@ -485,13 +494,16 @@ def _assess_arm(
 
 
 def _paired_evaluator(
-    evaluator: BenchmarkEvaluator,
-    seeds: tuple[int, ...],
+    evaluator: BenchmarkEvaluator | DeterministicBenchmarkEvaluator,
+    seeds: tuple[int | None, ...],
     size: int,
 ) -> PopulationEvaluator:
     def evaluate(member: FitnessPopulationMember) -> GeometryEvaluationRun:
         index = member.generation_index * size + member.member_index
-        return evaluator(member.genome, seeds[index])
+        seed = seeds[index]
+        if seed is None:
+            return cast(DeterministicBenchmarkEvaluator, evaluator)(member.genome, None)
+        return cast(BenchmarkEvaluator, evaluator)(member.genome, seed)
 
     return evaluate
 
@@ -499,21 +511,26 @@ def _paired_evaluator(
 def _seed_schedule(
     seed: int,
     protocol: SearchBenchmarkProtocol,
-) -> tuple[int, tuple[int, ...], tuple[int, ...]]:
-    # Version 1: one evolution word, B sampling words, B evaluation words.
+) -> tuple[int, tuple[int, ...], tuple[int | None, ...]]:
+    # Preserve the v1 seeded schedule. The v2 deterministic mode draws no
+    # evaluation words: one evolution word followed by B sampling words only.
     # Separate local generator; no global NumPy state, redraws, or outcome dependence.
     rng = np.random.PCG64(seed)
     evolution_seed = int(rng.random_raw())
     budget = protocol.attempts_per_arm
     sampling_seeds = tuple(int(value) for value in rng.random_raw(budget))
-    evaluation_seeds = tuple(int(value) for value in rng.random_raw(budget))
+    evaluation_seeds: tuple[int | None, ...] = (
+        (None,) * budget
+        if protocol.evaluation_mode == "deterministic"
+        else tuple(int(value) for value in rng.random_raw(budget))
+    )
     return evolution_seed, sampling_seeds, evaluation_seeds
 
 
 def _audit_evaluations(
     trial: SearchBenchmarkTrial,
     protocol: SearchBenchmarkProtocol,
-    seeds: tuple[int, ...],
+    seeds: tuple[int | None, ...],
     reference: ReproducibilityRecord | None = None,
 ) -> ReproducibilityRecord | None:
     for arm in (trial.evolution_arm, trial.random_arm):

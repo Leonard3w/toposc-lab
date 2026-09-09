@@ -14,6 +14,10 @@ from toposc_lab.evaluation import (
     ObjectiveDirection,
     ObjectiveSpec,
 )
+from toposc_lab.search.lexicographic_fitness import (
+    LexicographicFitness,
+    LexicographicFitnessDefinition,
+)
 from toposc_lab.search.population_fitness import (
     MultiObjectiveFitnessDefinition,
     PopulationFitnessMember,
@@ -236,6 +240,14 @@ def _best_contestants(
     source: PopulationFitnessResult,
 ) -> tuple[PopulationFitnessMember, ...]:
     definition = source.definition
+    if isinstance(definition, LexicographicFitnessDefinition):
+        keys = []
+        for member in contestants:
+            if not isinstance(member.fitness, LexicographicFitness):
+                raise TypeError("lexicographic selection requires ordered raw fitness")
+            keys.append(member.fitness.ordering_key)
+        best = max(keys)
+        return tuple(member for member, key in zip(contestants, keys, strict=True) if key == best)
     if isinstance(definition, ScalarFitnessDefinition):
         values = tuple(_scalar_fitness_value(member) for member in contestants)
         target = (
