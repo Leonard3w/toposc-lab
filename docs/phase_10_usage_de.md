@@ -89,6 +89,21 @@ sein, bevor du einen Lauf startest. Der Runner prüft Code, Protokoll und Umgebu
 Vorlauf und Hauptlauf startest du selbst; sie schreiben in ein neues
 Phase-10-Ergebnisverzeichnis.
 
+### Nach dem abgeschlossenen Erstversuch
+
+Der Hauptlauf in `results/phase_10_research_v1_storage_fix1/full` ist abgeschlossen:
+Evolution und Zufallssuche hatten jeweils 0/32 Versuchstreffer. Das ist kein
+Nachweis, dass geeignete Geometrien grundsätzlich unmöglich sind.
+
+Als nächsten Schritt beschreibt das
+[Kalibrationsprotokoll TOPOSC-P10-CAL-001](decisions/pre_phase_10_calibration_protocol_v1.md)
+kontrollierte Änderungen an der erfolgreichen Quadrat-Referenz: nur Positionen,
+nur Kanten, dann deren Kombinationen. Geplant sind 50 Bewertungen im technischen
+Vorlauf und 386 im Hauptlauf, mit unveränderten Physik- und Gateparametern.
+Zunächst wird nur der Plan geprüft und separat committed; ein Runner dafür ist
+noch nicht implementiert. Die folgenden alten Suchbefehle starten **nicht** diese
+Kalibration. Alte Ergebnisse bleiben unangetastet.
+
 ### Unseren Forschungslauf starten
 
 Im Projektverzeichnis, nach dem Implementierungs-Commit, in PowerShell:
