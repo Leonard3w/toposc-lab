@@ -89,6 +89,24 @@ def build_parser() -> argparse.ArgumentParser:
     research_mode.add_argument("--full", dest="research_mode", action="store_const", const="full")
     research_mode.add_argument("--resume", dest="research_mode", action="store_const", const="resume")
     research_parser.add_argument("--output", type=Path, default=Path("results/phase_10_research_v1"))
+
+    calibration_parser = subparsers.add_parser(
+        "phase-10-calibration",
+        help="Run the frozen square-neighborhood calibration with live progress.",
+    )
+    calibration_mode = calibration_parser.add_mutually_exclusive_group(required=True)
+    calibration_mode.add_argument(
+        "--preflight", dest="calibration_mode", action="store_const", const="preflight"
+    )
+    calibration_mode.add_argument(
+        "--full", dest="calibration_mode", action="store_const", const="full"
+    )
+    calibration_mode.add_argument(
+        "--resume", dest="calibration_mode", action="store_const", const="resume"
+    )
+    calibration_parser.add_argument(
+        "--output", type=Path, default=Path("results/phase_10_calibration_v1")
+    )
     return parser
 
 
@@ -142,6 +160,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             from toposc_lab.search.phase_10_campaign import run_research_campaign
 
             report = run_research_campaign(args.output, mode=args.research_mode)
+            print(f"Bericht: {report.resolve()}", flush=True)
+        elif args.command == "phase-10-calibration":
+            from toposc_lab.search.phase_10_calibration_campaign import (
+                run_calibration_campaign,
+            )
+
+            report = run_calibration_campaign(args.output, mode=args.calibration_mode)
             print(f"Bericht: {report.resolve()}", flush=True)
         elif args.command == "phase-9-8":
             from toposc_lab.phase_9_8_cli import run_phase_9_8_command

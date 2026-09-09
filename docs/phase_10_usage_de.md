@@ -100,9 +100,52 @@ Als nächsten Schritt beschreibt das
 kontrollierte Änderungen an der erfolgreichen Quadrat-Referenz: nur Positionen,
 nur Kanten, dann deren Kombinationen. Geplant sind 50 Bewertungen im technischen
 Vorlauf und 386 im Hauptlauf, mit unveränderten Physik- und Gateparametern.
-Zunächst wird nur der Plan geprüft und separat committed; ein Runner dafür ist
-noch nicht implementiert. Die folgenden alten Suchbefehle starten **nicht** diese
-Kalibration. Alte Ergebnisse bleiben unangetastet.
+Das Protokoll ist separat unter `a1c5a087ed1383f496ebe6a14e1bc7eecaea568a`
+eingefroren. Der neue Befehl `phase-10-calibration` implementiert den getrennten
+Runner mit Live-Anzeige und Resume. Er darf erst nach einem separaten
+Implementierungs-Commit gestartet werden. Alte Ergebnisse bleiben unangetastet.
+
+Im Projektverzeichnis setzt du in einer neuen PowerShell zuerst die Umgebung:
+
+```powershell
+$env:PYTHONDONTWRITEBYTECODE='1'
+$env:PYTHONPATH='src'
+$env:OMP_NUM_THREADS='1'
+$env:OPENBLAS_NUM_THREADS='1'
+$env:MKL_NUM_THREADS='1'
+$env:BLIS_NUM_THREADS='1'
+```
+
+Danach startest du ausschließlich den technischen Vorlauf:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-calibration --preflight --output results\phase_10_calibration_v1
+```
+
+Parallel kannst du den Fortschritt verfolgen:
+
+```powershell
+Get-Content results\phase_10_calibration_v1\events.jsonl -Wait
+```
+
+Erst wenn der Vorlauf bestanden ist, startest du ausdrücklich den Hauptlauf:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-calibration --full --output results\phase_10_calibration_v1
+```
+
+Nach einem Abbruch verwendest du mit exakt derselben Umgebung und Code-Revision:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-calibration --resume --output results\phase_10_calibration_v1
+```
+
+Die Anzeige nennt Block, Trajektorie, Positionsamplitude `amplitude`,
+Kantenstufe `edge_step` und `clean_eligible`. `True` heißt, dass diese Variante
+alle bisherigen sauberen Gates erfüllt; es ist noch kein Robustheits- oder
+Geometrievorteil. Der Plan wird vor der ersten Physikbewertung vollständig
+versiegelt. Die folgenden `phase-10-research`-Befehle dokumentieren den bereits
+abgeschlossenen älteren Suchlauf und starten **nicht** diese Kalibration.
 
 ### Unseren Forschungslauf starten
 

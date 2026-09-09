@@ -179,7 +179,10 @@ class ResearchMonitor:
                     stream.flush()
                 label = " ".join(
                     f"{k}={entry[k]}"
-                    for k in ("stage", "trial", "arm", "generation", "slot", "hits")
+                    for k in (
+                        "stage", "block", "trial", "arm", "amplitude", "edge_step",
+                        "generation", "slot", "hits", "clean_eligible",
+                    )
                     if k in entry
                 )
                 eta_text = "offen" if eta is None else f"{eta / 60:.1f} min"
