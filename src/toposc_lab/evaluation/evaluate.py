@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import math
+import time
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, replace
-import math
 from numbers import Integral, Real
 from typing import Any, TypeAlias
 
@@ -150,6 +151,7 @@ TopologyEvaluationHook: TypeAlias = Callable[
     [GeometryEvaluationContext],
     Iterable[TopologyIntegrationInput],
 ]
+EvaluationTimingCallback: TypeAlias = Callable[[str, float], None]
 
 
 @dataclass(frozen=True, slots=True)
@@ -223,6 +225,7 @@ def evaluate_geometry(
     topology_dispatch: TopologyDispatchDecision | None = None,
     seed: int | None = None,
     code_version: str | None = None,
+    timing_callback: EvaluationTimingCallback | None = None,
 ) -> GeometryEvaluationRun:
     """Run the Phase 7 evaluation stages for one explicitly adapted geometry.
 
@@ -245,6 +248,8 @@ def evaluate_geometry(
         raise TypeError("solver must be ExactDiagonalizationSolver or None")
     if topology_hook is not None and not callable(topology_hook):
         raise TypeError("topology_hook must be callable or None")
+    if timing_callback is not None and not callable(timing_callback):
+        raise TypeError("timing_callback must be callable or None")
     if topology_dispatch is not None and not isinstance(
         topology_dispatch,
         TopologyDispatchDecision,
@@ -305,6 +310,7 @@ def evaluate_geometry(
     assert model_parameters is not None
     assert reproducibility is not None
 
+    stage_started = time.perf_counter()
     try:
         matrix = np.asarray(model.hamiltonian(), dtype=complex).copy()
         matrix.setflags(write=False)
@@ -317,6 +323,8 @@ def evaluate_geometry(
             basis_layout=basis_layout,
             reproducibility=reproducibility,
         )
+    finally:
+        _emit_timing(timing_callback, "hamiltonian", stage_started)
     assert matrix is not None
 
     presolve = validate_candidate(
@@ -333,6 +341,7 @@ def evaluate_geometry(
             reproducibility=reproducibility,
         )
 
+    stage_started = time.perf_counter()
     try:
         eigensystem = solver.solve(matrix)
         simulation_result = SimulationResult(
@@ -352,6 +361,8 @@ def evaluate_geometry(
             hamiltonian=matrix,
             reproducibility=reproducibility,
         )
+    finally:
+        _emit_timing(timing_callback, "solver", stage_started)
     assert simulation_result is not None
 
     postsolve = validate_candidate(
@@ -369,6 +380,7 @@ def evaluate_geometry(
             reproducibility=reproducibility,
         )
 
+    stage_started = time.perf_counter()
     try:
         evaluation = evaluate_spectrum(
             simulation_result.eigenvalues,
@@ -413,6 +425,8 @@ def evaluate_geometry(
             evaluation=evaluation,
             reproducibility=reproducibility,
         )
+    finally:
+        _emit_timing(timing_callback, "diagnostics", stage_started)
     assert evaluation is not None
 
     if topology_hook is None:
@@ -423,6 +437,7 @@ def evaluate_geometry(
         )
     else:
         assert topology_dispatch is not None
+        stage_started = time.perf_counter()
         try:
             context = GeometryEvaluationContext(
                 geometry=geometry,
@@ -450,6 +465,8 @@ def evaluate_geometry(
                 evaluation=evaluation,
                 reproducibility=reproducibility,
             )
+        finally:
+            _emit_timing(timing_callback, "topology", stage_started)
 
     final_validity = validate_candidate(
         geometry,
@@ -465,6 +482,13 @@ def evaluate_geometry(
         validity=final_validity,
         reproducibility=reproducibility,
     )
+
+
+def _emit_timing(
+    callback: EvaluationTimingCallback | None, category: str, started: float
+) -> None:
+    if callback is not None:
+        callback(category, time.perf_counter() - started)
 
 
 def _failed_run(

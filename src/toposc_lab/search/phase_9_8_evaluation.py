@@ -9,7 +9,7 @@ boundary evidence frozen by ``TOPOSC-P9.8-RS-001``.
 from __future__ import annotations
 
 from collections import deque
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from enum import Enum
 from numbers import Real
@@ -42,11 +42,11 @@ from toposc_lab.geometry.generators.hard_core_planar import (
     HARD_CORE_PLANAR_N_EDGES,
     HARD_CORE_PLANAR_N_SITES,
 )
+from toposc_lab.hamiltonians import NambuBasis
 from toposc_lab.models.chiral_p_wave import (
     ChiralPWaveModel,
     ChiralPWaveParameters,
 )
-from toposc_lab.hamiltonians import NambuBasis
 from toposc_lab.observables.localization import LocalizationProfile
 from toposc_lab.observables.majorana import MajoranaDiagnostics
 from toposc_lab.robustness.disorder import DisorderParameterValue
@@ -748,6 +748,7 @@ def evaluate_phase_9_8_descriptive_geometry(
     *,
     inputs: Phase98TopologyInputs,
     code_version: str,
+    timing_callback: Callable[[str, float], None] | None = None,
 ) -> tuple[GeometryEvaluationRun, Phase98TopologyConvergenceBundle | None]:
     """Evaluate an unmatched native reference without assigning clean eligibility."""
     bundles: list[Phase98TopologyConvergenceBundle] = []
@@ -768,6 +769,7 @@ def evaluate_phase_9_8_descriptive_geometry(
         ),
         seed=None,
         code_version=code_version,
+        timing_callback=timing_callback,
     )
     return run, bundles[0] if len(bundles) == 1 else None
 

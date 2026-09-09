@@ -101,6 +101,33 @@ sieht 8×8, 10×10 und 12×12 vor. Dieser Plan wird vor der Umsetzung separat
 eingefroren; die folgenden bisherigen Befehle starten diesen neuen Versuch nicht.
 Für den abgeschlossenen Kalibrationslauf ist kein `--resume` erforderlich.
 
+Der Größen-/Methodenplan ist unter
+`795124b0d89cf755f575a0de3049a2f3983aba1b` eingefroren. Der getrennte Befehl
+`phase-10-size-methods` wertet pro Geometrie fünf vorab festgelegte Bulkregionen
+auf 8×8, 10×10 und 12×12 aus. Vorlauf und Hauptlauf schreiben ausschließlich
+in den neuen Stamm `results/phase_10_size_methods_v1`. Erst die Implementierung
+committen; danach startest du selbst zunächst nur den Vorlauf:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-size-methods --preflight --output results\phase_10_size_methods_v1
+```
+
+Nur wenn dessen Bericht 24/24 verfügbare Bewertungen und gültige Kontrollen
+ausweist, wird der Hauptlauf separat gestartet:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-size-methods --full --output results\phase_10_size_methods_v1
+```
+
+Nach einem Abbruch dient bei unveränderter Umgebung und Code-Revision:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-size-methods --resume --output results\phase_10_size_methods_v1
+```
+
+Die nachfolgenden Kalibrationsbefehle dokumentieren den bereits abgeschlossenen
+Vorgängerlauf und müssen dafür nicht erneut ausgeführt werden.
+
 Der Hauptlauf in `results/phase_10_research_v1_storage_fix1/full` ist abgeschlossen:
 Evolution und Zufallssuche hatten jeweils 0/32 Versuchstreffer. Das ist kein
 Nachweis, dass geeignete Geometrien grundsätzlich unmöglich sind.

@@ -180,8 +180,8 @@ class ResearchMonitor:
                 label = " ".join(
                     f"{k}={entry[k]}"
                     for k in (
-                        "stage", "block", "trial", "arm", "amplitude", "edge_step",
-                        "generation", "slot", "hits", "clean_eligible",
+                        "stage", "block", "trial", "arm", "size", "amplitude", "edge_step",
+                        "generation", "slot", "hits", "clean_eligible", "screening_pass",
                     )
                     if k in entry
                 )

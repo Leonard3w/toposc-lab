@@ -107,6 +107,24 @@ def build_parser() -> argparse.ArgumentParser:
     calibration_parser.add_argument(
         "--output", type=Path, default=Path("results/phase_10_calibration_v1")
     )
+
+    size_methods_parser = subparsers.add_parser(
+        "phase-10-size-methods",
+        help="Run the frozen finite-size and bulk-region comparison with live progress.",
+    )
+    size_methods_mode = size_methods_parser.add_mutually_exclusive_group(required=True)
+    size_methods_mode.add_argument(
+        "--preflight", dest="size_methods_mode", action="store_const", const="preflight"
+    )
+    size_methods_mode.add_argument(
+        "--full", dest="size_methods_mode", action="store_const", const="full"
+    )
+    size_methods_mode.add_argument(
+        "--resume", dest="size_methods_mode", action="store_const", const="resume"
+    )
+    size_methods_parser.add_argument(
+        "--output", type=Path, default=Path("results/phase_10_size_methods_v1")
+    )
     return parser
 
 
@@ -167,6 +185,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
 
             report = run_calibration_campaign(args.output, mode=args.calibration_mode)
+            print(f"Bericht: {report.resolve()}", flush=True)
+        elif args.command == "phase-10-size-methods":
+            from toposc_lab.search.phase_10_size_methods_campaign import (
+                run_size_methods_campaign,
+            )
+
+            report = run_size_methods_campaign(args.output, mode=args.size_methods_mode)
             print(f"Bericht: {report.resolve()}", flush=True)
         elif args.command == "phase-9-8":
             from toposc_lab.phase_9_8_cli import run_phase_9_8_command
