@@ -352,12 +352,19 @@ def _evaluate_cell(
     record["timings"] = timings
     ledger.record("outcome.json", record)
     ledger.seal(record)
+    completed_progress = {
+        **progress,
+        "completed": index + 1,
+        "classification": record["classification"],
+        "screening_pass": record["positive_screening"],
+        "last_sealed": f"{mode}/evaluations/cell_{index:04d}",
+        "category": "physics",
+        "operation_seconds": elapsed,
+        "stage_timings": timings,
+    }
     monitor.emit(
         "evaluated" if record["classification"] != "operational_failure" else "evaluation_failed",
-        **progress, completed=index + 1, classification=record["classification"],
-        screening_pass=record["positive_screening"],
-        last_sealed=f"{mode}/evaluations/cell_{index:04d}", category="physics",
-        operation_seconds=elapsed, stage_timings=timings,
+        **completed_progress,
     )
     return record
 

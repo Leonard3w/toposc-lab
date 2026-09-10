@@ -142,6 +142,35 @@ def test_sealed_resume_is_bound_to_the_exact_candidate_input() -> None:
             campaign._load_bound_sealed(directory, {**expected, "candidate_id": "geometry-b"})
 
 
+def test_evaluation_completion_replaces_progress_count_once(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    cell = {
+        "n": 12, "block": "control_start", "model_role": "topological",
+        "geometry_id": "geometry-a", "candidate_id": None, "evaluation_seed": None,
+        "origins": (), "known_measurement_variant": False,
+        "rotation_signature": None, "dihedral_signature": None,
+        "removed_edges": (), "added_edges": (), "affected_sites": (),
+        "intervention_depth": None,
+    }
+    record = {
+        **campaign._identity(cell), "classification": "primary_topological",
+        "positive_screening": True, "numerical_valid": True, "error": None,
+    }
+    monkeypatch.setattr(campaign, "_calculate_cell", lambda *args, **kwargs: dict(record))
+    monitor = _CaptureMonitor()
+    with TemporaryDirectory(dir=".") as name:
+        result = campaign._evaluate_cell(
+            Path(name) / "cell", cell, "test-code", cast(Any, monitor),
+            "preflight", 0, 8, estimated_seconds=None,
+        )
+    assert result["classification"] == "primary_topological"
+    event, changes = monitor.events[-1]
+    assert event == "evaluated"
+    assert changes["completed"] == 1
+    assert changes["total"] == 8
+
+
 def test_incomplete_inventory_has_no_null_result_claim() -> None:
     controls = []
     for n in (16, 20):
@@ -225,6 +254,14 @@ def _rejected() -> dict[str, Any]:
 class _Monitor:
     def emit(self, *args: Any, **kwargs: Any) -> None:
         del args, kwargs
+
+
+class _CaptureMonitor:
+    def __init__(self) -> None:
+        self.events: list[tuple[str, dict[str, Any]]] = []
+
+    def emit(self, event: str, **changes: Any) -> None:
+        self.events.append((event, changes))
 
 
 def _record(n: int, block: str, role: str, gap: float) -> dict[str, Any]:
