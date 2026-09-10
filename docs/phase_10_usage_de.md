@@ -91,7 +91,26 @@ Phase-10-Ergebnisverzeichnis.
 
 ### Nach dem abgeschlossenen Erstversuch
 
-**Aktuell: Der Rand-/Innenhauptlauf ist mit 82/82 Bewertungen abgeschlossen.**
+**Aktuell: Die Messvalidierung hat alle 36 Hauptlaufbewertungen versiegelt.**
+Die ursprüngliche Berichtserstellung brach wegen eines Zugriffs auf das alte
+Ergebnisformat ab. Der
+[wiederhergestellte Bericht](../results/phase_10_measurement_validation_v1_storage_fix1_report_fix1/report.md)
+wertet dieselben 36 Archive aus: alle Kontrollen bestanden, alle zwölf
+topologischen Eingriffe positiv, alle zwölf trivialen Eingriffe korrekt trivial.
+Der größte zentrale Chern-Unterschied zwischen 16×16 und 20×20 beträgt
+0.00109413 und liegt unter der vorab festgelegten Schwelle 0.005.
+Das Urteil ist `bounded_measurement_contract_accepted` und gilt ausschließlich
+für das untersuchte lokale Quadratpanel. Es belegt noch keinen Suchvorteil oder
+Disorder-Robustheit.
+
+Die Wiederherstellung hat keine Physik neu berechnet und den ursprünglichen
+Ergebnisordner nicht verändert. Der separate Bericht enthält in `recovery.json`
+die geprüften Quellhashes, ursprüngliche Physikrevision und Änderungen des
+Auswertungscodes. Das ursprüngliche `full/complete.json` bleibt wegen des
+damaligen Abbruchs abwesend; der abgeleitete Bericht hat eine eigene Versiegelung.
+Für diese fertigen Bewertungen ist kein erneuter Start oder `--resume` nötig.
+
+**Vorheriger Schritt: Der Rand-/Innenhauptlauf ist mit 82/82 Bewertungen abgeschlossen.**
 Alle Kontrollen sind gültig. Die
 [geprüfte Auswertung](decisions/phase_10_edge_location_v1_analysis.md) erklärt,
 warum zentrale Chern-Nähe, lokale Markeränderung und das bisherige Screening
@@ -110,8 +129,9 @@ Rand-/Innenvergleichs. Das feste Budget endet mit einer expliziten Entscheidung
 trennt Methodenfehler und unterstützt eine geprüfte Wiederaufnahme. Die
 Implementierung muss vor dem ersten Lauf separat committed sein.
 
-Nach diesem Implementierungscommit und mit den vier Threadvariablen auf 1 startest
-du den Vorlauf selbst:
+Die folgenden Befehle dokumentieren den Start einer neuen Kampagne nach einem
+Implementierungscommit, mit den vier Threadvariablen auf 1. Den oben bereits
+ausgewerteten Lauf nicht erneut starten.
 
 ```powershell
 $env:PYTHONDONTWRITEBYTECODE='1'

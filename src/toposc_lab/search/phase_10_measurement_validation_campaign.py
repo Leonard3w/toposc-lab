@@ -54,6 +54,8 @@ from toposc_lab.search.phase_10_measurement_validation import (
     PREFLIGHT_SIZE,
     build_measurement_plan,
     build_measurement_topology_inputs,
+    intervention_definition,
+    model_parameters,
 )
 from toposc_lab.search.phase_10_research import THREAD_VARIABLES
 from toposc_lab.search.phase_10_size_methods import MASK_NAMES
@@ -310,6 +312,131 @@ def _execute_stage(
     return stage / "report.md"
 
 
+def recover_measurement_report(stage: Path, output: Path) -> Path:
+    """Derive a separate report from all sealed full-stage slots; never run physics.
+
+    This is postprocessing across code revisions, not campaign resume. Original
+    manifests, outcomes and completion state are retained byte for byte.
+    """
+    stage = stage.resolve()
+    output = _output_path(output)
+    if stage.name != "full" or output == stage or output.is_relative_to(stage.parent):
+        raise ValueError("Use the full stage and a separate results output directory")
+    if output.exists():
+        raise FileExistsError(output)
+    root = Path(__file__).resolve().parents[3]
+    source_inventory = _artifact_inventory(stage)
+    preflight = stage.parent / "preflight"
+    _verify_completion(preflight)
+    preflight_digest = hashlib.sha256((preflight / "complete.json").read_bytes()).hexdigest()
+    if load_record(preflight / "complete.json")["preflight_passed"] is not True:
+        raise ResearchAbort("Source preflight did not pass")
+    manifest = load_record(stage / "manifest.json")
+    environment = manifest["environment"]
+    frozen = subprocess.run(
+        ["git", "-C", str(root), "show",
+         f"{MEASUREMENT_VALIDATION_PROTOCOL_COMMIT}:{MEASUREMENT_VALIDATION_PROTOCOL_PATH}"],
+        check=True, capture_output=True,
+    ).stdout.replace(b"\r\n", b"\n")
+    if (
+        manifest["protocol_id"] != MEASUREMENT_VALIDATION_PROTOCOL_ID
+        or manifest["protocol_commit"] != MEASUREMENT_VALIDATION_PROTOCOL_COMMIT
+        or manifest["protocol_text"].replace("\r\n", "\n").encode("utf-8") != frozen
+        or environment["protocol_sha256"] != hashlib.sha256(frozen).hexdigest()
+        or manifest["mode"] != "full"
+        or manifest["total_evaluation_attempts"] != 36
+        or load_record(preflight / "manifest.json")["environment"] != environment
+    ):
+        raise ResearchAbort("Source protocol or preflight provenance differs")
+    cells = load_record(stage / "input_plan.json")
+    _audit_plan(cells, preflight=False)
+    expected_order = [
+        (n, block, role, offset, arm)
+        for n in FULL_SIZES
+        for block in ("control_start", "intervention", "control_end")
+        for role in (MODEL_ROLES if block != "intervention" else MODEL_ROLES[:2])
+        for offset in ((-2, 0, 2) if block == "intervention" else (None,))
+        for arm in (("boundary", "interior") if block == "intervention" else (None,))
+    ]
+    actual_order = [
+        (cell["n"], cell["block"], cell["model_role"], cell["offset"], cell["arm"])
+        for cell in cells
+    ]
+    if actual_order != expected_order:
+        raise ResearchAbort("Source cell order differs from the frozen 36-slot plan")
+    directories = sorted((stage / "evaluations").iterdir())
+    if [path.name for path in directories] != [f"cell_{i:04d}" for i in range(36)]:
+        raise ResearchAbort("Incomplete or unexpected source cell inventory")
+    outcomes = []
+    for directory, cell in zip(directories, cells, strict=True):
+        if exact_geometry_id(cell["genome"].to_geometry()) != cell["geometry_id"]:
+            raise ResearchAbort("Source geometry identity differs")
+        expected_sites = () if cell["block"] != "intervention" else intervention_definition(
+            cell["n"], cell["offset"], cell["arm"]
+        )["measurement_sites"]
+        parameters = model_parameters(cell["model_role"])
+        if (
+            cell["measurement_sites"] != expected_sites
+            or cell["model_parameters"] != parameters.model_dump(mode="json")
+        ):
+            raise ResearchAbort("Source model role or patch differs from the frozen plan")
+        record = _load_bound_sealed(directory, cell)
+        run = record.get("run")
+        if run is not None and run.reproducibility is not None:
+            provenance = run.reproducibility
+            if (
+                provenance.code_version != environment["code_commit"]
+                or provenance.geometry_id != cell["geometry_id"]
+                or ChiralPWaveParameters.model_validate(dict(provenance.model_parameters))
+                != parameters
+            ):
+                raise ResearchAbort("Source evaluation provenance differs")
+        outcomes.append(record)
+    summary = measurement_validation_summary(tuple(outcomes), preflight=False)
+    summary["environment"] = environment
+    summary["protocol_commit"] = MEASUREMENT_VALIDATION_PROTOCOL_COMMIT
+    summary["total_evaluation_attempts"] = 36
+    if _artifact_inventory(stage) != source_inventory:
+        raise ResearchAbort("Source artifacts changed during report recovery")
+    _verify_completion(preflight)
+    if hashlib.sha256((preflight / "complete.json").read_bytes()).hexdigest() != preflight_digest:
+        raise ResearchAbort("Preflight completion changed during report recovery")
+    git_head = subprocess.run(
+        ["git", "-C", str(root), "rev-parse", "HEAD"],
+        check=True, capture_output=True, text=True,
+    ).stdout.strip()
+    git_diff = subprocess.run(
+        ["git", "-C", str(root), "diff", "--binary", "HEAD"],
+        check=True, capture_output=True,
+    ).stdout.decode("utf-8")
+    recovery = {
+        "kind": "derived_report_only",
+        "source_stage": str(stage),
+        "source_code_commit": environment["code_commit"],
+        "source_artifacts": source_inventory,
+        "preflight_complete_sha256": preflight_digest,
+        "analysis_base_commit": git_head,
+        "analysis_worktree_diff": git_diff,
+        "analysis_source_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+        "new_physics_evaluations": 0,
+        "original_campaign_completion_modified": False,
+    }
+    report = _render_report(summary) + (
+        "\nDieser Bericht wurde aus 36 geprüften, versiegelten Bewertungen rekonstruiert.\n"
+        "Keine neue Physikberechnung; Herkunft und Analyseänderungen: `recovery.json`.\n"
+        "Der ursprüngliche Kampagnenabschluss wurde nicht verändert.\n"
+    )
+    # Finish validation and serialization before publishing any derived output.
+    summary_bytes = json_bytes(summary)
+    recovery_bytes = json_bytes(recovery)
+    output.mkdir(parents=True, exist_ok=False)
+    publish_derived(output / "summary.json", summary_bytes)
+    publish_derived(output / "recovery.json", recovery_bytes)
+    publish_derived(output / "report.md", report.encode("utf-8"))
+    save_record(output / "complete.json", {"artifacts": _artifact_inventory(output)})
+    return output / "report.md"
+
+
 def _prepare_cell(cell: dict[str, Any]) -> dict[str, Any]:
     geometry = cell["genome"].to_geometry()
     if exact_geometry_id(geometry) != cell["geometry_id"]:
@@ -376,6 +503,7 @@ def _evaluate_cell(
         }
     elapsed = time.perf_counter() - started
     timings["total"] = elapsed
+    record["measurement_sites"] = cell["measurement_sites"]
     record["timings"] = timings
     ledger.record("outcome.json", record)
     ledger.seal(record)
@@ -911,7 +1039,7 @@ def _central_chern(record: dict[str, Any]) -> float | None:
     if not isinstance(methods, dict) or len(methods.get("local_chern", ())) != 5:
         return None
     value = methods["local_chern"][4].get("result")
-    return None if value is None else float(value.bulk_chern_estimate)
+    return None if value is None else float(_result_field(value, "bulk_chern_estimate"))
 
 
 def _marker_change(record: dict[str, Any], reference: dict[str, Any] | None) -> dict[str, Any] | None:
@@ -1227,16 +1355,23 @@ def _audit_plan(cells: tuple[dict[str, Any], ...], *, preflight: bool) -> None:
 
 
 def _load_bound_sealed(directory: Path, expected: dict[str, Any]) -> dict[str, Any]:
+    record = load_sealed(directory)
     sealed = load_record(directory / "sealed.json")
     execution = directory / sealed["execution"]
     if encode_record(load_record(execution / "input.json")) != encode_record(expected):
         raise ResearchAbort("Versiegelter Zellinput stimmt nicht mit dem Messplan überein")
-    record = load_sealed(directory)
     if not isinstance(record, dict) or any(
         record.get(key) != value for key, value in _identity(expected).items()
     ):
         raise ResearchAbort("Versiegeltes Zellergebnis hat eine falsche Identität")
-    return record
+    if encode_record(load_record(execution / "outcome.json")) != encode_record(record):
+        raise ResearchAbort("Versiegeltes Ergebnis widerspricht outcome.json")
+    # Earlier records omitted the patch. Recover it only from the verified input;
+    # never modify the archived outcome or guess it from the observed marker.
+    sites = expected["measurement_sites"]
+    if "measurement_sites" in record and record["measurement_sites"] != sites:
+        raise ResearchAbort("Messregion widerspricht dem versiegelten Zellinput")
+    return {**record, "measurement_sites": sites}
 
 
 def _identity(cell: dict[str, Any]) -> dict[str, Any]:

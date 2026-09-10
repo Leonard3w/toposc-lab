@@ -11,7 +11,14 @@ import pytest
 
 from toposc_lab.models.chiral_p_wave import ChiralPWaveModel
 from toposc_lab.search import phase_10_measurement_validation_campaign as campaign
-from toposc_lab.search._research_storage import AttemptLedger, load_record, load_sealed
+from toposc_lab.search._research_storage import (
+    AttemptLedger,
+    decode_record,
+    encode_record,
+    json_bytes,
+    load_record,
+    load_sealed,
+)
 from toposc_lab.search.phase_10_measurement_validation import (
     ARMS,
     FULL_SIZES,
@@ -178,6 +185,27 @@ def test_summary_applies_all_three_frozen_full_verdicts() -> None:
     assert failed["verdict"] == "control_validation_failed"
 
 
+def test_full_report_after_dictionary_storage_roundtrip() -> None:
+    outcomes = _full_toy_outcomes()
+    for record in outcomes:
+        for group in record["methods"].values():
+            for item in group:
+                if item["result"] is not None:
+                    item["result"] = vars(item["result"])
+        # Pipeline fixtures are not serializable; methods exercise the actual codec.
+        record["methods"] = decode_record(encode_record(record["methods"]))
+    summary = campaign.measurement_validation_summary(tuple(outcomes), preflight=False)
+    assert summary["verdict"] == "bounded_measurement_contract_accepted"
+    assert len(summary["variants"]) == 24
+    assert len(summary["paired_differences"]) == 12
+    assert len(summary["size_stability"]) == 6
+    assert summary["variants"][0]["patch_marker_change"]["site_ids"] == tuple(range(16))
+    assert summary["variants"][0]["depth_marker_change"] is not None
+    assert summary["variants"][0]["graph_mask_change"] is not None
+    json_bytes(summary)
+    assert "bounded_measurement_contract_accepted" in campaign._render_report(summary)
+
+
 def test_sealed_resume_is_bound_to_exact_cell(tmp_path: Path) -> None:
     expected = build_measurement_cell(12, "topological", block="control_start")
     expected = {**expected, "topology_input_evidence": {"mask_names": MASK_NAMES}}
@@ -192,9 +220,45 @@ def test_sealed_resume_is_bound_to_exact_cell(tmp_path: Path) -> None:
     ledger.record("input.json", expected)
     ledger.record("outcome.json", record)
     ledger.seal(record)
-    assert campaign._load_bound_sealed(directory, expected) == record
+    assert campaign._load_bound_sealed(directory, expected) == {
+        **record, "measurement_sites": expected["measurement_sites"]
+    }
     with pytest.raises(BaseException, match="Zellinput"):
         campaign._load_bound_sealed(directory, dict(expected, model_role="trivial"))
+
+
+def test_legacy_patch_is_restored_from_bound_input_without_rewriting(tmp_path: Path) -> None:
+    expected = {
+        "n": 16, "block": "intervention", "model_role": "topological",
+        "offset": -2, "arm": "boundary", "geometry_id": "test-geometry",
+        "evaluation_seed": None, "measurement_sites": tuple(range(16)),
+    }
+    directory = tmp_path / "cell"
+    record = {**campaign._identity(expected), "methods": None}
+    ledger = AttemptLedger(directory)
+    ledger.record("input.json", expected)
+    ledger.record("outcome.json", record)
+    ledger.seal(record)
+    original = (ledger.execution / "outcome.json").read_bytes()
+    loaded = campaign._load_bound_sealed(directory, expected)
+    assert loaded["measurement_sites"] == tuple(range(16))
+    assert (ledger.execution / "outcome.json").read_bytes() == original
+
+
+def test_conflicting_archived_patch_is_rejected(tmp_path: Path) -> None:
+    expected = {
+        "n": 16, "block": "intervention", "model_role": "topological",
+        "offset": -2, "arm": "boundary", "geometry_id": "test-geometry",
+        "evaluation_seed": None, "measurement_sites": tuple(range(16)),
+    }
+    directory = tmp_path / "cell"
+    record = {**campaign._identity(expected), "measurement_sites": (99,)}
+    ledger = AttemptLedger(directory)
+    ledger.record("input.json", expected)
+    ledger.record("outcome.json", record)
+    ledger.seal(record)
+    with pytest.raises(BaseException, match="Messregion"):
+        campaign._load_bound_sealed(directory, expected)
 
 
 def test_preflight_completion_and_completed_resume(
