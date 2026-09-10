@@ -11,7 +11,7 @@ import pytest
 
 from toposc_lab.models.chiral_p_wave import ChiralPWaveModel
 from toposc_lab.search import phase_10_measurement_validation_campaign as campaign
-from toposc_lab.search._research_storage import AttemptLedger, load_record
+from toposc_lab.search._research_storage import AttemptLedger, load_record, load_sealed
 from toposc_lab.search.phase_10_measurement_validation import (
     ARMS,
     FULL_SIZES,
@@ -128,7 +128,7 @@ def test_undefined_control_requires_method_rejections_and_analytic_localizer_gap
     assert not campaign._control_is_valid(record)
 
 
-def test_zero_hamiltonian_methods_are_recorded_individually() -> None:
+def test_zero_hamiltonian_methods_are_recorded_individually(tmp_path: Path) -> None:
     cell = build_measurement_cell(12, "undefined", block="control_start")
     geometry = cell["genome"].to_geometry()
     hamiltonian = ChiralPWaveModel(
@@ -141,6 +141,13 @@ def test_zero_hamiltonian_methods_are_recorded_individually() -> None:
     )
     record = _record(12, "undefined", "control_start", methods)
     assert campaign._control_is_valid(record)
+    record["run"] = None
+    ledger = AttemptLedger(tmp_path / "method_record")
+    ledger.record("outcome.json", record)
+    ledger.seal(record)
+    loaded = load_sealed(tmp_path / "method_record")
+    assert loaded["methods"]["bott"][0]["status"] == "rejected"
+    assert loaded["methods"]["localizer"][0]["result"]["local_chern_number"] == 0
 
 
 def test_trivial_intervention_obeys_frozen_norm_bound() -> None:

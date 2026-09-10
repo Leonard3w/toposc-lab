@@ -10,6 +10,7 @@ import sys
 import time
 from collections import defaultdict
 from contextlib import redirect_stdout
+from dataclasses import fields, is_dataclass
 from importlib.metadata import version
 from io import StringIO
 from pathlib import Path
@@ -478,6 +479,7 @@ def _calculate_cell(
         and boundary.maximum_pair_residual <= PH_TOLERANCE
         and boundary.boundary_localized_count >= 4
     )
+    encoded_boundary = None if boundary is None else _encode_boundary_full(boundary)
     return {
         **_identity(cell),
         "run": run,
@@ -491,7 +493,7 @@ def _calculate_cell(
         "regional_sensitivity": regional_sensitivity,
         "positive_screening": positive,
         "old_size_screening": _old_size_screening(methods, boundary),
-        "boundary_signature": boundary,
+        "boundary_signature": encoded_boundary,
         "boundary_error": boundary_error,
         "error": None,
     }
@@ -557,13 +559,23 @@ def _evaluate_methods(
 
 def _method_call(function: Any) -> dict[str, Any]:
     try:
-        return {"status": "available", "result": function(), "error": None}
+        return {
+            "status": "available",
+            "result": _encode_method_result(function()),
+            "error": None,
+        }
     except Exception as error:  # noqa: BLE001 - method failures are first-class evidence
         return {
             "status": "rejected",
             "result": None,
             "error": {"type": type(error).__name__, "message": str(error)},
         }
+
+
+def _encode_method_result(value: Any) -> dict[str, Any]:
+    if not is_dataclass(value):
+        raise TypeError("topology method must return a dataclass result")
+    return {field.name: getattr(value, field.name) for field in fields(value)}
 
 
 def _classify(
@@ -626,14 +638,22 @@ def _has_unexpected_failure(record: dict[str, Any]) -> bool:
 
 def _method_value(item: dict[str, Any], attribute: str) -> Any:
     value = item.get("result")
-    return None if item.get("status") != "available" or value is None else getattr(value, attribute)
+    if item.get("status") != "available" or value is None:
+        return None
+    return _result_field(value, attribute)
+
+
+def _result_field(result: Any, name: str) -> Any:
+    if isinstance(result, dict):
+        return result.get(name)
+    return getattr(result, name)
 
 
 def _minimum_localizer_gap(
     methods: dict[str, list[dict[str, Any]]]
 ) -> float | None:
     values = [
-        float(item["result"].localizer_gap)
+        float(_result_field(item["result"], "localizer_gap"))
         for item in methods["localizer"]
         if item["status"] == "available"
     ]
@@ -906,7 +926,10 @@ def _marker_change(record: dict[str, Any], reference: dict[str, Any] | None) -> 
     if current is None or baseline is None:
         return None
     sites = np.asarray(record["measurement_sites"], dtype=np.intp)
-    delta = current.local_marker[sites] - baseline.local_marker[sites]
+    delta = (
+        np.asarray(_result_field(current, "local_marker"))[sites]
+        - np.asarray(_result_field(baseline, "local_marker"))[sites]
+    )
     return {
         "site_ids": record["measurement_sites"],
         "values": tuple(float(value) for value in delta),
@@ -964,8 +987,12 @@ def _graph_mask_change(
         reference_graph = reference_methods["local_chern"][graph_index].get("result")
         if graph is None or fixed is None or reference_graph is None:
             return None
-        graph_sites = set(np.flatnonzero(graph.bulk_mask).tolist())
-        fixed_sites = set(np.flatnonzero(fixed.bulk_mask).tolist())
+        graph_sites = set(
+            np.flatnonzero(_result_field(graph, "bulk_mask")).tolist()
+        )
+        fixed_sites = set(
+            np.flatnonzero(_result_field(fixed, "bulk_mask")).tolist()
+        )
         changed_sites = tuple(sorted(graph_sites.symmetric_difference(fixed_sites)))
         result.append(
             {
@@ -976,8 +1003,12 @@ def _graph_mask_change(
                 "changed_site_contributions": [
                     {
                         "site_id": site,
-                        "current_marker": float(graph.local_marker[site]),
-                        "reference_marker": float(reference_graph.local_marker[site]),
+                        "current_marker": float(
+                            _result_field(graph, "local_marker")[site]
+                        ),
+                        "reference_marker": float(
+                            _result_field(reference_graph, "local_marker")[site]
+                        ),
                         "marker_delta": float(central_delta[site]),
                     }
                     for site in changed_sites
@@ -1000,12 +1031,35 @@ def _marker_delta(
     baseline = reference_methods["local_chern"][4].get("result")
     if current is None or baseline is None:
         return None
-    return np.asarray(current.local_marker) - np.asarray(baseline.local_marker)
+    return np.asarray(_result_field(current, "local_marker")) - np.asarray(
+        _result_field(baseline, "local_marker")
+    )
 
 
 def _compact_boundary(boundary: Any) -> dict[str, Any] | None:
     if boundary is None:
         return None
+    if isinstance(boundary, dict):
+        return {
+            "particle_hole_pairs_by_state_index": boundary[
+                "particle_hole_pairs_by_state_index"
+            ],
+            "pairing_cost": boundary["pairing_cost"],
+            "maximum_pair_residual": boundary["maximum_pair_residual"],
+            "boundary_localized_count": boundary["boundary_localized_count"],
+            "minimum_boundary_weight_first_four": boundary[
+                "minimum_boundary_weight_first_four"
+            ],
+            "reasons": boundary["reasons"],
+            "states": [
+                {
+                    "state_index": state["state_index"],
+                    "energy": state["energy"],
+                    "boundary_weight": state["boundary_weight"],
+                }
+                for state in boundary["states"]
+            ],
+        }
     return {
         "particle_hole_pairs_by_state_index": tuple(boundary.particle_hole_pairs),
         "pairing_cost": boundary.pairing_cost,
@@ -1018,6 +1072,38 @@ def _compact_boundary(boundary: Any) -> dict[str, Any] | None:
                 "state_index": state.state_index,
                 "energy": state.energy,
                 "boundary_weight": state.boundary_weight,
+            }
+            for state in boundary.states
+        ],
+    }
+
+
+def _encode_boundary_full(boundary: Any) -> dict[str, Any]:
+    return {
+        "particle_hole_pairs_by_state_index": tuple(boundary.particle_hole_pairs),
+        "pairing_cost": boundary.pairing_cost,
+        "maximum_pair_residual": boundary.maximum_pair_residual,
+        "boundary_localized_count": boundary.boundary_localized_count,
+        "minimum_boundary_weight_first_four": boundary.minimum_boundary_weight_first_four,
+        "reasons": boundary.reasons,
+        "states": [
+            {
+                "state_index": state.state_index,
+                "energy": state.energy,
+                "ipr": state.ipr,
+                "boundary_weight": state.boundary_weight,
+                "site_probability": state.localization.probability,
+                "component_probabilities": state.localization.component_probabilities,
+                "majorana_site_probability": state.majorana.site_probability,
+                "majorana_particle_probability": state.majorana.particle_probability,
+                "majorana_hole_probability": state.majorana.hole_probability,
+                "majorana_polarization": state.majorana.polarization,
+                "majorana_polarization_magnitude": state.majorana.polarization_magnitude,
+                "majorana_total_polarization": state.majorana.total_polarization,
+                "majorana_self_conjugacy": state.majorana.self_conjugacy,
+                "majorana_polarization_norm": state.majorana.polarization_norm,
+                "majorana_particle_weight": state.majorana.particle_weight,
+                "majorana_hole_weight": state.majorana.hole_weight,
             }
             for state in boundary.states
         ],

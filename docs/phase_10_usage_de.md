@@ -135,6 +135,10 @@ Nur nach einem Abbruch bei unveränderter Revision und Umgebung:
 .\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-measurement-validation --resume --output results\phase_10_measurement_validation_v1
 ```
 
+Wurde Code oder Umgebung nach dem Abbruch geändert, darf dieser Ordner nicht per
+`--resume` fortgesetzt werden. Der Fehlerordner bleibt als Beleg erhalten und der
+Vorlauf beginnt mit einem neuen Ausgabenamen.
+
 **Vorheriger Schritt: Der Größen-/Methodenhauptlauf ist mit 150/150 Bewertungen abgeschlossen.**
 Die [räumliche Auswertung mit Grafik](analysis/phase_10_size_methods_spatial_v1/report_de.md)
 zeigt, wo sich die Marker nach Positions- und Kantenänderungen vom Quadrat
