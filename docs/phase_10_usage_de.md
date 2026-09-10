@@ -110,7 +110,7 @@ Auswertungscodes. Das ursprüngliche `full/complete.json` bleibt wegen des
 damaligen Abbruchs abwesend; der abgeleitete Bericht hat eine eigene Versiegelung.
 Für diese fertigen Bewertungen ist kein erneuter Start oder `--resume` nötig.
 
-**Nächster Schritt: Suchraum vor einem neuen Lauf geometrisch prüfen.**
+**Aktuell: Der lokale Geometriekatalog ist geprüft.**
 Der [Entscheidungsentwurf zur lokalen Suche](decisions/phase_10_local_search_design_draft_v1.md)
 trennt Screening von Verbesserung: Keine der zwölf topologischen Varianten
 übertrifft die gleich große Quadratkontrolle beim Localizer-Schutzproxy L.
@@ -132,6 +132,17 @@ Mit `--details` werden zusätzlich sämtliche exakten Geometrie-IDs,
 Kantenänderungen, Patchherkünfte und Symmetriesignaturen als JSON ausgegeben.
 Der Befehl erzeugt keine Hamiltonians, Solverläufe oder Dateien. Aktuell ist
 noch kein neuer Physiklauf zu starten.
+
+Der nächste [Protokollentwurf zur vollständigen Enumeration](decisions/pre_phase_10_local_enumeration_protocol_v1.md)
+legt 8 Vorlauf- und 268 Hauptlaufbewertungen fest: 256 Kandidaten plus
+12 Hauptlaufkontrollen. Ein primärer Treffer verlangt bestandenes Screening
+und mehr als 1 % zusätzlichen Localizer-Schutzproxy gegenüber dem gleich großen
+Quadrat, außerhalb einer numerischen Entscheidungszone. Sechs zusätzliche
+kappa-Werte prüfen die Einstellungssensitivität. Alle 128 Größenpaare werden
+ausgewertet; unabhängige Disorder-Bestätigung folgt gegebenenfalls separat.
+Zuerst wird dieser Text committed, anschließend der neue Runner implementiert
+und geprüft. Der vorgesehene Befehl `phase-10-local-enumeration` ist noch nicht
+verfügbar; Vorlauf und Hauptlauf startest du erst nach dessen Abnahme.
 
 **Vorheriger Schritt: Der Rand-/Innenhauptlauf ist mit 82/82 Bewertungen abgeschlossen.**
 Alle Kontrollen sind gültig. Die
