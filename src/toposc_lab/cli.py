@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from collections.abc import Sequence
 from pathlib import Path
 
@@ -163,6 +164,15 @@ def build_parser() -> argparse.ArgumentParser:
         type=Path,
         default=Path("results/phase_10_measurement_validation_v1"),
     )
+    local_catalog_parser = subparsers.add_parser(
+        "phase-10-local-catalog",
+        help="Enumerate the bounded local rewire catalog without physics evaluations.",
+    )
+    local_catalog_parser.add_argument(
+        "--details",
+        action="store_true",
+        help="Print JSON including every exact geometry ID and patch origin.",
+    )
     return parser
 
 
@@ -247,6 +257,23 @@ def main(argv: Sequence[str] | None = None) -> int:
                 args.output, mode=args.measurement_mode
             )
             print(f"Bericht: {report.resolve()}", flush=True)
+        elif args.command == "phase-10-local-catalog":
+            from toposc_lab.search.phase_10_local_catalog import (
+                local_catalog_summary,
+                render_local_catalog_report,
+            )
+
+            if args.details:
+                print(
+                    json.dumps(
+                        local_catalog_summary(include_candidates=True),
+                        ensure_ascii=False,
+                        indent=2,
+                    ),
+                    flush=True,
+                )
+            else:
+                print(render_local_catalog_report(), flush=True)
         elif args.command == "phase-9-8":
             from toposc_lab.phase_9_8_cli import run_phase_9_8_command
 

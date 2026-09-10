@@ -118,7 +118,20 @@ Vorgeschlagen ist deshalb ein begrenzter Katalog lokaler Zwei-Kanten-Eingriffe
 bei festen Ressourcen und Messregionen. Zunächst werden nur zulässige Geometrien
 gezählt, ohne Hamiltonian oder Solver. Erst danach wird entschieden, ob vollständiges
 Durchprüfen oder ein Suchvergleich sinnvoll ist. Das ist noch kein eingefrorenes
-Protokoll; aktuell ist kein neuer PowerShell-Lauf zu starten.
+Protokoll. Die Prüfung ergibt 128 gültige eindeutige Geometrien je Größe und
+256 insgesamt. Wegen dieses vollständig aufzählbaren Raums ist als nächster
+Physikschritt eine vorab festgelegte Enumeration sinnvoller als Evolution.
+
+Den rein geometrischen Katalog kannst du ohne Ergebnisordner anzeigen:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-local-catalog
+```
+
+Mit `--details` werden zusätzlich sämtliche exakten Geometrie-IDs,
+Kantenänderungen, Patchherkünfte und Symmetriesignaturen als JSON ausgegeben.
+Der Befehl erzeugt keine Hamiltonians, Solverläufe oder Dateien. Aktuell ist
+noch kein neuer Physiklauf zu starten.
 
 **Vorheriger Schritt: Der Rand-/Innenhauptlauf ist mit 82/82 Bewertungen abgeschlossen.**
 Alle Kontrollen sind gültig. Die

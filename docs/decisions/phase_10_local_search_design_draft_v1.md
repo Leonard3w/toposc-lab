@@ -149,3 +149,34 @@ Proxy, bis unabhängige Robustheitsprüfungen eine weitergehende Aussage tragen.
 Nächster begrenzter Arbeitsschritt: den beschriebenen Katalog geometrisch
 prüfen und zählen. Keine Physikrechnung und kein automatischer Übergang zu
 einem größeren Suchraum. Danach wird über das numerische Protokoll entschieden.
+
+## Ergebnis der geometrischen Katalogprüfung
+
+Der anschließend implementierte deterministische Dry-Run bestätigt für jede
+Größe dieselbe Vorschlagsbilanz:
+
+| Größe | alternative Paarungsvorschläge | Kante existiert | falsche Länge | eindeutige Kandidaten vor Vollprüfung | Kreuzung | gültige eindeutige Kandidaten | bekannte MEAS-VAL-Fälle |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 16×16 | 2.688 | 588 | 1.848 | 212 | 84 | 128 | 6 |
+| 20×20 | 2.688 | 588 | 1.848 | 212 | 84 | 128 | 6 |
+
+Die 252 zunächst passenden Patch-Herkünfte je Größe enthalten 40 exakte
+Doppelherkünfte. Nach der Kreuzungsprüfung bleiben 144 gültige Herkünfte für
+128 eindeutige Geometrien. Insgesamt enthält der Katalog damit 256 Geometrien.
+SHA-256 der deterministisch sortierten Liste aller exakten Geometrie-IDs:
+`13c9e2c750af250f20fd3d245d48b6abc9b2936176e5187dd76ba245ff1c6be0`.
+
+Die rein diagnostische Gruppierung ergibt 104 bzw. 120 C4-Rotationssignaturen
+und 52 bzw. 60 D4-Signaturen. Sie entfernt keine Kandidaten: Insbesondere eine
+Spiegelung darf beim chiralen Modell nicht still als physikalische Gleichheit
+behandelt werden. Alle Kandidaten bestehen den festen Referenz-Delta-Vertrag,
+den allgemeinen Zusammenhangstest und den Genome-Rundlauf. Hamiltonian- und
+Solveraufrufe: null.
+
+Der gültige Raum ist klein und vollständig aufzählbar. Deshalb ist für die
+nächste Physikfrage eine vorab festgelegte vollständige Enumeration die
+bevorzugte Referenz; ein Evolution-vs.-Zufall-Benchmark wäre in diesem Katalog
+nicht nötig, um das beste Ergebnis zu finden. Vor irgendeiner Physikrechnung
+müssen dennoch L-Gewinnschwelle, Kontrollen, Budget, Reihenfolge,
+Sensitivitätsprüfung und Bestätigungsabtrennung in einem eigenen Protokoll
+eingefroren werden.
