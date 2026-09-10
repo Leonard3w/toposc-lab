@@ -110,6 +110,16 @@ Auswertungscodes. Das ursprüngliche `full/complete.json` bleibt wegen des
 damaligen Abbruchs abwesend; der abgeleitete Bericht hat eine eigene Versiegelung.
 Für diese fertigen Bewertungen ist kein erneuter Start oder `--resume` nötig.
 
+**Nächster Schritt: Suchraum vor einem neuen Lauf geometrisch prüfen.**
+Der [Entscheidungsentwurf zur lokalen Suche](decisions/phase_10_local_search_design_draft_v1.md)
+trennt Screening von Verbesserung: Keine der zwölf topologischen Varianten
+übertrifft die gleich große Quadratkontrolle beim Localizer-Schutzproxy L.
+Vorgeschlagen ist deshalb ein begrenzter Katalog lokaler Zwei-Kanten-Eingriffe
+bei festen Ressourcen und Messregionen. Zunächst werden nur zulässige Geometrien
+gezählt, ohne Hamiltonian oder Solver. Erst danach wird entschieden, ob vollständiges
+Durchprüfen oder ein Suchvergleich sinnvoll ist. Das ist noch kein eingefrorenes
+Protokoll; aktuell ist kein neuer PowerShell-Lauf zu starten.
+
 **Vorheriger Schritt: Der Rand-/Innenhauptlauf ist mit 82/82 Bewertungen abgeschlossen.**
 Alle Kontrollen sind gültig. Die
 [geprüfte Auswertung](decisions/phase_10_edge_location_v1_analysis.md) erklärt,
