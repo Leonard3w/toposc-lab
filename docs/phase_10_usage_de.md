@@ -130,8 +130,7 @@ Den rein geometrischen Katalog kannst du ohne Ergebnisordner anzeigen:
 
 Mit `--details` werden zusätzlich sämtliche exakten Geometrie-IDs,
 Kantenänderungen, Patchherkünfte und Symmetriesignaturen als JSON ausgegeben.
-Der Befehl erzeugt keine Hamiltonians, Solverläufe oder Dateien. Aktuell ist
-noch kein neuer Physiklauf zu starten.
+Der Befehl erzeugt keine Hamiltonians, Solverläufe oder Dateien.
 
 Der nächste [Protokollentwurf zur vollständigen Enumeration](decisions/pre_phase_10_local_enumeration_protocol_v1.md)
 legt 8 Vorlauf- und 268 Hauptlaufbewertungen fest: 256 Kandidaten plus
@@ -140,9 +139,26 @@ und mehr als 1 % zusätzlichen Localizer-Schutzproxy gegenüber dem gleich groß
 Quadrat, außerhalb einer numerischen Entscheidungszone. Sechs zusätzliche
 kappa-Werte prüfen die Einstellungssensitivität. Alle 128 Größenpaare werden
 ausgewertet; unabhängige Disorder-Bestätigung folgt gegebenenfalls separat.
-Zuerst wird dieser Text committed, anschließend der neue Runner implementiert
-und geprüft. Der vorgesehene Befehl `phase-10-local-enumeration` ist noch nicht
-verfügbar; Vorlauf und Hauptlauf startest du erst nach dessen Abnahme.
+Der Protokolltext ist im Commit `c20e413` eingefroren. Der Runner ist danach
+separat implementiert und geprüft worden. Vorlauf und Hauptlauf startest du erst
+nach dem eigenen Implementierungscommit. Der Vorlauf lautet dann:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-local-enumeration --preflight --output results\phase_10_local_enumeration_v1
+```
+
+Nur nach einem bestandenen Vorlauf startest du im gleichen Verzeichnis den Hauptlauf:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-local-enumeration --full --output results\phase_10_local_enumeration_v1
+```
+
+Nur nach einem technischen Abbruch verwendest du bei unveränderter Umgebung und
+Code-Revision:
+
+```powershell
+.\.venv\Scripts\python.exe -B -c "from toposc_lab.cli import main; main()" phase-10-local-enumeration --resume --output results\phase_10_local_enumeration_v1
+```
 
 **Vorheriger Schritt: Der Rand-/Innenhauptlauf ist mit 82/82 Bewertungen abgeschlossen.**
 Alle Kontrollen sind gültig. Die

@@ -173,6 +173,25 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Print JSON including every exact geometry ID and patch origin.",
     )
+    local_enumeration_parser = subparsers.add_parser(
+        "phase-10-local-enumeration",
+        help="Run the frozen complete local-geometry enumeration with live progress.",
+    )
+    local_enumeration_mode = local_enumeration_parser.add_mutually_exclusive_group(
+        required=True
+    )
+    local_enumeration_mode.add_argument(
+        "--preflight", dest="local_enumeration_mode", action="store_const", const="preflight"
+    )
+    local_enumeration_mode.add_argument(
+        "--full", dest="local_enumeration_mode", action="store_const", const="full"
+    )
+    local_enumeration_mode.add_argument(
+        "--resume", dest="local_enumeration_mode", action="store_const", const="resume"
+    )
+    local_enumeration_parser.add_argument(
+        "--output", type=Path, default=Path("results/phase_10_local_enumeration_v1")
+    )
     return parser
 
 
@@ -274,6 +293,15 @@ def main(argv: Sequence[str] | None = None) -> int:
                 )
             else:
                 print(render_local_catalog_report(), flush=True)
+        elif args.command == "phase-10-local-enumeration":
+            from toposc_lab.search.phase_10_local_enumeration_campaign import (
+                run_local_enumeration_campaign,
+            )
+
+            report = run_local_enumeration_campaign(
+                args.output, mode=args.local_enumeration_mode
+            )
+            print(f"Bericht: {report.resolve()}", flush=True)
         elif args.command == "phase-9-8":
             from toposc_lab.phase_9_8_cli import run_phase_9_8_command
 
