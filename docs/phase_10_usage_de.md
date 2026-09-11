@@ -1,5 +1,14 @@
 # Phase 10 benutzen: evolutionäre Geometriesuche
 
+## Neuer separater Graphbauer
+
+Für freie Punktpositionen, konstruktiven Kantenbau und ein lokal lernendes neuronales
+Netz gibt es jetzt die [Graphbauer-Anleitung mit Liveansicht](constructive_design_usage_de.md).
+Er lässt sich auch mit festen Punkten oder als Zufallsbaseline verwenden. Die
+ausführbare Aufgabe ist zunächst eine geometrische Engineering-Demo; der
+Physik-Messvertrag für freie Koordinaten ist noch offen. Die folgenden bestehenden
+Phase-10-Forschungsläufe und ihre Protokolle bleiben davon getrennt.
+
 ## Was jetzt vorhanden ist
 
 Phase 10 ergänzt eine kontrollierbare evolutionäre Suche über Geometrien. Sie
