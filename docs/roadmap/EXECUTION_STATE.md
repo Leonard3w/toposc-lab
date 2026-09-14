@@ -1,41 +1,63 @@
-# TOPOSC-LAB EXECUTION STATE
+﻿# TOPOSC-LAB EXECUTION STATE
 
-current_block: D (closed)
-current_phase: 14 (complete)
-next_task: none; await user-defined follow-up; do not start Phase 15
-last_completed_task: 14.15 and GENERATOR_GATE, exact reproduction, full suite and final report
-last_verified_commit: c628ed3e4ae3f4944ba2dfed09abd1d7e9fdfe82 plus frozen dirty-worktree source
-last_full_test_result: 2767 passed in 645.51 s, 2026-09-14
-last_full_test_command: .venv/Scripts/python.exe -B -m pytest -q -p no:cacheprovider --basetemp=results/pytest-phase14-full (PYTHONDONTWRITEBYTECODE=1; OMP/OPENBLAS/MKL/BLIS_NUM_THREADS=1)
-last_block_gate: GENERATOR_GATE PASS; scoped patch quality advantage; success threshold unreached
-verified_source_sha256: cc39f9fe9fa28be032c7a12631ae34010f45d92b8543eae1330db36e5d923f52
-protocol_sha256: 808de33b174eb1c7d9da5bdad2a7272ed8f460de5442718bce5b5bb0b41cff37
+current_block: F (complete; stopped at block boundary)
+current_phase: 16A complete; Phase 16B not started
+next_task: await explicit Block G authorization; tasks 16.13-16.16 remain pending
+last_completed_task: 16.12 and Phase-16A Pattern/Ablation Report
+last_verified_commit: 75eef61b2c24063f4f4b185116eb3bfde188c043 plus preserved dirty Phase-15 and Phase-16A additions
+last_full_test_result: 2842 passed in 760.01 s, 2026-09-14
+last_full_test_command: .venv/Scripts/python.exe -B -m pytest -q -p no:cacheprovider --basetemp=results/pytest-phase16a-final (PYTHONDONTWRITEBYTECODE=1; OMP/OPENBLAS/MKL/BLIS_NUM_THREADS=1)
+last_block_gate: INTERNAL_MECHANISM_CHECKPOINT PASS (exploratory/null results); MECHANISM_GATE not evaluated
+previous_block_gate: AUTONOMY_GATE PASS for bounded monitored campaigns in validated finite wiring stratum
+verified_source_sha256: ee9b56d098e490b6434c6e80e9885da7dec0f31ee55721083f23794b34d0ea71
+protocol_sha256: 813e6269b174d2bc4bf28a2b331f66a7c74ddb603dbd52f82b796a585c465671
+campaign_driver_sha256: e288751d3431c731ff0d6a83318ef2c0e4affab3427a9324f9bd5253e997cdf5
 
 scientific_decisions_in_force:
-- Phase 13/13R technically validated AL but found no reproducible sample-efficiency advantage; accepted null result, no retuning.
-- Exact numerical physics remains ground truth; no zero-mode shortcut or finite-graph thermodynamic/Majorana claim.
-- Preserve Random and Evolution as fair baselines. Evolution remains the established baseline outside the new scoped result.
-- Prefer simple nonlearning patch generation for the declared finite-localizer quality on the 36-site/60-edge planar wiring stratum only.
-- Patch wins 16/20 vs Random and 18/20 vs Evolution; simultaneous quality-difference intervals positive. AL/coverage show no such advantage.
-- All methods have 0% success at the frozen quality threshold 0.20; no success-efficiency or general topological superiority claim.
-- OOD remains a warning, not invalid physics; exact verification required. AL and coverage are optional, not promoted.
-- Existing basis/model/topology/robustness conventions unchanged. RL ineligible; learned-generator audit NO-GO.
+- Exact numerical physics remains ground truth; predictions are never exact labels.
+- Phase 13/13R AL null result and Phase-14 scoped patch advantage remain accepted; no retuning.
+- Patch default only for the validated 36-site/60-edge planar wiring stratum and frozen finite-localizer quality.
+- Random and Evolution remain comparison baselines; Evolution retains its established baseline role outside that stratum.
+- Unsupported spaces require an exact adapter and fair benchmark; no presumed patch superiority elsewhere.
+- AL/surrogate and coverage optional; no RL or learned generator justified or added.
+- Success remains quality >=0.20; no Phase-15/16A cohort, ablation or simplification candidate reaches it.
+- No finite-graph thermodynamic phase or separated Majorana claim; unresolved topology remains unresolved.
+- Onsite-disorder ensembles are four samples at width 0.2; finite-size/family scaling explicitly unavailable.
+- Model, basis, topology, numerical tolerances and scientific definitions unchanged.
+- Phase16A 59-edge simplification is an explicit diagnostic extension, not a discovery-stratum change.
+- No motif passes the predeclared ablation criterion; five ranked provisional questions are not design rules.
+- Seeds 16101-16108 and all Phase16A parents/edits/simplifications are consumed, not independent Phase16B validation.
 
 validation_and_artifacts:
-- Mandatory 14.1, 14.2, 14.12-14.15 and feasibility 14.9 complete; conditional 14.3-14.8 and 14.10-14.11 not built, with documented reasons.
-- 35 regression tests passed; final 14 generator/budget tests passed. Changed Ruff and isolated Mypy with --python-version 3.14 PASS.
-- Gate seeds 14101-14120: 2400 paid search evaluations, 300 winner/parameter confirmations, 4 physics references = 2704.
-- Fresh seed-14101 repeat: 135 additional evaluations; all 135 scientific records identical. Current source matches both frozen manifests.
-- Audit: 3409 inventory files, 2704 exact records, 1200 predictions, no future-label leakage or OOD exploitation; accepted invalid/duplicate geometries zero.
-- Development: 306 non-test attempts; gate plus repeat: 2839; total Phase-14 non-test attempts/evaluations: 3145. Test simulations separate.
-- Gate report: docs/decisions/phase_14_generator_gate.md and .json; best candidate and comparison figure adjacent.
-- Protocol/audits: docs/decisions/phase_14_protocol.md, phase_14_feasibility.json, phase_14_audit.json.
-- Exact records, curves, proposal ledgers, source.zip and inventories: results/phase14-gate/ and results/phase14-repeat/.
-- Usage: docs/phase_14_usage_de.md. Historical Phase-13/13R reports and pre-existing user worktree changes preserved.
+- Block F: 57 features, 34 variable per cohort, 27 identifiable partials; 32 legacy + 64 fresh distinct analysis geometries.
+- 176 fresh proposals: 64 accepted + 98 invalid + 14 duplicate; fresh separation >0.15; no label-based selection.
+- 79 matched degree-preserving ablation pairs, 137 distinct edited graphs; 8 single-edge simplifications.
+- 464/700 non-test attempts, all complete; no failure/interruption; 231 confirmation pairs; 241 distinct study geometries.
+- No BH/BY-significant association or Holm-significant motif effect; importance cross-model rank rho=0.208.
+- All 8 specific simplifications retain >=90% quality and [1,1,1]; no universal redundancy claim.
+- Phase16A final full suite 2842 PASS; subsystem/reference 93 PASS; Ruff PASS; isolated Mypy 3.14 ignores missing SciPy stubs.
+- Audit PASS: 946 files, 464 stored eigensystems/diagnostics, 231 confirmations and all seven Phase15 source archives.
+- Exact reference reproducible; stored analysis regeneration and complete CLI resume add zero calculations.
+- Phase16A report/protocol/JSON/PNG: docs/decisions/phase_16a_*; raw results/source/plans/inventory: results/phase16a/.
+- Audit: results/phase16a-audit.json; full/regression/resume logs: results/phase16a-*.log; usage: docs/phase_16a_usage_de.md.
+- Reproducible report/audit drivers: scripts/phase_16a_report.py and phase_16a_audit.py.
+- Phase-16A graph/features 16 checks; statistics/analysis 17; intervention/exact 14; campaign recovery checks added.
+- Protocol v2 corrected six/eight-seed draft inconsistency before any new exact outcomes: 64 fresh geometries, 8 seeds.
+- Phase-16A budget <=700 attempts; target/control degree-preserving swaps, independent confirmations, 59-edge diagnostics.
+- Earlier Phase15: AUTONOMY_GATE PASS; 1015 non-test attempts across original/final gates; 2789 tests passed then.
+- Phase15 recovery reproduces all 12 records; 84 earlier/final records and 1360 checksums verified; prior source unchanged.
+- Phase15 best Random quality 0.131304059; one-seed smoke comparison does not overturn Phase14 scoped result.
+- Gate docs: docs/decisions/phase_15_autonomy_gate.md and .json; best candidate, protocol and PNG adjacent.
+- Journals/datasets/source/reports/audit: results/phase15-gate-final/; earlier gate preserved in results/phase15-gate/.
+- Logs: results/phase15-full-tests.log, phase15-regression.log; artifact review: results/phase15-final-review.json.
+- Usage: docs/phase_15_usage_de.md; reproducible gate/report drivers: scripts/phase_15_gate.py and phase_15_report.py.
 
 known_issues:
-- Conclusions cover one fixed embedded wiring stratum, not arbitrary sizes, embeddings or material fabrication.
-- The 0.20 success threshold was unreached; first-hit comparisons are censored and cannot demonstrate savings.
-- Patch post-warm common-reference OOD rate is 99.25%; the four-geometry reference and AL uncertainty are coarse.
-- Two nearby chemical potentials are sensitivity checks, not disorder ensembles or finite-size validation.
-- The Phase-14 benchmark is fresh-output/fail-closed, not resumable; interrupted attempts remain charged. Default Mypy 3.11 target has a pre-existing installed-NumPy stub mismatch.
+- Small seed count, imperfect matching, correlated features and compound rewiring limit causal interpretation.
+- Some motifs lack a matched intervention on one seed; high-quality feasible parents are preferentially selected.
+- Phase16A resume requires identical source/protocol/runtime/inputs; results/ is git-ignored and must be preserved separately.
+- One fixed geometry/model stratum; no declared size-extension map or thermodynamic/Majorana certification.
+- Four-sample disorder and four-label OOD reference are coarse; success threshold remains unreached.
+- Resume requires matching source/config/runtime, single writer and frozen external exclusion archive; interrupted timings are lower bounds.
+- Windows venv worker termination must include its process tree; gate harness corrected and real recovery verified.
+- Existing default Mypy 3.11 target remains incompatible with installed NumPy stubs; isolated 3.14 checks pass.

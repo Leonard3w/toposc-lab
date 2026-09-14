@@ -1,0 +1,1197 @@
+{
+  "audited_files": 1360,
+  "base_commit": "75eef61b2c24063f4f4b185116eb3bfde188c043",
+  "block": "E",
+  "dirty": true,
+  "experiment": {
+    "gate_driver_sha256": "4957a56e3881a5552a83bb0573b8d91697038735df4269f10f7a27d5dacb688b",
+    "physics_references": [
+      {
+        "geometry": {
+          "archive": "UEsDBC0AAAAIAAAAIQARJ4VR//////////8kABQAX190b3Bvc2NfbGFiX2dlb21ldHJ5X21hbmlmZXN0X18ubnB5AQAQADUgAAAAAAAAUgIAAAAAAADFmcGO2jAURafbfgXyJq30Fnl+SYB8QHetuumiqlDkSQwTicSRY0ZClK/oD1cJM+As281lBQ7kHBAcHvjPtx9fv//88PT6dEkaO9Y+KVfJ7xMntEr2zgdv+sr5xk7rX8xxtLRKxhcz2KRcfdowr+kzra6r/718vKi9850JqlTBDW6sq6N5rg7WdTb4syJ1v1pe1LM79Y3x56p23eB624dRlb929DgwtsFOaykxaRLKKKeCmIk18Zp4Q1pIZ6S3JCkJk2gSIclI8h2p2jnftL2ZT7K4RappO9uPresrb2vnmze0bQ4zMbbzbhzb/qDK/fyKqaYdh6OpbWf7oMr+dDzeHleF82DfFzobTGOCmZ5oG2z3dv7bXVRnhmE65ZXU6E6+tqpMSQXjDzaokq8E5RcIPj/4GsxfI/j6wRcwf4Pgy4OfgflbBD978HMwn1OEQB4JQApYgAsQ8RmSwDU4ARGfIQ3cgBsQ8RkSwS06ArEAJIOcojO0MMCMYtEsxJAUskanYGEAqSELugYLA0gQOYP3IDLQkCRyDu9BZKAxTSzgRYoMNOYHajQeaUwTN/AeRAYa08QtvAexAaSJOkX3YGEAaaJmdA8WBpi/rDS6SAsDyJSmoxlJQ5qoM3gPIgOBNFHn8B5EBoJpYgHvQWQgmCau4T2IDATTxA28SJGBQKY0Hc1IAmmipOgeCKM/jaLRnwUR9DtR4u/G/DptMXfPtmna/lDd96Dn3be9qeet590/UPr3LXIpSHnngm2q4O1ddzo6+4+3lUmsfrGdqV6tv5H5+hdQSwMELQAAAAgAAAAhAAIef4///////////w8AFABjb29yZGluYXRlcy5ucHkBABAAwAIAAAAAAACmAAAAAAAAAJvsF+obEMnIUMZQrZ6SWpxcpG6loG6TZqGuo6Cell9UUpSYF59flJIKEndLzClO1VFQL85ILEhVt1LQMDbTUTDS1FGoVSAXcDFgBR/s0QQcULkcaHwBNL6IA35z0WmY+TA+BxpfAI0PMx+XO9HNRafh7ndAc78Dmvtx+BvdnQxo5qLTMPNhfJj5uMIR3d/o7kQ3F52GmY8rXtDDEd3f6O5ENxdBAwBQSwECLQAtAAAACAAAACEAESeFUVICAAA1IAAAJAAAAAAAAAAAAAAAgAEAAAAAX190b3Bvc2NfbGFiX2dlb21ldHJ5X21hbmlmZXN0X18ubnB5UEsBAi0ALQAAAAgAAAAhAAIef4+mAAAAwAIAAA8AAAAAAAAAAAAAAIABqAIAAGNvb3JkaW5hdGVzLm5weVBLBQYAAAAAAgACAI8AAACPAwAAAAA=",
+          "archive_schema_version": 1,
+          "exact_id": "geometry-archive-v1-sha256:18f39d9d0f1a0bac936a6c2fe0fa348a7f1a2e9f9f62c1aeb9336fa3a3be7a43",
+          "family_fingerprint": "wl1-v1-sha256:a24b2c3c22f8d156163320b77647c577b2855e32b89b2c490940424b77445128",
+          "family_fingerprint_scheme": "wl1-v1-sha256",
+          "family_label": "planar_wiring_6x6"
+        },
+        "model": {
+          "model_name": "chiral_p_wave",
+          "model_version": "1",
+          "parameters": {
+            "chemical_potential": 2.0,
+            "chirality": 1,
+            "hopping": 1.0,
+            "pairing": 1.0,
+            "plane_axes": [
+              0,
+              1
+            ]
+          }
+        },
+        "observables": [
+          {
+            "conventions": {
+              "finite_system": true,
+              "majorana_claim": false,
+              "novelty_in_fitness": false,
+              "phase_claim": false
+            },
+            "kind": "finite_geometry_quality",
+            "units": {},
+            "values": {
+              "alternate_quality": 0.06368737704855591,
+              "boundary_weight": 0.992692260315505,
+              "boundary_weight_minimum": 0.9894967523899053,
+              "boundary_weights": [
+                0.9958877682411044,
+                0.9958877682411045,
+                0.9894967523899054,
+                0.9894967523899053
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.06415621395931334,
+              "minimum_abs_energy": 0.2334110786692064,
+              "phs_mismatch": 4.440892098500626e-15,
+              "polarization_norms": [
+                0.9987405918021725,
+                0.9987405918021723,
+                0.9876495342646097,
+                0.9876495342646099
+              ],
+              "quality": 0.06415621395931334,
+              "success": 0.0
+            },
+            "version": "1"
+          }
+        ],
+        "provenance": {
+          "git_commit": "75eef61b2c24063f4f4b185116eb3bfde188c043",
+          "git_dirty": true,
+          "package_version": "0.1.0",
+          "runtime": {
+            "benchmark": "phase13.finite-kitaev-quality.v1",
+            "numpy": "2.5.3",
+            "source_sha256": "b686f144804dbf2775b18de54dc8172d7f194e0d558b71d51f0ed687914dda8e"
+          },
+          "schema_version": 1,
+          "seed": 15299,
+          "solver_name": "exact_diagonalization",
+          "solver_settings": {
+            "basis_ordering": "component_major",
+            "eigenvectors": true
+          },
+          "solver_version": "numpy.linalg.eigh",
+          "timestamp_utc": "2026-09-14T00:47:59.353560+00:00",
+          "tolerances": {
+            "hermiticity": 1e-10,
+            "particle_hole": 1e-10
+          }
+        },
+        "record_id": "dataset-record-v1-sha256:997c9aa71a5a9c3d326a2ea2af72ae96b4d29cc8b2edc3c817afdddd3ad4607e",
+        "result_kind": "exact",
+        "robustness": [],
+        "schema_version": 1,
+        "spectrum": {
+          "basis_size": 72,
+          "eigenvalues": [
+            -5.709438110609765,
+            -5.295299990247303,
+            -5.287124604311642,
+            -4.9036714158519,
+            -4.637590864050806,
+            -4.636017647010947,
+            -4.3213397060011935,
+            -4.274342925310457,
+            -3.8214755086795806,
+            -3.8156939091038438,
+            -3.782614539650001,
+            -3.5510467828206136,
+            -3.527155169099439,
+            -3.2006263189187756,
+            -3.0582491969194816,
+            -2.961183386259135,
+            -2.959460968308278,
+            -2.770316818055456,
+            -2.7613674423386834,
+            -2.7023887748651285,
+            -2.5174816522755465,
+            -2.370032931489818,
+            -2.3226852808193232,
+            -2.270895431860208,
+            -2.267119867555201,
+            -2.1952356909284334,
+            -2.1894412619829158,
+            -2.1675142361782096,
+            -2.095653028965935,
+            -2.054917416841613,
+            -2.041211991898605,
+            -1.937288857143548,
+            -1.6558203016560522,
+            -1.1787933179931567,
+            -0.7019045312789451,
+            -0.2334110786692075,
+            0.2334110786692064,
+            0.7019045312789453,
+            1.1787933179931562,
+            1.6558203016560518,
+            1.937288857143547,
+            2.041211991898604,
+            2.0549174168416116,
+            2.095653028965936,
+            2.167514236178209,
+            2.1894412619829176,
+            2.1952356909284325,
+            2.2671198675552002,
+            2.2708954318602057,
+            2.3226852808193237,
+            2.370032931489819,
+            2.517481652275547,
+            2.70238877486513,
+            2.7613674423386834,
+            2.770316818055456,
+            2.959460968308277,
+            2.961183386259136,
+            3.0582491969194843,
+            3.2006263189187756,
+            3.527155169099438,
+            3.551046782820614,
+            3.782614539650001,
+            3.8156939091038424,
+            3.82147550867958,
+            4.274342925310457,
+            4.321339706001195,
+            4.636017647010946,
+            4.6375908640508055,
+            4.903671415851901,
+            5.287124604311644,
+            5.295299990247305,
+            5.709438110609761
+          ],
+          "energy_unit": "hopping",
+          "is_complete": true,
+          "selection": "all",
+          "state_reference": null
+        },
+        "topology": [
+          {
+            "invariant_value": 1,
+            "is_topological": true,
+            "method": "spectral_localizer_2d_grid",
+            "parameters": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "kappas": [
+                0.1,
+                0.2,
+                0.3
+              ],
+              "localizer_gaps": [
+                0.06415621395931334,
+                0.3577284082059051,
+                0.646050923393057
+              ],
+              "probe": [
+                2.5,
+                2.5
+              ],
+              "signatures": [
+                2,
+                2,
+                2
+              ]
+            },
+            "reason": null,
+            "tolerances": {
+              "numerical": 1e-10
+            },
+            "validity": "valid",
+            "version": "1",
+            "warnings": [
+              "Finite center-probe evidence; no thermodynamic or Majorana claim."
+            ]
+          }
+        ]
+      },
+      {
+        "geometry": {
+          "archive": "UEsDBC0AAAAIAAAAIQARJ4VR//////////8kABQAX190b3Bvc2NfbGFiX2dlb21ldHJ5X21hbmlmZXN0X18ubnB5AQAQADUgAAAAAAAAUgIAAAAAAADFmcGO2jAURafbfgXyJq30Fnl+SYB8QHetuumiqlDkSQwTicSRY0ZClK/oD1cJM+As281lBQ7kHBAcHvjPtx9fv//88PT6dEkaO9Y+KVfJ7xMntEr2zgdv+sr5xk7rX8xxtLRKxhcz2KRcfdowr+kzra6r/718vKi9850JqlTBDW6sq6N5rg7WdTb4syJ1v1pe1LM79Y3x56p23eB624dRlb929DgwtsFOaykxaRLKKKeCmIk18Zp4Q1pIZ6S3JCkJk2gSIclI8h2p2jnftL2ZT7K4RappO9uPresrb2vnmze0bQ4zMbbzbhzb/qDK/fyKqaYdh6OpbWf7oMr+dDzeHleF82DfFzobTGOCmZ5oG2z3dv7bXVRnhmE65ZXU6E6+tqpMSQXjDzaokq8E5RcIPj/4GsxfI/j6wRcwf4Pgy4OfgflbBD978HMwn1OEQB4JQApYgAsQ8RmSwDU4ARGfIQ3cgBsQ8RkSwS06ArEAJIOcojO0MMCMYtEsxJAUskanYGEAqSELugYLA0gQOYP3IDLQkCRyDu9BZKAxTSzgRYoMNOYHajQeaUwTN/AeRAYa08QtvAexAaSJOkX3YGEAaaJmdA8WBpi/rDS6SAsDyJSmoxlJQ5qoM3gPIgOBNFHn8B5EBoJpYgHvQWQgmCau4T2IDATTxA28SJGBQKY0Hc1IAmmipOgeCKM/jaLRnwUR9DtR4u/G/DptMXfPtmna/lDd96Dn3be9qeet590/UPr3LXIpSHnngm2q4O1ddzo6+4+3lUmsfrGdqV6tv5H5+hdQSwMELQAAAAgAAAAhAAIef4///////////w8AFABjb29yZGluYXRlcy5ucHkBABAAwAIAAAAAAACmAAAAAAAAAJvsF+obEMnIUMZQrZ6SWpxcpG6loG6TZqGuo6Cell9UUpSYF59flJIKEndLzClO1VFQL85ILEhVt1LQMDbTUTDS1FGoVSAXcDFgBR/s0QQcULkcaHwBNL6IA35z0WmY+TA+BxpfAI0PMx+XO9HNRafh7ndAc78Dmvtx+BvdnQxo5qLTMPNhfJj5uMIR3d/o7kQ3F52GmY8rXtDDEd3f6O5ENxdBAwBQSwECLQAtAAAACAAAACEAESeFUVICAAA1IAAAJAAAAAAAAAAAAAAAgAEAAAAAX190b3Bvc2NfbGFiX2dlb21ldHJ5X21hbmlmZXN0X18ubnB5UEsBAi0ALQAAAAgAAAAhAAIef4+mAAAAwAIAAA8AAAAAAAAAAAAAAIABqAIAAGNvb3JkaW5hdGVzLm5weVBLBQYAAAAAAgACAI8AAACPAwAAAAA=",
+          "archive_schema_version": 1,
+          "exact_id": "geometry-archive-v1-sha256:18f39d9d0f1a0bac936a6c2fe0fa348a7f1a2e9f9f62c1aeb9336fa3a3be7a43",
+          "family_fingerprint": "wl1-v1-sha256:a24b2c3c22f8d156163320b77647c577b2855e32b89b2c490940424b77445128",
+          "family_fingerprint_scheme": "wl1-v1-sha256",
+          "family_label": "planar_wiring_6x6"
+        },
+        "model": {
+          "model_name": "chiral_p_wave",
+          "model_version": "1",
+          "parameters": {
+            "chemical_potential": 8.0,
+            "chirality": 1,
+            "hopping": 1.0,
+            "pairing": 1.0,
+            "plane_axes": [
+              0,
+              1
+            ]
+          }
+        },
+        "observables": [
+          {
+            "conventions": {
+              "finite_system": true,
+              "majorana_claim": false,
+              "novelty_in_fitness": false,
+              "phase_claim": false
+            },
+            "kind": "finite_geometry_quality",
+            "units": {},
+            "values": {
+              "alternate_quality": 0.0,
+              "boundary_weight": 0.3658360676678688,
+              "boundary_weight_minimum": 0.25005009453666865,
+              "boundary_weights": [
+                0.25005009453666865,
+                0.25005009453666976,
+                0.481622040799069,
+                0.4816220407990678
+              ],
+              "eligible": 0.0,
+              "localizer_gap": 4.422445108437815,
+              "minimum_abs_energy": 4.503183833611029,
+              "phs_mismatch": 1.4210854715202004e-14,
+              "polarization_norms": [
+                0.17357481584616713,
+                0.17357481584616688,
+                0.24274911935715004,
+                0.24274911935715063
+              ],
+              "quality": 0.0,
+              "success": 0.0
+            },
+            "version": "1"
+          }
+        ],
+        "provenance": {
+          "git_commit": "75eef61b2c24063f4f4b185116eb3bfde188c043",
+          "git_dirty": true,
+          "package_version": "0.1.0",
+          "runtime": {
+            "benchmark": "phase13.finite-kitaev-quality.v1",
+            "numpy": "2.5.3",
+            "source_sha256": "b686f144804dbf2775b18de54dc8172d7f194e0d558b71d51f0ed687914dda8e"
+          },
+          "schema_version": 1,
+          "seed": 15299,
+          "solver_name": "exact_diagonalization",
+          "solver_settings": {
+            "basis_ordering": "component_major",
+            "eigenvectors": true
+          },
+          "solver_version": "numpy.linalg.eigh",
+          "timestamp_utc": "2026-09-14T00:47:59.353560+00:00",
+          "tolerances": {
+            "hermiticity": 1e-10,
+            "particle_hole": 1e-10
+          }
+        },
+        "record_id": "dataset-record-v1-sha256:a3fdbbcd1f56980d5d2f58eb28f87d79ae9e87a9d3d87e5612751b21311d4ae2",
+        "result_kind": "exact",
+        "robustness": [],
+        "schema_version": 1,
+        "spectrum": {
+          "basis_size": 72,
+          "eigenvalues": [
+            -11.652487424954938,
+            -11.157091280569912,
+            -11.155051873382144,
+            -10.665674202086807,
+            -10.408240802547935,
+            -10.408109972526281,
+            -9.930478880964351,
+            -9.921172171647656,
+            -9.529886064223223,
+            -9.528787543348914,
+            -9.196895388098472,
+            -9.055052381931683,
+            -9.053885017736913,
+            -8.685470801589846,
+            -8.685330217802333,
+            -8.344191583821535,
+            -8.324915873874694,
+            -8.217360989116294,
+            -8.214658641663894,
+            -8.06731225139404,
+            -8.067129998868479,
+            -7.60130168273011,
+            -7.601252080032858,
+            -7.507223082923834,
+            -7.500727346065155,
+            -7.469997689905408,
+            -6.887431038645174,
+            -6.8851435046053835,
+            -6.653624604044766,
+            -6.63048160726315,
+            -6.02218360054478,
+            -6.022094023438067,
+            -5.795720232062578,
+            -5.1657824221364095,
+            -5.154329451018984,
+            -4.503183833611029,
+            4.5031838336110335,
+            5.15432945101898,
+            5.165782422136406,
+            5.79572023206258,
+            6.022094023438073,
+            6.022183600544782,
+            6.630481607263151,
+            6.653624604044772,
+            6.885143504605383,
+            6.887431038645178,
+            7.469997689905409,
+            7.500727346065166,
+            7.507223082923827,
+            7.601252080032858,
+            7.601301682730107,
+            8.067129998868475,
+            8.067312251394032,
+            8.214658641663895,
+            8.217360989116294,
+            8.324915873874692,
+            8.344191583821537,
+            8.685330217802319,
+            8.685470801589844,
+            9.053885017736905,
+            9.055052381931675,
+            9.196895388098467,
+            9.528787543348912,
+            9.529886064223223,
+            9.921172171647658,
+            9.930478880964353,
+            10.408109972526285,
+            10.408240802547938,
+            10.66567420208681,
+            11.155051873382138,
+            11.157091280569908,
+            11.652487424954941
+          ],
+          "energy_unit": "hopping",
+          "is_complete": true,
+          "selection": "all",
+          "state_reference": null
+        },
+        "topology": [
+          {
+            "invariant_value": 0,
+            "is_topological": false,
+            "method": "spectral_localizer_2d_grid",
+            "parameters": {
+              "indices": [
+                0,
+                0,
+                0
+              ],
+              "kappas": [
+                0.1,
+                0.2,
+                0.3
+              ],
+              "localizer_gaps": [
+                4.46930468433224,
+                4.442425866341485,
+                4.422445108437815
+              ],
+              "probe": [
+                2.5,
+                2.5
+              ],
+              "signatures": [
+                0,
+                0,
+                0
+              ]
+            },
+            "reason": null,
+            "tolerances": {
+              "numerical": 1e-10
+            },
+            "validity": "valid",
+            "version": "1",
+            "warnings": [
+              "Finite center-probe evidence; no thermodynamic or Majorana claim."
+            ]
+          }
+        ]
+      }
+    ],
+    "prior_interrupted_attempts": 0,
+    "real_kill_exit_code": 1,
+    "reproduction": {
+      "crashed": 12,
+      "repeat": 12,
+      "resumed": 12
+    },
+    "status": "EXPERIMENT_PASS_FULL_SUITE_PENDING",
+    "summaries": {
+      "crashed": {
+        "bdg_dimension": 72,
+        "behavior": "improves",
+        "best": [
+          {
+            "alternate_quality": 0.04572170428262887,
+            "boundary_weight": 0.5179018104560238,
+            "cycle": 1,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:b7e403bd0fb7678a56a894abd58dc8bf73383db9c826321b4af775115dd099d6",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": true,
+            "quality": 0.08828257279573885,
+            "record_id": "dataset-record-v1-sha256:4ad4ffe65deba010bb2633657d240cf1a5ef3f89a5c20f803fc6d0dd8ff04de3",
+            "robustness_mean": 0.08679443836123978,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.06755200849613353,
+            "boundary_weight": 0.7672198236833794,
+            "cycle": 2,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:603e91ae920b1c8398f37da8b2201a5449b15e9771faf51bf6fee0c37181c7b4",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": true,
+            "quality": 0.08804778814475898,
+            "record_id": "dataset-record-v1-sha256:f86e7fad86f22e3535087cff4121f5c7592da96bd5e993cb8b6bcb2088be29a0",
+            "robustness_mean": 0.08660346018260878,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.050550229572324815,
+            "boundary_weight": 0.7007019532246799,
+            "cycle": 2,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:f244b113c6f0d0d999c0437c253444a06efa0a9db2fd6ae6da7bc383709c7dbf",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": false,
+            "quality": 0.072142270104556,
+            "record_id": "dataset-record-v1-sha256:3e9a409b04e93a8b059eea99bd3b02d86590048c3193440f9ef4e9fcf7e2eb63",
+            "robustness_mean": 0.07372329917586928,
+            "success": 0.0,
+            "topology": "valid"
+          }
+        ],
+        "candidate_failures": [],
+        "completed_cycle_wall_seconds": 4.849508399958722,
+        "completed_cycles": 3,
+        "cubic_work_proxy_attempts": 681177600,
+        "curves": [
+          {
+            "best_exact": 0.055733830258971884,
+            "cycle": 0,
+            "exact_candidates": 4,
+            "improvement": 0.055733830258971884
+          },
+          {
+            "best_exact": 0.08828257279573885,
+            "cycle": 1,
+            "exact_candidates": 4,
+            "improvement": 0.03254874253676697
+          },
+          {
+            "best_exact": 0.08828257279573885,
+            "cycle": 2,
+            "exact_candidates": 4,
+            "improvement": 0.0
+          }
+        ],
+        "duplicate": 0,
+        "exact_attempt_cap": 80,
+        "exact_attempts": 73,
+        "exact_base_completed": 12,
+        "failed_attempts": 0,
+        "generator": "patch",
+        "interrupted_or_unfinalized_attempts": 1,
+        "invalid": 18,
+        "localizer_dimension": 144,
+        "mean_pairwise_distance": 0.38484033383873045,
+        "minimum_pairwise_distance": 0.15384615384615385,
+        "predictions": 0,
+        "raw_generated": 42,
+        "recorded_exact_wall_seconds": 1.503056300105527,
+        "schema_version": 1,
+        "scientific_claim": "Finite localizer evidence only; no Majorana or thermodynamic claim.",
+        "selected_candidates": 12,
+        "selected_ood": 12,
+        "selected_ood_reference_unavailable": 4,
+        "stratum": "phase14.planar-wiring.v1",
+        "successes": 0,
+        "timing_caution": "Interrupted time is unavailable; measured totals are lower bounds after crashes.",
+        "training_events": [],
+        "valid_pool_candidates": 24,
+        "validated_dataset_records": 12
+      },
+      "evolution": {
+        "bdg_dimension": 72,
+        "behavior": "improves",
+        "best": [
+          {
+            "alternate_quality": 0.04497347065507907,
+            "boundary_weight": 0.6340569346348748,
+            "cycle": 1,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:e08dacd368e46f8c7fc93c8b091cbc32caf59a3a504dff0acc8341e49e0ffea6",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": true,
+            "quality": 0.07092970394051015,
+            "record_id": "dataset-record-v1-sha256:01f3f6f102470a04502ab5e948731eb1fc9053fc84a668caa42da9806216f038",
+            "robustness_mean": 0.07050924626465863,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.043205564560965824,
+            "boundary_weight": 0.6651745590448181,
+            "cycle": 2,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:01afcd01d89886a3696f027ba4cb59fb6d50ecd0dbe70acb1458e3d0d4d6c3b3",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": true,
+            "quality": 0.06495372376088533,
+            "record_id": "dataset-record-v1-sha256:0b8ca02aa5cf26fc017b8f1b573141c7662d8d9ae5badbdebc5bfc2f4f27e0ae",
+            "robustness_mean": 0.06353885478788791,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.03830201992771179,
+            "boundary_weight": 0.6094273976995331,
+            "cycle": 1,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:f3bee43fc6ba46f3a06b8cfd126b4d40a4c8d49e2588b2341c0860529e59a535",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": false,
+            "quality": 0.0628491926557524,
+            "record_id": "dataset-record-v1-sha256:12948c642fcb0a2c37f5404846d711381b0b732db9fc1bb0c3ec0c1c5facb814",
+            "robustness_mean": 0.0666977703206185,
+            "success": 0.0,
+            "topology": "valid"
+          }
+        ],
+        "candidate_failures": [],
+        "completed_cycle_wall_seconds": 5.979355399962515,
+        "completed_cycles": 3,
+        "cubic_work_proxy_attempts": 671846400,
+        "curves": [
+          {
+            "best_exact": 0.055733830258971884,
+            "cycle": 0,
+            "exact_candidates": 4,
+            "improvement": 0.055733830258971884
+          },
+          {
+            "best_exact": 0.07092970394051015,
+            "cycle": 1,
+            "exact_candidates": 4,
+            "improvement": 0.015195873681538269
+          },
+          {
+            "best_exact": 0.07092970394051015,
+            "cycle": 2,
+            "exact_candidates": 4,
+            "improvement": 0.0
+          }
+        ],
+        "duplicate": 1,
+        "exact_attempt_cap": 80,
+        "exact_attempts": 72,
+        "exact_base_completed": 12,
+        "failed_attempts": 0,
+        "generator": "evolution",
+        "interrupted_or_unfinalized_attempts": 0,
+        "invalid": 29,
+        "localizer_dimension": 144,
+        "mean_pairwise_distance": 0.37086056368208925,
+        "minimum_pairwise_distance": 0.06451612903225806,
+        "predictions": 0,
+        "raw_generated": 54,
+        "recorded_exact_wall_seconds": 1.7075897998875007,
+        "schema_version": 1,
+        "scientific_claim": "Finite localizer evidence only; no Majorana or thermodynamic claim.",
+        "selected_candidates": 12,
+        "selected_ood": 11,
+        "selected_ood_reference_unavailable": 4,
+        "stratum": "phase14.planar-wiring.v1",
+        "successes": 0,
+        "timing_caution": "Interrupted time is unavailable; measured totals are lower bounds after crashes.",
+        "training_events": [],
+        "valid_pool_candidates": 24,
+        "validated_dataset_records": 12
+      },
+      "random": {
+        "bdg_dimension": 72,
+        "behavior": "improves",
+        "best": [
+          {
+            "alternate_quality": 0.08856930277971523,
+            "boundary_weight": 0.6745359090824959,
+            "cycle": 1,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:4e17dc005c4670fdaf1837335b9ec1a692bedbf6937ec7060974eb5920f30167",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": true,
+            "quality": 0.13130405896431405,
+            "record_id": "dataset-record-v1-sha256:4e47e6befd19151541a598613c4404f1ba3a4bc6eb6564d0ed6f4156e7f87f90",
+            "robustness_mean": 0.1324541024671665,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.03518552725254938,
+            "boundary_weight": 0.5102592377691854,
+            "cycle": 1,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:3844552662a69143549347adba0121251f6b624f49e51add2bf350f054941259",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": false,
+            "quality": 0.06895617883642408,
+            "record_id": "dataset-record-v1-sha256:a04555b05d716356fa3e43db0dc22caf031818db6158b9ead1f0e08f9375ef40",
+            "robustness_mean": 0.06878975018465207,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.030880656251324648,
+            "boundary_weight": 0.5430320872933624,
+            "cycle": 1,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:d2048cfe773bc140a857d40b4ea7886dc6e28e3ad09e239ccf48660dc9fa3752",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": false,
+            "quality": 0.05686709307592349,
+            "record_id": "dataset-record-v1-sha256:91846199eff4a73383c957d25fd313baad3fe37d93a01c5fc2349b3b76c6a1b8",
+            "robustness_mean": 0.05742359943885258,
+            "success": 0.0,
+            "topology": "valid"
+          }
+        ],
+        "candidate_failures": [],
+        "completed_cycle_wall_seconds": 5.175913900020532,
+        "completed_cycles": 3,
+        "cubic_work_proxy_attempts": 671846400,
+        "curves": [
+          {
+            "best_exact": 0.055733830258971884,
+            "cycle": 0,
+            "exact_candidates": 4,
+            "improvement": 0.055733830258971884
+          },
+          {
+            "best_exact": 0.13130405896431405,
+            "cycle": 1,
+            "exact_candidates": 4,
+            "improvement": 0.07557022870534216
+          },
+          {
+            "best_exact": 0.13130405896431405,
+            "cycle": 2,
+            "exact_candidates": 4,
+            "improvement": 0.0
+          }
+        ],
+        "duplicate": 0,
+        "exact_attempt_cap": 80,
+        "exact_attempts": 72,
+        "exact_base_completed": 12,
+        "failed_attempts": 0,
+        "generator": "random",
+        "interrupted_or_unfinalized_attempts": 0,
+        "invalid": 37,
+        "localizer_dimension": 144,
+        "mean_pairwise_distance": 0.4435007372836699,
+        "minimum_pairwise_distance": 0.3783783783783784,
+        "predictions": 0,
+        "raw_generated": 61,
+        "recorded_exact_wall_seconds": 1.4511048999847844,
+        "schema_version": 1,
+        "scientific_claim": "Finite localizer evidence only; no Majorana or thermodynamic claim.",
+        "selected_candidates": 12,
+        "selected_ood": 12,
+        "selected_ood_reference_unavailable": 4,
+        "stratum": "phase14.planar-wiring.v1",
+        "successes": 0,
+        "timing_caution": "Interrupted time is unavailable; measured totals are lower bounds after crashes.",
+        "training_events": [],
+        "valid_pool_candidates": 24,
+        "validated_dataset_records": 12
+      },
+      "reference": {
+        "bdg_dimension": 72,
+        "behavior": "improves",
+        "best": [
+          {
+            "alternate_quality": 0.04572170428262887,
+            "boundary_weight": 0.5179018104560238,
+            "cycle": 1,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:b7e403bd0fb7678a56a894abd58dc8bf73383db9c826321b4af775115dd099d6",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": true,
+            "quality": 0.08828257279573885,
+            "record_id": "dataset-record-v1-sha256:3be2899d079b742aad3a0877fec6d2b6fc0fc02fc0a6d4a9e0286c0d10533453",
+            "robustness_mean": 0.08679443836123978,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.06755200849613353,
+            "boundary_weight": 0.7672198236833794,
+            "cycle": 2,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:603e91ae920b1c8398f37da8b2201a5449b15e9771faf51bf6fee0c37181c7b4",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": true,
+            "quality": 0.08804778814475898,
+            "record_id": "dataset-record-v1-sha256:d19be735d4b4cdf0eb2daeca09129f4c2b4858506f2ba9a2752d5e237815c946",
+            "robustness_mean": 0.08660346018260878,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.050550229572324815,
+            "boundary_weight": 0.7007019532246799,
+            "cycle": 2,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:f244b113c6f0d0d999c0437c253444a06efa0a9db2fd6ae6da7bc383709c7dbf",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": false,
+            "quality": 0.072142270104556,
+            "record_id": "dataset-record-v1-sha256:bdaae7199aac0ee76270bc487664aa37ed2c2ca470feb9f072a3f404c10260b4",
+            "robustness_mean": 0.07372329917586928,
+            "success": 0.0,
+            "topology": "valid"
+          }
+        ],
+        "candidate_failures": [],
+        "completed_cycle_wall_seconds": 5.319451699964702,
+        "completed_cycles": 3,
+        "cubic_work_proxy_attempts": 671846400,
+        "curves": [
+          {
+            "best_exact": 0.055733830258971884,
+            "cycle": 0,
+            "exact_candidates": 4,
+            "improvement": 0.055733830258971884
+          },
+          {
+            "best_exact": 0.08828257279573885,
+            "cycle": 1,
+            "exact_candidates": 4,
+            "improvement": 0.03254874253676697
+          },
+          {
+            "best_exact": 0.08828257279573885,
+            "cycle": 2,
+            "exact_candidates": 4,
+            "improvement": 0.0
+          }
+        ],
+        "duplicate": 0,
+        "exact_attempt_cap": 80,
+        "exact_attempts": 72,
+        "exact_base_completed": 12,
+        "failed_attempts": 0,
+        "generator": "patch",
+        "interrupted_or_unfinalized_attempts": 0,
+        "invalid": 18,
+        "localizer_dimension": 144,
+        "mean_pairwise_distance": 0.38484033383873045,
+        "minimum_pairwise_distance": 0.15384615384615385,
+        "predictions": 0,
+        "raw_generated": 42,
+        "recorded_exact_wall_seconds": 1.5340397001127712,
+        "schema_version": 1,
+        "scientific_claim": "Finite localizer evidence only; no Majorana or thermodynamic claim.",
+        "selected_candidates": 12,
+        "selected_ood": 12,
+        "selected_ood_reference_unavailable": 4,
+        "stratum": "phase14.planar-wiring.v1",
+        "successes": 0,
+        "timing_caution": "Interrupted time is unavailable; measured totals are lower bounds after crashes.",
+        "training_events": [],
+        "valid_pool_candidates": 24,
+        "validated_dataset_records": 12
+      },
+      "repeat": {
+        "bdg_dimension": 72,
+        "behavior": "improves",
+        "best": [
+          {
+            "alternate_quality": 0.04572170428262887,
+            "boundary_weight": 0.5179018104560238,
+            "cycle": 1,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:b7e403bd0fb7678a56a894abd58dc8bf73383db9c826321b4af775115dd099d6",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": true,
+            "quality": 0.08828257279573885,
+            "record_id": "dataset-record-v1-sha256:7f9c1afdf80abb5adf00194d7b6d785e4104de915450f99ea5ef182e49643a31",
+            "robustness_mean": 0.08679443836123978,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.06755200849613353,
+            "boundary_weight": 0.7672198236833794,
+            "cycle": 2,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:603e91ae920b1c8398f37da8b2201a5449b15e9771faf51bf6fee0c37181c7b4",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": true,
+            "quality": 0.08804778814475898,
+            "record_id": "dataset-record-v1-sha256:72abb29c0eeb0eb5116b3719ce327a544325207829ca839d141942cf4c0ea04a",
+            "robustness_mean": 0.08660346018260878,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.050550229572324815,
+            "boundary_weight": 0.7007019532246799,
+            "cycle": 2,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:f244b113c6f0d0d999c0437c253444a06efa0a9db2fd6ae6da7bc383709c7dbf",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": false,
+            "quality": 0.072142270104556,
+            "record_id": "dataset-record-v1-sha256:d150cc52b4d40b9956fe8853b55fa1a7684235529f117ed2f6c603283bc47094",
+            "robustness_mean": 0.07372329917586928,
+            "success": 0.0,
+            "topology": "valid"
+          }
+        ],
+        "candidate_failures": [],
+        "completed_cycle_wall_seconds": 4.798367099952884,
+        "completed_cycles": 3,
+        "cubic_work_proxy_attempts": 671846400,
+        "curves": [
+          {
+            "best_exact": 0.055733830258971884,
+            "cycle": 0,
+            "exact_candidates": 4,
+            "improvement": 0.055733830258971884
+          },
+          {
+            "best_exact": 0.08828257279573885,
+            "cycle": 1,
+            "exact_candidates": 4,
+            "improvement": 0.03254874253676697
+          },
+          {
+            "best_exact": 0.08828257279573885,
+            "cycle": 2,
+            "exact_candidates": 4,
+            "improvement": 0.0
+          }
+        ],
+        "duplicate": 0,
+        "exact_attempt_cap": 80,
+        "exact_attempts": 72,
+        "exact_base_completed": 12,
+        "failed_attempts": 0,
+        "generator": "patch",
+        "interrupted_or_unfinalized_attempts": 0,
+        "invalid": 18,
+        "localizer_dimension": 144,
+        "mean_pairwise_distance": 0.38484033383873045,
+        "minimum_pairwise_distance": 0.15384615384615385,
+        "predictions": 0,
+        "raw_generated": 42,
+        "recorded_exact_wall_seconds": 1.4098876995849423,
+        "schema_version": 1,
+        "scientific_claim": "Finite localizer evidence only; no Majorana or thermodynamic claim.",
+        "selected_candidates": 12,
+        "selected_ood": 12,
+        "selected_ood_reference_unavailable": 4,
+        "stratum": "phase14.planar-wiring.v1",
+        "successes": 0,
+        "timing_caution": "Interrupted time is unavailable; measured totals are lower bounds after crashes.",
+        "training_events": [],
+        "valid_pool_candidates": 24,
+        "validated_dataset_records": 12
+      },
+      "resumed": {
+        "bdg_dimension": 72,
+        "behavior": "improves",
+        "best": [
+          {
+            "alternate_quality": 0.04572170428262887,
+            "boundary_weight": 0.5179018104560238,
+            "cycle": 1,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:b7e403bd0fb7678a56a894abd58dc8bf73383db9c826321b4af775115dd099d6",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": true,
+            "quality": 0.08828257279573885,
+            "record_id": "dataset-record-v1-sha256:d7a172fd2a89596c8e60377760197bb3c63e777fbb10f280a9dec20f51e25d5c",
+            "robustness_mean": 0.08679443836123978,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.06755200849613353,
+            "boundary_weight": 0.7672198236833794,
+            "cycle": 2,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:603e91ae920b1c8398f37da8b2201a5449b15e9771faf51bf6fee0c37181c7b4",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": true,
+            "quality": 0.08804778814475898,
+            "record_id": "dataset-record-v1-sha256:98e0cb3c1f3aedb04edb06a4719a54d8c9802b4b8dda82d2fa683e45ff729b8c",
+            "robustness_mean": 0.08660346018260878,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.050550229572324815,
+            "boundary_weight": 0.7007019532246799,
+            "cycle": 2,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:f244b113c6f0d0d999c0437c253444a06efa0a9db2fd6ae6da7bc383709c7dbf",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": false,
+            "quality": 0.072142270104556,
+            "record_id": "dataset-record-v1-sha256:815a6aa88ece02cf4fb4ed48c7686d03cacb47b7cec09c032b3c727e32656571",
+            "robustness_mean": 0.07372329917586928,
+            "success": 0.0,
+            "topology": "valid"
+          }
+        ],
+        "candidate_failures": [],
+        "completed_cycle_wall_seconds": 4.91178090008907,
+        "completed_cycles": 3,
+        "cubic_work_proxy_attempts": 671846400,
+        "curves": [
+          {
+            "best_exact": 0.055733830258971884,
+            "cycle": 0,
+            "exact_candidates": 4,
+            "improvement": 0.055733830258971884
+          },
+          {
+            "best_exact": 0.08828257279573885,
+            "cycle": 1,
+            "exact_candidates": 4,
+            "improvement": 0.03254874253676697
+          },
+          {
+            "best_exact": 0.08828257279573885,
+            "cycle": 2,
+            "exact_candidates": 4,
+            "improvement": 0.0
+          }
+        ],
+        "duplicate": 0,
+        "exact_attempt_cap": 80,
+        "exact_attempts": 72,
+        "exact_base_completed": 12,
+        "failed_attempts": 0,
+        "generator": "patch",
+        "interrupted_or_unfinalized_attempts": 0,
+        "invalid": 18,
+        "localizer_dimension": 144,
+        "mean_pairwise_distance": 0.38484033383873045,
+        "minimum_pairwise_distance": 0.15384615384615385,
+        "predictions": 0,
+        "raw_generated": 42,
+        "recorded_exact_wall_seconds": 1.4547542997752316,
+        "schema_version": 1,
+        "scientific_claim": "Finite localizer evidence only; no Majorana or thermodynamic claim.",
+        "selected_candidates": 12,
+        "selected_ood": 12,
+        "selected_ood_reference_unavailable": 4,
+        "stratum": "phase14.planar-wiring.v1",
+        "successes": 0,
+        "timing_caution": "Interrupted time is unavailable; measured totals are lower bounds after crashes.",
+        "training_events": [],
+        "valid_pool_candidates": 24,
+        "validated_dataset_records": 12
+      },
+      "surrogate": {
+        "bdg_dimension": 72,
+        "behavior": "improves",
+        "best": [
+          {
+            "alternate_quality": 0.0851559806622813,
+            "boundary_weight": 0.7602189264236421,
+            "cycle": 1,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:5013812db5d331052a3116e34cf4f18f2f09431ae6936956dd38072e30232a2f",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": true,
+            "quality": 0.11201507579255796,
+            "record_id": "dataset-record-v1-sha256:886f4c11bb62ba38e725b4a5ae09bf8efb8ed6fb0a888b9492a3acc9e24f8f16",
+            "robustness_mean": 0.11306027407615306,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.04572170428262887,
+            "boundary_weight": 0.5179018104560238,
+            "cycle": 1,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:b7e403bd0fb7678a56a894abd58dc8bf73383db9c826321b4af775115dd099d6",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": false,
+            "quality": 0.08828257279573885,
+            "record_id": "dataset-record-v1-sha256:731e3b2a53b293080972f22dd753ed74d44a66632ff9fb9899d2f88b6193e419",
+            "robustness_mean": 0.08679443836123978,
+            "success": 0.0,
+            "topology": "valid"
+          },
+          {
+            "alternate_quality": 0.08079597687132238,
+            "boundary_weight": 0.9245240070769318,
+            "cycle": 1,
+            "finite_size": "unavailable",
+            "geometry_id": "geometry-archive-v1-sha256:56ee08e01f6519c530d979b2a307be609404171e49f0261c2f37170c77cf60cb",
+            "kind": "exact",
+            "majorana_claim": false,
+            "pareto": true,
+            "quality": 0.08739197279124755,
+            "record_id": "dataset-record-v1-sha256:cdc215561d9f9524b1f61694ad434075b3126c27b2e531cf79dc96371ce362b2",
+            "robustness_mean": 0.08729136682719946,
+            "success": 0.0,
+            "topology": "valid"
+          }
+        ],
+        "candidate_failures": [],
+        "completed_cycle_wall_seconds": 5.739570200035814,
+        "completed_cycles": 3,
+        "cubic_work_proxy_attempts": 671846400,
+        "curves": [
+          {
+            "best_exact": 0.055733830258971884,
+            "cycle": 0,
+            "exact_candidates": 4,
+            "improvement": 0.055733830258971884
+          },
+          {
+            "best_exact": 0.11201507579255796,
+            "cycle": 1,
+            "exact_candidates": 4,
+            "improvement": 0.05628124553358607
+          },
+          {
+            "best_exact": 0.11201507579255796,
+            "cycle": 2,
+            "exact_candidates": 4,
+            "improvement": 0.0
+          }
+        ],
+        "duplicate": 0,
+        "exact_attempt_cap": 80,
+        "exact_attempts": 72,
+        "exact_base_completed": 12,
+        "failed_attempts": 0,
+        "generator": "patch",
+        "interrupted_or_unfinalized_attempts": 0,
+        "invalid": 18,
+        "localizer_dimension": 144,
+        "mean_pairwise_distance": 0.3218222372121378,
+        "minimum_pairwise_distance": 0.09523809523809523,
+        "predictions": 16,
+        "raw_generated": 42,
+        "recorded_exact_wall_seconds": 1.713217900309246,
+        "schema_version": 1,
+        "scientific_claim": "Finite localizer evidence only; no Majorana or thermodynamic claim.",
+        "selected_candidates": 12,
+        "selected_ood": 12,
+        "selected_ood_reference_unavailable": 4,
+        "stratum": "phase14.planar-wiring.v1",
+        "successes": 0,
+        "timing_caution": "Interrupted time is unavailable; measured totals are lower bounds after crashes.",
+        "training_events": [
+          {
+            "calibration_claim": false,
+            "fingerprint": "exact-dataset-v1-sha256:a7d4d98189f92a3a5792aeaef1e9b5f3e918c435850efd2f7a5618d8facfc191",
+            "fit_cycle": 1,
+            "record_ids": [
+              "dataset-record-v1-sha256:bca71f5515789882e09b6fda67a82dda517d3a98c940abb77ffbce4f7969ec35",
+              "dataset-record-v1-sha256:90193d1e8cb691ee1e4bad9448da7ea3dedbae3dad5042af9c7889f18177bf5e",
+              "dataset-record-v1-sha256:0f7b507f7ea1254747ded719c43d68fc53974cba10d1547093d9aaa22cda89d4",
+              "dataset-record-v1-sha256:9c6728c0ef5c28c435fb515d0b1c6f263731790e5f9518c343b3a36105abecc1"
+            ],
+            "seed": 2090041147
+          },
+          {
+            "calibration_claim": false,
+            "fingerprint": "exact-dataset-v1-sha256:a7d4d98189f92a3a5792aeaef1e9b5f3e918c435850efd2f7a5618d8facfc191",
+            "fit_cycle": 1,
+            "record_ids": [
+              "dataset-record-v1-sha256:bca71f5515789882e09b6fda67a82dda517d3a98c940abb77ffbce4f7969ec35",
+              "dataset-record-v1-sha256:90193d1e8cb691ee1e4bad9448da7ea3dedbae3dad5042af9c7889f18177bf5e",
+              "dataset-record-v1-sha256:0f7b507f7ea1254747ded719c43d68fc53974cba10d1547093d9aaa22cda89d4",
+              "dataset-record-v1-sha256:9c6728c0ef5c28c435fb515d0b1c6f263731790e5f9518c343b3a36105abecc1"
+            ],
+            "seed": 2090041147
+          }
+        ],
+        "valid_pool_candidates": 24,
+        "validated_dataset_records": 12
+      }
+    },
+    "total_exact_attempts": 507
+  },
+  "final_artifact_review": {
+    "cli_resume_exact_attempts_after": 72,
+    "cli_resume_exact_attempts_before": 72,
+    "inventory_files_verified": 1360,
+    "isolated_mypy_python_3_14": "PASS: 10 source files",
+    "plot_visual_review": "PASS: final scientific values match visually reviewed primary plot",
+    "previous_vs_final_scientific_records_identical": 84,
+    "ruff": "PASS",
+    "source_archives_match_current_source": 7
+  },
+  "full_suite": {
+    "log": "results/phase15-full-tests.log",
+    "passed": 2789,
+    "wall_seconds": 410.04
+  },
+  "gate": "AUTONOMY_GATE",
+  "gate_driver_sha256": "4957a56e3881a5552a83bb0573b8d91697038735df4269f10f7a27d5dacb688b",
+  "lint": "Ruff PASS",
+  "phase16_started": false,
+  "previous_source_gate_attempts": 508,
+  "protocol_sha256": "a1104912fbd3f82badfba51cbfe17d90891d0d6669bb3f7f538986ab57c70bea",
+  "regression": "128 passed; final ordering/cadence checks 2 passed",
+  "report_driver_sha256": "c81a2437a0578296b3bfdc3a2bfa79dc019323c5e33d60dca7dca173f55e486a",
+  "source_sha256": "b686f144804dbf2775b18de54dc8172d7f194e0d558b71d51f0ed687914dda8e",
+  "status": "PASS",
+  "tasks": "15.1-15.23",
+  "total_non_test_attempts": 1015,
+  "trust": "Suitable for small monitored finite-wiring discovery campaigns; no autonomous physics certification or large campaign authorization.",
+  "typing": "isolated Mypy Python 3.14 PASS",
+  "unique_geometries_across_control_campaigns": 32
+}
