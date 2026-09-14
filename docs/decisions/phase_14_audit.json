@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "inventory_files": 3409,
+  "exact_records": 2704,
+  "prediction_count": 1200,
+  "ood_exploitation": 0,
+  "reproduced_records": 135,
+  "source_sha256": "cc39f9fe9fa28be032c7a12631ae34010f45d92b8543eae1330db36e5d923f52"
+}

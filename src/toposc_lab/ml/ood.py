@@ -43,8 +43,13 @@ class OODAssessment:
 class FeatureOODDetector:
     """Nearest-reference distance with a leave-one-out training threshold."""
 
-    def __init__(self, *, reference_quantile: float = 0.99) -> None:
+    def __init__(
+        self, *, reference_quantile: float = 0.99, flag_extrapolation: bool = False
+    ) -> None:
         self.reference_quantile = _quantile(reference_quantile)
+        if not isinstance(flag_extrapolation, bool):
+            raise TypeError("flag_extrapolation must be a boolean")
+        self.flag_extrapolation = flag_extrapolation
         self._mean: NDArray[np.float64] | None = None
         self._scale: NDArray[np.float64] | None = None
         self._reference: NDArray[np.float64] | None = None
@@ -83,10 +88,17 @@ class FeatureOODDetector:
             raise ValueError("record_ids must align with feature rows")
         standardized = (matrix - self._mean) / self._scale
         scores = np.min(_distances(standardized, self._reference), axis=1)
+        flags = scores > self._threshold
+        if self.flag_extrapolation:
+            flags |= np.any(
+                (standardized < self._reference.min(axis=0) - 1e-12)
+                | (standardized > self._reference.max(axis=0) + 1e-12),
+                axis=1,
+            )
         return OODAssessment(
             record_ids=record_ids,
             scores=scores,
-            is_ood=scores > self._threshold,
+            is_ood=flags,
             threshold=self._threshold,
             reference_quantile=self.reference_quantile,
         )
@@ -94,8 +106,7 @@ class FeatureOODDetector:
 
 def _distances(first: np.ndarray, second: np.ndarray) -> np.ndarray:
     return np.sqrt(
-        np.sum(np.square(first[:, None, :] - second[None, :, :]), axis=2)
-        / max(1, first.shape[1])
+        np.sum(np.square(first[:, None, :] - second[None, :, :]), axis=2) / max(1, first.shape[1])
     )
 
 

@@ -1,0 +1,289 @@
+{
+  "status": "PASS completed generator validation",
+  "reproducible_quality_advantage": [
+    "patch"
+  ],
+  "aggregates": {
+    "random": {
+      "best_quality": 0.10049906681752425,
+      "success_rate": 0.0,
+      "mean_pairwise_distance": 0.4365783506285254,
+      "mean_novelty_to_warm": 0.40697908970026414,
+      "descriptor_cells": 5.65,
+      "ood_rate_after_warm": 0.8300000000000001,
+      "wall_seconds": 2.0441111999971326,
+      "exact_seconds": 0.9532689750340069,
+      "best_quality_sd": 0.019701855207272075,
+      "best_quality_min": 0.07278621375928891,
+      "best_quality_max": 0.14803344128397533,
+      "successful_seeds": 0,
+      "improved_seeds": 16,
+      "proposal_attempts": 1227,
+      "invalid_proposals": 747,
+      "duplicate_proposals": 0,
+      "alternate_winner_changes": 3,
+      "parameter_success_rate": 0.0,
+      "parameter_quality_mean": [
+        0.10049906681752425,
+        0.09921239374825916,
+        0.07934039788124003
+      ],
+      "minimum_pairwise_distance": 0.2608695652173913,
+      "invalid_rate": 0.60880195599022,
+      "duplicate_rate": 0.0,
+      "ood_quality_mean": 0.030921828561693027,
+      "id_quality_mean": 0.026243573639111596
+    },
+    "evolution": {
+      "best_quality": 0.10336478251169581,
+      "success_rate": 0.0,
+      "mean_pairwise_distance": 0.34386413581444014,
+      "mean_novelty_to_warm": 0.19473066318433438,
+      "descriptor_cells": 5.0,
+      "ood_rate_after_warm": 0.7949999999999999,
+      "wall_seconds": 2.2675658800028033,
+      "exact_seconds": 0.9535967550153146,
+      "best_quality_sd": 0.018195428291950068,
+      "best_quality_min": 0.06608736707470324,
+      "best_quality_max": 0.14310047869435014,
+      "successful_seeds": 0,
+      "improved_seeds": 18,
+      "proposal_attempts": 1237,
+      "invalid_proposals": 731,
+      "duplicate_proposals": 26,
+      "alternate_winner_changes": 7,
+      "parameter_success_rate": 0.0,
+      "parameter_quality_mean": [
+        0.10336478251169581,
+        0.10176350618220809,
+        0.08475022867669665
+      ],
+      "minimum_pairwise_distance": 0.06451612903225806,
+      "invalid_rate": 0.5909458367016976,
+      "duplicate_rate": 0.021018593371059015,
+      "ood_quality_mean": 0.043413657531525915,
+      "id_quality_mean": 0.03269279173813402
+    },
+    "patch": {
+      "best_quality": 0.12256099523440347,
+      "success_rate": 0.0,
+      "mean_pairwise_distance": 0.34946998729325995,
+      "mean_novelty_to_warm": 0.3705714801628929,
+      "descriptor_cells": 8.7,
+      "ood_rate_after_warm": 0.9924999999999999,
+      "wall_seconds": 1.947419485001592,
+      "exact_seconds": 0.9011628250038484,
+      "best_quality_sd": 0.00747959648747599,
+      "best_quality_min": 0.10566010391235438,
+      "best_quality_max": 0.13274576753167702,
+      "successful_seeds": 0,
+      "improved_seeds": 20,
+      "proposal_attempts": 1256,
+      "invalid_proposals": 768,
+      "duplicate_proposals": 8,
+      "alternate_winner_changes": 6,
+      "parameter_success_rate": 0.0,
+      "parameter_quality_mean": [
+        0.12256099523440347,
+        0.12354427284549671,
+        0.1080101087403462
+      ],
+      "minimum_pairwise_distance": 0.06451612903225806,
+      "invalid_rate": 0.6114649681528662,
+      "duplicate_rate": 0.006369426751592357,
+      "ood_quality_mean": 0.0695105889123125,
+      "id_quality_mean": 0.02711555102263341
+    },
+    "coverage": {
+      "best_quality": 0.10141394377491439,
+      "success_rate": 0.0,
+      "mean_pairwise_distance": 0.4469961619119628,
+      "mean_novelty_to_warm": 0.4186905306732089,
+      "descriptor_cells": 5.85,
+      "ood_rate_after_warm": 0.8474999999999999,
+      "wall_seconds": 3.5711054300074467,
+      "exact_seconds": 0.912583834992256,
+      "best_quality_sd": 0.011216032997727736,
+      "best_quality_min": 0.082431276203137,
+      "best_quality_max": 0.12091195500916205,
+      "successful_seeds": 0,
+      "improved_seeds": 17,
+      "proposal_attempts": 3172,
+      "invalid_proposals": 1892,
+      "duplicate_proposals": 0,
+      "alternate_winner_changes": 3,
+      "parameter_success_rate": 0.0,
+      "parameter_quality_mean": [
+        0.10141394377491439,
+        0.09706922875600946,
+        0.08256425135426883
+      ],
+      "minimum_pairwise_distance": 0.30985915492957744,
+      "invalid_rate": 0.5964691046658259,
+      "duplicate_rate": 0.0,
+      "ood_quality_mean": 0.029210658239931016,
+      "id_quality_mean": 0.026409578373140716
+    },
+    "active": {
+      "best_quality": 0.10075586882557466,
+      "success_rate": 0.0,
+      "mean_pairwise_distance": 0.4353435237317152,
+      "mean_novelty_to_warm": 0.40543570015053876,
+      "descriptor_cells": 5.8,
+      "ood_rate_after_warm": 0.79,
+      "wall_seconds": 5.018646459997399,
+      "exact_seconds": 0.9258166849904228,
+      "best_quality_sd": 0.01366743894439101,
+      "best_quality_min": 0.07573183312438098,
+      "best_quality_max": 0.12708156328241202,
+      "successful_seeds": 0,
+      "improved_seeds": 19,
+      "proposal_attempts": 3172,
+      "invalid_proposals": 1892,
+      "duplicate_proposals": 0,
+      "alternate_winner_changes": 3,
+      "parameter_success_rate": 0.0,
+      "parameter_quality_mean": [
+        0.10075586882557466,
+        0.10078355212447691,
+        0.07638466783586066
+      ],
+      "minimum_pairwise_distance": 0.2857142857142857,
+      "invalid_rate": 0.5964691046658259,
+      "duplicate_rate": 0.0,
+      "ood_quality_mean": 0.031408123325936795,
+      "id_quality_mean": 0.02657942878298248
+    }
+  },
+  "comparisons": {
+    "patch": {
+      "random": {
+        "mean_difference": 0.02206192841687922,
+        "simultaneous_interval": [
+          0.0080384387738049,
+          0.03409703679527577
+        ],
+        "wins": 16,
+        "ties": 0,
+        "advantage": true
+      },
+      "evolution": {
+        "mean_difference": 0.019196212722707662,
+        "simultaneous_interval": [
+          0.006738209818476281,
+          0.031655179155628814
+        ],
+        "wins": 18,
+        "ties": 0,
+        "advantage": true
+      },
+      "reproducible_advantage": true
+    },
+    "coverage": {
+      "random": {
+        "mean_difference": 0.0009148769573901442,
+        "simultaneous_interval": [
+          -0.010579593159135193,
+          0.011191018124242585
+        ],
+        "wins": 7,
+        "ties": 9,
+        "advantage": false
+      },
+      "evolution": {
+        "mean_difference": -0.0019508387367814122,
+        "simultaneous_interval": [
+          -0.015224373904094765,
+          0.01228413042291915
+        ],
+        "wins": 8,
+        "ties": 2,
+        "advantage": false
+      },
+      "reproducible_advantage": false
+    },
+    "active": {
+      "random": {
+        "mean_difference": 0.00025680200805041216,
+        "simultaneous_interval": [
+          -0.01505645583122683,
+          0.014035641678675112
+        ],
+        "wins": 10,
+        "ties": 4,
+        "advantage": false
+      },
+      "evolution": {
+        "mean_difference": -0.0026089136861211443,
+        "simultaneous_interval": [
+          -0.0122760190324495,
+          0.00877263376119531
+        ],
+        "wins": 6,
+        "ties": 1,
+        "advantage": false
+      },
+      "reproducible_advantage": false
+    }
+  },
+  "selected_prediction_error": {
+    "all": {
+      "count": 400,
+      "mae": 0.028934667638549082,
+      "raw_90_coverage": 0.8525
+    },
+    "ood": {
+      "count": 118,
+      "mae": 0.028009175871079466,
+      "raw_90_coverage": 0.864406779661017
+    },
+    "id": {
+      "count": 282,
+      "mae": 0.029321930151178215,
+      "raw_90_coverage": 0.8475177304964538
+    }
+  },
+  "audit": {
+    "passed": true,
+    "inventory_files": 3409,
+    "exact_records": 2704,
+    "prediction_count": 1200,
+    "ood_exploitation": 0,
+    "reproduced_records": 135,
+    "source_sha256": "cc39f9fe9fa28be032c7a12631ae34010f45d92b8543eae1330db36e5d923f52"
+  },
+  "exact_calls_gate_and_repeat": 2839,
+  "development_calls": 306,
+  "portfolio_decision": "Select the simple nonlearning patch generator for maximizing the declared finite localizer quality within this 36-site wiring stratum. Preserve Random and Evolution as mandatory comparison baselines; Evolution remains the established baseline outside this scoped result. Coverage and AL stay optional and are not promoted for physics quality. No method demonstrates success-threshold efficiency, a general topological advantage, or superiority in other search spaces.",
+  "full_tests": "2767 passed in 645.51s (2026-09-14); python -B -m pytest -q -p no:cacheprovider --basetemp=results/pytest-phase14-full",
+  "source_sha256": "cc39f9fe9fa28be032c7a12631ae34010f45d92b8543eae1330db36e5d923f52",
+  "protocol_sha256": "808de33b174eb1c7d9da5bdad2a7272ed8f460de5442718bce5b5bb0b41cff37",
+  "best": {
+    "seed": 14117,
+    "method": "random",
+    "record_id": "dataset-record-v1-sha256:351c4e918c424e19d8186a53ac45ea718929621831be5fd0b0701d9988cae85d",
+    "metrics": {
+      "alternate_quality": 0.12445198860699482,
+      "boundary_weight": 0.8407018544428501,
+      "boundary_weight_minimum": 0.8092769113433838,
+      "boundary_weights": [
+        0.8092769113433838,
+        0.8092769113433842,
+        0.8721267975423164,
+        0.872126797542316
+      ],
+      "eligible": 1.0,
+      "localizer_gap": 0.14803344128397533,
+      "minimum_abs_energy": 0.08333375756864714,
+      "phs_mismatch": 3.552713678800501e-15,
+      "polarization_norms": [
+        0.9136008840368098,
+        0.91360088403681,
+        0.7465822608167515,
+        0.7465822608167512
+      ],
+      "quality": 0.14803344128397533,
+      "success": 0.0
+    }
+  }
+}

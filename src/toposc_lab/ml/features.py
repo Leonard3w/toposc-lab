@@ -10,10 +10,19 @@ from types import MappingProxyType
 import numpy as np
 from numpy.typing import NDArray
 
-from toposc_lab.data import DatasetRecord
+from toposc_lab.data import DatasetRecord, GeometryRecord, ModelParametersRecord
 from toposc_lab.geometry import extract_geometry_descriptors
 
 FEATURE_SCHEMA_VERSION = 1
+
+
+@dataclass(frozen=True, slots=True)
+class FeatureInput:
+    """Unlabelled geometry/model input; cannot be stored as an exact record."""
+
+    record_id: str
+    geometry: GeometryRecord
+    model: ModelParametersRecord
 
 _GRAPH_FEATURES = (
     "site_count",
@@ -133,7 +142,7 @@ class FeatureMatrix:
 
 
 def extract_handcrafted_features(
-    records: Sequence[DatasetRecord],
+    records: Sequence[DatasetRecord | FeatureInput],
     *,
     schema: HandcraftedFeatureSchema,
 ) -> FeatureMatrix:
@@ -144,8 +153,8 @@ def extract_handcrafted_features(
     plus an explicit missingness indicator.
     """
     selected = tuple(records)
-    if any(not isinstance(record, DatasetRecord) for record in selected):
-        raise TypeError("records must contain only DatasetRecord values")
+    if any(not isinstance(record, (DatasetRecord, FeatureInput)) for record in selected):
+        raise TypeError("records must contain DatasetRecord or FeatureInput values")
     rows = tuple(_record_features(record, schema) for record in selected)
     values = np.asarray(rows, dtype=float)
     if not rows:
@@ -172,7 +181,7 @@ def records_for_ids(
 
 
 def _record_features(
-    record: DatasetRecord, schema: HandcraftedFeatureSchema
+    record: DatasetRecord | FeatureInput, schema: HandcraftedFeatureSchema
 ) -> tuple[float, ...]:
     if record.model.model_name != schema.model_name:
         raise ValueError(
