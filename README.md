@@ -75,6 +75,22 @@ Use `--num-points`, `--t`, `--delta`, and `--periodic` to adjust the scan.
 
 ## Research workspace
 
+For native Windows campaign launching, monitoring and candidate inspection,
+use the separate optional **TOPOSC LIVE** application:
+
+```powershell
+uv pip install --python .venv/Scripts/python.exe -e ".[live]"
+.venv/Scripts/toposc-live.exe --root results
+```
+
+[TOPOSC LIVE setup, architecture, lifecycle and limitations](docs/toposc_live.md).
+Use [Campaign Groups](docs/campaign_groups.md) to compare compatible independent
+seeds, inspect a combined exact leaderboard, and export read-only summaries.
+Campaigns run independently of the GUI. Scientific calculations remain in the
+existing engine; opening the application does not start a campaign.
+
+### Existing Streamlit workspace
+
 The optional graphical workspace exposes every currently registered model and
 its Pydantic parameters. It uses the same solver, observables and plotting
 code as the Python API.

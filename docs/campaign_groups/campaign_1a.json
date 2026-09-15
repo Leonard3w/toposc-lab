@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "name": "Campaign 1A - Patch, 10 completed seeds",
+  "members": [
+    {
+      "directory": "../../results/gui-smoke-test/discovery-1a-patch/new-campaign/seed-17101",
+      "expected_seed": 17101,
+      "role": "technical_dropout",
+      "reason": "Windows persistence failure while replacing attempts/000150.json"
+    },
+    {
+      "directory": "../../results/gui-smoke-test/discovery-1a-patch/new-campaign/seed-17102",
+      "expected_seed": 17102,
+      "role": "included",
+      "reason": ""
+    },
+    {
+      "directory": "../../results/gui-smoke-test/discovery-1a-patch/new-campaign/seed-17103",
+      "expected_seed": 17103,
+      "role": "included",
+      "reason": ""
+    },
+    {
+      "directory": "../../results/gui-smoke-test/discovery-1a-patch/new-campaign/seed-17104",
+      "expected_seed": 17104,
+      "role": "included",
+      "reason": ""
+    },
+    {
+      "directory": "../../results/gui-smoke-test/discovery-1a-patch/new-campaign/seed-17105",
+      "expected_seed": 17105,
+      "role": "included",
+      "reason": ""
+    },
+    {
+      "directory": "../../results/gui-smoke-test/discovery-1a-patch/new-campaign/seed-17106",
+      "expected_seed": 17106,
+      "role": "included",
+      "reason": ""
+    },
+    {
+      "directory": "../../results/gui-smoke-test/discovery-1a-patch/new-campaign/seed-17107",
+      "expected_seed": 17107,
+      "role": "included",
+      "reason": ""
+    },
+    {
+      "directory": "../../results/gui-smoke-test/discovery-1a-patch/new-campaign/seed-17108",
+      "expected_seed": 17108,
+      "role": "included",
+      "reason": ""
+    },
+    {
+      "directory": "../../results/gui-smoke-test/discovery-1a-patch/new-campaign/seed-17109",
+      "expected_seed": 17109,
+      "role": "included",
+      "reason": ""
+    },
+    {
+      "directory": "../../results/gui-smoke-test/discovery-1a-patch/new-campaign/seed-17110",
+      "expected_seed": 17110,
+      "role": "included",
+      "reason": ""
+    },
+    {
+      "directory": "../../results/new-campaign",
+      "expected_seed": 17111,
+      "role": "included",
+      "reason": ""
+    }
+  ]
+}

@@ -1,0 +1,3311 @@
+{
+  "analysis": {
+    "best_main_quality": 0.09522337793194392,
+    "cross_model_validation": "unavailable: no validated second-model wiring adapter",
+    "main_model_record_roles": 50,
+    "main_model_success_roles": 0,
+    "majorana_claim": false,
+    "mechanism_gate": "NOT_ESTABLISHED",
+    "parameter_sensitivity": "same chiral-p-wave model, mu=1.9 and 2.1",
+    "phase_claim": false,
+    "reason": "Frozen 16A recurrent/intervention chain not established; cross-model generality unavailable.",
+    "success_threshold": 0.2,
+    "tests": {
+      "h1": {
+        "available_parents": 0,
+        "holm_p": 1.0,
+        "p": 1.0,
+        "positive_parents": 0,
+        "rows": [],
+        "status": "insufficient_matched_parents",
+        "summary": null,
+        "supported": false
+      },
+      "h2": {
+        "available_parents": 0,
+        "holm_p": 1.0,
+        "p": 1.0,
+        "positive_parents": 0,
+        "rows": [],
+        "status": "insufficient_matched_parents",
+        "summary": null,
+        "supported": false
+      },
+      "h3": {
+        "available_parents": 16,
+        "holm_p": 0.09490966796875,
+        "p": 0.01898193359375,
+        "positive_parents": 4,
+        "rows": [
+          {
+            "effect": 0.5,
+            "parent_quality": 0.0923239400948563,
+            "retained": [
+              false,
+              true
+            ],
+            "seed": 16201,
+            "topology_changed": [
+              false,
+              false
+            ]
+          },
+          {
+            "effect": 1.0,
+            "parent_quality": 0.06188982946040178,
+            "retained": [
+              true,
+              true
+            ],
+            "seed": 16202,
+            "topology_changed": [
+              false,
+              false
+            ]
+          },
+          {
+            "effect": 0.5,
+            "parent_quality": 0.00029447173281695656,
+            "retained": [
+              false,
+              true
+            ],
+            "seed": 16203,
+            "topology_changed": [
+              true,
+              false
+            ]
+          },
+          {
+            "effect": 0.5,
+            "parent_quality": 0.06878221034087116,
+            "retained": [
+              true,
+              false
+            ],
+            "seed": 16204,
+            "topology_changed": [
+              false,
+              false
+            ]
+          },
+          {
+            "effect": 0.0,
+            "parent_quality": 0.0,
+            "retained": [
+              false,
+              false
+            ],
+            "seed": 16205,
+            "topology_changed": [
+              false,
+              true
+            ]
+          },
+          {
+            "effect": 0.0,
+            "parent_quality": 0.0,
+            "retained": [
+              false,
+              false
+            ],
+            "seed": 16206,
+            "topology_changed": [
+              false,
+              false
+            ]
+          },
+          {
+            "effect": 0.5,
+            "parent_quality": 0.04465387605287034,
+            "retained": [
+              false,
+              true
+            ],
+            "seed": 16207,
+            "topology_changed": [
+              false,
+              false
+            ]
+          },
+          {
+            "effect": 0.0,
+            "parent_quality": 0.0,
+            "retained": [
+              false,
+              false
+            ],
+            "seed": 16208,
+            "topology_changed": [
+              false,
+              false
+            ]
+          },
+          {
+            "effect": 0.5,
+            "parent_quality": 0.06917766921639779,
+            "retained": [
+              true,
+              false
+            ],
+            "seed": 16209,
+            "topology_changed": [
+              false,
+              false
+            ]
+          },
+          {
+            "effect": 1.0,
+            "parent_quality": 0.08038526208720116,
+            "retained": [
+              true,
+              true
+            ],
+            "seed": 16210,
+            "topology_changed": [
+              false,
+              false
+            ]
+          },
+          {
+            "effect": 0.5,
+            "parent_quality": 0.016625223551307987,
+            "retained": [
+              false,
+              true
+            ],
+            "seed": 16211,
+            "topology_changed": [
+              false,
+              false
+            ]
+          },
+          {
+            "effect": 1.0,
+            "parent_quality": 0.08504828809041572,
+            "retained": [
+              true,
+              true
+            ],
+            "seed": 16212,
+            "topology_changed": [
+              false,
+              false
+            ]
+          },
+          {
+            "effect": 0.5,
+            "parent_quality": 0.04438928149895354,
+            "retained": [
+              true,
+              false
+            ],
+            "seed": 16213,
+            "topology_changed": [
+              false,
+              true
+            ]
+          },
+          {
+            "effect": 0.0,
+            "parent_quality": 0.055596419910975116,
+            "retained": [
+              false,
+              false
+            ],
+            "seed": 16214,
+            "topology_changed": [
+              false,
+              false
+            ]
+          },
+          {
+            "effect": 0.0,
+            "parent_quality": 0.0,
+            "retained": [
+              false,
+              false
+            ],
+            "seed": 16215,
+            "topology_changed": [
+              false,
+              false
+            ]
+          },
+          {
+            "effect": 1.0,
+            "parent_quality": 0.06337142180278942,
+            "retained": [
+              true,
+              true
+            ],
+            "seed": 16216,
+            "topology_changed": [
+              false,
+              false
+            ]
+          }
+        ],
+        "status": "tested",
+        "summary": {
+          "ci95": [
+            0.28125,
+            0.65625
+          ],
+          "group_means": {
+            "16201": 0.5,
+            "16202": 1.0,
+            "16203": 0.5,
+            "16204": 0.5,
+            "16205": 0.0,
+            "16206": 0.0,
+            "16207": 0.5,
+            "16208": 0.0,
+            "16209": 0.5,
+            "16210": 1.0,
+            "16211": 0.5,
+            "16212": 1.0,
+            "16213": 0.5,
+            "16214": 0.0,
+            "16215": 0.0,
+            "16216": 1.0
+          },
+          "groups": 16,
+          "mean": 0.46875
+        },
+        "supported": false
+      },
+      "h4": {
+        "available_parents": 1,
+        "holm_p": 1.0,
+        "p": 1.0,
+        "positive_parents": 0,
+        "rows": [
+          {
+            "a_minus_parent": -0.015094196380318961,
+            "b_minus_parent": -0.02285131022258667,
+            "effect": -0.00775711384226771,
+            "seed": 16204,
+            "sensitivity": {
+              "1.9": 0.010720085667339549,
+              "2.1": -0.025690302165403908
+            }
+          }
+        ],
+        "status": "insufficient_matched_parents",
+        "summary": {
+          "ci95": null,
+          "group_means": {
+            "16204": -0.00775711384226771
+          },
+          "groups": 1,
+          "mean": -0.00775711384226771
+        },
+        "supported": false
+      },
+      "h5": {
+        "available_parents": 0,
+        "holm_p": 1.0,
+        "p": 1.0,
+        "positive_parents": 0,
+        "rows": [],
+        "status": "insufficient_matched_parents",
+        "summary": null,
+        "supported": false
+      }
+    }
+  },
+  "results": {
+    "references": {
+      "2.0": {
+        "indices": [
+          1,
+          1,
+          1
+        ],
+        "metrics": {
+          "alternate_quality": 0.06368737704855591,
+          "boundary_weight": 0.992692260315505,
+          "boundary_weight_minimum": 0.9894967523899053,
+          "boundary_weights": [
+            0.9958877682411044,
+            0.9958877682411045,
+            0.9894967523899054,
+            0.9894967523899053
+          ],
+          "eligible": 1.0,
+          "localizer_gap": 0.06415621395931334,
+          "minimum_abs_energy": 0.2334110786692064,
+          "phs_mismatch": 4.440892098500626e-15,
+          "polarization_norms": [
+            0.9987405918021725,
+            0.9987405918021723,
+            0.9876495342646097,
+            0.9876495342646099
+          ],
+          "quality": 0.06415621395931334,
+          "success": 0.0
+        }
+      },
+      "8.0": {
+        "indices": [
+          0,
+          0,
+          0
+        ],
+        "metrics": {
+          "alternate_quality": 0.0,
+          "boundary_weight": 0.3658360676678688,
+          "boundary_weight_minimum": 0.25005009453666865,
+          "boundary_weights": [
+            0.25005009453666865,
+            0.25005009453666976,
+            0.481622040799069,
+            0.4816220407990678
+          ],
+          "eligible": 0.0,
+          "localizer_gap": 4.422445108437815,
+          "minimum_abs_energy": 4.503183833611029,
+          "phs_mismatch": 1.4210854715202004e-14,
+          "polarization_norms": [
+            0.17357481584616713,
+            0.17357481584616688,
+            0.24274911935715004,
+            0.24274911935715063
+          ],
+          "quality": 0.0,
+          "success": 0.0
+        }
+      }
+    },
+    "rows": [
+      {
+        "deletions": [
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.055161373245627345,
+              "boundary_weight": 0.7166143575461494,
+              "boundary_weight_minimum": 0.5961762578540274,
+              "boundary_weights": [
+                0.5961762578540318,
+                0.5961762578540274,
+                0.83705245723827,
+                0.8370524572382687
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.07697497637992132,
+              "minimum_abs_energy": 0.0016309680763898623,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 2.220446049250313e-15,
+              "polarization_norms": [
+                0.8927489508566517,
+                0.8927489508566546,
+                0.8579627944725824,
+                0.857962794472583
+              ],
+              "quality": 0.07697497637992132,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:c1c5c08a92340d06c25c24e577fcad27b6f7845698526918339d5332d796643d",
+            "sensitivity": {},
+            "stage": "deletion-16201-0"
+          },
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.06799677671209833,
+              "boundary_weight": 0.7140765029433799,
+              "boundary_weight_minimum": 0.6202796592894448,
+              "boundary_weights": [
+                0.6202796592894628,
+                0.6202796592894448,
+                0.8078733465973047,
+                0.8078733465973073
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.09522337793194392,
+              "minimum_abs_energy": 0.0060526097713241465,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 4.440892098500626e-15,
+              "polarization_norms": [
+                0.8935772063427645,
+                0.8935772063427735,
+                0.8605110093615614,
+                0.860511009361561
+              ],
+              "quality": 0.09522337793194392,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:fe0be4d966f36098c8a3027aee9035889a789ebf8476257559c09d32b46c8edb",
+            "sensitivity": {},
+            "stage": "deletion-16201-1"
+          }
+        ],
+        "generator": "random",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            1,
+            1,
+            1
+          ],
+          "metrics": {
+            "alternate_quality": 0.06553191013657288,
+            "boundary_weight": 0.7098040884005112,
+            "boundary_weight_minimum": 0.5942434846597084,
+            "boundary_weights": [
+              0.5942434846597084,
+              0.5942434846597254,
+              0.8253646921413055,
+              0.8253646921413058
+            ],
+            "eligible": 1.0,
+            "localizer_gap": 0.0923239400948563,
+            "minimum_abs_energy": 0.005498579129847447,
+            "phs_mismatch": 2.4424906541753444e-15,
+            "polarization_norms": [
+              0.9036633778285028,
+              0.9036633778284906,
+              0.8352072648100601,
+              0.8352072648100614
+            ],
+            "quality": 0.0923239400948563,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:d5ab376c17618cf0941c943a173075003bc390afd7e4bb67210f9d9b9d28244c",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.06490835526745999,
+                "boundary_weight": 0.7279026960204558,
+                "boundary_weight_minimum": 0.5806827201761439,
+                "boundary_weights": [
+                  0.5806827201761442,
+                  0.5806827201761439,
+                  0.8751226718647678,
+                  0.8751226718647678
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.08917174729853715,
+                "minimum_abs_energy": 0.019174598157675634,
+                "phs_mismatch": 3.552713678800501e-15,
+                "polarization_norms": [
+                  0.9387773929062165,
+                  0.9387773929062162,
+                  0.902985878386421,
+                  0.9029858783864211
+                ],
+                "quality": 0.08917174729853715,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.05453777332269879,
+                "boundary_weight": 0.6879365652415805,
+                "boundary_weight_minimum": 0.59949048883717,
+                "boundary_weights": [
+                  0.59949048883717,
+                  0.5994904888371729,
+                  0.7763826416459906,
+                  0.7763826416459889
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.0792773288675925,
+                "minimum_abs_energy": 0.02688722649810058,
+                "phs_mismatch": 2.6645352591003757e-15,
+                "polarization_norms": [
+                  0.8568092190599915,
+                  0.8568092190599902,
+                  0.761209038282155,
+                  0.7612090382821544
+                ],
+                "quality": 0.0792773288675925,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16201"
+        },
+        "seed": 16201
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.04221959101077161,
+              "boundary_weight": 0.6854580100162329,
+              "boundary_weight_minimum": 0.5537587839240667,
+              "boundary_weights": [
+                0.5537587839240669,
+                0.5537587839240667,
+                0.817157236108399,
+                0.8171572361083989
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.06159325647062141,
+              "minimum_abs_energy": 0.056892820335039444,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 2.6645352591003757e-15,
+              "polarization_norms": [
+                0.8864479604766575,
+                0.8864479604766569,
+                0.8229308095371927,
+                0.8229308095371942
+              ],
+              "quality": 0.06159325647062141,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:de0a2d136384f04dfb2494c50a8c1d0ba687d0eaf7982444d22ec0b5ee628bb8",
+            "sensitivity": {},
+            "stage": "deletion-16202-0"
+          },
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.04010979315836742,
+              "boundary_weight": 0.6784627756946302,
+              "boundary_weight_minimum": 0.5349416347391327,
+              "boundary_weights": [
+                0.5349416347391331,
+                0.5349416347391327,
+                0.8219839166501282,
+                0.8219839166501268
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.05911863494250194,
+              "minimum_abs_energy": 0.05752436836092959,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 3.552713678800501e-15,
+              "polarization_norms": [
+                0.8771267146153464,
+                0.8771267146153463,
+                0.7930110162786577,
+                0.793011016278658
+              ],
+              "quality": 0.05911863494250194,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:f62c063ccc38818c6b4cb17bda24b5d2bbdf5429af72e96d34f3228980ad33a9",
+            "sensitivity": {},
+            "stage": "deletion-16202-1"
+          }
+        ],
+        "generator": "patch",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            1,
+            1,
+            1
+          ],
+          "metrics": {
+            "alternate_quality": 0.04244602352256376,
+            "boundary_weight": 0.6858319677503957,
+            "boundary_weight_minimum": 0.5578405182738403,
+            "boundary_weights": [
+              0.557840518273841,
+              0.5578405182738403,
+              0.8138234172269511,
+              0.8138234172269507
+            ],
+            "eligible": 1.0,
+            "localizer_gap": 0.06188982946040178,
+            "minimum_abs_energy": 0.056638229172719864,
+            "phs_mismatch": 3.552713678800501e-15,
+            "polarization_norms": [
+              0.8865874715938911,
+              0.8865874715938914,
+              0.8262202283650895,
+              0.8262202283650883
+            ],
+            "quality": 0.06188982946040178,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:3067724cdb99796709a798021275b344a4032b7143cdf238bdadef19ddba6227",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.046146638471094854,
+                "boundary_weight": 0.6950995660310494,
+                "boundary_weight_minimum": 0.5656337123470062,
+                "boundary_weights": [
+                  0.5656337123470062,
+                  0.5656337123470065,
+                  0.8245654197150921,
+                  0.8245654197150927
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.06638853011315725,
+                "minimum_abs_energy": 0.04152151138285137,
+                "phs_mismatch": 4.440892098500626e-15,
+                "polarization_norms": [
+                  0.8811296256192062,
+                  0.8811296256192052,
+                  0.8117686202327791,
+                  0.8117686202327804
+                ],
+                "quality": 0.06638853011315725,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.03480323474715306,
+                "boundary_weight": 0.6732444052688247,
+                "boundary_weight_minimum": 0.548946492436523,
+                "boundary_weights": [
+                  0.5489464924365239,
+                  0.548946492436523,
+                  0.7975423181011256,
+                  0.7975423181011263
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.05169479980046209,
+                "minimum_abs_energy": 0.07757314285914785,
+                "phs_mismatch": 4.440892098500626e-15,
+                "polarization_norms": [
+                  0.887004411535995,
+                  0.8870044115359951,
+                  0.8343275755394395,
+                  0.8343275755394399
+                ],
+                "quality": 0.05169479980046209,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16202"
+        },
+        "seed": 16202
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              0,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.0,
+              "boundary_weight": 0.5652314787905558,
+              "boundary_weight_minimum": 0.5190520500145432,
+              "boundary_weights": [
+                0.6114109075665677,
+                0.6114109075665667,
+                0.5190520500145432,
+                0.5190520500145454
+              ],
+              "eligible": 0.0,
+              "localizer_gap": 0.0038116600499470336,
+              "minimum_abs_energy": 0.08456644436348194,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 5.329070518200751e-15,
+              "polarization_norms": [
+                0.8558675425170742,
+                0.8558675425170735,
+                0.7547597019697958,
+                0.7547597019697962
+              ],
+              "quality": 0.0,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:4f958bf62ef110f6ebff36c4bbf4ed29e6df34b00cef6e3a879dbbc8dc45aee5",
+            "sensitivity": {},
+            "stage": "deletion-16203-0"
+          },
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.01687891674569736,
+              "boundary_weight": 0.5081112475859186,
+              "boundary_weight_minimum": 0.45641712166819465,
+              "boundary_weights": [
+                0.5598053735036428,
+                0.5598053735036425,
+                0.45641712166819465,
+                0.4564171216681948
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.0332189394072471,
+              "minimum_abs_energy": 0.10346374320073896,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 2.6645352591003757e-15,
+              "polarization_norms": [
+                0.821628725082677,
+                0.8216287250826764,
+                0.7856313188834645,
+                0.7856313188834642
+              ],
+              "quality": 0.0332189394072471,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:1465079f884cfd7ffec6c889dde5ba35327b63da00fb2c1a717f845a0e6ed656",
+            "sensitivity": {},
+            "stage": "deletion-16203-1"
+          }
+        ],
+        "generator": "random",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            1,
+            1,
+            1
+          ],
+          "metrics": {
+            "alternate_quality": 0.0001599954018817016,
+            "boundary_weight": 0.5433302556790897,
+            "boundary_weight_minimum": 0.4674481721205132,
+            "boundary_weights": [
+              0.6192123392376658,
+              0.6192123392376654,
+              0.4674481721205145,
+              0.4674481721205132
+            ],
+            "eligible": 1.0,
+            "localizer_gap": 0.00029447173281695656,
+            "minimum_abs_energy": 0.08617212599409522,
+            "phs_mismatch": 5.329070518200751e-15,
+            "polarization_norms": [
+              0.86943775345714,
+              0.8694377534571389,
+              0.7913816321300483,
+              0.7913816321300456
+            ],
+            "quality": 0.00029447173281695656,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:f6e55000fd746ab1c899ac9bcc7b9fda1f9b6d536504b3ada2f089fae539d1be",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                0,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.0,
+                "boundary_weight": 0.5369407723775369,
+                "boundary_weight_minimum": 0.4449795882615942,
+                "boundary_weights": [
+                  0.628901956493479,
+                  0.6289019564934792,
+                  0.44497958826159534,
+                  0.4449795882615942
+                ],
+                "eligible": 0.0,
+                "localizer_gap": 0.00852793259527493,
+                "minimum_abs_energy": 0.08488682139462472,
+                "phs_mismatch": 3.552713678800501e-15,
+                "polarization_norms": [
+                  0.8830486650931423,
+                  0.8830486650931412,
+                  0.8054653816984432,
+                  0.8054653816984418
+                ],
+                "quality": 0.0,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.015479646482513352,
+                "boundary_weight": 0.54242704023612,
+                "boundary_weight_minimum": 0.4917809899500736,
+                "boundary_weights": [
+                  0.593073090522165,
+                  0.5930730905221644,
+                  0.4917809899500736,
+                  0.491780989950077
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.028537748552828448,
+                "minimum_abs_energy": 0.10207760955762872,
+                "phs_mismatch": 3.552713678800501e-15,
+                "polarization_norms": [
+                  0.8363869111830904,
+                  0.8363869111830898,
+                  0.7606975252347383,
+                  0.760697525234737
+                ],
+                "quality": 0.028537748552828448,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16203"
+        },
+        "seed": 16203
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.04372453807814834,
+              "boundary_weight": 0.5659702186856523,
+              "boundary_weight_minimum": 0.47243700183228965,
+              "boundary_weights": [
+                0.47243700183229,
+                0.47243700183228965,
+                0.659503435539014,
+                0.6595034355390157
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.07725589904657784,
+              "minimum_abs_energy": 0.018338049360801047,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 3.552713678800501e-15,
+              "polarization_norms": [
+                0.8922725341800977,
+                0.8922725341800963,
+                0.7765530376412676,
+                0.7765530376412688
+              ],
+              "quality": 0.07725589904657784,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:b08d2c530888228314e7f8486ed8279dc76e4aa89c570398b174dcbb6480623b",
+            "sensitivity": {},
+            "stage": "deletion-16204-0"
+          },
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.017622981553630828,
+              "boundary_weight": 0.5310923225231825,
+              "boundary_weight_minimum": 0.5290621775136519,
+              "boundary_weights": [
+                0.5290621775136529,
+                0.5290621775136519,
+                0.5331224675327125,
+                0.5331224675327128
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.03318251988638298,
+              "minimum_abs_energy": 0.0383860192220592,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 3.552713678800501e-15,
+              "polarization_norms": [
+                0.89425752184233,
+                0.8942575218423301,
+                0.7869436614333036,
+                0.7869436614333034
+              ],
+              "quality": 0.03318251988638298,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:7784bfa33a7654afb410348300d5614d10aa12d72fb771e8c4f73db65e6a9fb1",
+            "sensitivity": {},
+            "stage": "deletion-16204-1"
+          }
+        ],
+        "generator": "patch",
+        "pairs": {
+          "h4": {
+            "a": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.029991924652658992,
+                "boundary_weight": 0.5586335280477288,
+                "boundary_weight_minimum": 0.4415148191687499,
+                "boundary_weights": [
+                  0.44151481916880636,
+                  0.4415148191687499,
+                  0.6757522369266797,
+                  0.6757522369266794
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.0536880139605522,
+                "minimum_abs_energy": 0.0020895349491483616,
+                "phs_mismatch": 3.552713678800501e-15,
+                "polarization_norms": [
+                  0.9058496618762257,
+                  0.9058496618762243,
+                  0.777785780857759,
+                  0.7777857808577574
+                ],
+                "quality": 0.0536880139605522,
+                "success": 0.0
+              },
+              "record_id": "dataset-record-v1-sha256:730f4ec09e9c61275078d0339362e9528fb634b434b6a014aa95c76392d6438e",
+              "sensitivity": {
+                "1.9": {
+                  "indices": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "metrics": {
+                    "alternate_quality": 0.03302688309842408,
+                    "boundary_weight": 0.561482941626637,
+                    "boundary_weight_minimum": 0.43391777053181435,
+                    "boundary_weights": [
+                      0.4339177705318221,
+                      0.43391777053181435,
+                      0.6890481127214565,
+                      0.6890481127214552
+                    ],
+                    "eligible": 1.0,
+                    "localizer_gap": 0.05882081297562482,
+                    "minimum_abs_energy": 0.012907758556190993,
+                    "phs_mismatch": 3.552713678800501e-15,
+                    "polarization_norms": [
+                      0.9505889105344719,
+                      0.9505889105344726,
+                      0.8216904579202504,
+                      0.8216904579202484
+                    ],
+                    "quality": 0.05882081297562482,
+                    "success": 0.0
+                  }
+                },
+                "2.1": {
+                  "indices": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "metrics": {
+                    "alternate_quality": 0.02401777184394913,
+                    "boundary_weight": 0.5512817207960935,
+                    "boundary_weight_minimum": 0.44766096586887477,
+                    "boundary_weights": [
+                      0.44766096586887477,
+                      0.4476609658688753,
+                      0.6549024757233116,
+                      0.6549024757233122
+                    ],
+                    "eligible": 1.0,
+                    "localizer_gap": 0.043567147137158126,
+                    "minimum_abs_energy": 0.03548204622497562,
+                    "phs_mismatch": 1.7763568394002505e-15,
+                    "polarization_norms": [
+                      0.835395994172786,
+                      0.835395994172786,
+                      0.7250216296276648,
+                      0.7250216296276649
+                    ],
+                    "quality": 0.043567147137158126,
+                    "success": 0.0
+                  }
+                }
+              },
+              "stage": "h4-16204-a"
+            },
+            "b": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.02754593543387499,
+                "boundary_weight": 0.5997255739150932,
+                "boundary_weight_minimum": 0.5052849034703536,
+                "boundary_weights": [
+                  0.5052849034703595,
+                  0.5052849034703536,
+                  0.6941662443598293,
+                  0.6941662443598302
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.04593090011828449,
+                "minimum_abs_energy": 0.028226105420512588,
+                "phs_mismatch": 2.6645352591003757e-15,
+                "polarization_norms": [
+                  0.906961474027621,
+                  0.9069614740276198,
+                  0.8411507904917948,
+                  0.8411507904917954
+                ],
+                "quality": 0.04593090011828449,
+                "success": 0.0
+              },
+              "record_id": "dataset-record-v1-sha256:f22b778da6d48092f4af30a9a4c11c4b342479234610e41855490a9fd430c3cc",
+              "sensitivity": {
+                "1.9": {
+                  "indices": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "metrics": {
+                    "alternate_quality": 0.04286717770934272,
+                    "boundary_weight": 0.6164311728186116,
+                    "boundary_weight_minimum": 0.5261051975257834,
+                    "boundary_weights": [
+                      0.5261051975257846,
+                      0.5261051975257834,
+                      0.7067571481114397,
+                      0.7067571481114389
+                    ],
+                    "eligible": 1.0,
+                    "localizer_gap": 0.06954089864296437,
+                    "minimum_abs_energy": 0.01795773245968377,
+                    "phs_mismatch": 4.440892098500626e-15,
+                    "polarization_norms": [
+                      0.9148553198905576,
+                      0.9148553198905579,
+                      0.855759936191731,
+                      0.8557599361917302
+                    ],
+                    "quality": 0.06954089864296437,
+                    "success": 0.0
+                  }
+                },
+                "2.1": {
+                  "indices": [
+                    1,
+                    1,
+                    1
+                  ],
+                  "metrics": {
+                    "alternate_quality": 0.010316208725874456,
+                    "boundary_weight": 0.5770709955909042,
+                    "boundary_weight_minimum": 0.4892550367289892,
+                    "boundary_weights": [
+                      0.48925503672899023,
+                      0.4892550367289892,
+                      0.664886954452819,
+                      0.6648869544528185
+                    ],
+                    "eligible": 1.0,
+                    "localizer_gap": 0.017876844971754218,
+                    "minimum_abs_energy": 0.05440658542577915,
+                    "phs_mismatch": 3.1086244689504383e-15,
+                    "polarization_norms": [
+                      0.8617349599703072,
+                      0.8617349599703074,
+                      0.81571296626317,
+                      0.8157129662631694
+                    ],
+                    "quality": 0.017876844971754218,
+                    "success": 0.0
+                  }
+                }
+              },
+              "stage": "h4-16204-b"
+            }
+          }
+        },
+        "parent": {
+          "indices": [
+            1,
+            1,
+            1
+          ],
+          "metrics": {
+            "alternate_quality": 0.040080056768658584,
+            "boundary_weight": 0.5827096362566668,
+            "boundary_weight_minimum": 0.511575338740559,
+            "boundary_weights": [
+              0.511575338740559,
+              0.5115753387405725,
+              0.6538439337727673,
+              0.6538439337727688
+            ],
+            "eligible": 1.0,
+            "localizer_gap": 0.06878221034087116,
+            "minimum_abs_energy": 0.01160951505914582,
+            "phs_mismatch": 4.440892098500626e-15,
+            "polarization_norms": [
+              0.907195525291863,
+              0.9071955252918666,
+              0.8087367809963323,
+              0.8087367809963333
+            ],
+            "quality": 0.06878221034087116,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:209a295f08a99dab60b57836075acde45c3bbb0588bc94751d0fd663947cba5a",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.05352569609693474,
+                "boundary_weight": 0.5917579642229449,
+                "boundary_weight_minimum": 0.5431898278049406,
+                "boundary_weights": [
+                  0.5431898278049466,
+                  0.5431898278049406,
+                  0.640326100640948,
+                  0.6403261006409446
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.09045200797123354,
+                "minimum_abs_energy": 0.007517793592071491,
+                "phs_mismatch": 2.6645352591003757e-15,
+                "polarization_norms": [
+                  0.9040211170698568,
+                  0.9040211170698516,
+                  0.8150610048654557,
+                  0.8150610048654559
+                ],
+                "quality": 0.09045200797123354,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.02226968262245508,
+                "boundary_weight": 0.5681874518432679,
+                "boundary_weight_minimum": 0.47941967415348563,
+                "boundary_weights": [
+                  0.47941967415348563,
+                  0.4794196741534859,
+                  0.6569552295330502,
+                  0.65695522953305
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.039194252794935144,
+                "minimum_abs_energy": 0.03317365121353612,
+                "phs_mismatch": 4.440892098500626e-15,
+                "polarization_norms": [
+                  0.8615510312555503,
+                  0.8615510312555507,
+                  0.7837248893972469,
+                  0.783724889397246
+                ],
+                "quality": 0.039194252794935144,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16204"
+        },
+        "seed": 16204
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              1,
+              1,
+              0
+            ],
+            "metrics": {
+              "alternate_quality": 0.0,
+              "boundary_weight": 0.37834738220778485,
+              "boundary_weight_minimum": 0.2855801111296307,
+              "boundary_weights": [
+                0.47111465328593366,
+                0.4711146532859395,
+                0.2855801111296307,
+                0.28558011112963555
+              ],
+              "eligible": 0.0,
+              "localizer_gap": 0.032203046088534165,
+              "minimum_abs_energy": 0.03536950007505341,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 6.217248937900877e-15,
+              "polarization_norms": [
+                0.8744103474714768,
+                0.8744103474714767,
+                0.8430270179086039,
+                0.8430270179086027
+              ],
+              "quality": 0.0,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:eedf498eb653bacdef5086774524ce9195466ff44303a35b7dbed3f2afc20ae0",
+            "sensitivity": {},
+            "stage": "deletion-16205-0"
+          },
+          {
+            "indices": [
+              0,
+              0,
+              0
+            ],
+            "metrics": {
+              "alternate_quality": 0.0,
+              "boundary_weight": 0.37044784809482284,
+              "boundary_weight_minimum": 0.26549721622604455,
+              "boundary_weights": [
+                0.4753984799635997,
+                0.4753984799636023,
+                0.265497216226045,
+                0.26549721622604455
+              ],
+              "eligible": 0.0,
+              "localizer_gap": 0.035040889250911554,
+              "minimum_abs_energy": 0.03164145668075348,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 2.6645352591003757e-15,
+              "polarization_norms": [
+                0.8781425171639297,
+                0.878142517163929,
+                0.7828934317490258,
+                0.7828934317490245
+              ],
+              "quality": 0.0,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:f123282bd9d7878f65245dc6b27ccdb634d3dcd8cec53732e64a84772b0e8908",
+            "sensitivity": {},
+            "stage": "deletion-16205-1"
+          }
+        ],
+        "generator": "random",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            1,
+            1,
+            0
+          ],
+          "metrics": {
+            "alternate_quality": 0.0,
+            "boundary_weight": 0.4168742964681152,
+            "boundary_weight_minimum": 0.35884765284989034,
+            "boundary_weights": [
+              0.4749009400863401,
+              0.47490094008633954,
+              0.35884765284989034,
+              0.3588476528498908
+            ],
+            "eligible": 0.0,
+            "localizer_gap": 0.03260885148933157,
+            "minimum_abs_energy": 0.044417591633586925,
+            "phs_mismatch": 5.329070518200751e-15,
+            "polarization_norms": [
+              0.8939611347281327,
+              0.8939611347281332,
+              0.8684031392163016,
+              0.8684031392163007
+            ],
+            "quality": 0.0,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:dd4a71ad8aee9c5b388404ba7cd6ec5b9d10b5b3608b6e0546ef5cd2e2bf16a3",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                1,
+                1,
+                0
+              ],
+              "metrics": {
+                "alternate_quality": 0.0,
+                "boundary_weight": 0.4155580515437179,
+                "boundary_weight_minimum": 0.3520398765269328,
+                "boundary_weights": [
+                  0.4790762265604999,
+                  0.47907622656050153,
+                  0.3520398765269328,
+                  0.3520398765269373
+                ],
+                "eligible": 0.0,
+                "localizer_gap": 0.011719819102107244,
+                "minimum_abs_energy": 0.0630238040896876,
+                "phs_mismatch": 2.6645352591003757e-15,
+                "polarization_norms": [
+                  0.9092235838325877,
+                  0.9092235838325882,
+                  0.8947347719633182,
+                  0.8947347719633182
+                ],
+                "quality": 0.0,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                1,
+                1,
+                0
+              ],
+              "metrics": {
+                "alternate_quality": 0.0,
+                "boundary_weight": 0.4277420847275083,
+                "boundary_weight_minimum": 0.3827056263335043,
+                "boundary_weights": [
+                  0.47277854312149487,
+                  0.47277854312152734,
+                  0.3827056263335067,
+                  0.3827056263335043
+                ],
+                "eligible": 0.0,
+                "localizer_gap": 0.025299576485133698,
+                "minimum_abs_energy": 0.012690601485916506,
+                "phs_mismatch": 1.0658141036401503e-14,
+                "polarization_norms": [
+                  0.859386831127752,
+                  0.8593868311277505,
+                  0.8276462457518717,
+                  0.8276462457518713
+                ],
+                "quality": 0.0,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16205"
+        },
+        "seed": 16205
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              0,
+              0,
+              0
+            ],
+            "metrics": {
+              "alternate_quality": 0.0,
+              "boundary_weight": 0.4694348760415254,
+              "boundary_weight_minimum": 0.4383040454502487,
+              "boundary_weights": [
+                0.5005657066328022,
+                0.5005657066328013,
+                0.4383040454502495,
+                0.4383040454502487
+              ],
+              "eligible": 0.0,
+              "localizer_gap": 0.05306819003131368,
+              "minimum_abs_energy": 0.08533824816456857,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 2.6645352591003757e-15,
+              "polarization_norms": [
+                0.7727687759602564,
+                0.7727687759602577,
+                0.752351127884651,
+                0.7523511278846502
+              ],
+              "quality": 0.0,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:2ceeed82ee35b30a05e00417ab6caf96a5c87d46482240271297d614c4caf764",
+            "sensitivity": {},
+            "stage": "deletion-16206-0"
+          },
+          {
+            "indices": [
+              0,
+              0,
+              0
+            ],
+            "metrics": {
+              "alternate_quality": 0.0,
+              "boundary_weight": 0.545050652994422,
+              "boundary_weight_minimum": 0.5300318683855036,
+              "boundary_weights": [
+                0.5600694376033397,
+                0.5600694376033405,
+                0.5300318683855041,
+                0.5300318683855036
+              ],
+              "eligible": 0.0,
+              "localizer_gap": 0.04975408034539952,
+              "minimum_abs_energy": 0.1003406669935258,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 5.329070518200751e-15,
+              "polarization_norms": [
+                0.7022876742663787,
+                0.7022876742663768,
+                0.7605617996465633,
+                0.7605617996465619
+              ],
+              "quality": 0.0,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:34ff56e9b3d184f8f122bab30c1fb6b8fb61806fdcbedb660d2e4e87330e1b9c",
+            "sensitivity": {},
+            "stage": "deletion-16206-1"
+          }
+        ],
+        "generator": "patch",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            0,
+            0,
+            0
+          ],
+          "metrics": {
+            "alternate_quality": 0.0,
+            "boundary_weight": 0.5095956400022782,
+            "boundary_weight_minimum": 0.5020834214479029,
+            "boundary_weights": [
+              0.5171078585566529,
+              0.5171078585566531,
+              0.502083421447904,
+              0.5020834214479029
+            ],
+            "eligible": 0.0,
+            "localizer_gap": 0.06055460138501921,
+            "minimum_abs_energy": 0.09774442295643654,
+            "phs_mismatch": 3.552713678800501e-15,
+            "polarization_norms": [
+              0.7389996965562745,
+              0.7389996965562767,
+              0.7998300786006457,
+              0.7998300786006469
+            ],
+            "quality": 0.0,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:c3e812a5d45e8afe6a2f85760da29386a11072e11baf67686b4967ee4436abf3",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                0,
+                0,
+                0
+              ],
+              "metrics": {
+                "alternate_quality": 0.0,
+                "boundary_weight": 0.50654030363174,
+                "boundary_weight_minimum": 0.4853161024643426,
+                "boundary_weights": [
+                  0.4853161024643428,
+                  0.4853161024643426,
+                  0.5277645047991375,
+                  0.5277645047991373
+                ],
+                "eligible": 0.0,
+                "localizer_gap": 0.02988246940974,
+                "minimum_abs_energy": 0.05650149011758908,
+                "phs_mismatch": 5.329070518200751e-15,
+                "polarization_norms": [
+                  0.7896796273326063,
+                  0.7896796273326037,
+                  0.7714529270638552,
+                  0.7714529270638573
+                ],
+                "quality": 0.0,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                0,
+                0,
+                0
+              ],
+              "metrics": {
+                "alternate_quality": 0.0,
+                "boundary_weight": 0.5107718812753179,
+                "boundary_weight_minimum": 0.5094459061894535,
+                "boundary_weights": [
+                  0.5120978563611798,
+                  0.5120978563611809,
+                  0.5094459061894575,
+                  0.5094459061894535
+                ],
+                "eligible": 0.0,
+                "localizer_gap": 0.10077393018754494,
+                "minimum_abs_energy": 0.1475374886251818,
+                "phs_mismatch": 5.329070518200751e-15,
+                "polarization_norms": [
+                  0.7551487624896218,
+                  0.755148762489622,
+                  0.7341290348926546,
+                  0.7341290348926565
+                ],
+                "quality": 0.0,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16206"
+        },
+        "seed": 16206
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.014978049286202326,
+              "boundary_weight": 0.5985311217166631,
+              "boundary_weight_minimum": 0.4528991259558764,
+              "boundary_weights": [
+                0.7441631174774492,
+                0.7441631174774476,
+                0.4528991259558764,
+                0.45289912595587967
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.025024679156604893,
+              "minimum_abs_energy": 0.17491249421710595,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 3.1086244689504383e-15,
+              "polarization_norms": [
+                0.882369752905841,
+                0.8823697529058413,
+                0.6965715746381891,
+                0.6965715746381889
+              ],
+              "quality": 0.025024679156604893,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:f97f6c8c60fc7cb6d30d979c461a538e9ea70f96b0b3729b46dc44def5f9f06b",
+            "sensitivity": {},
+            "stage": "deletion-16207-0"
+          },
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.02678615565558721,
+              "boundary_weight": 0.6198658124647515,
+              "boundary_weight_minimum": 0.45829892048777043,
+              "boundary_weights": [
+                0.7814327044417326,
+                0.7814327044417313,
+                0.4582989204877716,
+                0.45829892048777043
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.04321282948172012,
+              "minimum_abs_energy": 0.18439287866547907,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 2.6645352591003757e-15,
+              "polarization_norms": [
+                0.9380769381247983,
+                0.9380769381247986,
+                0.6435718884980933,
+                0.6435718884980947
+              ],
+              "quality": 0.04321282948172012,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:9a3c70f77dadf1de8c890fc3493c0118823c505b2056c30ef3b3a482f14329e0",
+            "sensitivity": {},
+            "stage": "deletion-16207-1"
+          }
+        ],
+        "generator": "random",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            1,
+            1,
+            1
+          ],
+          "metrics": {
+            "alternate_quality": 0.027845416593329834,
+            "boundary_weight": 0.6235834165965966,
+            "boundary_weight_minimum": 0.45096090189051136,
+            "boundary_weights": [
+              0.7962059313026824,
+              0.7962059313026806,
+              0.4509609018905118,
+              0.45096090189051136
+            ],
+            "eligible": 1.0,
+            "localizer_gap": 0.04465387605287034,
+            "minimum_abs_energy": 0.1861564118545285,
+            "phs_mismatch": 3.552713678800501e-15,
+            "polarization_norms": [
+              0.9451262345846574,
+              0.9451262345846576,
+              0.6437326641978914,
+              0.6437326641978901
+            ],
+            "quality": 0.04465387605287034,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:0c70f6222841a22be208f0cccfdaef20dfcfc178eb48fff48bb3f1b0bfe0c311",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.04454910365195547,
+                "boundary_weight": 0.6142379798290127,
+                "boundary_weight_minimum": 0.44484711353498485,
+                "boundary_weights": [
+                  0.7836288461230411,
+                  0.7836288461230374,
+                  0.44484711353498485,
+                  0.4448471135349878
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.07252743255042082,
+                "minimum_abs_energy": 0.15908923276700837,
+                "phs_mismatch": 4.440892098500626e-15,
+                "polarization_norms": [
+                  0.8890430113631103,
+                  0.889043011363106,
+                  0.7445502594686196,
+                  0.7445502594686237
+                ],
+                "quality": 0.07252743255042082,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.005817278819812859,
+                "boundary_weight": 0.6276558414734955,
+                "boundary_weight_minimum": 0.4919619813396095,
+                "boundary_weights": [
+                  0.7633497016073809,
+                  0.7633497016073804,
+                  0.4919619813396095,
+                  0.4919619813396113
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.009268262056091306,
+                "minimum_abs_energy": 0.20953759500988647,
+                "phs_mismatch": 3.552713678800501e-15,
+                "polarization_norms": [
+                  0.9430192068346462,
+                  0.943019206834646,
+                  0.5958548693476234,
+                  0.5958548693476226
+                ],
+                "quality": 0.009268262056091306,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16207"
+        },
+        "seed": 16207
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              0,
+              0,
+              0
+            ],
+            "metrics": {
+              "alternate_quality": 0.0,
+              "boundary_weight": 0.5533546778517803,
+              "boundary_weight_minimum": 0.49753302428824725,
+              "boundary_weights": [
+                0.6091763314153116,
+                0.6091763314153138,
+                0.49753302428824725,
+                0.49753302428824847
+              ],
+              "eligible": 0.0,
+              "localizer_gap": 0.08797624122001331,
+              "minimum_abs_energy": 0.050636925347065494,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 3.552713678800501e-15,
+              "polarization_norms": [
+                0.7145293904076899,
+                0.7145293904076908,
+                0.8161340818678584,
+                0.816134081867859
+              ],
+              "quality": 0.0,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:ed5734a58553f3b25302a0132c053fd144bb6d7aaa375eb8e90db18238c5b94f",
+            "sensitivity": {},
+            "stage": "deletion-16208-0"
+          },
+          {
+            "indices": [
+              0,
+              0,
+              0
+            ],
+            "metrics": {
+              "alternate_quality": 0.0,
+              "boundary_weight": 0.5848687024070789,
+              "boundary_weight_minimum": 0.5314942120535044,
+              "boundary_weights": [
+                0.6382431927606499,
+                0.6382431927606539,
+                0.5314942120535076,
+                0.5314942120535044
+              ],
+              "eligible": 0.0,
+              "localizer_gap": 0.07178292496936199,
+              "minimum_abs_energy": 0.06721134355462764,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 4.440892098500626e-15,
+              "polarization_norms": [
+                0.7158291859160499,
+                0.7158291859160526,
+                0.7985152357197938,
+                0.7985152357197935
+              ],
+              "quality": 0.0,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:fe397c9744995f744947e348e139fdc03109258835ca9d20e99650bbf6980bb3",
+            "sensitivity": {},
+            "stage": "deletion-16208-1"
+          }
+        ],
+        "generator": "patch",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            0,
+            0,
+            0
+          ],
+          "metrics": {
+            "alternate_quality": 0.0,
+            "boundary_weight": 0.55818427841259,
+            "boundary_weight_minimum": 0.5233841073412264,
+            "boundary_weights": [
+              0.5929844494839532,
+              0.5929844494839533,
+              0.5233841073412264,
+              0.5233841073412269
+            ],
+            "eligible": 0.0,
+            "localizer_gap": 0.05268865439722094,
+            "minimum_abs_energy": 0.03198145270289378,
+            "phs_mismatch": 3.1086244689504383e-15,
+            "polarization_norms": [
+              0.7451648659480719,
+              0.7451648659480727,
+              0.8373047685529924,
+              0.8373047685529922
+            ],
+            "quality": 0.0,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:1fe36aaebab3c2fe334b5f73ea81f1a7164a3227696fbc26080f4cfef02241c1",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                0,
+                0,
+                0
+              ],
+              "metrics": {
+                "alternate_quality": 0.0,
+                "boundary_weight": 0.5491998466045959,
+                "boundary_weight_minimum": 0.5240361703598082,
+                "boundary_weights": [
+                  0.5743635228493873,
+                  0.5743635228493789,
+                  0.524036170359809,
+                  0.5240361703598082
+                ],
+                "eligible": 0.0,
+                "localizer_gap": 0.048379402412806354,
+                "minimum_abs_energy": 0.005989560697889995,
+                "phs_mismatch": 1.7763568394002505e-15,
+                "polarization_norms": [
+                  0.8063314117043353,
+                  0.8063314117043309,
+                  0.8436388302478328,
+                  0.8436388302478337
+                ],
+                "quality": 0.0,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                0,
+                0,
+                0
+              ],
+              "metrics": {
+                "alternate_quality": 0.0,
+                "boundary_weight": 0.5592141228388765,
+                "boundary_weight_minimum": 0.5167582082948163,
+                "boundary_weights": [
+                  0.6016700373829369,
+                  0.601670037382935,
+                  0.5167582082948163,
+                  0.5167582082948176
+                ],
+                "eligible": 0.0,
+                "localizer_gap": 0.07901491491514143,
+                "minimum_abs_energy": 0.08181195601386143,
+                "phs_mismatch": 5.329070518200751e-15,
+                "polarization_norms": [
+                  0.6928209582581459,
+                  0.6928209582581454,
+                  0.8193200643519564,
+                  0.8193200643519569
+                ],
+                "quality": 0.0,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16208"
+        },
+        "seed": 16208
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.04195376865040135,
+              "boundary_weight": 0.6218953495541175,
+              "boundary_weight_minimum": 0.4934473894609102,
+              "boundary_weights": [
+                0.4934473894609102,
+                0.49344738946091177,
+                0.7503433096473235,
+                0.7503433096473245
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.06746113904932895,
+              "minimum_abs_energy": 0.12578483638757235,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 3.9968028886505635e-15,
+              "polarization_norms": [
+                0.7850437655412764,
+                0.785043765541277,
+                0.8846985623236877,
+                0.8846985623236886
+              ],
+              "quality": 0.06746113904932895,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:3ff1c1066a4d62be8ad7ee75d699007b9ab5d19341255c87012004a1cd752aa3",
+            "sensitivity": {},
+            "stage": "deletion-16209-0"
+          },
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.03155641540799354,
+              "boundary_weight": 0.6129805737956879,
+              "boundary_weight_minimum": 0.4490377288738174,
+              "boundary_weights": [
+                0.4490377288738174,
+                0.44903772887381843,
+                0.7769234187175583,
+                0.7769234187175573
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.05148028625538724,
+              "minimum_abs_energy": 0.1023220220924779,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 2.6645352591003757e-15,
+              "polarization_norms": [
+                0.7860531967280292,
+                0.7860531967280282,
+                0.9069690257730421,
+                0.9069690257730416
+              ],
+              "quality": 0.05148028625538724,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:46699628259779e13ba06f8196b88ed558f86a648d8f6b54621f605c64e51c41",
+            "sensitivity": {},
+            "stage": "deletion-16209-1"
+          }
+        ],
+        "generator": "random",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            1,
+            1,
+            1
+          ],
+          "metrics": {
+            "alternate_quality": 0.043172167744332,
+            "boundary_weight": 0.6240766454458475,
+            "boundary_weight_minimum": 0.4508003583155639,
+            "boundary_weights": [
+              0.4508003583155639,
+              0.45080035831556564,
+              0.7973529325761312,
+              0.7973529325761292
+            ],
+            "eligible": 1.0,
+            "localizer_gap": 0.06917766921639779,
+            "minimum_abs_energy": 0.09866483589656344,
+            "phs_mismatch": 3.9968028886505635e-15,
+            "polarization_norms": [
+              0.7932286042891277,
+              0.7932286042891286,
+              0.9053076577932865,
+              0.9053076577932863
+            ],
+            "quality": 0.06917766921639779,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:f5c3cfca51b366b56993d6330a82bf17662fc69f6de2761f53192732f18839b5",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.050814901759961555,
+                "boundary_weight": 0.6211411970017227,
+                "boundary_weight_minimum": 0.42600171985859886,
+                "boundary_weights": [
+                  0.4260017198585999,
+                  0.42600171985859886,
+                  0.8162806741448453,
+                  0.8162806741448463
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.08180893813716984,
+                "minimum_abs_energy": 0.07797630343790485,
+                "phs_mismatch": 2.6645352591003757e-15,
+                "polarization_norms": [
+                  0.8018333365031292,
+                  0.8018333365031287,
+                  0.9362226364421582,
+                  0.9362226364421584
+                ],
+                "quality": 0.08180893813716984,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.029978651679913197,
+                "boundary_weight": 0.6231895082173221,
+                "boundary_weight_minimum": 0.4774012768338324,
+                "boundary_weights": [
+                  0.4774012768338324,
+                  0.47740127683383377,
+                  0.7689777396008102,
+                  0.7689777396008121
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.04810519317898862,
+                "minimum_abs_energy": 0.12260515038526774,
+                "phs_mismatch": 5.773159728050814e-15,
+                "polarization_norms": [
+                  0.7988338208236434,
+                  0.7988338208236442,
+                  0.850161448137403,
+                  0.850161448137404
+                ],
+                "quality": 0.04810519317898862,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16209"
+        },
+        "seed": 16209
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.044157544025926525,
+              "boundary_weight": 0.5495997756896719,
+              "boundary_weight_minimum": 0.5367468010352602,
+              "boundary_weights": [
+                0.5624527503440833,
+                0.5624527503440824,
+                0.5367468010352602,
+                0.5367468010352616
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.08034490911229886,
+              "minimum_abs_energy": 0.09379689335051763,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 2.6645352591003757e-15,
+              "polarization_norms": [
+                0.7825731148685166,
+                0.7825731148685159,
+                0.7727400194274392,
+                0.7727400194274399
+              ],
+              "quality": 0.08034490911229886,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:2f1a472d8fc249bf3bdee3f755bc6778f2e14d0ec02ee1ae0dc544657e183945",
+            "sensitivity": {},
+            "stage": "deletion-16210-0"
+          },
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.04236595694838921,
+              "boundary_weight": 0.5200167137426565,
+              "boundary_weight_minimum": 0.4147813638990334,
+              "boundary_weights": [
+                0.4147813638990334,
+                0.41478136389903425,
+                0.6252520635862786,
+                0.6252520635862795
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.08147037552595875,
+              "minimum_abs_energy": 0.035318291819039026,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 4.440892098500626e-15,
+              "polarization_norms": [
+                0.8667638544733494,
+                0.8667638544733494,
+                0.8016723368781612,
+                0.8016723368781604
+              ],
+              "quality": 0.08147037552595875,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:482aef96091d72cbeec19c3367a786e58b1155bebe025c75deffc6ce51094ff9",
+            "sensitivity": {},
+            "stage": "deletion-16210-1"
+          }
+        ],
+        "generator": "patch",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            1,
+            1,
+            1
+          ],
+          "metrics": {
+            "alternate_quality": 0.038645047412977994,
+            "boundary_weight": 0.48074791833179836,
+            "boundary_weight_minimum": 0.43008694534610237,
+            "boundary_weights": [
+              0.43008694534610237,
+              0.4300869453461072,
+              0.5314088913174914,
+              0.5314088913174924
+            ],
+            "eligible": 1.0,
+            "localizer_gap": 0.08038526208720116,
+            "minimum_abs_energy": 0.04692022398003197,
+            "phs_mismatch": 1.7763568394002505e-15,
+            "polarization_norms": [
+              0.8257306426173432,
+              0.8257306426173441,
+              0.7978794479975208,
+              0.7978794479975221
+            ],
+            "quality": 0.08038526208720116,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:a400b5b6e2284d18bf6df061ad42356ef3bf15201d5040497185a2e89c2b3ad9",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.03592357114258422,
+                "boundary_weight": 0.4688892590448813,
+                "boundary_weight_minimum": 0.4449515698337044,
+                "boundary_weights": [
+                  0.4449515698337044,
+                  0.4449515698337074,
+                  0.49282694825605683,
+                  0.4928269482560568
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.07661419077024682,
+                "minimum_abs_energy": 0.02730898724236973,
+                "phs_mismatch": 3.552713678800501e-15,
+                "polarization_norms": [
+                  0.821459285682218,
+                  0.8214592856822177,
+                  0.8406461640768385,
+                  0.8406461640768398
+                ],
+                "quality": 0.07661419077024682,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.025652351346133213,
+                "boundary_weight": 0.48865169604480696,
+                "boundary_weight_minimum": 0.4195393851790816,
+                "boundary_weights": [
+                  0.4195393851790824,
+                  0.4195393851790816,
+                  0.5577640069105314,
+                  0.5577640069105324
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.052496188090138174,
+                "minimum_abs_energy": 0.07438001772597382,
+                "phs_mismatch": 7.105427357601002e-15,
+                "polarization_norms": [
+                  0.8279391145175377,
+                  0.8279391145175374,
+                  0.7471110388524432,
+                  0.7471110388524416
+                ],
+                "quality": 0.052496188090138174,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16210"
+        },
+        "seed": 16210
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.006291922564611132,
+              "boundary_weight": 0.5869658163352903,
+              "boundary_weight_minimum": 0.5454343703621857,
+              "boundary_weights": [
+                0.5454343703621861,
+                0.5454343703621857,
+                0.6284972623083941,
+                0.6284972623083954
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.01071940203246354,
+              "minimum_abs_energy": 0.13218022066490356,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 3.552713678800501e-15,
+              "polarization_norms": [
+                0.882972369361157,
+                0.8829723693611563,
+                0.8342895350634169,
+                0.8342895350634166
+              ],
+              "quality": 0.01071940203246354,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:3c22cc7872aa56ef90d77ba391a8af5adb8618f98405fa7d9c8d1aa69d9f4210",
+            "sensitivity": {},
+            "stage": "deletion-16211-0"
+          },
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.026157496954339898,
+              "boundary_weight": 0.5853276771823088,
+              "boundary_weight_minimum": 0.5439275398930963,
+              "boundary_weights": [
+                0.62672781447152,
+                0.6267278144715214,
+                0.5439275398930963,
+                0.5439275398930978
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.04468863847385225,
+              "minimum_abs_energy": 0.09376092992530047,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 5.329070518200751e-15,
+              "polarization_norms": [
+                0.8706054879660675,
+                0.8706054879660666,
+                0.7277356864128006,
+                0.7277356864128004
+              ],
+              "quality": 0.04468863847385225,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:8f5bf4d8c2bd9770327fd575a6bd300e96457fef48b76db069ddfd06262aac1f",
+            "sensitivity": {},
+            "stage": "deletion-16211-1"
+          }
+        ],
+        "generator": "random",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            1,
+            1,
+            1
+          ],
+          "metrics": {
+            "alternate_quality": 0.009690179550008763,
+            "boundary_weight": 0.5828601053154795,
+            "boundary_weight_minimum": 0.5537173534490186,
+            "boundary_weights": [
+              0.6120028571819408,
+              0.6120028571819395,
+              0.5537173534490186,
+              0.5537173534490192
+            ],
+            "eligible": 1.0,
+            "localizer_gap": 0.016625223551307987,
+            "minimum_abs_energy": 0.14058553985596342,
+            "phs_mismatch": 4.440892098500626e-15,
+            "polarization_norms": [
+              0.8995193753476948,
+              0.8995193753476929,
+              0.7753978202251754,
+              0.7753978202251757
+            ],
+            "quality": 0.016625223551307987,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:1787954e602e521388f320c5e78fe7c93b1659c9b6671663669b4ba0bce164c7",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.02680205820212749,
+                "boundary_weight": 0.5822989574892444,
+                "boundary_weight_minimum": 0.5493703482539334,
+                "boundary_weights": [
+                  0.5493703482539334,
+                  0.5493703482539364,
+                  0.6152275667245527,
+                  0.6152275667245551
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.04602800306854842,
+                "minimum_abs_energy": 0.11402005990061824,
+                "phs_mismatch": 4.440892098500626e-15,
+                "polarization_norms": [
+                  0.9029554841263816,
+                  0.9029554841263819,
+                  0.8356745632515197,
+                  0.8356745632515229
+                ],
+                "quality": 0.04602800306854842,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                0,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.0,
+                "boundary_weight": 0.5779964343768498,
+                "boundary_weight_minimum": 0.5246594887978837,
+                "boundary_weights": [
+                  0.6313333799558147,
+                  0.6313333799558162,
+                  0.5246594887978837,
+                  0.5246594887978845
+                ],
+                "eligible": 0.0,
+                "localizer_gap": 0.017930530910288494,
+                "minimum_abs_energy": 0.17185620679924316,
+                "phs_mismatch": 4.440892098500626e-15,
+                "polarization_norms": [
+                  0.8905781303226006,
+                  0.890578130322601,
+                  0.7260132379568414,
+                  0.7260132379568414
+                ],
+                "quality": 0.0,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16211"
+        },
+        "seed": 16211
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.05517132871441643,
+              "boundary_weight": 0.6437778092179206,
+              "boundary_weight_minimum": 0.3779914692003036,
+              "boundary_weights": [
+                0.37799146920030646,
+                0.3779914692003036,
+                0.9095641492355361,
+                0.9095641492355365
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.08569933278911883,
+              "minimum_abs_energy": 0.008727062667777489,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 2.6645352591003757e-15,
+              "polarization_norms": [
+                0.8581214759643564,
+                0.8581214759643576,
+                0.9543016346038378,
+                0.9543016346038379
+              ],
+              "quality": 0.08569933278911883,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:c788b3ea93821bd502768d2d19b467ad389051079fec487a9756c4626c96573d",
+            "sensitivity": {},
+            "stage": "deletion-16212-0"
+          },
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.05406845378292733,
+              "boundary_weight": 0.6415955429815756,
+              "boundary_weight_minimum": 0.3724812605390736,
+              "boundary_weights": [
+                0.372481260539077,
+                0.3724812605390736,
+                0.9107098254240751,
+                0.9107098254240767
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.08427186624717557,
+              "minimum_abs_energy": 0.020786596373534177,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 9.769962616701378e-15,
+              "polarization_norms": [
+                0.8643537817096032,
+                0.8643537817096005,
+                0.9583571801450838,
+                0.9583571801450848
+              ],
+              "quality": 0.08427186624717557,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:55eb6e2320d7a165a938a180b6fc4971835a239846a8e66afa71a15ef0146a30",
+            "sensitivity": {},
+            "stage": "deletion-16212-1"
+          }
+        ],
+        "generator": "patch",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            1,
+            1,
+            1
+          ],
+          "metrics": {
+            "alternate_quality": 0.05467603980165046,
+            "boundary_weight": 0.642882308736465,
+            "boundary_weight_minimum": 0.37646158111327216,
+            "boundary_weights": [
+              0.3764615811132782,
+              0.37646158111327216,
+              0.9093030363596544,
+              0.9093030363596553
+            ],
+            "eligible": 1.0,
+            "localizer_gap": 0.08504828809041572,
+            "minimum_abs_energy": 0.008665398460263693,
+            "phs_mismatch": 2.6645352591003757e-15,
+            "polarization_norms": [
+              0.863268630173866,
+              0.8632686301738631,
+              0.9553703987051022,
+              0.9553703987051025
+            ],
+            "quality": 0.08504828809041572,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:e45087cdb7d9f48ec0af73a79aa1b08813827d5f2ea8f398b44a3230487adf86",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.04917068538960451,
+                "boundary_weight": 0.6396380437824497,
+                "boundary_weight_minimum": 0.3420897413432773,
+                "boundary_weights": [
+                  0.34208974134327746,
+                  0.3420897413432773,
+                  0.9371863462216226,
+                  0.9371863462216214
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.07687267176736001,
+                "minimum_abs_energy": 0.010279339113439432,
+                "phs_mismatch": 2.6645352591003757e-15,
+                "polarization_norms": [
+                  0.8897221434599594,
+                  0.8897221434599597,
+                  0.9772151080879854,
+                  0.9772151080879846
+                ],
+                "quality": 0.07687267176736001,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.06307541446914376,
+                "boundary_weight": 0.6431701238461975,
+                "boundary_weight_minimum": 0.41520160013697355,
+                "boundary_weights": [
+                  0.41520160013697405,
+                  0.41520160013697355,
+                  0.8711386475554208,
+                  0.8711386475554215
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.09806956531492608,
+                "minimum_abs_energy": 0.03667697017745159,
+                "phs_mismatch": 2.6645352591003757e-15,
+                "polarization_norms": [
+                  0.8353339784854564,
+                  0.8353339784854564,
+                  0.9129441457845755,
+                  0.9129441457845763
+                ],
+                "quality": 0.09806956531492608,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16212"
+        },
+        "seed": 16212
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.024036368361704412,
+              "boundary_weight": 0.5482688294693612,
+              "boundary_weight_minimum": 0.5150526547531932,
+              "boundary_weights": [
+                0.5814850041855278,
+                0.5814850041855295,
+                0.5150526547531942,
+                0.5150526547531932
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.04384047946874505,
+              "minimum_abs_energy": 0.041053832655097204,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 3.9968028886505635e-15,
+              "polarization_norms": [
+                0.7028741109484267,
+                0.702874110948426,
+                0.7463572606221925,
+                0.7463572606221931
+              ],
+              "quality": 0.04384047946874505,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:d756dd179ffff6767711de8354fbb9c9551fc8daf578ebb32dae85cc6db77f65",
+            "sensitivity": {},
+            "stage": "deletion-16213-0"
+          },
+          {
+            "indices": [
+              0,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.0,
+              "boundary_weight": 0.5487406637188116,
+              "boundary_weight_minimum": 0.457231022446358,
+              "boundary_weights": [
+                0.6402503049912646,
+                0.6402503049912638,
+                0.45723102244636016,
+                0.457231022446358
+              ],
+              "eligible": 0.0,
+              "localizer_gap": 0.004131095784594772,
+              "minimum_abs_energy": 0.014917114385834842,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 3.552713678800501e-15,
+              "polarization_norms": [
+                0.629561509686569,
+                0.6295615096865672,
+                0.831526109450595,
+                0.8315261094505962
+              ],
+              "quality": 0.0,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:92a1213ed9c368a2a74325ad9e7068cbebe846fe18bf12585f0c5d3e6dd32fce",
+            "sensitivity": {},
+            "stage": "deletion-16213-1"
+          }
+        ],
+        "generator": "random",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            1,
+            1,
+            1
+          ],
+          "metrics": {
+            "alternate_quality": 0.024838335164453832,
+            "boundary_weight": 0.559557044532009,
+            "boundary_weight_minimum": 0.46440079463224276,
+            "boundary_weights": [
+              0.6547132944317751,
+              0.6547132944317745,
+              0.46440079463224376,
+              0.46440079463224276
+            ],
+            "eligible": 1.0,
+            "localizer_gap": 0.04438928149895354,
+            "minimum_abs_energy": 0.0065595850364122505,
+            "phs_mismatch": 6.217248937900877e-15,
+            "polarization_norms": [
+              0.7133789551804788,
+              0.7133789551804786,
+              0.809298580064452,
+              0.809298580064451
+            ],
+            "quality": 0.04438928149895354,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:a02eee563595a402536eac59128edbd25f7b56206458618a3fd54d4d91369bdf",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.040018728914508236,
+                "boundary_weight": 0.5624072914862128,
+                "boundary_weight_minimum": 0.48670234221564157,
+                "boundary_weights": [
+                  0.6381122407567827,
+                  0.6381122407567846,
+                  0.4867023422156423,
+                  0.48670234221564157
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.07115613456709474,
+                "minimum_abs_energy": 0.06266618928771645,
+                "phs_mismatch": 5.329070518200751e-15,
+                "polarization_norms": [
+                  0.787595759174988,
+                  0.7875957591749871,
+                  0.8230100234635098,
+                  0.8230100234635103
+                ],
+                "quality": 0.07115613456709474,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.0013754376246681833,
+                "boundary_weight": 0.5508561666258845,
+                "boundary_weight_minimum": 0.4549844172349374,
+                "boundary_weights": [
+                  0.6467279160168322,
+                  0.6467279160168299,
+                  0.45498441723493843,
+                  0.4549844172349374
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.0024969088266598555,
+                "minimum_abs_energy": 0.057331145343815275,
+                "phs_mismatch": 6.217248937900877e-15,
+                "polarization_norms": [
+                  0.6777320925871992,
+                  0.6777320925871974,
+                  0.7866995903871653,
+                  0.7866995903871644
+                ],
+                "quality": 0.0024969088266598555,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16213"
+        },
+        "seed": 16213
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.009732932309781912,
+              "boundary_weight": 0.5757018864197219,
+              "boundary_weight_minimum": 0.5264151351079424,
+              "boundary_weights": [
+                0.6249886377314982,
+                0.6249886377315017,
+                0.5264151351079424,
+                0.5264151351079452
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.016906201871789612,
+              "minimum_abs_energy": 0.005713056622151307,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 7.105427357601002e-15,
+              "polarization_norms": [
+                0.8247804177233391,
+                0.8247804177233393,
+                0.6649936125133625,
+                0.6649936125133616
+              ],
+              "quality": 0.016906201871789612,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:260ce801fedfd016ebdac1da43936f628287cd6eca0890c80b0f000b74bf6606",
+            "sensitivity": {},
+            "stage": "deletion-16214-0"
+          },
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.014924632775171282,
+              "boundary_weight": 0.587340088898771,
+              "boundary_weight_minimum": 0.5813638555313999,
+              "boundary_weights": [
+                0.5933163222661422,
+                0.5933163222661413,
+                0.5813638555313999,
+                0.5813638555314007
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.025410546729670903,
+              "minimum_abs_energy": 0.030588583180412306,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 4.440892098500626e-15,
+              "polarization_norms": [
+                0.8269739998939296,
+                0.8269739998939287,
+                0.7590389461785461,
+                0.7590389461785473
+              ],
+              "quality": 0.025410546729670903,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:1ad32a289387094bb3b4bde3dfc48f83bda6b1bab93d891d6110fc1916c9a503",
+            "sensitivity": {},
+            "stage": "deletion-16214-1"
+          }
+        ],
+        "generator": "patch",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            1,
+            1,
+            1
+          ],
+          "metrics": {
+            "alternate_quality": 0.030581097831620843,
+            "boundary_weight": 0.5500551632747116,
+            "boundary_weight_minimum": 0.47051406944947366,
+            "boundary_weights": [
+              0.6295962570997762,
+              0.6295962571001206,
+              0.4705140694494758,
+              0.47051406944947366
+            ],
+            "eligible": 1.0,
+            "localizer_gap": 0.055596419910975116,
+            "minimum_abs_energy": 0.000240323806783158,
+            "phs_mismatch": 3.552713678800501e-15,
+            "polarization_norms": [
+              0.8513733261965517,
+              0.8513733261964036,
+              0.6948056599379636,
+              0.6948056599379622
+            ],
+            "quality": 0.055596419910975116,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:ab8861362f54e87ee993974004020bf3af7f5b2a64108a519379bc7339efd8aa",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.038252794816102643,
+                "boundary_weight": 0.5748875462049198,
+                "boundary_weight_minimum": 0.5443560084081305,
+                "boundary_weights": [
+                  0.6054190840017112,
+                  0.6054190840017054,
+                  0.544356008408132,
+                  0.5443560084081305
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.06653961295322157,
+                "minimum_abs_energy": 0.024740527765562084,
+                "phs_mismatch": 1.7763568394002505e-15,
+                "polarization_norms": [
+                  0.8949392306996169,
+                  0.8949392306996182,
+                  0.7348830123442299,
+                  0.7348830123442279
+                ],
+                "quality": 0.06653961295322157,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.010810883640759494,
+                "boundary_weight": 0.5338915811366027,
+                "boundary_weight_minimum": 0.4291058091645711,
+                "boundary_weights": [
+                  0.6386773531086329,
+                  0.6386773531086344,
+                  0.42910580916457247,
+                  0.4291058091645711
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.020249211680289442,
+                "minimum_abs_energy": 0.03942630822643659,
+                "phs_mismatch": 2.831068712794149e-15,
+                "polarization_norms": [
+                  0.7975467556455368,
+                  0.797546755645535,
+                  0.674115426470628,
+                  0.6741154264706293
+                ],
+                "quality": 0.020249211680289442,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16214"
+        },
+        "seed": 16214
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              0,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.0,
+              "boundary_weight": 0.642189681793429,
+              "boundary_weight_minimum": 0.4077486635375388,
+              "boundary_weights": [
+                0.4077486635375388,
+                0.40774866353754025,
+                0.876630700049318,
+                0.876630700049319
+              ],
+              "eligible": 0.0,
+              "localizer_gap": 0.010930203065368757,
+              "minimum_abs_energy": 0.07964458297557453,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 5.329070518200751e-15,
+              "polarization_norms": [
+                0.7837573820737905,
+                0.7837573820737894,
+                0.9465269027580627,
+                0.946526902758063
+              ],
+              "quality": 0.0,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:a045dc1ca8f355c73f5b7ae04b83c0785d20461ae26e2e7bf2dec51af18b438a",
+            "sensitivity": {},
+            "stage": "deletion-16215-0"
+          },
+          {
+            "indices": [
+              0,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.0,
+              "boundary_weight": 0.487219814780519,
+              "boundary_weight_minimum": 0.423444665381703,
+              "boundary_weights": [
+                0.42344466538170317,
+                0.423444665381703,
+                0.550994964179341,
+                0.5509949641793288
+              ],
+              "eligible": 0.0,
+              "localizer_gap": 0.028163940383397472,
+              "minimum_abs_energy": 0.12748128477161555,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 1.7763568394002505e-15,
+              "polarization_norms": [
+                0.7808318924132318,
+                0.7808318924132327,
+                0.6685093210139488,
+                0.668509321013945
+              ],
+              "quality": 0.0,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:f0759f1985a930caadd8e52e2aba45132320f6d28f118c81e668836761bcb81e",
+            "sensitivity": {},
+            "stage": "deletion-16215-1"
+          }
+        ],
+        "generator": "random",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            0,
+            1,
+            1
+          ],
+          "metrics": {
+            "alternate_quality": 0.0,
+            "boundary_weight": 0.4966584333362567,
+            "boundary_weight_minimum": 0.4257864948426094,
+            "boundary_weights": [
+              0.4257864948426094,
+              0.4257864948426108,
+              0.5675303718299043,
+              0.5675303718299023
+            ],
+            "eligible": 0.0,
+            "localizer_gap": 0.008035666020777175,
+            "minimum_abs_energy": 0.0923535751648441,
+            "phs_mismatch": 4.440892098500626e-15,
+            "polarization_norms": [
+              0.7920215623916647,
+              0.7920215623916641,
+              0.7313136502868377,
+              0.7313136502868379
+            ],
+            "quality": 0.0,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:9d887c1f70b10f390c3a80146a0b5626f5b637cfcc2174e6db37350a294f9c02",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                0,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.0,
+                "boundary_weight": 0.4799014703799703,
+                "boundary_weight_minimum": 0.41066014294206593,
+                "boundary_weights": [
+                  0.41066014294206593,
+                  0.4106601429420662,
+                  0.5491427978178774,
+                  0.5491427978178713
+                ],
+                "eligible": 0.0,
+                "localizer_gap": 0.026522056922003254,
+                "minimum_abs_energy": 0.04922969515698734,
+                "phs_mismatch": 2.275957200481571e-15,
+                "polarization_norms": [
+                  0.8011056321107923,
+                  0.8011056321107916,
+                  0.791397501312806,
+                  0.7913975013128044
+                ],
+                "quality": 0.0,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                0,
+                0,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.0,
+                "boundary_weight": 0.514125590105828,
+                "boundary_weight_minimum": 0.4434549930447085,
+                "boundary_weights": [
+                  0.4434549930447085,
+                  0.44345499304470887,
+                  0.5847961871669505,
+                  0.5847961871669443
+                ],
+                "eligible": 0.0,
+                "localizer_gap": 0.008978668860060981,
+                "minimum_abs_energy": 0.14111130956530823,
+                "phs_mismatch": 1.0658141036401503e-14,
+                "polarization_norms": [
+                  0.7670281418396688,
+                  0.7670281418396677,
+                  0.674358223414508,
+                  0.6743582234145054
+                ],
+                "quality": 0.0,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16215"
+        },
+        "seed": 16215
+      },
+      {
+        "deletions": [
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.04076748022693944,
+              "boundary_weight": 0.6332596047024028,
+              "boundary_weight_minimum": 0.5795018116183185,
+              "boundary_weights": [
+                0.6870173977864872,
+                0.687017397786478,
+                0.5795018116183185,
+                0.5795018116183275
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.06437720000488253,
+              "minimum_abs_energy": 0.17549257300702795,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 2.6645352591003757e-15,
+              "polarization_norms": [
+                0.8516198269936058,
+                0.8516198269935964,
+                0.7502118574332595,
+                0.7502118574332666
+              ],
+              "quality": 0.06437720000488253,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:00a0934c0f0c0bca62343556b17a0259214b8b2235ff509e9733d079b254895d",
+            "sensitivity": {},
+            "stage": "deletion-16216-0"
+          },
+          {
+            "indices": [
+              1,
+              1,
+              1
+            ],
+            "metrics": {
+              "alternate_quality": 0.04097857786968109,
+              "boundary_weight": 0.6332708505838139,
+              "boundary_weight_minimum": 0.3988868646300197,
+              "boundary_weights": [
+                0.39888686463002426,
+                0.3988868646300197,
+                0.8676548365376083,
+                0.8676548365376036
+              ],
+              "eligible": 1.0,
+              "localizer_gap": 0.06470940172266391,
+              "minimum_abs_energy": 0.18010786513744498,
+              "operator_phs_residual": 0.0,
+              "phs_mismatch": 6.217248937900877e-15,
+              "polarization_norms": [
+                0.7500134024804244,
+                0.75001340248043,
+                0.9468164540143309,
+                0.9468164540143349
+              ],
+              "quality": 0.06470940172266391,
+              "success": 0.0
+            },
+            "record_id": "dataset-record-v1-sha256:74c90f2f8812c7af201fcf082561427d17b4b3eec3c249389531786de0aec283",
+            "sensitivity": {},
+            "stage": "deletion-16216-1"
+          }
+        ],
+        "generator": "patch",
+        "pairs": {},
+        "parent": {
+          "indices": [
+            1,
+            1,
+            1
+          ],
+          "metrics": {
+            "alternate_quality": 0.041027578742279046,
+            "boundary_weight": 0.6474145218006319,
+            "boundary_weight_minimum": 0.5017755965809978,
+            "boundary_weights": [
+              0.5017755965809999,
+              0.5017755965809978,
+              0.7930534470202636,
+              0.7930534470202661
+            ],
+            "eligible": 1.0,
+            "localizer_gap": 0.06337142180278942,
+            "minimum_abs_energy": 0.1482808397671956,
+            "phs_mismatch": 1.7763568394002505e-15,
+            "polarization_norms": [
+              0.8005359719374091,
+              0.8005359719374078,
+              0.8566485963751922,
+              0.8566485963751943
+            ],
+            "quality": 0.06337142180278942,
+            "success": 0.0
+          },
+          "record_id": "dataset-record-v1-sha256:ddac81f2d1e27ba927faabc2cf0f9a2b166bfe28c708ff3cdc13ea59460c3ad1",
+          "sensitivity": {
+            "1.9": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.03624045582821306,
+                "boundary_weight": 0.6403564905910972,
+                "boundary_weight_minimum": 0.480741030397576,
+                "boundary_weights": [
+                  0.4807410303975765,
+                  0.480741030397576,
+                  0.7999719507846179,
+                  0.7999719507846187
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.05659418833212792,
+                "minimum_abs_energy": 0.11601641180066316,
+                "phs_mismatch": 4.440892098500626e-15,
+                "polarization_norms": [
+                  0.8010746974386438,
+                  0.8010746974386446,
+                  0.8985105340240505,
+                  0.8985105340240525
+                ],
+                "quality": 0.05659418833212792,
+                "success": 0.0
+              }
+            },
+            "2.1": {
+              "indices": [
+                1,
+                1,
+                1
+              ],
+              "metrics": {
+                "alternate_quality": 0.025271203944616117,
+                "boundary_weight": 0.6378580616578731,
+                "boundary_weight_minimum": 0.5417948043383526,
+                "boundary_weights": [
+                  0.5417948043383526,
+                  0.5417948043383571,
+                  0.7339213189773932,
+                  0.733921318977389
+                ],
+                "eligible": 1.0,
+                "localizer_gap": 0.039618851690818316,
+                "minimum_abs_energy": 0.18255434968676848,
+                "phs_mismatch": 3.552713678800501e-15,
+                "polarization_norms": [
+                  0.8529465784254451,
+                  0.8529465784254453,
+                  0.7790761056088963,
+                  0.7790761056088936
+                ],
+                "quality": 0.039618851690818316,
+                "success": 0.0
+              }
+            }
+          },
+          "stage": "parent-16216"
+        },
+        "seed": 16216
+      }
+    ]
+  },
+  "manifest": {
+    "attempt_cap": 700,
+    "driver_sha256": "0912d888085f7c6c826e11c469e373f3e72e986536e64faaa0220aed0a78687e",
+    "exclusions_sha256": "b3f33d80a9952a0a6b2f0113187ec55f1a4b696c87b4a5ffcaf76bce0502e58f",
+    "git_commit": "d3180d9fa1c538fd8a084ba3c80a5099a0c23c16",
+    "git_dirty": true,
+    "protocol_sha256": "29212daa1b1c13407586d79eef3f90e6eb6125ebe36a84f65ab0ea37c7d3f431",
+    "runtime": {
+      "numpy": "2.5.3",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "python": "3.14.7",
+      "scipy": "1.18.1",
+      "threads": {
+        "BLIS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1"
+      }
+    },
+    "source_sha256": "d96499c9a8afa2ac020d51bb5345b925857a6ee05e02dbed3d12e91734495b92"
+  },
+  "audit": {
+    "attempts": 140,
+    "audit_adds_numerical_calls": 0,
+    "confirmations": 52,
+    "status": "PASS"
+  },
+  "inventory_sha256": "fcff5ba409788d22b560755dc99f95ea57cda080336ec8219336e07b2ec608f2",
+  "report_driver_sha256": "b87fe4912cb9fc90031c5b36dcc1ee113afa76df322ca98f3120bfd039122c01",
+  "full_test_result": "2973 passed in 675.95s (0:11:15)",
+  "full_test_log_sha256": "072910d8e4b64891b6efffcaba0c74ee0bce77d2e7a94470e9ec30af87eaac81",
+  "non_test_numerical_calls_added_by_report": 0
+}

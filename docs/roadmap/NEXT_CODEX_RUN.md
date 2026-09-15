@@ -1,45 +1,47 @@
-# NEXT CODEX RUN
+﻿# NEXT CODEX RUN
 
-block: G (not authorized or started)
-scope: Phase 16B, tasks 16.13-16.16 - hypotheses and independent validation
-recommended_model: GPT-6 Astra
-recommended_reasoning: High
-start_from_task: 16.13, only after explicit user authorization
-stop_point: MECHANISM_GATE (Gate 16); do not enter Block H
+previous_block: G / Phase 16B bounded falsification complete
+gate_16: NOT_ESTABLISHED (no confirmed geometric mechanism)
+next_block: none automatically; do not enter H or start a large search
 
-previous_block_result:
-- Block F complete; INTERNAL_MECHANISM_CHECKPOINT PASS with exploratory/null evidence.
-- No motif survives the predeclared controlled-ablation criterion; no design rule or MECHANISM_GATE claim.
-- 96 distinct analysis geometries (32 legacy + 64 fresh), 79 matched ablation pairs, eight simplifications.
-- 464/700 non-test attempts, all complete; 231 exact confirmation pairs; zero success-threshold hits.
-- Best fresh quality 0.136028875; strongest fresh adjusted cut-count rho -0.353, BH q=0.221.
-- Feature-importance ranking unstable across models (rho=0.208); importance does not establish physics.
-- Eight specific 59-edge simplifications retain >=90% quality and [1,1,1]; no universal redundancy claim.
-- Full suite 2842 passed in 760.01 s; subsystem/reference 93 passed; Ruff and isolated Mypy pass.
-- Audit verifies 946 file checksums and 464 stored eigensystems; earlier Phase15 source archives unchanged.
-- Independent fixed reference, stored analysis regeneration and complete CLI resume reproduce results; zero added calls on resume.
+## Result and limits
 
-frozen_inputs:
-- docs/decisions/phase_16a_pattern_ablation.md and .json
-- docs/decisions/phase_16a_protocol.md; phase_16a_patterns.png
-- results/phase16a/ (preserve separately; git-ignored)
-- results/phase16a-audit.json and results/phase16a-*.log
-- docs/phase_16a_usage_de.md
-- Source SHA-256 ee9b56d098e490b6434c6e80e9885da7dec0f31ee55721083f23794b34d0ea71
-- Protocol SHA-256 813e6269b174d2bc4bf28a2b331f66a7c74ddb603dbd52f82b796a585c465671
+- 16 outcome-blind new parents, seeds 16201-16216; 95 proposals.
+- Exclusions: 32912 D4-distinct structures from 1174 frozen input files.
+- All new parents/selected edits are >0.15 from old structures and other new families.
+- H1/H2/H5 have no strict matched pairs; H4 has one, below the eight-parent minimum.
+- These four motif explanations remain untested, not disproven.
+- H3: 15/32 deletions retain >=90% quality and eligible unchanged topology.
+- Parent-weighted retention 0.46875; bootstrap CI [0.28125, 0.65625].
+- Five-test Holm p=0.09491: neither support for >0.75 nor corrected rejection of 0.75.
+- Zero Q>=0.20 hits among 50 main-model roles; best Q=0.095223378.
+- 140/700 attempts, all complete, 52 exact confirmation pairs; full replay adds zero calls.
+- Audit and independent mapping review PASS; all 946 Phase16A files preserved.
+- mu=1.9/2.1 tests are same-model parameter sensitivity, not cross-model validation.
+- Task 16.15 cross-model numerical validation remains unavailable: no validated
+  second-model adapter for this fixed diagonal wiring stratum. No generality claim.
+- Full suite: 2973 PASS in 675.95 s; command in EXECUTION_STATE.md, log results/phase16b-full-tests.log.
 
-scientific_constraints:
-- Exact physics is ground truth; success remains quality >=0.20, with no substituted quartile-success label.
-- Five report hypotheses are provisional falsification priorities, not supported design rules.
-- Seeds 16101-16108 and every Phase16A parent/edit/simplification family are already seen.
-- Independent data must exclude symmetry-equivalent and closely related geometries; freeze selection and tests first.
-- Match degree, boundary/cut, other motifs and spatial edit locations where feasible; report residual confounding.
-- Cross-model/size/robustness extensions require mathematically valid adapters and explicit scope.
-- No thermodynamic or separated-Majorana claims from finite localizer evidence.
+## Frozen artifacts
 
-start_command_after_explicit_authorization:
-Read TOPOSC_LAB_MASTER_PLAN_V3.md, docs/roadmap/EXECUTION_STATE.md and the frozen
-Phase-16A Pattern/Ablation Report. Execute Block G (16.13-16.16) autonomously
-with a predeclared independent validation protocol through MECHANISM_GATE.
-Keep Phase16A evidence and success definitions frozen. Accept null results.
-Do not enter Block H or launch large search campaigns.
+- docs/decisions/phase_16b_protocol.md
+- docs/decisions/phase_16b_validation.md, .json, .png
+- results/phase16b/ (git-ignored; preserve separately)
+- results/phase16b-independent-review.json and phase16b-*.log
+- docs/phase_16b_usage_de.md
+- Source SHA-256 d96499c9a8afa2ac020d51bb5345b925857a6ee05e02dbed3d12e91734495b92
+- Protocol SHA-256 29212daa1b1c13407586d79eef3f90e6eb6125ebe36a84f65ab0ea37c7d3f431
+- Base commit d3180d9 plus archived dirty source; commit alone is insufficient.
+
+## Recommended research decision
+
+First design a separate, outcome-blind structural feasibility study to determine
+which controlled motif contrasts are identifiable in this constrained graph space.
+The current strict pairs are too scarce for the motif tests. Do not retrospectively
+relax the 16B matching rules, change its parent cohort or relabel significance.
+Choosing a genuinely different physical model needs an explicit coupling/domain
+definition and reference validation before numerical cross-model claims.
+Neither a larger search nor Phase 17 alone resolves these limitations.
+
+No new phase is started by this handoff. Seeds 16201-16216 and all selected
+parent/edit/deletion families are now consumed evidence, not unseen validation.

@@ -10,6 +10,7 @@ from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
+from toposc_lab._file_io import remove_temporary, replace_atomic
 from toposc_lab.search._checkpoint_codec import _Decoder, _Encoder
 from toposc_lab.search.lexicographic_fitness import DerivedEvaluationRun
 
@@ -29,9 +30,9 @@ def atomic_json(path: Path, payload: Any) -> None:
             stream.write(envelope)
             stream.flush()
             os.fsync(stream.fileno())
-        os.replace(name, path)
+        replace_atomic(name, path)
     finally:
-        Path(name).unlink(missing_ok=True)
+        remove_temporary(Path(name))
 
 
 def read_json(path: Path) -> Any:
