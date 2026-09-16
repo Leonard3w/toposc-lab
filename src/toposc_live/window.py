@@ -31,6 +31,7 @@ from toposc_live.pages import LauncherPage, LeaderboardPage, LivePage, scroll_pa
 from toposc_live.processes import ProcessService, read_metadata, write_metadata
 from toposc_live.reader import CampaignReader
 from toposc_live.refresh import RefreshService, Task
+from toposc_live.research_page import ResearchPage
 
 
 class MainWindow(QMainWindow):
@@ -72,7 +73,7 @@ class MainWindow(QMainWindow):
             button = QPushButton(label)
             button.clicked.connect(callback)
             toolbar.addWidget(button)
-        for label in ("Safe Stop unavailable", "Pause unavailable"):
+        for label in ("Legacy stop unavailable", "Legacy pause unavailable"):
             button = QPushButton(label)
             button.setEnabled(False)
             button.setToolTip(
@@ -103,6 +104,8 @@ class MainWindow(QMainWindow):
         self.tabs.addTab(self.leaderboard, "Candidate Leaderboard / Best Candidate")
         self.group_page = GroupPage()
         self.tabs.addTab(self.group_page, "Campaign Group")
+        self.research_page = ResearchPage((roots[0] if roots else Path.cwd() / "results") / "research")
+        self.tabs.addTab(self.research_page, "Autonomous Research")
         self.launcher.launch_requested.connect(self.launch)
         splitter.addWidget(self.tabs)
         splitter.setSizes([265, 1175])
@@ -299,6 +302,7 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event: QCloseEvent) -> None:
         self.refresh_service.shutdown()
+        self.research_page.shutdown()
         if self.operation:
             self.operation.wait()  # Configuration/launch I/O only; never process.wait().
         event.accept()

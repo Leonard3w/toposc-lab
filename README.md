@@ -188,7 +188,20 @@ roadmap stage will replace them with an explicit disorder and localization
 calculation rather than presenting a visual interpolation as microscopic
 physics.
 
-## Planned features
+## Autonomous Research workbench
+
+Open **Autonomous Research** in `toposc-live` or the Streamlit application to
+configure, launch, pause, resume and inspect persistent experiments. Four search
+strategies share fixed-site graph mutations, exact validation, a quality-diversity
+archive, surrogate screening, SQLite persistence and reproducible reports.
+
+Start with [the workbench guide](docs/research_workbench.md) and the
+[Experiment 001 configuration](examples/research_experiment001.json). The default
+100-site experiment is a configuration, not an automatically launched research
+run. Predictions never establish scientific claims; Majorana certification,
+finite-size scaling and critical disorder strength require further validation.
+
+## Earlier planned features
 
 - Kitaev chain
 - BdG Hamiltonian builder

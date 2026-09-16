@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "name": "Autonomous Experiment 001",
+  "question": "Can connectivity optimization alone generate two-dimensional superconducting geometries with more disorder-robust topological and chiral Majorana edge signatures than matched conventional geometries?",
+  "algorithm": "surrogate_map_elites",
+  "seed": 17001,
+  "cycles": 10,
+  "exact_budget": 280,
+  "candidate_budget": 10000,
+  "pool_size": 40,
+  "batch_size": 4,
+  "checkpoint_every": 250,
+  "retrain_every": 1,
+  "wall_seconds": 3600.0,
+  "concurrency": 1,
+  "blas_threads": 1,
+  "retry_limit": 1,
+  "output_directory": "results/research",
+  "geometry_space": "fixed_connectivity",
+  "surrogate_model": "bootstrap_graph",
+  "objective": "robustness_success_fraction",
+  "baselines": [
+    "regular",
+    "random_rewired"
+  ],
+  "space": {
+    "side": 10,
+    "min_degree": 2,
+    "max_degree": 6,
+    "max_bond_length": 1.4142135623730951,
+    "bond_tolerance": 0.0,
+    "forbid_crossings": true,
+    "minimum_distance": 0.002
+  },
+  "search": {
+    "behavior_descriptors": [
+      "coordination_variance",
+      "clustering_coefficient"
+    ],
+    "descriptor_bounds": [
+      [
+        0.0,
+        4.0
+      ],
+      [
+        0.0,
+        1.0
+      ]
+    ],
+    "archive_bins": [
+      12,
+      12
+    ],
+    "allocation": {
+      "exploitation": 0.6,
+      "uncertainty": 0.2,
+      "novelty": 0.2
+    },
+    "mutation_rates": {
+      "remove_local_bond": 0.025,
+      "add_local_bond": 0.025,
+      "edge_swap": 0.15,
+      "local_rewiring": 0.35,
+      "diagonal_flip": 0.1,
+      "local_motif_replacement": 0.2,
+      "boundary_rewiring": 0.15
+    },
+    "family_fraction": 0.5
+  },
+  "physics": {
+    "adapter_id": "phase17.fixed-sites-chiral-p-wave.v1",
+    "disorder_widths": [
+      0.0,
+      0.2,
+      0.4
+    ],
+    "disorder_seeds": [
+      17001,
+      17002,
+      17003,
+      17004
+    ],
+    "clean_seed": 17000,
+    "confirmation": true,
+    "validators": [
+      "spectrum",
+      "topology",
+      "majorana",
+      "robustness",
+      "reproducibility",
+      "finite_size"
+    ],
+    "finite_size": false,
+    "model": "chiral_p_wave",
+    "hopping": 1.0,
+    "chemical_potential": 2.0,
+    "pairing": 1.0,
+    "chirality": 1,
+    "basis": "component_major",
+    "solver": "numpy.linalg.eigh",
+    "tolerance": 1e-10,
+    "success_threshold": 0.2,
+    "kappas": [
+      0.1,
+      0.2,
+      0.3
+    ],
+    "probe_rule": "square_bounding_box_center"
+  },
+  "surrogate": {
+    "ensemble_size": 8,
+    "n_estimators": 40,
+    "distance_weight": 0.5
+  }
+}

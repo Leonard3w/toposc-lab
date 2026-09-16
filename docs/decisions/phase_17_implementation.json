@@ -1,0 +1,35 @@
+{
+  "phase": 17,
+  "engineering_smoke_gate": "PASS",
+  "artifact_audit": {
+    "gate": "PASS",
+    "directory": "C:\\Users\\Leonard\\Documents\\GitHub\\toposc-lab\\results\\phase17-smoke-final\\resumed",
+    "checked_stage_records": 56,
+    "checked_complete_candidates": 14,
+    "checked_archive_cells": 6,
+    "checked_checkpoints": 13,
+    "charged_attempts": 57,
+    "additional_exact_calls": 0,
+    "source_sha256": "2d9b2f48dd870f86c8911db9050b26130a5c0f9a40a7e33d47f3ded5ba7f610c",
+    "checks": [
+      "SQLite integrity and payload checksums",
+      "Existing dataset validators",
+      "Geometry constraints",
+      "Pure summary regeneration",
+      "No training-label leakage",
+      "Archive exact provenance",
+      "Checkpoint envelopes",
+      "Final report export"
+    ]
+  },
+  "source_sha256": "2d9b2f48dd870f86c8911db9050b26130a5c0f9a40a7e33d47f3ded5ba7f610c",
+  "scientific_hypothesis": "inconclusive",
+  "large_experiment_launched": false,
+  "full_regression": {
+    "passed": 3077,
+    "seconds": 904.23,
+    "date": "2026-09-16",
+    "log": "results/phase17-full-tests.log"
+  },
+  "engineering_completion_gate": "PASS"
+}

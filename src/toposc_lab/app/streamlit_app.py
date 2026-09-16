@@ -1732,10 +1732,15 @@ def run_app() -> None:
                 "Quantum Hall / Landau levels",
                 "Quantum gases",
                 "Research studies",
+                "Autonomous Research",
             ),
         )
         streamlit.divider()
-        if project_area == "Research studies":
+        if project_area == "Autonomous Research":
+            workspace_mode = "Autonomous Research"
+            streamlit.header("Autonomous Research")
+            streamlit.caption("Configure and inspect reproducible autonomous experiments.")
+        elif project_area == "Research studies":
             workspace_mode = "Study explorer"
             streamlit.header("Study explorer")
             streamlit.caption("Load, compare and export reproducible studies.")
@@ -1875,9 +1880,15 @@ def run_app() -> None:
     elif project_area == "Quantum gases":
         streamlit.title("TopOSC Lab / Quantum gases")
         streamlit.caption("Ideal-gas equilibrium, ensembles and statistically correct dynamics")
-    else:
+    elif project_area == "Research studies":
         streamlit.title("TopOSC Lab / Research studies")
         streamlit.caption("Load, compare and export reproducible numerical studies")
+
+    if workspace_mode == "Autonomous Research":
+        from toposc_lab.app.research_page import render_research_page
+
+        render_research_page(streamlit)
+        return
 
     if workspace_mode == "Study explorer":
         _show_study_explorer(streamlit)

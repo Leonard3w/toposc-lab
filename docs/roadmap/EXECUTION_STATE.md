@@ -1,15 +1,15 @@
 ﻿# TOPOSC-LAB EXECUTION STATE
 
-current_block: G (bounded study complete; stopped at Gate 16)
-current_phase: 16B falsification complete; cross-model numerical validation unavailable
-next_task: research decision on structural identifiability / validated second-model adapter; no automatic Block H
-last_completed_task: 16.14 independent validation and 16.16 report; 16.15 cross-model adapter unavailable
-last_verified_commit: d3180d9fa1c538fd8a084ba3c80a5099a0c23c16 plus archived dirty source in results/phase16b/source.zip
-last_full_test_result: 2973 passed in 675.95 s, 2026-09-15; results/phase16b-full-tests.log
-last_full_test_command: .venv/Scripts/python.exe -B -m pytest -q -p no:cacheprovider --basetemp=results/pytest-phase16b-full (PYTHONDONTWRITEBYTECODE=1; OMP/OPENBLAS/MKL/BLIS_NUM_THREADS=1)
-last_block_gate: MECHANISM_GATE NOT_ESTABLISHED; bounded falsification, audits, zero-call resume and full regression complete
-previous_block_gate: AUTONOMY_GATE PASS for bounded monitored campaigns in validated finite wiring stratum
-verified_source_sha256: d96499c9a8afa2ac020d51bb5345b925857a6ee05e02dbed3d12e91734495b92
+current_block: Phase 17 engineering workbench (explicitly authorized after Gate 16)
+current_phase: Phase 17 autonomous research workbench engineering gate PASS
+next_task: STOP for human review; full scientific Experiment 001 requires a separate launch
+last_completed_task: configurable research/UI, exact stage persistence, recovery, 113-attempt paired engineering smoke and zero-call artifact audit
+last_verified_commit: c03fc8bdaedfdfe74fa008590b4a4f5ed23ea7b3 plus archived working-tree source in results/phase17-smoke-final/resumed/source.zip
+last_full_test_result: 3077 passed in 904.23 s, 2026-09-16; results/phase17-full-tests.log
+last_full_test_command: .venv/Scripts/python.exe -B -m pytest -q -p no:cacheprovider --basetemp=results/pytest-phase17-full (PYTHONDONTWRITEBYTECODE=1; OMP/OPENBLAS/MKL/BLIS_NUM_THREADS=1)
+last_block_gate: PHASE17_WORKBENCH_GATE PASS; scientific Experiment001 hypothesis remains inconclusive
+previous_block_gate: MECHANISM_GATE NOT_ESTABLISHED; Phase16B bounded falsification complete
+verified_source_sha256: 2d9b2f48dd870f86c8911db9050b26130a5c0f9a40a7e33d47f3ded5ba7f610c
 protocol_sha256: 29212daa1b1c13407586d79eef3f90e6eb6125ebe36a84f65ab0ea37c7d3f431
 campaign_driver_sha256: 0912d888085f7c6c826e11c469e373f3e72e986536e64faaa0220aed0a78687e
 
@@ -22,7 +22,7 @@ scientific_decisions_in_force:
 - AL/surrogate and coverage optional; no RL or learned generator justified or added.
 - Success remains quality >=0.20; no Phase-15/16A cohort, ablation or simplification candidate reaches it.
 - No finite-graph thermodynamic phase or separated Majorana claim; unresolved topology remains unresolved.
-- Onsite-disorder ensembles are four samples at width 0.2; finite-size/family scaling explicitly unavailable.
+- Phase15/16 onsite-disorder ensembles were four samples at width 0.2; Phase17 uses its separately serialized protocol. Finite-size/family scaling remains unavailable.
 - Model, basis, topology, numerical tolerances and scientific definitions unchanged.
 - Phase16A 59-edge simplification is an explicit diagnostic extension, not a discovery-stratum change.
 - No motif passes the predeclared ablation criterion; five ranked provisional questions are not design rules.
@@ -128,3 +128,32 @@ phase16b_independent_validation:
 - Report/JSON/visually inspected PNG: docs/decisions/phase_16b_validation.*; protocol adjacent; usage docs/phase_16b_usage_de.md.
 - Raw data/source ZIP/inventory: results/phase16b/; preserve separately because results is git-ignored.
 - No production discovery campaign launched/resumed/stopped/edited. Block H is not started; 16B seeds/families now consumed.
+
+phase17_autonomous_research_workbench:
+- User explicitly authorized Phase 17 after the completed Phase16B gate; scientific conclusions from 16B remain unchanged.
+- New top-level research package with registered search/geometry/mutation/descriptor/surrogate/objective/validator/physics adapters.
+- Random, Evolution, MAP-Elites and Surrogate MAP-Elites; fixed configurable square sites, seven mutation operators, exact/near duplicate protection and interpretable descriptors.
+- Bootstrap gradient boosting reuses the established ML stack; exact-only labels, OOD/uncertainty, prequential calibration, configurable 60/20/20 acquisition and family limits.
+- Native TOPOSC Live and Streamlit integrate configuration, live controls/metrics, interactive archive, progress, candidate comparisons, baselines, checkpoints/log and reports.
+- SQLite FULL/WAL transactions, payload checksums, OS writer lease, source ZIP and atomic readable exports; old Windows filesystem helper reused.
+- Exact calls charged before execution. Incomplete attempts remain charged; bounded retries keep original seeds. RNG/archive ordering deterministic after JSON roundtrip.
+- Pause/stop controls and request consumption commit together. Search/model reloaded after lease acquisition; FINALIZING and export repair protect terminal publication.
+- Default N100 square-grid connectivity adapter preserves model/basis/pairing/onsite convention/tolerances/kappas/Q>=0.20; center probe scales with fixed site box under an explicitly new protocol ID.
+- Existing 36-site clean and disorder reference agreement verified; full physics legacy modules not modified.
+- W_c/bulk-only gap/separated or chiral Majorana certification/candidate-preserving finite-size validation remain unavailable, visibly unpassed. No thermodynamic or superiority claim.
+- Only regular and random-rewired structures are matched controls in this fixed-site experiment; other families need scientifically matched adapters.
+- Final bounded smoke PASS: results/phase17-smoke-final/, 16 sites, three cycles, 14 exact candidates per arm, 57 resumed vs 56 reference attempts, 113 total.
+- Real pause and hard process exit73 detected; UI detached launch API resumes; candidate IDs/acquisitions/connectivity/raw metrics/states equal uninterrupted reference. Completed replay adds zero calls.
+- Six archive cells, two trained model versions, eight prequential labels; selection counts exploitation5/uncertainty2/novelty1; 84 proposals. Best robustness score0, none fully validated.
+- Constant zero target explains zero surrogate error; no surrogate advantage inferred. Earlier engineering pair preserved in results/phase17-smoke/ (113 attempts), source archived separately.
+- Artifact audit PASS: 56 existing dataset records, 14 regenerated summaries, six elites, 13 checksummed checkpoints; no new calculations. results/phase17-artifact-review.json.
+- Focused 103 tests PASS before final UI polish; final full suite 3077 PASS in 904.23s, 2026-09-16 (results/phase17-full-tests.log). Ruff new/touched subsystem PASS; strict isolated Mypy backend13 (silent imports), UI2 (skipped imports) PASS.
+- Combined UI imported-type Mypy check has eight cast/inference diagnostics; isolated scope is explicit. Existing default Python3.11/NumPy stub limitation unchanged.
+- Native screenshots and Streamlit populated-snapshot AppTests inspected; normal-size live dashboard now displays 16 primary metrics rather than raw backend state.
+- Final runtime-source SHA256: 2d9b2f48dd870f86c8911db9050b26130a5c0f9a40a7e33d47f3ded5ba7f610c.
+- Guidance/examples: docs/research_workbench.md, examples/research_experiment001.json; report docs/decisions/phase_17_implementation.md; reproducible drivers scripts/phase_17_smoke.py and phase_17_review.py.
+- Limitations: square site counts, one exact worker per experiment, stage-boundary cooperative controls, large-budget memory/storage not benchmarked, no automatic database-corruption rollback.
+- Recommended inspected pilot: N100/180 bonds, degree2-6, length<=sqrt2, no crossings, frozen physics, one worker/BLAS thread, four disorder seeds, default 280 exact attempts (14 per candidate including controls).
+- Full scientific Experiment001 requires a separate launch after inspection, multiple search seeds, equal exact budgets, independent validation and appropriate Majorana/family-size protocols.
+- TOPOSC_LAB_MASTER_PLAN_V3.md absent from repository search; implementation follows current architecture, execution state/decisions and supplied Phase17 specification.
+- No existing production campaign launched/resumed/stopped or scientifically relabeled. No external paid API/LLM agent integration added.
