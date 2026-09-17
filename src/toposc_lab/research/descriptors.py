@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Iterable
+from math import isqrt
 
 import numpy as np
 from scipy.sparse.csgraph import shortest_path
@@ -18,6 +19,30 @@ def register_descriptor(name: str, function: Callable[[Geometry], float]) -> Non
     if not name or name in DESCRIPTOR_REGISTRY:
         raise ValueError(f"duplicate/empty descriptor name: {name}")
     DESCRIPTOR_REGISTRY[name] = function
+
+
+def regular_edge_distance(geometry: Geometry) -> float:
+    """Symmetric edge difference / twice the unit-square reference edge count.
+
+    At equal budgets this is the fraction of reference edges replaced. Coordinate
+    identities make this independent of edge order and consistent site relabeling.
+    Other geometry families must declare their own reference instead.
+    """
+    side = isqrt(geometry.n_sites)
+    if side < 2 or side * side != geometry.n_sites or geometry.coordinates is None:
+        raise ValueError("regular_edge_distance requires fixed unit-square sites")
+    coordinates = geometry.coordinates
+    lookup = {(float(x), float(y)): y * side + x
+              for y in range(side) for x in range(side)}
+    if coordinates.shape != (geometry.n_sites, 2) or set(map(tuple, coordinates)) != set(lookup):
+        raise ValueError("regular_edge_distance requires fixed unit-square sites")
+    labels = [lookup[tuple(point)] for point in coordinates]
+    edges = {tuple(sorted((labels[e.source], labels[e.target]))) for e in geometry.edges}
+    reference = {(y * side + x, y * side + x + 1)
+                 for y in range(side) for x in range(side - 1)}
+    reference.update((y * side + x, (y + 1) * side + x)
+                     for y in range(side - 1) for x in range(side))
+    return len(edges ^ reference) / (2 * len(reference))
 
 
 def _all(geometry: Geometry) -> dict[str, float]:
@@ -73,6 +98,9 @@ def _all(geometry: Geometry) -> dict[str, float]:
         tensor = directions.T @ directions / len(directions)
         eigen = np.linalg.eigvalsh(tensor)
         result.update({"bond_length_mean": float(lengths.mean()),
+                       "mean_bond_length": float(lengths.mean()),
+                       "long_bond_fraction": float(np.mean(lengths > np.sqrt(2) + 1e-12)),
+                       "max_bond_length_observed": float(lengths.max()),
                        "bond_length_variance": float(lengths.var()),
                        "bond_length_minimum": float(lengths.min()),
                        "bond_length_maximum": float(lengths.max()),
@@ -104,6 +132,7 @@ _BUILTIN_NAMES = (
     "laplacian_algebraic_connectivity", "laplacian_spectral_radius", "bond_length_mean",
     "bond_length_variance", "bond_length_minimum", "bond_length_maximum", "anisotropy",
     "local_connectivity_disorder", "mean_degree", "degree_variance", "mean_local_clustering",
+    "mean_bond_length", "long_bond_fraction", "max_bond_length_observed",
 )
 def _registered_builtin(name: str) -> Callable[[Geometry], float]:
     def compute(geometry: Geometry) -> float:
@@ -113,3 +142,5 @@ def _registered_builtin(name: str) -> Callable[[Geometry], float]:
 
 for _name in _BUILTIN_NAMES:
     register_descriptor(_name, _registered_builtin(_name))
+
+register_descriptor("regular_edge_distance", regular_edge_distance)

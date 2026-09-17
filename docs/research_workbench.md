@@ -254,6 +254,139 @@ accounting and bounded native-library concurrency. Independent experiments may
 run concurrently. Larger matrices require explicit time/memory planning;
 changing the site count does not establish finite-size convergence.
 
+## Phase 17.1: expanded connectivity for Experiment 002
+
+The reported first 100-site pilot saturated `robustness_success_fraction` at 1
+for both matched baselines. Experiment 002 uses the existing continuous
+`robustness_quality_mean` objective to retain ranking information. The original
+success fraction, frozen quality threshold and all raw width/seed outcomes are
+still retained. A saturated pilot does not establish universal robustness.
+
+The prepared configuration is
+`examples/research_experiment002_long_connectivity.json`. It keeps the 100 fixed
+sites, exactly 180 edges, connectedness and degrees 2 through 6, and extends the
+maximum bond length to 2. The earlier Phase-17 defaults remain unchanged.
+
+### Explicit geometry convention
+
+On this unit grid, every length-2 edge passes through a third fixed site.
+The original search space forbids such segments, so merely raising the length
+limit would add no edges. Following an explicit user decision, the new config
+sets `space.site_crossings = "unconnected"` alongside `forbid_crossings = true`:
+
+- An edge may pass through a fixed site without coupling to that site.
+- Two edges may intersect at a fixed site without acquiring a new connection.
+- Only explicit endpoint pairs are Hamiltonian bonds. The drawing of an
+  overpass through a site does not add an edge or split a bond.
+- Intersections between grid sites and positive-length collinear overlaps are
+  forbidden, including overlaps between edges sharing an endpoint.
+- Degree, connectivity and budget checks use the explicit graph.
+
+For example, edge `(0, 2)` passes over site 1. An edge from site 1 in a vertical
+direction may coexist with it, but `(0, 1)` overlaps it and is forbidden.
+When `site_crossings` is absent or `"forbid"`, the original geometry rules apply.
+No archived configuration or experiment is rewritten. Source/runtime matching
+for resume remains strict; older runs require their compatible archived source.
+
+### Physics stays frozen
+
+Length-2 bonds use the same scalar hopping and pairing amplitudes as other
+edges. Chiral pairing keeps its existing unit-direction dependence. There is
+no distance attenuation. Introducing distance-dependent hopping or pairing is
+a different physical model and requires a separately versioned adapter.
+
+The model, chemical potential, basis, localizer probes, tolerances and success
+threshold retain their existing Phase-17 definitions. Majorana quantities stay
+diagnostics-only, and finite-size validation remains unavailable. Neither the
+harder sampled disorder nor this search establishes a thermodynamic phase,
+bulk gap, critical disorder strength `W_c`, validated chiral Majorana edge modes,
+finite-size convergence, universal robustness or algorithmic superiority.
+
+### Mutation and initialization
+
+Two registered composition operators supplement the seven existing operators:
+`multi_rewire_local` requests 1–4 valid elementary edits and
+`multi_rewire_explore` requests 5–20. An edit adds a proposed edge, removes its
+conflicting edges and restores the same edge count with compatible bonds before
+checking degrees and connectivity. In particular, adding a long edge can require
+removing two overlapping unit edges in one atomic edit.
+
+Composition is bounded by 40 trials per requested edit. It keeps accepted valid
+intermediates when further edits fail; a no-op passes through the normal duplicate
+rejection path. Intermediate trials are cheap internal mutation work. The final
+graph always passes the common validator, duplicate and near-duplicate filters.
+Stored mutation metadata lists the net added and removed edges. Edits can undo
+earlier edits, so the number requested is not an asserted final graph distance.
+
+`space.initialization_rewires = [5, 10, 20, 30, 40]` selects a seeded mixture of
+initial distances from the regular reference. `search.initialization_probability
+= 0.2` also introduces fresh independent lineages during later proposals. The
+remaining parent proposals use the two mutation scales at equal weights. These
+weights are separate from acquisition's 50% exploitation, 25% uncertainty and
+25% novelty allocation. The search RNG and proposal seeds remain checkpointed.
+
+### Structural measurements and archive
+
+`regular_edge_distance = |E_candidate Δ E_regular| / (2 |E_regular|)` measures
+the fraction of regular edges replaced at equal budgets. It is independent of
+edge ordering and consistent site relabeling. With unequal budgets it remains
+the stated normalized symmetric difference; the replaced-fraction interpretation
+then does not apply literally.
+
+`long_bond_fraction` counts edges longer than sqrt(2), divided by total edges.
+`mean_bond_length` and `max_bond_length_observed` are aliases of the existing
+bond-length measurements; `bond_length_variance` keeps its original definition.
+All enter persisted candidate descriptors and the exact-label surrogate feature
+pipeline. Candidate views and comparisons show the structural values alongside
+exact objectives and evidence. Reports include baseline and best searched
+candidate values, including per-width quality statistics, with neutral wording.
+
+Experiment 002 uses a 20 × 20 archive over `regular_edge_distance` in `[0, 1]`
+and `long_bond_fraction` in `[0, 0.5]`. These cover the mathematical bounds for
+this fixed-budget space: each length-2 edge consumes two of the 180 elementary
+horizontal/vertical grid segments, and overlapping segments are forbidden, so
+at most 90 of 180 edges can be long. These upper bounds need not be attainable
+under all the other constraints.
+
+The deterministic geometry-only audit (`scripts/phase_17_1_sample.py`, seed
+17102) validated 1,100 100-site graphs from all five initialization scales and
+ten successive exploration compositions. Observed ranges were 0.0222–0.5667
+for regular-edge distance, 0.0056–0.2111 for long-bond fraction and
+1.0125–1.3492 for mean bond length. These are reachable examples, not extrema
+or independent scientific samples. Both archive axes vary under the new rules.
+
+### Prepared run and accounting
+
+The config declares 50 cycles, pools of 200, batches of 6, at most 100,000 raw
+proposals and 6,000 exact attempts, with one exact worker and one BLAS thread.
+The cooperative wall-clock cap is explicitly 86,400 seconds (24 hours).
+Disorder widths are `[0.0, 0.4, 0.8, 1.2]`, with seeds 17001–17004 at every
+width and independent clean confirmation. The regular and random-rewired
+baselines share the sites, edge count, protocol and charged-attempt ledger.
+
+Each complete candidate costs `2 + 4 × 4 = 18` exact attempts. Fifty full
+batches plus two baselines cost 5,436 attempts, leaving 564 of the 6,000 cap
+for retries. Actual completion may be lower after failures, proposal exhaustion
+or a wall-clock limit. The attempt budget is a cap, not a promise to spend all
+6,000 attempts.
+
+After reviewing the engineering gate, a separate scientific launch can use:
+
+```powershell
+.venv/Scripts/python.exe -B -m toposc_lab.research create results/research/experiment002-long-connectivity --config examples/research_experiment002_long_connectivity.json
+.venv/Scripts/python.exe -B -m toposc_lab.research run results/research/experiment002-long-connectivity
+```
+
+The implementation task does not launch this run. Its engineering smoke uses
+16 sites, two cycles and a 28-attempt cap per experiment, through the existing
+hard-crash, pause/resume and uninterrupted-reference smoke harness.
+
+The Phase-17.1 engineering gate passed on 2026-09-16: 3,099 full regression
+tests, the paired 49-attempt final smoke and a read-only evidence audit. See
+[the implementation report](decisions/phase_17_1_implementation.md) for exact
+counts, source provenance, sampled geometries and limitations. This gate does
+not establish the scientific hypothesis or launch Experiment 002.
+
 ## Extending the workbench
 
 Extensions are Python registrations loaded before configuration validation and

@@ -201,6 +201,13 @@ Start with [the workbench guide](docs/research_workbench.md) and the
 run. Predictions never establish scientific claims; Majorana certification,
 finite-size scaling and critical disorder strength require further validation.
 
+For expanded connectivity, see the
+[Experiment 002 configuration](examples/research_experiment002_long_connectivity.json)
+and [Phase-17.1 engineering report](docs/decisions/phase_17_1_implementation.md).
+Length-2 bonds use explicitly configured unconnected overpasses at fixed sites,
+with multi-scale rewiring and the existing continuous robustness-quality objective.
+The long scientific run requires a separate launch.
+
 ## Earlier planned features
 
 - Kitaev chain

@@ -26,6 +26,8 @@ def _candidate_id(candidate: dict[str, Any]) -> str:
 
 
 def _geometry_plot(candidate: dict[str, Any]) -> Any:
+    from math import dist, sqrt
+
     import plotly.graph_objects as go
 
     geometry = candidate.get("geometry", {})
@@ -35,11 +37,20 @@ def _geometry_plot(candidate: dict[str, Any]) -> Any:
     if points:
         xs: list[float | None] = []
         ys: list[float | None] = []
+        long_xs: list[float | None] = []
+        long_ys: list[float | None] = []
         for a, b in edges:
             xs.extend((points[a][0], points[b][0], None))
             ys.extend((points[a][1], points[b][1], None))
+            if dist(points[a], points[b]) > sqrt(2) + 1e-12:
+                long_xs.extend((points[a][0], points[b][0], None))
+                long_ys.extend((points[a][1], points[b][1], None))
         figure.add_trace(
             go.Scatter(x=xs, y=ys, mode="lines", line={"color": "#64748b"}, hoverinfo="skip")
+        )
+        figure.add_trace(
+            go.Scatter(x=long_xs, y=long_ys, mode="lines", line={"color": "#a855f7", "width": 3},
+                       name="Bonds longer than sqrt(2)", hoverinfo="name")
         )
         figure.add_trace(
             go.Scatter(
@@ -62,6 +73,17 @@ def _geometry_plot(candidate: dict[str, Any]) -> Any:
 
 def _candidate_view(st: Any, candidate: dict[str, Any], key: str) -> None:
     st.subheader(_candidate_id(candidate))
+    descriptors = candidate.get("descriptors", {})
+    for descriptor, label in (("regular_edge_distance", "of regular edges replaced"),
+                              ("long_bond_fraction", "long bonds")):
+        value = descriptors.get(descriptor)
+        if isinstance(value, (int, float)):
+            st.caption(f"{value * 100:.1f}% {label}")
+    st.caption("Purple: long bonds. Only explicit edges connect sites; crossings add no connections.")
+    st.caption(f"Mean bond length: {descriptors.get('mean_bond_length', descriptors.get('bond_length_mean', 'unavailable'))}")
+    st.json({"mean_bond_length": descriptors.get("mean_bond_length", descriptors.get("bond_length_mean")),
+             "generation": candidate.get("generation"), "parent": candidate.get("parent"),
+             "mutation": candidate.get("mutation")}, expanded=False)
     st.write("Validation state:", candidate.get("validation_state", "PROPOSED"))
     st.plotly_chart(_geometry_plot(candidate), key=key, width="stretch")
     st.markdown("**Exact numerical results**")

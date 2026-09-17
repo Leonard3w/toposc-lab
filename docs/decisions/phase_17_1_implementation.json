@@ -1,0 +1,81 @@
+{
+  "phase": "17.1",
+  "engineering_gate": "PASS",
+  "geometry_convention": {
+    "site_crossings": "unconnected",
+    "max_bond_length": 2.0,
+    "crossings_between_sites": false,
+    "positive_length_overlap": false,
+    "old_defaults_unchanged": true
+  },
+  "physics_adapter": "phase17.fixed-sites-chiral-p-wave.v1",
+  "physics_source_changed": false,
+  "configuration": "examples/research_experiment002_long_connectivity.json",
+  "exact_budget": 6000,
+  "stages_per_complete_candidate": 18,
+  "planned_attempts_without_retries": 5436,
+  "long_scientific_run_launched": false,
+  "source_sha256": "30e78b58e8e8d6a8a953d144fd83b32421aef53cdd2b4536235088940d6cc488",
+  "focused_tests": {
+    "passed": 126,
+    "seconds": 80.16,
+    "log": "results/phase17_1_focused.log"
+  },
+  "full_regression": {
+    "status": "PASS",
+    "passed": 3099,
+    "seconds": 949.85,
+    "log": "results/phase17_1_full_final.log"
+  },
+  "geometry_audit": {
+    "count": 1100,
+    "exact_attempts": 0,
+    "seed": 17102,
+    "path": "results/phase17_1_geometry_audit.json"
+  },
+  "smoke": {
+    "gate": "PASS",
+    "charged_attempts": 49,
+    "resumed_attempts": 25,
+    "uninterrupted_attempts": 24,
+    "hard_crash_exit": 73,
+    "recovery_identical": true,
+    "terminal_replay_calls": 0,
+    "path": "results/phase17_1_smoke_final/smoke_gate.json"
+  },
+  "total_non_test_smoke_attempts": 98,
+  "artifact_audit": {
+    "gate": "PASS",
+    "directory": "C:\\Users\\Leonard\\Documents\\GitHub\\toposc-lab\\results\\phase17_1_smoke_final\\resumed",
+    "checked_stage_records": 24,
+    "checked_complete_candidates": 6,
+    "checked_archive_cells": 5,
+    "checked_checkpoints": 11,
+    "charged_attempts": 25,
+    "additional_exact_calls": 0,
+    "source_sha256": "30e78b58e8e8d6a8a953d144fd83b32421aef53cdd2b4536235088940d6cc488",
+    "checks": [
+      "SQLite integrity and payload checksums",
+      "Existing dataset validators",
+      "Geometry constraints",
+      "Pure summary regeneration",
+      "No training-label leakage",
+      "Archive exact provenance",
+      "Checkpoint envelopes",
+      "Final report export"
+    ]
+  },
+  "ruff": "PASS",
+  "mypy_backend_13_files": "PASS",
+  "mypy_ui_3_files": "PASS",
+  "scientific_hypothesis": "INCONCLUSIVE",
+  "claims": {
+    "thermodynamic_phase": false,
+    "bulk_gap": false,
+    "critical_disorder_strength": false,
+    "majorana_validation": false,
+    "finite_size_convergence": false,
+    "algorithmic_superiority": false
+  },
+  "base_git_commit": "f568a6645cf59ba92f9bb7eab47e59942cde9cbf"
+}

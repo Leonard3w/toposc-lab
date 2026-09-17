@@ -65,8 +65,15 @@ class FixedConnectivitySpace:
     bond_tolerance: float = 0.05
     forbid_crossings: bool = False
     minimum_distance: float = 0.002
+    site_crossings: str = "forbid"
+    initialization_rewires: tuple[int, ...] = ()
 
     def __post_init__(self) -> None:
+        if self.site_crossings not in ("forbid", "unconnected"):
+            raise ValueError("site_crossings must be forbid or unconnected")
+        object.__setattr__(self, "initialization_rewires", tuple(self.initialization_rewires))
+        if any(type(n) is not int or not 1 <= n <= 100 for n in self.initialization_rewires):
+            raise ValueError("initialization_rewires must contain integers between 1 and 100")
         if isinstance(self.side, bool) or not isinstance(self.side, int) or self.side < 2:
             raise ValueError("side must be an integer >= 2")
         if not 1 <= self.min_degree <= self.max_degree:
@@ -104,7 +111,73 @@ class FixedConnectivitySpace:
         return tuple((i, j) for i in range(self.side**2) for j in range(i + 1, self.side**2)
                      if np.linalg.norm(self.coordinates[i] - self.coordinates[j])
                      <= self.max_bond_length + 1e-12
-                     and gcd(*(int(abs(v)) for v in self.coordinates[i] - self.coordinates[j])) == 1)
+                     and (self.site_crossings == "unconnected" or
+                          gcd(*(int(abs(v)) for v in self.coordinates[i] - self.coordinates[j])) == 1))
+
+    @cached_property
+    def crossing_conflicts(self) -> dict[Edge, frozenset[Edge]]:
+        """Pairwise embedding conflicts, including collinear overlap in opt-in mode.
+
+        An intersection at an existing site is an unconnected overpass only in
+        the explicitly selected new convention. Nothing splits or adds edges.
+        Integer coordinates make intersection classification reproducible.
+        """
+        pool = np.asarray(self.edge_pool, dtype=int)
+        starts, ends = self.coordinates[pool[:, 0]], self.coordinates[pool[:, 1]]
+        vectors = ends - starts
+
+        def cross(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+            return np.asarray(a[..., 0] * b[..., 1] - a[..., 1] * b[..., 0])
+
+        result = {}
+        for index, edge in enumerate(self.edge_pool):
+            start, vector = starts[index], vectors[index]
+            delta = starts - start
+            denominator = cross(vector, vectors)
+            nonparallel = denominator != 0
+            safe = np.where(nonparallel, denominator, 1)
+            along = cross(delta, vectors) / safe
+            other = cross(delta, vector) / safe
+            intersect = nonparallel & (along >= 0) & (along <= 1) & (other >= 0) & (other <= 1)
+            if self.site_crossings == "unconnected":
+                points = start + along[:, None] * vector
+                at_site = np.all(np.abs(points - np.rint(points)) <= 1e-12, axis=1)
+                intersect &= ~at_site
+            collinear = ~nonparallel & (cross(delta, vector) == 0)
+            axis = int(np.argmax(np.abs(vector)))
+            overlap = (np.minimum(np.maximum(starts[:, axis], ends[:, axis]),
+                                  max(start[axis], ends[index, axis])) -
+                       np.maximum(np.minimum(starts[:, axis], ends[:, axis]),
+                                  min(start[axis], ends[index, axis])))
+            intersect |= collinear & (overlap > 1e-12 if self.site_crossings == "unconnected"
+                                      else overlap >= -1e-12)
+            if self.site_crossings == "forbid":
+                intersect &= ~np.any((pool == edge[0]) | (pool == edge[1]), axis=1)
+            intersect[index] = False
+            result[edge] = frozenset(self.edge_pool[i] for i in np.flatnonzero(intersect))
+        return result
+
+    def valid_edges(self, edges: set[Edge]) -> bool:
+        """Cheap composition precheck; accepted proposals still use validate()."""
+        allowance = int(np.floor(self.edge_count * self.bond_tolerance + 1e-12))
+        if not self.edge_count - allowance <= len(edges) <= self.edge_count + allowance:
+            return False
+        if not edges <= set(self.edge_pool):
+            return False
+        neighbors: list[set[int]] = [set() for _ in range(self.side**2)]
+        for a, b in edges:
+            neighbors[a].add(b)
+            neighbors[b].add(a)
+            if self.forbid_crossings and self.crossing_conflicts[(a, b)] & edges:
+                return False
+        if any(not self.min_degree <= len(row) <= self.max_degree for row in neighbors):
+            return False
+        visited, pending = {0}, [0]
+        while pending:
+            for site in neighbors[pending.pop()] - visited:
+                visited.add(site)
+                pending.append(site)
+        return len(visited) == self.side**2
 
     @cached_property
     def policy(self) -> MutationValidityPolicy:
@@ -116,7 +189,8 @@ class FixedConnectivitySpace:
             maximum_edge_count=self.edge_count + allowance,
             minimum_degree=self.min_degree, maximum_degree=self.max_degree,
             maximum_edge_length=self.max_bond_length, minimum_site_separation=1.0,
-            forbid_straight_edge_crossings=self.forbid_crossings, numerical_tolerance=1e-12,
+            forbid_straight_edge_crossings=self.forbid_crossings and self.site_crossings == "forbid",
+            numerical_tolerance=1e-12,
         )
 
     def build(self, edges: set[Edge] | tuple[Edge, ...]) -> Geometry:
@@ -142,6 +216,10 @@ class FixedConnectivitySpace:
             local_edges = None
         if local_edges is None or not local_edges <= set(self.edge_pool):
             reasons.append("edge_outside_local_pool")
+        elif self.forbid_crossings and self.site_crossings == "unconnected" and any(
+            self.crossing_conflicts[edge] & local_edges for edge in local_edges
+        ):
+            reasons.append("straight_edge_crossing_or_overlap")
         if any(e.displacement is not None or e.boundary_crossing or e.edge_type or e.metadata
                for e in geometry.edges):
             reasons.append("unsupported_edge_semantics")
@@ -199,6 +277,9 @@ class FixedConnectivitySpace:
         Mutations can alter that ring. One diagonal per square improves planar
         acceptance without changing the configurable crossing validity check.
         """
+        if self.initialization_rewires:
+            count = int(rng.choice(self.initialization_rewires))
+            return self.build(_compose_rewires(self, set(self.edges(self.reference())), rng, count))
         pool = list(self.edge_pool)
         if self.forbid_crossings:
             for y in range(self.side - 1):
@@ -250,6 +331,17 @@ class FixedConnectivitySpace:
                 degrees[i] += 1
                 degrees[j] += 1
         return self.build(edges)
+
+    def sample_with_metadata(self, rng: np.random.Generator) -> tuple[Geometry, dict[str, Any]]:
+        if not self.initialization_rewires:
+            return self.sample(rng), {"operator": "random_wiring", "added": [], "removed": []}
+        requested = int(rng.choice(self.initialization_rewires))
+        before = set(self.edges(self.reference()))
+        after = _compose_rewires(self, before.copy(), rng, requested)
+        return self.build(after), {"operator": "multiscale_initialization",
+                                   "requested_valid_edits": requested,
+                                   "removed": sorted(before - after),
+                                   "added": sorted(after - before)}
 
     def mutate(self, parent: Geometry, rng: np.random.Generator,
                operator: str | None = None) -> tuple[Geometry, dict[str, Any]]:
@@ -344,10 +436,50 @@ def _motif(space: FixedConnectivitySpace, edges: set[Edge], rng: np.random.Gener
     return edges
 
 
+def _compose_rewires(space: FixedConnectivitySpace, edges: set[Edge],
+                     rng: np.random.Generator, count: int) -> set[Edge]:
+    """Compose bounded valid edits, including atomic overlap removal for long bonds.
+
+    Adding a length-2 edge may require removing both overlapping unit edges.
+    Complete its fixed-budget edit with compatible replacement edges before
+    checking degrees and connectedness. Failed draws never change the parent.
+    """
+    accepted = 0
+    for _ in range(count * 40):
+        if accepted >= count:
+            break
+        available = sorted(set(space.edge_pool) - edges)
+        added = _pick(available, rng)
+        if added is None:
+            break
+        conflicts = (space.crossing_conflicts[added] & edges
+                     if space.forbid_crossings else frozenset())
+        removed = set(conflicts)
+        if not removed:
+            removed = {sorted(edges)[int(rng.integers(len(edges)))]}
+        proposed = (edges - removed) | {added}
+        for _ in range(len(removed) - 1):
+            choices = [edge for edge in space.edge_pool if edge not in proposed
+                       and (not space.forbid_crossings or
+                            not space.crossing_conflicts[edge] & proposed)]
+            replacement = _pick(choices, rng)
+            if replacement is None:
+                break
+            proposed.add(replacement)
+        if proposed != edges and len(proposed) == len(edges) and space.valid_edges(proposed):
+            edges = proposed
+            accepted += 1
+    return edges
+
+
 for _name, _function in {
     "remove_local_bond": _remove, "add_local_bond": _add, "edge_swap": _swap,
     "local_rewiring": _rewire, "diagonal_flip": _flip, "local_motif_replacement": _motif,
     "boundary_rewiring": lambda space, edges, rng: _rewire(space, edges, rng, True),
+    "multi_rewire_local": lambda space, edges, rng: _compose_rewires(
+        space, edges, rng, int(rng.integers(1, 5))),
+    "multi_rewire_explore": lambda space, edges, rng: _compose_rewires(
+        space, edges, rng, int(rng.integers(5, 21))),
 }.items():
     register_mutation(_name, _function)
 SPACE_REGISTRY["fixed_connectivity"] = FixedConnectivitySpace

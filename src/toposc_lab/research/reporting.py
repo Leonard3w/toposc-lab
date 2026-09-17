@@ -8,6 +8,41 @@ from typing import Any
 import numpy as np
 
 
+def structural_comparison(snapshot: dict[str, Any]) -> dict[str, Any]:
+    """Compare stored complete evidence; never substitute predictions or missing values."""
+    candidates = snapshot.get("candidates", [])
+    searched = [c for c in candidates if c.get("origin") == "exact"
+                and c.get("score") is not None and not c.get("baseline")]
+    best = max(searched, key=lambda c: (c["score"], c["id"]), default=None)
+
+    def evidence(candidate: dict[str, Any]) -> dict[str, Any]:
+        metrics = candidate.get("raw_metrics", {})
+        return {"id": candidate["id"], "family": candidate.get("family"),
+                "objective_score": candidate.get("score"),
+                **{key: metrics.get(key) for key in (
+                    "robustness_quality_mean", "robustness_success_fraction", "quality")},
+                "disorder_width_statistics": candidate.get("robustness"),
+                "descriptors": candidate.get("descriptors", {})}
+
+    comparisons = []
+    for baseline in (c for c in candidates if c.get("baseline")):
+        row = evidence(baseline)
+        searched_quality = best.get("raw_metrics", {}).get("robustness_quality_mean") if best else None
+        baseline_quality = row["robustness_quality_mean"]
+        if searched_quality is None or baseline_quality is None or baseline.get("score") is None:
+            row["observed_comparison"] = "unavailable: complete exact evidence required"
+        else:
+            delta = searched_quality - baseline_quality
+            row["searched_minus_baseline_quality"] = delta
+            row["observed_comparison"] = (
+                "higher observed finite-system quality" if delta > 0 else
+                "lower observed finite-system quality" if delta < 0 else
+                "equal within sampled protocol")
+        comparisons.append(row)
+    return {"best_searched": evidence(best) if best else None, "baselines": comparisons,
+            "scope": "Exploratory observations, not algorithmic superiority or universal robustness."}
+
+
 def diagnostics(snapshot: dict[str, Any]) -> dict[str, Any]:
     candidates = snapshot.get("candidates", [])
     exact = [c for c in candidates if c.get("origin") == "exact" and c.get("score") is not None]
@@ -70,7 +105,8 @@ def diagnostics(snapshot: dict[str, Any]) -> dict[str, Any]:
             "surrogate_error": calibration.get("mae", calibration.get("mean_absolute_error")),
             "anomalies": anomalies, "numerical_failures": failures,
             "baseline_comparison": [{"id": c["id"], "family": c.get("family"),
-                                     "score": c.get("score"), "raw_metrics": c.get("raw_metrics")}
+                                     "score": c.get("score"), "raw_metrics": c.get("raw_metrics"),
+                                     "descriptors": c.get("descriptors", {})}
                                     for c in candidates if c.get("baseline")],
             "exact_evaluations": state.get("exact_evaluations", 0),
             "compute_usage": {k: state.get(k) for k in
@@ -106,10 +142,11 @@ def final_report(snapshot: dict[str, Any]) -> str:
              "Baseline, confirmation and disorder calls share this cap. Compare algorithms at "
              "matched exact-attempt counts, protocols and seeds.\n"),
              "## 5. Matched baselines\n\n" + block(summary["baseline_comparison"]) +
+             block(structural_comparison(snapshot)) +
              "Other geometry families have no matched fixed-site adapter in this experiment; "
              "they are not silently treated as controls.\n",
              "## 6. Best observed candidates\n\n" + block([
-                 {k: c.get(k) for k in ("id", "score", "validation_state", "raw_metrics")}
+                 {k: c.get(k) for k in ("id", "score", "validation_state", "raw_metrics", "descriptors")}
                  for c in best]),
              "## 7. MAP-Elites archive\n\n" + block({k: summary[k] for k in
                  ("archive_coverage", "occupied_cells", "unexplored_cells", "diversity")}),

@@ -1,5 +1,7 @@
 """Native geometry and quality drawing; no physics or plotting backend required."""
 
+from math import dist, sqrt
+
 from PySide6.QtCore import QPointF, QRectF, Qt
 from PySide6.QtGui import QColor, QPainter, QPaintEvent, QPen
 from PySide6.QtWidgets import QWidget
@@ -8,9 +10,10 @@ from toposc_live.models import GeometrySnapshot
 
 
 class GeometryView(QWidget):
-    def __init__(self, parent: QWidget | None = None) -> None:
+    def __init__(self, parent: QWidget | None = None, *, highlight_long_bonds: bool = False) -> None:
         super().__init__(parent)
         self.geometry_data = GeometrySnapshot()
+        self.highlight_long_bonds = highlight_long_bonds
         self.setMinimumSize(260, 240)
 
     def set_geometry(self, geometry: GeometrySnapshot) -> None:
@@ -41,8 +44,9 @@ class GeometryView(QWidget):
             )
             for x, y in zip(xs, ys)
         ]
-        painter.setPen(QPen(QColor("#6c92b1"), 1.5))
         for source, target in self.geometry_data.edges:
+            long = self.highlight_long_bonds and dist(points[source], points[target]) > sqrt(2) + 1e-12
+            painter.setPen(QPen(QColor("#c99aff" if long else "#6c92b1"), 3 if long else 1.5))
             painter.drawLine(positions[source], positions[target])
         for i, position in enumerate(positions):
             painter.setBrush(QColor("#e5ae62" if i in self.geometry_data.boundary else "#62d0c9"))
@@ -54,6 +58,8 @@ class GeometryView(QWidget):
             20,
             f"{len(points)} sites · {len(self.geometry_data.edges)} edges · perimeter in amber",
         )
+        if self.highlight_long_bonds:
+            painter.drawText(12, self.height() - 8, "Purple: bonds longer than sqrt(2)")
 
 
 class QualityPlot(QWidget):

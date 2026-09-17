@@ -262,6 +262,38 @@ def test_bad_geometry_is_inspectable_without_paint_failure():
     assert "could not" in snapshot.message
 
 
+def test_expanded_candidate_geometry_and_structural_summary(page, app, tmp_path):
+    import numpy as np
+
+    from toposc_lab.research.descriptors import compute_descriptors
+    from toposc_lab.research.space import FixedConnectivitySpace, geometry_to_payload
+    space = FixedConnectivitySpace(**{**ExperimentConfig().space, "side": 4,
+                                      "max_bond_length": 2., "site_crossings": "unconnected",
+                                      "initialization_rewires": (40,)})
+    graph = space.sample(np.random.default_rng(0))
+    descriptors = compute_descriptors(graph)
+    assert descriptors["long_bond_fraction"] > 0
+    candidate = {"id": "expanded-ui", "geometry": geometry_to_payload(graph),
+                 "descriptors": descriptors, "origin": "proposed", "score": None,
+                 "validation_state": "PROPOSED", "generation": 2,
+                 "parent": "reference", "mutation": {"operator": "multi_rewire_explore"}}
+    text = candidate_details(candidate)
+    assert "% of regular edges replaced" in text and "% long bonds" in text
+    assert "mean_bond_length" in text and "multi_rewire_explore" in text
+    view = page.geometry_views[0]
+    view.set_geometry(geometry(candidate))
+    view.resize(450, 450)
+    image = view.grab()
+    assert not image.isNull()
+    assert image.save(str(tmp_path / "expanded-connectivity.png"))
+    assert set(view.geometry_data.edges) == set(space.edges(graph))
+    assert view.highlight_long_bonds
+    from toposc_lab.app.research_page import _geometry_plot
+    plot = _geometry_plot(candidate)
+    long_trace = next(trace for trace in plot.data if trace.name == "Bonds longer than sqrt(2)")
+    assert len(long_trace.x) == 3 * sum(graph.distance(e.source, e.target) > np.sqrt(2) for e in graph.edges)
+
+
 def test_real_service_checkpoint_snapshot_survives_ui_restart(app, tmp_path, monkeypatch):
     from toposc_lab.research.service import ResearchService
 

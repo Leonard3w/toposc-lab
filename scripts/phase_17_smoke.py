@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 
-def main() -> None:
+def main(config_override: dict | None = None) -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, default=Path("results/phase17-smoke"))
     parser.add_argument("--crash-worker", type=Path)
@@ -43,6 +43,9 @@ def main() -> None:
                "forbid_crossings": True, "minimum_distance": .002},
         physics={"disorder_widths": [.2], "disorder_seeds": [17051, 17052]},
         surrogate={"ensemble_size": 4, "n_estimators": 10}, output_directory=str(output))
+    if config_override is not None:
+        config = ExperimentConfig.from_dict({**config.to_dict(), **config_override,
+                                             "output_directory": str(output)})
     path = ResearchService.create(config, output / "resumed")
     def pause(event, payload):
         if event == "cycle_committed" and payload["cycle"] == 1:
@@ -88,6 +91,17 @@ def main() -> None:
     ResearchEngine(path).run()
     assert len(ResearchStore(path).attempts()) == before
     ResearchStore(path).integrity_check()
+    if config.space.get("site_crossings") == "unconnected":
+        from toposc_lab.research.descriptors import compute_descriptors
+        from toposc_lab.research.space import geometry_from_payload
+        exact = [c for c in final["candidates"] if c.get("observed")]
+        searched = [c for c in exact if not c.get("baseline")]
+        assert any(c["descriptors"]["long_bond_fraction"] > 0 for c in searched)
+        assert any(c["descriptors"]["regular_edge_distance"] > 1 / 24 for c in searched)
+        for candidate in exact:
+            assert compute_descriptors(geometry_from_payload(candidate["geometry"])) == candidate["descriptors"]
+        assert "regular_edge_distance" in final["report"]
+        assert "long_bond_fraction" in final["report"]
     report = {"gate": "PASS", "engineering_smoke_only": True, "worker_pid": pid,
               "pause_verified": True, "hard_crash_exit": crashed.returncode,
               "restart_detected": True, "resume_science_identical": True,

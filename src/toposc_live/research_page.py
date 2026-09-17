@@ -99,6 +99,13 @@ def geometry(candidate: dict[str, Any]) -> GeometrySnapshot:
 
 def candidate_details(candidate: dict[str, Any]) -> str:
     """Render every scientific record without interpreting absent validation."""
+    descriptors = mapping(candidate.get("descriptors"))
+    structural = []
+    for key, label in (("regular_edge_distance", "of regular edges replaced"),
+                       ("long_bond_fraction", "long bonds")):
+        value = number(descriptors.get(key))
+        if value is not None:
+            structural.append(f"{100 * value:.1f}% {label}")
     preview = {
         **candidate,
         "geometry": {
@@ -113,6 +120,12 @@ def candidate_details(candidate: dict[str, Any]) -> str:
                 f"CANDIDATE {identifier(candidate)}\n"
                 f"Validation state: {candidate.get('validation_state', candidate.get('status', 'PROPOSED'))}"
             ),
+            "CONNECTIVITY\n" + " · ".join(structural) +
+            "\nOnly explicit edges connect sites; crossings add no connections.\n" + json_text({
+                "mean_bond_length": descriptors.get("mean_bond_length", descriptors.get("bond_length_mean")),
+                "generation": candidate.get("generation"),
+                "parent": candidate.get("parent"), "mutation": candidate.get("mutation"),
+            }),
             "EXACT OBJECTIVE / RAW METRICS\n"
             + json_text({"score": score(candidate), "metrics": candidate.get("raw_metrics", {})}),
             "EXACT NUMERICAL RESULTS\n" + json_text(exact(candidate)),
@@ -794,7 +807,7 @@ class ResearchPage(QWidget):
         for _ in range(2):
             column = QWidget()
             column_layout = QVBoxLayout(column)
-            view, details = GeometryView(), text_box()
+            view, details = GeometryView(highlight_long_bonds=True), text_box()
             column_layout.addWidget(view, 1)
             column_layout.addWidget(details, 1)
             comparison.addWidget(column)
@@ -824,7 +837,7 @@ class ResearchPage(QWidget):
         self.baseline_table.itemSelectionChanged.connect(self.inspect_baseline)
         layout.addWidget(self.baseline_table, 1)
         self.baseline_details = text_box()
-        self.baseline_geometry = GeometryView()
+        self.baseline_geometry = GeometryView(highlight_long_bonds=True)
         preview = QSplitter(Qt.Orientation.Horizontal)
         preview.addWidget(self.baseline_geometry)
         preview.addWidget(self.baseline_details)

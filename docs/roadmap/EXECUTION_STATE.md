@@ -1,15 +1,15 @@
 ﻿# TOPOSC-LAB EXECUTION STATE
 
-current_block: Phase 17 engineering workbench (explicitly authorized after Gate 16)
-current_phase: Phase 17 autonomous research workbench engineering gate PASS
-next_task: STOP for human review; full scientific Experiment 001 requires a separate launch
-last_completed_task: configurable research/UI, exact stage persistence, recovery, 113-attempt paired engineering smoke and zero-call artifact audit
-last_verified_commit: c03fc8bdaedfdfe74fa008590b4a4f5ed23ea7b3 plus archived working-tree source in results/phase17-smoke-final/resumed/source.zip
-last_full_test_result: 3077 passed in 904.23 s, 2026-09-16; results/phase17-full-tests.log
-last_full_test_command: .venv/Scripts/python.exe -B -m pytest -q -p no:cacheprovider --basetemp=results/pytest-phase17-full (PYTHONDONTWRITEBYTECODE=1; OMP/OPENBLAS/MKL/BLIS_NUM_THREADS=1)
-last_block_gate: PHASE17_WORKBENCH_GATE PASS; scientific Experiment001 hypothesis remains inconclusive
-previous_block_gate: MECHANISM_GATE NOT_ESTABLISHED; Phase16B bounded falsification complete
-verified_source_sha256: 2d9b2f48dd870f86c8911db9050b26130a5c0f9a40a7e33d47f3ded5ba7f610c
+current_block: Phase 17.1 expanded connectivity preparation (explicitly authorized)
+current_phase: Phase 17.1 expanded connectivity engineering gate PASS
+next_task: STOP for human review; scientific Experiment 002 requires a separate launch
+last_completed_task: opt-in length-2 overpasses, multi-scale search, descriptors/UI/reports, 1100-geometry audit, final 49-attempt paired smoke and zero-call artifact audit
+last_verified_commit: f568a6645cf59ba92f9bb7eab47e59942cde9cbf plus archived working-tree source in results/phase17_1_smoke_final/resumed/source.zip
+last_full_test_result: 3099 passed in 949.85 s, 2026-09-16; results/phase17_1_full_final.log
+last_full_test_command: .venv/Scripts/python.exe -B -m pytest -q -p no:cacheprovider --basetemp=results/pytest-phase17_1-final (PYTHONDONTWRITEBYTECODE=1; OMP/OPENBLAS/MKL/BLIS_NUM_THREADS=1)
+last_block_gate: PHASE17_1_EXPANDED_CONNECTIVITY_GATE PASS; scientific hypothesis remains inconclusive; Experiment002 not launched
+previous_block_gate: PHASE17_WORKBENCH_GATE PASS; earlier MECHANISM_GATE remains NOT_ESTABLISHED
+verified_source_sha256: 30e78b58e8e8d6a8a953d144fd83b32421aef53cdd2b4536235088940d6cc488
 protocol_sha256: 29212daa1b1c13407586d79eef3f90e6eb6125ebe36a84f65ab0ea37c7d3f431
 campaign_driver_sha256: 0912d888085f7c6c826e11c469e373f3e72e986536e64faaa0220aed0a78687e
 

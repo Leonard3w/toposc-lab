@@ -47,7 +47,7 @@ class SearchStrategy:
                  mutation_rates: dict[str, float] | None = None,
                  allocation: dict[str, float] | Sequence[float] | None = None,
                  experiment_id: str = "", code_version: str = "unknown",
-                 family_fraction: float = 0.5) -> None:
+                 family_fraction: float = 0.5, initialization_probability: float = 0.0) -> None:
         self.space, self.seed = space, seed
         self.rng = np.random.default_rng(seed)
         self.behavior_descriptors = tuple(behavior_descriptors)
@@ -90,6 +90,9 @@ class SearchStrategy:
         if not 0 < family_fraction <= 1:
             raise ValueError("family_fraction must be in (0,1]")
         self.family_fraction = family_fraction
+        if not np.isfinite(initialization_probability) or not 0 <= initialization_probability <= 1:
+            raise ValueError("initialization_probability must be a fraction in [0,1]")
+        self.initialization_probability = initialization_probability
         self.experiment_id, self.code_version = experiment_id, code_version
         self.proposal_limit: int | None = None
         self.initialize()
@@ -145,11 +148,12 @@ class SearchStrategy:
                 break
             self.generated += 1
             parent = self._parent()
+            if self.initialization_probability > 0 and self.rng.random() < self.initialization_probability:
+                parent = None
             proposal_seed = int(self.rng.integers(0, 2**32))
             rng = np.random.default_rng(proposal_seed)
             if parent is None:
-                geometry = self.space.sample(rng)
-                mutation = {"operator": "random_wiring", "added": [], "removed": []}
+                geometry, mutation = self.space.sample_with_metadata(rng)
             else:
                 operator = str(rng.choice(tuple(self.mutation_rates), p=self._mutation_probabilities))
                 geometry, mutation = self.space.mutate(geometry_from_payload(parent["geometry"]),
