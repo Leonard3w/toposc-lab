@@ -47,8 +47,12 @@ class SearchStrategy:
                  mutation_rates: dict[str, float] | None = None,
                  allocation: dict[str, float] | Sequence[float] | None = None,
                  experiment_id: str = "", code_version: str = "unknown",
-                 family_fraction: float = 0.5, initialization_probability: float = 0.0) -> None:
+                 family_fraction: float = 0.5, initialization_probability: float = 0.0,
+                 quality_parent_probability: float = 0.0,
+                 quality_parent_fraction: float = 0.25,
+                 batch_novelty: bool = False) -> None:
         self.space, self.seed = space, seed
+        self._edge_indices = {edge: index for index, edge in enumerate(space.edge_pool)}
         self.rng = np.random.default_rng(seed)
         self.behavior_descriptors = tuple(behavior_descriptors)
         if len(set(self.behavior_descriptors)) != len(self.behavior_descriptors):
@@ -93,6 +97,15 @@ class SearchStrategy:
         if not np.isfinite(initialization_probability) or not 0 <= initialization_probability <= 1:
             raise ValueError("initialization_probability must be a fraction in [0,1]")
         self.initialization_probability = initialization_probability
+        if not np.isfinite(quality_parent_probability) or not 0 <= quality_parent_probability <= 1:
+            raise ValueError("quality_parent_probability must be in [0,1]")
+        if not np.isfinite(quality_parent_fraction) or not 0 < quality_parent_fraction <= 1:
+            raise ValueError("quality_parent_fraction must be in (0,1]")
+        if type(batch_novelty) is not bool:
+            raise ValueError("batch_novelty must be boolean")
+        self.quality_parent_probability = quality_parent_probability
+        self.quality_parent_fraction = quality_parent_fraction
+        self.batch_novelty = batch_novelty
         self.experiment_id, self.code_version = experiment_id, code_version
         self.proposal_limit: int | None = None
         self.initialize()
@@ -106,8 +119,10 @@ class SearchStrategy:
         self.near_duplicates = 0
         self.archive: dict[str, dict[str, Any]] = {}
         self.history: list[dict[str, Any]] = []
-        self.seen: dict[str, dict[str, Any]] = {}
-        self._orbits: dict[str, tuple[frozenset[tuple[int, int]], ...]] = {}
+        # Integer edge masks preserve exact Jaccard distance under all eight
+        # symmetries without repeatedly allocating Python edge sets. Candidate
+        # geometry/provenance remains in the authoritative candidate table.
+        self.seen: dict[str, tuple[int, ...]] = {}
         self._rejections: list[dict[str, Any]] = []
         self.selection_counts: Counter[str] = Counter()
 
@@ -128,6 +143,10 @@ class SearchStrategy:
             # JSON stores object keys canonically. Parent choice must use the same
             # cell ordering before and after a persisted resume.
             elites = [self.archive[key] for key in sorted(self.archive)]
+            if (self.quality_parent_probability > 0
+                    and self.rng.random() < self.quality_parent_probability):
+                elites = sorted(elites, key=lambda r: (-r["score"], r["id"]))[
+                    :max(1, int(np.ceil(len(elites) * self.quality_parent_fraction)))]
             # Equal cell probability prevents the most populated region dominating breeding.
             return elites[int(self.rng.integers(len(elites)))]
         population = [r for r in self.history if _exact_eligible(r)]
@@ -180,10 +199,10 @@ class SearchStrategy:
                 self.duplicates += 1
                 reason = "duplicate"
             else:
-                edge_set = frozenset(self.space.edges(geometry))
-                near = any(min(len(edge_set ^ variant) / max(1, len(edge_set | variant))
-                               for variant in orbit) < self.space.minimum_distance
-                           for orbit in self._orbits.values())
+                mask = self._edge_mask(self.space.edges(geometry))
+                near = any((mask ^ variant).bit_count() / max(1, (mask | variant).bit_count())
+                           < self.space.minimum_distance
+                           for orbit in self.seen.values() for variant in orbit)
                 if near:
                     self.near_duplicates += 1
                     reason = "near_duplicate"
@@ -196,8 +215,7 @@ class SearchStrategy:
                 continue
             record["descriptors"] = compute_descriptors(geometry)
             record["archive_cell"] = self.cell(record["descriptors"])
-            self.seen[geometry_hash] = copy.deepcopy(record)
-            self._orbits[geometry_hash] = self.space.orbit(geometry)
+            self.seen[geometry_hash] = self._masks(geometry)
             proposed.append(record)
         self.generation += 1
         return proposed
@@ -218,6 +236,11 @@ class SearchStrategy:
             "surrogate_prediction", "acquisition", "raw_metrics", "metrics", "baseline",
             "validation_results", "warnings", "exact_evaluation_count",
         }})
+        if "validation_results" in record:
+            record["validation_results"] = {
+                name: {key: value for key, value in result.items() if key in {"passed", "status"}}
+                for name, result in record["validation_results"].items()
+            }
         if record.get("score") is not None and (
             not isinstance(record["score"], (int, float)) or isinstance(record["score"], bool)
             or not np.isfinite(record["score"])
@@ -233,8 +256,7 @@ class SearchStrategy:
         key = self.space.hash(geometry)
         if self.space.validate(geometry):
             return
-        self.seen[key] = copy.deepcopy(record)
-        self._orbits[key] = self.space.orbit(geometry)
+        self.seen[key] = self._masks(geometry)
         cell = self.cell(record["descriptors"])
         if cell is None:
             return
@@ -244,17 +266,29 @@ class SearchStrategy:
         if old is None or record["score"] > old["score"]:
             self.archive[cell_key] = record
 
-    def _novelty(self, candidate: dict[str, Any]) -> float:
+    def _edge_mask(self, edges: Any) -> int:
+        mask = 0
+        for first, second in edges:
+            mask |= 1 << self._edge_indices[first, second]
+        return mask
+
+    def _masks(self, geometry: Any) -> tuple[int, ...]:
+        return tuple(self._edge_mask(edges) for edges in self.space.orbit(geometry))
+
+    def _novelty(self, candidate: dict[str, Any],
+                 selected: Sequence[dict[str, Any]] = ()) -> float:
         cell = self.cell(candidate["descriptors"])
+        references = [*self.history, *selected]
         occupied = Counter(tuple(r.get("archive_cell") or ()) for r in self.history)
+        occupied.update(self.cell(r["descriptors"]) or () for r in selected)
         coverage = 1 / (1 + occupied.get(cell or (), 0))
-        if not self.history:
+        if not references:
             return coverage
         names = self.behavior_descriptors
         scale = np.array([b - a for a, b in self.descriptor_bounds])
         vector = np.array([candidate["descriptors"][k] for k in names])
         distances = [float(np.linalg.norm((vector - np.array([r["descriptors"][k] for k in names]))
-                                          / scale)) for r in self.history if r.get("descriptors")]
+                                          / scale)) for r in references if r.get("descriptors")]
         return coverage + (min(distances) if distances else 0)
 
     def select(self, proposals: list[dict[str, Any]], count: int,
@@ -299,13 +333,14 @@ class SearchStrategy:
                 elif mode == "uncertainty":
                     value = prediction["uncertainty"]
                 else:
-                    value = self._novelty(record)
+                    value = self._novelty(record, selected if self.batch_novelty else ())
                 return float(value), record["id"]
 
             winner = max(eligible, key=acquisition)
             value = acquisition(winner)[0]
             winner["acquisition"] = {"strategy": mode, "score": value,
-                                      "novelty": self._novelty(winner)}
+                                      "novelty": self._novelty(
+                                          winner, selected if self.batch_novelty else ())}
             selected.append(winner)
             remaining.remove(winner)
             cells[self.cell(winner["descriptors"])] += 1
@@ -315,24 +350,27 @@ class SearchStrategy:
         return selected
 
     def checkpoint(self) -> dict[str, Any]:
-        return copy.deepcopy({"version": 1, "strategy": self.name, "rng": self.rng.bit_generator.state,
+        return copy.deepcopy({"version": 2, "strategy": self.name, "rng": self.rng.bit_generator.state,
             "generation": self.generation, "generated": self.generated, "invalid": self.invalid,
             "duplicates": self.duplicates, "near_duplicates": self.near_duplicates,
-            "archive": self.archive, "history": self.history, "seen": self.seen,
+            "archive": self.archive, "history": self.history,
+            "seen": {key: [hex(mask) for mask in orbit] for key, orbit in self.seen.items()},
             "rejections": self._rejections, "selection_counts": dict(self.selection_counts)})
 
     def resume(self, checkpoint: dict[str, Any]) -> SearchStrategy:
-        if checkpoint.get("version") != 1 or checkpoint.get("strategy") != self.name:
+        if checkpoint.get("version") not in (1, 2) or checkpoint.get("strategy") != self.name:
             raise ValueError("incompatible strategy checkpoint")
         state = copy.deepcopy(checkpoint)
         self.rng.bit_generator.state = state["rng"]
         for key in ("generation", "generated", "invalid", "duplicates", "near_duplicates",
-                    "archive", "history", "seen"):
+                    "archive", "history"):
             setattr(self, key, state[key])
         self._rejections = state["rejections"]
         self.selection_counts = Counter(state["selection_counts"])
-        self._orbits = {key: self.space.orbit(geometry_from_payload(record["geometry"]))
-                        for key, record in self.seen.items()}
+        self.seen = ({key: self._masks(geometry_from_payload(record["geometry"]))
+                      for key, record in state["seen"].items()} if state["version"] == 1 else
+                     {key: tuple(int(mask, 16) for mask in orbit)
+                      for key, orbit in state["seen"].items()})
         if any(not _exact_eligible(record) for record in self.archive.values()):
             raise ValueError("checkpoint archive contains unvalidated surrogate or failed scores")
         return self

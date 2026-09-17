@@ -31,15 +31,41 @@ class ResearchService:
         return ResearchEngine.create(directory, config)
 
     @staticmethod
-    def snapshot(directory: str | Path, *, detect_interrupted: bool = True) -> dict[str, Any]:
+    def snapshot(directory: str | Path, *, detect_interrupted: bool = True,
+                 lightweight: bool = False, full_checkpoints: bool = False) -> dict[str, Any]:
+        """Consistent view; full recovery checkpoints are loaded only on request.
+
+        The default checkpoint list exposes checked history reports and export
+        paths. Loading every historical breeding population costs gigabytes in
+        a long run and is unnecessary for monitoring or scientific reporting.
+        """
         store = ResearchStore(directory)
         # One read transaction: the UI cannot combine different cycle commits.
         with store.connect(readonly=True) as db:
             db.execute("BEGIN")
             objects: dict[str, dict[str, Any]] = {}
-            for row in db.execute("SELECT * FROM objects"):
-                objects.setdefault(row["kind"], {})[row["id"]] = store.decode(row)
+            kinds: tuple[str, ...] = ("state", "config", "manifest", "strategy", "candidate", "history",
+                     "report", "model", "model_version")
+            if full_checkpoints:
+                kinds += ("checkpoint",)
+            placeholders = ",".join("?" for _ in kinds)
+            for row in db.execute(
+                f"SELECT * FROM objects WHERE kind IN ({placeholders}) ORDER BY rowid", kinds
+            ):
+                value = store.decode(row)
+                if lightweight and row["kind"] == "candidate":
+                    value = {key: item for key, item in value.items() if key not in
+                             {"exact_results", "clean", "majorana", "geometry"}}
+                objects.setdefault(row["kind"], {})[row["id"]] = value
             attempts = [dict(row) for row in db.execute("SELECT * FROM attempts ORDER BY number")]
+            if not lightweight:
+                pending = {c["id"] for c in objects.get("candidate", {}).values() if not c.get("observed")}
+                for identity in sorted(pending & {a["candidate"] for a in attempts}):
+                    for row in db.execute(
+                        "SELECT * FROM objects WHERE kind='exact_result' AND id GLOB ? ORDER BY rowid",
+                        (identity + ":*",),
+                    ):
+                        objects.setdefault("exact_result", {})[row["id"]] = store.decode(row)
             events = [{**dict(row), "payload": json.loads(row["payload"])}
                       for row in db.execute("SELECT * FROM events ORDER BY number")]
         state = objects["state"]["current"]
@@ -67,8 +93,13 @@ class ResearchService:
                     "manifest": objects["manifest"]["current"], "candidates": candidates,
                     "archive": list(strategy.get("archive", {}).values()),
                     "history": list(objects.get("history", {}).values()), "events": events,
-                    "checkpoints": [dict(value, id=key) for key, value in
-                                    objects.get("checkpoint", {}).items()],
+                    "checkpoints": ([dict(value, id=key) for key, value in
+                                     objects.get("checkpoint", {}).items()] if full_checkpoints else
+                                    [{"id": key, "report": value,
+                                      "state": {"exact_evaluations": value.get("exact_evaluations")},
+                                      "export_path": str(Path(directory) / "checkpoints" / (key + ".json")),
+                                      "summary_only": True}
+                                     for key, value in objects.get("history", {}).items()]),
                     "report": objects.get("report", {}).get("current", {}).get("markdown", ""),
                     "surrogate": objects.get("model", {}).get("current", {}),
                     "attempts": attempts, "model_versions": list(objects.get("model_version", {}).values()),

@@ -1,15 +1,15 @@
 ﻿# TOPOSC-LAB EXECUTION STATE
 
-current_block: Phase 17.1 expanded connectivity preparation (explicitly authorized)
-current_phase: Phase 17.1 expanded connectivity engineering gate PASS
-next_task: STOP for human review; scientific Experiment 002 requires a separate launch
-last_completed_task: opt-in length-2 overpasses, multi-scale search, descriptors/UI/reports, 1100-geometry audit, final 49-attempt paired smoke and zero-call artifact audit
-last_verified_commit: f568a6645cf59ba92f9bb7eab47e59942cde9cbf plus archived working-tree source in results/phase17_1_smoke_final/resumed/source.zip
+current_block: Phase 17.2 interrupted-run analysis and focused search improvements
+current_phase: Phase 17.2 engineering checks PASS; discovery-rate improvement remains untested
+next_task: Separately run matched-policy pilot and frozen-shortlist fresh-disorder confirmation described in docs/decisions/phase_17_2_interrupted_run_review.md
+last_completed_task: read-only audit of 254 candidates/4572 exact stages; compact checkpoints and exact distance filtering; optional quality-directed parents/batch novelty; physical tradeoff reports; 140 focused tests and 49-attempt crash-recovery smoke
+last_verified_commit: 79d4ee8 preserves pre-change work; Phase17.2 runtime hash and verification in docs/decisions/phase_17_2_verification.json
 last_full_test_result: 3099 passed in 949.85 s, 2026-09-16; results/phase17_1_full_final.log
 last_full_test_command: .venv/Scripts/python.exe -B -m pytest -q -p no:cacheprovider --basetemp=results/pytest-phase17_1-final (PYTHONDONTWRITEBYTECODE=1; OMP/OPENBLAS/MKL/BLIS_NUM_THREADS=1)
-last_block_gate: PHASE17_1_EXPANDED_CONNECTIVITY_GATE PASS; scientific hypothesis remains inconclusive; Experiment002 not launched
-previous_block_gate: PHASE17_WORKBENCH_GATE PASS; earlier MECHANISM_GATE remains NOT_ESTABLISHED
-verified_source_sha256: 30e78b58e8e8d6a8a953d144fd83b32421aef53cdd2b4536235088940d6cc488
+last_block_gate: PHASE17_2_FOCUSED_SEARCH_ENGINEERING PASS; Experiment002 interrupted after 4572 complete stages; no new scientific run launched
+previous_block_gate: PHASE17_1_EXPANDED_CONNECTIVITY_GATE PASS; earlier MECHANISM_GATE remains NOT_ESTABLISHED
+verified_source_sha256: see docs/decisions/phase_17_2_verification.json; Experiment002 retains archived source 30e78b58e8e8d6a8a953d144fd83b32421aef53cdd2b4536235088940d6cc488
 protocol_sha256: 29212daa1b1c13407586d79eef3f90e6eb6125ebe36a84f65ab0ea37c7d3f431
 campaign_driver_sha256: 0912d888085f7c6c826e11c469e373f3e72e986536e64faaa0220aed0a78687e
 
@@ -57,7 +57,7 @@ known_issues:
 - Some motifs lack a matched intervention on one seed; high-quality feasible parents are preferentially selected.
 - Phase16A resume requires identical source/protocol/runtime/inputs; results/ is git-ignored and must be preserved separately.
 - One fixed geometry/model stratum; no declared size-extension map or thermodynamic/Majorana certification.
-- Four-sample disorder and four-label OOD reference are coarse; success threshold remains unreached.
+- Four-sample disorder and four-label OOD reference are coarse; threshold remained unreached in the earlier Phase15/16 cohort. In Experiment002, success fractions saturate for 148/252 searched candidates.
 - Resume requires matching source/config/runtime, single writer and frozen external exclusion archive; interrupted timings are lower bounds.
 - Windows venv worker termination must include its process tree; gate harness corrected and real recovery verified.
 - Existing default Mypy 3.11 target remains incompatible with installed NumPy stubs; isolated 3.14 checks pass.

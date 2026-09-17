@@ -47,6 +47,21 @@ def scientific_sequence(directory):
             for c in completed(directory)]
 
 
+def test_lightweight_snapshots_keep_science_without_loading_recovery_history(tmp_path, config):
+    path = ResearchEngine.create(tmp_path, config)
+    ResearchEngine(path, evaluator=CheapExact()).run(max_cycles=1)
+    full = ResearchService.snapshot(path, full_checkpoints=True)
+    light = ResearchService.snapshot(path, lightweight=True)
+    standard = ResearchService.snapshot(path)
+    assert full["diagnostics"] == light["diagnostics"] == standard["diagnostics"]
+    assert full["attempts"] == light["attempts"]
+    assert full["checkpoints"][0]["strategy"]
+    assert standard["checkpoints"][0]["summary_only"]
+    assert "strategy" not in standard["checkpoints"][0]
+    assert len(full["checkpoints"]) == len(standard["checkpoints"]) == ResearchStore(path).count("checkpoint")
+    assert all("geometry" not in c and "exact_results" not in c for c in light["candidates"])
+
+
 def test_pause_resume_dataset_and_model_persist(tmp_path, config):
     path = ResearchEngine.create(tmp_path / "resume", config)
     assert ResearchEngine(path, evaluator=CheapExact()).run(max_cycles=1)["status"] == "PAUSED"

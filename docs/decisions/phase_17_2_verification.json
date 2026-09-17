@@ -1,0 +1,180 @@
+{
+  "date": "2026-09-17",
+  "pre_change_git_commit": "79d4ee8",
+  "runtime_source_sha256": "7c4fa39e4ad7ccbede33e38369c508135668c30b5137a19371e0bb3c6e3f564f",
+  "engineering_gate": "PASS",
+  "scientific_search_yield_improvement": "not established; matched pilot required",
+  "experiment002": {
+    "experiment_id": "EXP-3ef1fa2c012e4e2e",
+    "source_sha256": "30e78b58e8e8d6a8a953d144fd83b32421aef53cdd2b4536235088940d6cc488",
+    "charged_attempts": 4572,
+    "complete_candidates": 254,
+    "complete_searched": 252,
+    "attempt_statuses": {
+      "complete": 4572
+    },
+    "exact_seconds": 893.2694235998547,
+    "candidate_checksum_digest": "5addffbae93df17418120e6244eb3e11e39748255241f0392d155c72da07cf17",
+    "attempt_digest": "3a2f42106860cc2c65e938847f9bacf3bc931b79e4d044db3c53483f96bf180c",
+    "verified": [
+      "all candidate payload checksums",
+      "complete geometry constraints",
+      "complete descriptor recomputation",
+      "complete scores and validation states",
+      "complete candidate stages match checksummed exact-result journal"
+    ],
+    "additional_exact_calls": 0,
+    "search_assessment": {
+      "complete_searched": 252,
+      "all_sampled_successes": 148,
+      "acquisition_yield": {
+        "exploitation": {
+          "count": 123,
+          "mean_score": 0.36919393188936617,
+          "above_regular": 81
+        },
+        "novelty": {
+          "count": 61,
+          "mean_score": 0.05846587638065368,
+          "above_regular": 0
+        },
+        "uncertainty": {
+          "count": 62,
+          "mean_score": 0.19268527195882995,
+          "above_regular": 4
+        },
+        "warm_start": {
+          "count": 6,
+          "mean_score": 0.24239009942890113,
+          "above_regular": 0
+        }
+      },
+      "objective_boundary_frontier": [
+        {
+          "id": "ad56ec12171626c7037ff29b67d773d00c4e1ee684e754ea840feb9fc4b8dd87",
+          "score": 0.390579607728111,
+          "boundary_weight": 0.8198527866430446,
+          "baseline": false
+        },
+        {
+          "id": "2583f6d45484f3c914d1eb0f24f8045fa5d1c4aa1c76a9cb33159a8b5a8accbb",
+          "score": 0.3902974507505682,
+          "boundary_weight": 0.8212270007987322,
+          "baseline": false
+        },
+        {
+          "id": "e795d47b5510d3384b5ce559490949bbb21d37ba4714445cd13db9c6494d7433",
+          "score": 0.38795032862029233,
+          "boundary_weight": 0.9423008425998755,
+          "baseline": false
+        },
+        {
+          "id": "0bc1aa1683a861b7c8991c1028a31c3750eb5b79597291167fb99dd9df0936bb",
+          "score": 0.3858764001108782,
+          "boundary_weight": 0.943691731488279,
+          "baseline": false
+        },
+        {
+          "id": "7c720ef2fbea09104dfe7226e3ef58a72e5bce2d683bce012c8b0da78be20bd8",
+          "score": 0.3854218802431826,
+          "boundary_weight": 0.9805747488278305,
+          "baseline": false
+        },
+        {
+          "id": "a024f08d23a3c639ec28e8db5fc897591e43b7d8db51af50ed3f243795c115d4",
+          "score": 0.37837287137457776,
+          "boundary_weight": 0.9894298369745893,
+          "baseline": false
+        },
+        {
+          "id": "f38598c60c82fb9dc3e735948a4246e3323718b832185d143ae26d9f08242756",
+          "score": 0.378095423721028,
+          "boundary_weight": 0.992717114513863,
+          "baseline": false
+        },
+        {
+          "id": "f5b339a71821ddca0e619c9a71f662e222396511ede0480adabfe50d19d95f89",
+          "score": 0.37745235024794604,
+          "boundary_weight": 0.9931669057802996,
+          "baseline": false
+        },
+        {
+          "id": "4ee2af148642d1f708ac2c99a232a5cfd37e5426228beeddc2cff78a765abae1",
+          "score": 0.37741990770100853,
+          "boundary_weight": 0.9932129311160938,
+          "baseline": false
+        },
+        {
+          "id": "127fb82f5164ed0d03fe0f578e8c522111f4e149920ec889c24c1a4c55de903b",
+          "score": 0.37700259707936024,
+          "boundary_weight": 0.9944566004429076,
+          "baseline": false
+        },
+        {
+          "id": "1bbbaa6eeed9001438db4728e768849ad945fa6e78b0a491222842c3140d70ab",
+          "score": 0.3767579840153631,
+          "boundary_weight": 0.9968405231483503,
+          "baseline": false
+        },
+        {
+          "id": "baseline-regular",
+          "score": 0.3766893267615439,
+          "boundary_weight": 0.9970666823194662,
+          "baseline": true
+        }
+      ],
+      "warnings": [
+        "At least half of searched candidates pass every sampled disorder test; success fractions have limited ranking resolution at these widths.",
+        "The best searched objective exceeds regular while its clean boundary weight is lower: inspect the physical tradeoff before claiming improvement."
+      ],
+      "scope": "Adaptive, dependent search observations; acquisition yields are not causal. Fresh disorder seeds are needed after freezing a shortlist. W=0 repeats are deterministic checks, not independent disorder evidence."
+    }
+  },
+  "performance": {
+    "exact_calls": 0,
+    "proposals": 8,
+    "archived": {
+      "proposal_seconds": 17.539825899992138,
+      "checkpoint_bytes": 93149505
+    },
+    "optimized": {
+      "proposal_seconds": 0.5461858000053326,
+      "checkpoint_bytes": 26716831
+    },
+    "identical_proposals": true,
+    "speedup": 32.11329532884394
+  },
+  "verification": {
+    "focused_suite": "140 passed in 141.13 s",
+    "focused_log": "results/phase17_2_focused_final.log",
+    "scope": "Research search, engine, physics, connectivity and native UI; not a new full-repository regression",
+    "mypy": "13 research modules pass with Python 3.14, follow-imports silent, ignore-missing-imports (SciPy stubs unavailable)",
+    "smoke": {
+      "gate": "PASS",
+      "pause_verified": true,
+      "hard_crash_exit": 73,
+      "restart_detected": true,
+      "resume_science_identical": true,
+      "completed_replay_additional_exact_calls": 0,
+      "total_charged_attempts": 49
+    },
+    "smoke_artifact": "results/phase17_2_smoke_final/smoke_gate.json",
+    "ruff": "All modified/new Python modules and scripts pass; results/phase17_2_ruff_final.log"
+  },
+  "new_scientific_experiments_launched": false,
+  "old_experiment_resumed_or_modified": false,
+  "performance_repeat": {
+    "exact_calls": 0,
+    "proposals": 8,
+    "archived": {
+      "proposal_seconds": 14.277207299994188,
+      "checkpoint_bytes": 93149505
+    },
+    "optimized": {
+      "proposal_seconds": 0.5383676000055857,
+      "checkpoint_bytes": 26716831
+    },
+    "identical_proposals": true,
+    "speedup": 26.51944006260046
+  }
+}

@@ -1,5 +1,31 @@
 # Autonomous research workbench
 
+## Interrupted-run review and focused search (Phase 17.2)
+
+Experiment 002 was launched after the Phase-17.1 preparation and interrupted
+after 4,572 completed exact stages (252 searched candidates and two baselines).
+The current analysis, physical tradeoffs and verification are recorded in
+[`decisions/phase_17_2_interrupted_run_review.md`](decisions/phase_17_2_interrupted_run_review.md).
+
+Use `scripts/research_audit.py EXPERIMENT --output AUDIT_DIRECTORY` to inspect
+stored evidence without launching physics. The audit output must be outside the
+experiment. Its CSV and figure accompany a checksummed-evidence summary.
+
+Optional search settings `quality_parent_probability`, `quality_parent_fraction`
+and `batch_novelty` control a mixture of quality-directed and uniform archive
+breeding and novelty within a selected batch. Existing policy defaults remain
+unchanged. `examples/research_experiment003_focused_pilot.json` illustrates the
+new settings with a bounded 1,200-attempt pilot; it has not been launched.
+The new settings are a hypothesis to test at matched budgets, not an established
+increase in scientific discovery rate.
+
+Compact strategy checkpoints preserve exact symmetry-aware Jaccard filtering.
+Dashboard snapshots expose checkpoint summaries by default; request
+`ResearchService.snapshot(path, full_checkpoints=True)` for full recovery data.
+All loaded records retain checksum verification. An ordinary dashboard refresh
+is not a whole-database integrity audit. Source-matching resume remains strict:
+use the archived source for old experiments, and a new directory for new policy.
+
 Phase 17 adds a persistent research framework under `toposc_lab.research` and an
 **Autonomous Research** section in the existing TOPOSC native application. The
 application configures and inspects experiments through `ResearchService`;

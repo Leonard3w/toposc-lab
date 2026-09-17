@@ -7,6 +7,58 @@ from typing import Any
 
 import numpy as np
 
+from toposc_lab.research.strategies import _exact_eligible
+
+
+def search_assessment(snapshot: dict[str, Any]) -> dict[str, Any]:
+    """Separate search yield, saturated labels and competing finite diagnostics.
+
+    These are descriptive counts in an adaptively selected sample. In particular
+    acquisition channels are not randomized arms and boundary weight is not a
+    Majorana certificate.
+    """
+    exact = [c for c in snapshot.get("candidates", []) if _exact_eligible(c)]
+    searched = [c for c in exact if not c.get("baseline")]
+    regular = next((c for c in exact if c.get("baseline") and c.get("family") == "regular"), None)
+    best = max(searched, key=lambda c: (c["score"], c["id"]), default=None)
+    channels = {}
+    for name in sorted({c.get("acquisition", {}).get("strategy", "unrecorded") for c in searched}):
+        rows = [c for c in searched if c.get("acquisition", {}).get("strategy", "unrecorded") == name]
+        channels[name] = {"count": len(rows), "mean_score": float(np.mean([c["score"] for c in rows])),
+                          "above_regular": sum(c["score"] > regular["score"] for c in rows)
+                          if regular else None}
+    saturated = sum(c.get("raw_metrics", {}).get("robustness_success_fraction") == 1 for c in searched)
+    # Pareto diagnostics retain candidates that a scalar localizer objective can
+    # discard despite better boundary localization. No new scientific score.
+    paired = [c for c in exact if isinstance(c.get("raw_metrics", {}).get("boundary_weight"),
+                                           (int, float)) and
+              np.isfinite(c["raw_metrics"]["boundary_weight"])]
+    frontier = [c for c in paired if not any(
+        other["score"] >= c["score"] and
+        other["raw_metrics"]["boundary_weight"] >= c["raw_metrics"]["boundary_weight"] and
+        (other["score"] > c["score"] or
+         other["raw_metrics"]["boundary_weight"] > c["raw_metrics"]["boundary_weight"])
+        for other in paired)]
+    warnings = []
+    if searched and saturated / len(searched) >= 0.5:
+        warnings.append("At least half of searched candidates pass every sampled disorder test; "
+                        "success fractions have limited ranking resolution at these widths.")
+    if best and regular:
+        left, right = best.get("raw_metrics", {}).get("boundary_weight"), regular.get("raw_metrics", {}).get("boundary_weight")
+        if left is not None and right is not None and best["score"] > regular["score"] and left < right:
+            warnings.append("The best searched objective exceeds regular while its clean boundary "
+                            "weight is lower: inspect the physical tradeoff before claiming improvement.")
+    return {"complete_searched": len(searched), "all_sampled_successes": saturated,
+            "acquisition_yield": channels,
+            "objective_boundary_frontier": [{"id": c["id"], "score": c["score"],
+                "boundary_weight": c["raw_metrics"]["boundary_weight"],
+                "baseline": bool(c.get("baseline"))}
+                for c in sorted(frontier, key=lambda c: (-c["score"], c["id"]))],
+            "warnings": warnings,
+            "scope": "Adaptive, dependent search observations; acquisition yields are not causal. "
+                     "Fresh disorder seeds are needed after freezing a shortlist. W=0 repeats "
+                     "are deterministic checks, not independent disorder evidence."}
+
 
 def structural_comparison(snapshot: dict[str, Any]) -> dict[str, Any]:
     """Compare stored complete evidence; never substitute predictions or missing values."""
@@ -67,6 +119,8 @@ def diagnostics(snapshot: dict[str, Any]) -> dict[str, Any]:
     entropy = float(-np.sum(fractions * np.log(fractions))) if len(fractions) else 0.0
     history = snapshot.get("history", [])
     anomalies = []
+    assessment = search_assessment(snapshot)
+    anomalies.extend(assessment["warnings"])
     if invalid / generated > 0.8:
         anomalies.append("More than 80% of proposals violate geometry constraints")
     concentration = float(max(fractions, default=0.0))
@@ -111,6 +165,7 @@ def diagnostics(snapshot: dict[str, Any]) -> dict[str, Any]:
             "exact_evaluations": state.get("exact_evaluations", 0),
             "compute_usage": {k: state.get(k) for k in
                               ("elapsed_seconds", "exact_seconds", "generated")},
+            "search_assessment": assessment,
             "scientific_claim": "Finite-system evidence only; hypothesis inconclusive"}
 
 
@@ -153,6 +208,7 @@ def final_report(snapshot: dict[str, Any]) -> str:
              "## 8. Geometry–property correlations\n\n" + block(correlations) +
              "Exploratory Pearson associations within an adaptively selected, dependent sample; "
              "no causal or multiple-testing claim. Constant targets yield no correlation.\n",
+             "## Search yield and physical tradeoffs\n\n" + block(summary["search_assessment"]),
              "## 9–12. Robustness, topology, Majorana and finite-size evidence\n\n" + block([
                  {"id": c["id"], "validation": c.get("validation_results"),
                   "robustness": c.get("robustness")} for c in best]) +

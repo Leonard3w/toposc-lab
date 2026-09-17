@@ -1,5 +1,9 @@
 # Phase 17.1 — Expanded Connectivity Long-Search Preparation
 
+Historical preparation report. Experiment 002 was subsequently launched and
+interrupted; see [Phase 17.2 review](phase_17_2_interrupted_run_review.md) for the
+actual results and subsequent search improvements.
+
 Engineering gate: **PASS**, 2026-09-16.
 Scientific Experiment 002: **not created or launched**.
 

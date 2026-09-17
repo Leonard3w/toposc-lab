@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "name": "Experiment 003 - Focused connectivity pilot",
+  "question": "Can mixed quality-directed breeding and batch-aware novelty improve finite-localizer search yield at a matched exact budget? Boundary localization is reported as a competing diagnostic.",
+  "algorithm": "surrogate_map_elites",
+  "seed": 17301,
+  "cycles": 10,
+  "exact_budget": 1200,
+  "candidate_budget": 20000,
+  "pool_size": 96,
+  "batch_size": 6,
+  "checkpoint_every": 250,
+  "retrain_every": 1,
+  "wall_seconds": 7200,
+  "concurrency": 1,
+  "blas_threads": 1,
+  "retry_limit": 1,
+  "output_directory": "results/research/experiment003-focused-pilot",
+  "geometry_space": "fixed_connectivity",
+  "surrogate_model": "bootstrap_graph",
+  "objective": "robustness_quality_mean",
+  "baselines": [
+    "regular",
+    "random_rewired"
+  ],
+  "space": {
+    "side": 10,
+    "min_degree": 2,
+    "max_degree": 6,
+    "max_bond_length": 2.0,
+    "bond_tolerance": 0.0,
+    "forbid_crossings": true,
+    "minimum_distance": 0.002,
+    "site_crossings": "unconnected",
+    "initialization_rewires": [
+      1,
+      2,
+      5,
+      10,
+      20,
+      40
+    ]
+  },
+  "search": {
+    "behavior_descriptors": [
+      "regular_edge_distance",
+      "long_bond_fraction"
+    ],
+    "descriptor_bounds": [
+      [
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.5
+      ]
+    ],
+    "archive_bins": [
+      20,
+      20
+    ],
+    "allocation": {
+      "exploitation": 0.7,
+      "uncertainty": 0.2,
+      "novelty": 0.1
+    },
+    "mutation_rates": {
+      "multi_rewire_local": 0.75,
+      "multi_rewire_explore": 0.25
+    },
+    "family_fraction": 0.5,
+    "initialization_probability": 0.15,
+    "quality_parent_probability": 0.7,
+    "quality_parent_fraction": 0.25,
+    "batch_novelty": true
+  },
+  "physics": {
+    "adapter_id": "phase17.fixed-sites-chiral-p-wave.v1",
+    "disorder_widths": [
+      0.0,
+      0.4,
+      0.8,
+      1.2
+    ],
+    "disorder_seeds": [
+      17001,
+      17002,
+      17003,
+      17004
+    ],
+    "clean_seed": 17000,
+    "confirmation": true,
+    "validators": [
+      "spectrum",
+      "topology",
+      "majorana",
+      "robustness",
+      "reproducibility",
+      "finite_size"
+    ],
+    "finite_size": false,
+    "model": "chiral_p_wave",
+    "hopping": 1.0,
+    "chemical_potential": 2.0,
+    "pairing": 1.0,
+    "chirality": 1,
+    "basis": "component_major",
+    "solver": "numpy.linalg.eigh",
+    "tolerance": 1e-10,
+    "success_threshold": 0.2,
+    "kappas": [
+      0.1,
+      0.2,
+      0.3
+    ],
+    "probe_rule": "square_bounding_box_center"
+  },
+  "surrogate": {
+    "ensemble_size": 8,
+    "n_estimators": 40,
+    "distance_weight": 0.5
+  }
+}

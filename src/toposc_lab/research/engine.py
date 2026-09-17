@@ -289,7 +289,7 @@ class ResearchEngine:
             if remaining <= 0 or state["cycle"] >= self.config.cycles:
                 self._finish("COMPLETED", "candidate_or_cycle_budget")
                 return False
-            complete = [c for c in self.store.all("candidate")
+            complete = [c for c in self.strategy.history
                         if c.get("origin") == "exact" and c.get("score") is not None
                         and c.get("validation_state") != "FAILED"]
             if self.strategy.uses_surrogate and len(complete) >= 4 and (
@@ -340,14 +340,14 @@ class ResearchEngine:
         from toposc_lab.research.service import ResearchService
 
         self._save_state()
-        snapshot = ResearchService.snapshot(self.directory, detect_interrupted=False)
+        snapshot = ResearchService.snapshot(self.directory, detect_interrupted=False, lightweight=True)
         report = diagnostics(snapshot)
         state = self._state(**{k: report[k] for k in ("best_score", "best_validated_candidate",
                                                     "archive_coverage", "duplicate_rate", "invalid_rate",
                                                     "surrogate_error", "diversity")})
         state["last_checkpoint_count"] = state["exact_evaluations"]
         report.update(reason=reason, created=utc_now(), cycle=state["cycle"])
-        identity = f"{len(self.store.all('checkpoint')):06d}"
+        identity = f"{self.store.count('checkpoint'):06d}"
         checkpoint = {"state": state, "strategy": self.strategy.checkpoint(),
                       "config_sha256": self.config.fingerprint, "report": report}
         with self.store.connect() as db:
@@ -365,7 +365,7 @@ class ResearchEngine:
     def _report(self) -> None:
         from toposc_lab.research.service import ResearchService
 
-        snapshot = ResearchService.snapshot(self.directory, detect_interrupted=False)
+        snapshot = ResearchService.snapshot(self.directory, detect_interrupted=False, lightweight=True)
         if snapshot["state"]["status"] == "FINALIZING":
             snapshot["state"]["status"] = snapshot["state"]["final_status"]
         report = final_report(snapshot)

@@ -109,6 +109,11 @@ class ResearchStore:
             return [self.decode(r) for r in db.execute(
                 "SELECT * FROM objects WHERE kind=? ORDER BY rowid", (kind,))]
 
+    def count(self, kind: str) -> int:
+        """Count journal objects without deserializing historical checkpoints."""
+        with self.connect(readonly=True) as db:
+            return int(db.execute("SELECT COUNT(*) FROM objects WHERE kind=?", (kind,)).fetchone()[0])
+
     def save(self, kind: str, value: Any, identity: str = "current") -> None:
         with self.connect() as db:
             self.put(db, kind, identity, value)
