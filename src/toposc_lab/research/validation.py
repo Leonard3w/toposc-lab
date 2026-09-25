@@ -100,6 +100,9 @@ class ValidationStudy(ResearchEngine):
     never depends on a possibly stale exported file.
     """
 
+    configure = staticmethod(make_config)
+    study_version = VERSION
+
     def __init__(self, directory: str | Path, *, hook: Any = None, evaluator: Any = None) -> None:
         self.directory = Path(directory)
         self.store = ResearchStore(directory)
@@ -107,21 +110,25 @@ class ValidationStudy(ResearchEngine):
         self.cohort = self.store.get("validation_cohort")
         if self.settings is None:
             raise ValueError("Not a fixed-cohort validation study")
-        self.config = make_config(self.settings, self.cohort)
+        self.config = self.configure(self.settings, self.cohort)
         self.manifest = self.store.get("manifest")
         protocol = self.config.physics_protocol()
-        self.evaluator = evaluator or ValidationEvaluator(
+        self.evaluator = evaluator or self.build_evaluator(
             protocol, provenance_from_manifest(self.manifest, protocol)
         )
         self.hook = hook
         self.started = 0.0
         self.previous_elapsed = 0.0
 
+    @staticmethod
+    def build_evaluator(protocol: Any, provenance: Any) -> Any:
+        return ValidationEvaluator(protocol, provenance)
+
     @classmethod
     def create_study(
         cls, directory: str | Path, settings: dict[str, Any], cohort: dict[str, Any]
     ) -> Path:
-        config = make_config(settings, cohort)
+        config = cls.configure(settings, cohort)
         directory = Path(directory).resolve()
         if directory.exists() and any(directory.iterdir()):
             raise FileExistsError("Study directory must be new/empty")
@@ -131,7 +138,7 @@ class ValidationStudy(ResearchEngine):
         manifest = capture(directory)
         manifest.update(
             experiment_id="VAL-" + digest(settings)[:16],
-            study_type=VERSION,
+            study_type=cls.study_version,
             config_sha256=config.fingerprint,
             settings_sha256=digest(settings),
             cohort_sha256=cohort["sha256"],

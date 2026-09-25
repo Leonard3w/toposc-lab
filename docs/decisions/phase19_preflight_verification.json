@@ -1,0 +1,118 @@
+{
+  "historical_results_unchanged": true,
+  "pre_change": {
+    "gate": "PASS",
+    "pre_change_manifest": {
+      "git_commit": "aa7500a2bcfa986e59fa17e15995e7e90aeaad5e",
+      "git_dirty": true,
+      "source_sha256": "b18bb71739b0cf864682b55c31b253442352f9f51ef7ba8d1909aa989e34a6fa",
+      "source_zip_sha256": "bcaafd61727f7d70dea95e1048d5e54dfec49c6bb2c3b7a69a1cf2284ae959ef",
+      "environment": {
+        "python": "3.14.7",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "machine": "AMD64",
+        "packages": {
+          "numpy": "2.5.3",
+          "scipy": "1.18.1",
+          "pydantic": "2.13.5",
+          "toposc-lab": "0.1.0"
+        }
+      },
+      "timestamp": "2026-09-25T07:03:56.868269+00:00",
+      "cpu_count": 16,
+      "scientific_scope": "Finite fixed-site localizer evidence; no phase/Majorana certificate"
+    },
+    "historical_realizations_checksum_digest": "5c6685b2e484c456bee7b39857c6ed8654dc0ccba87ec650bd6c3f8898cce968",
+    "historical_attempt_digest": "835032dc900575e03459e29c23db3d447717b6bf3a5f728684379be84fedaabc",
+    "fresh_regression_evaluations": [
+      {
+        "candidate": "regular",
+        "stage": "clean",
+        "seconds": 1.2522282999998424,
+        "hamiltonian_id": "toposc-hamiltonian-array-v1-sha256:19f214cdad21b26949e89dcb66ce579c03c7035ee5504ea43f54f51467da71f2",
+        "result": "PASS"
+      },
+      {
+        "candidate": "regular",
+        "stage": "disorder_0_0",
+        "seconds": 1.239468499989016,
+        "hamiltonian_id": "toposc-hamiltonian-array-v1-sha256:7ba62e8b65c44fa2301f6b08b1fab86fd96037bebe2343b0d9d89b54d7e32580",
+        "result": "PASS"
+      },
+      {
+        "candidate": "historical_best",
+        "stage": "disorder_2_0",
+        "seconds": 1.2348922999808565,
+        "hamiltonian_id": "toposc-hamiltonian-array-v1-sha256:591184483ea1c3d3e9c8c6f3840e89187efc6d9705f03f2eda6e51088dd60937",
+        "result": "PASS"
+      }
+    ],
+    "scope": "Three fixed cases recomputed, all 2510 stored records integrity checked; no historical writes"
+  },
+  "baseline_tests": {
+    "seconds": 868.24,
+    "log": "results/phase19-baseline-tests.log",
+    "passed": 3140
+  },
+  "post_change": {
+    "gate": "PASS",
+    "post_change_manifest": {
+      "git_commit": "c666246c830fd99d96c1b44a3aaf037468a5fc07",
+      "git_dirty": true,
+      "source_sha256": "119ac7b43aa4c0ec54945a953da103a43ba1c57999d01585a5fa9fec615f8d41",
+      "source_zip_sha256": "ff57301bac90c8c39ed1a15d1571bda5749097d46f556520ba0d71a718ee88b2",
+      "environment": {
+        "python": "3.14.7",
+        "platform": "Windows-11-10.0.26200-SP0",
+        "machine": "AMD64",
+        "packages": {
+          "numpy": "2.5.3",
+          "scipy": "1.18.1",
+          "pydantic": "2.13.5",
+          "toposc-lab": "0.1.0"
+        }
+      },
+      "timestamp": "2026-09-25T10:30:05.745254+00:00",
+      "cpu_count": 16,
+      "scientific_scope": "Finite fixed-site localizer evidence; no phase/Majorana certificate"
+    },
+    "historical_realizations_checksum_digest": "5c6685b2e484c456bee7b39857c6ed8654dc0ccba87ec650bd6c3f8898cce968",
+    "historical_attempt_digest": "835032dc900575e03459e29c23db3d447717b6bf3a5f728684379be84fedaabc",
+    "fresh_regression_evaluations": [
+      {
+        "candidate": "regular",
+        "stage": "clean",
+        "seconds": 2.6356548000185285,
+        "hamiltonian_id": "toposc-hamiltonian-array-v1-sha256:19f214cdad21b26949e89dcb66ce579c03c7035ee5504ea43f54f51467da71f2",
+        "result": "PASS"
+      },
+      {
+        "candidate": "regular",
+        "stage": "disorder_0_0",
+        "seconds": 2.8409097000258043,
+        "hamiltonian_id": "toposc-hamiltonian-array-v1-sha256:7ba62e8b65c44fa2301f6b08b1fab86fd96037bebe2343b0d9d89b54d7e32580",
+        "result": "PASS"
+      },
+      {
+        "candidate": "historical_best",
+        "stage": "disorder_2_0",
+        "seconds": 2.8894100000034086,
+        "hamiltonian_id": "toposc-hamiltonian-array-v1-sha256:591184483ea1c3d3e9c8c6f3840e89187efc6d9705f03f2eda6e51088dd60937",
+        "result": "PASS"
+      }
+    ],
+    "scope": "Three fixed cases recomputed, all 2510 stored records integrity checked; no historical writes"
+  },
+  "checkpoint_commit": "c666246c830fd99d96c1b44a3aaf037468a5fc07",
+  "post_change_tests": {
+    "passed": 3150,
+    "seconds": 1184.23,
+    "log": "results/phase19-regression-tests.log"
+  },
+  "smoke": {
+    "records": 40,
+    "invalid": 0,
+    "max_numeric_residual": 2.0982908904749314e-14,
+    "directory": "results/phase19-smoke"
+  }
+}

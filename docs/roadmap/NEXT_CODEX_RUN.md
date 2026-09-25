@@ -1,6 +1,15 @@
 ﻿# NEXT CODEX RUN
 
-## Aktueller Vorrang: Phase 18, 25.09.2026
+## Aktueller Auftrag: Phase 19, 25.09.2026
+
+Der Nutzer hat die inkrementelle Graph-Erweiterung nach Phase 18 ausdrücklich
+beauftragt. Siehe [aktuellen Bearbeitungsstand](phase19_status.md),
+[gespeicherten Gesamtauftrag](phase19_user_plan.md) und
+[Gap-Analyse](../decisions/phase19_architecture_gap_analysis.md).
+Alte Ergebnisse unverändert lassen. Kleine Exploration und Bericht abschließen,
+danach stoppen; keine neue Bestätigung oder Entwicklungsphase automatisch starten.
+
+## Vorheriger Abschluss: Phase 18, 25.09.2026
 
 Die untenstehende Phase-16B-Übergabe bleibt historische Dokumentation.
 Der Pilot ist abgeschlossen:

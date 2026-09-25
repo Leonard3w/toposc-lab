@@ -111,9 +111,12 @@ def _all(geometry: Geometry) -> dict[str, float]:
     return result
 
 
-def compute_descriptors(geometry: Geometry, names: Iterable[str] | None = None) -> dict[str, float]:
+def compute_descriptors(geometry: Geometry, names: Iterable[str] | None = None, *,
+                        include_square_reference: bool = True) -> dict[str, float]:
     result = _all(geometry)
     for name, function in DESCRIPTOR_REGISTRY.items():
+        if name == "regular_edge_distance" and not include_square_reference:
+            continue
         if name not in _BUILTIN_NAMES:
             result[name] = float(function(geometry))
     if names is not None:

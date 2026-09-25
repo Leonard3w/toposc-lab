@@ -1,0 +1,152 @@
+{
+  "cohort_sha256": "d9e367921b35dd7c39186128b8223fa500de521e711d28e7081cd965b6553178",
+  "new_exact_calls": 0,
+  "candidate_counts": {
+    "regular": 1,
+    "rewired_square": 50,
+    "amorphous_planar": 50,
+    "constrained_embedded": 50
+  },
+  "external_proposals": 150,
+  "external_rejections": 0,
+  "internal_rejections": {
+    "regular": {},
+    "rewired_square": {},
+    "amorphous_planar": {
+      "minimum_degree": 188,
+      "spanning_tree_degree_limit": 243,
+      "boundary_site_count": 31,
+      "edge_budget_unreachable": 9,
+      "candidate_graph_disconnected": 1
+    },
+    "constrained_embedded": {
+      "edge_budget_unreachable": 486,
+      "minimum_degree": 341,
+      "spanning_tree_degree_limit": 4366,
+      "boundary_site_count": 13,
+      "candidate_graph_disconnected": 11
+    }
+  },
+  "descriptor_ranges": {
+    "regular": {
+      "mean_coordination": [
+        3.5,
+        3.5
+      ],
+      "minimum_degree": [
+        2.0,
+        2.0
+      ],
+      "maximum_degree": [
+        4.0,
+        4.0
+      ],
+      "bond_length_mean": [
+        1.0,
+        1.0
+      ],
+      "boundary_site_count": [
+        28.0,
+        28.0
+      ],
+      "shortest_path_mean": [
+        5.333333333333333,
+        5.333333333333333
+      ],
+      "clustering_coefficient": [
+        0.0,
+        0.0
+      ]
+    },
+    "rewired_square": {
+      "mean_coordination": [
+        3.5,
+        3.5
+      ],
+      "minimum_degree": [
+        2.0,
+        2.0
+      ],
+      "maximum_degree": [
+        4.0,
+        4.0
+      ],
+      "bond_length_mean": [
+        1.0147933415133248,
+        1.1035533905932737
+      ],
+      "boundary_site_count": [
+        28.0,
+        28.0
+      ],
+      "shortest_path_mean": [
+        5.024801587301587,
+        5.499503968253968
+      ],
+      "clustering_coefficient": [
+        0.07552083333333333,
+        0.328125
+      ]
+    },
+    "amorphous_planar": {
+      "mean_coordination": [
+        3.5,
+        3.5
+      ],
+      "minimum_degree": [
+        2.0,
+        2.0
+      ],
+      "maximum_degree": [
+        4.0,
+        4.0
+      ],
+      "bond_length_mean": [
+        0.9668710473918798,
+        1.0596915181406756
+      ],
+      "boundary_site_count": [
+        25.0,
+        32.0
+      ],
+      "shortest_path_mean": [
+        4.817460317460317,
+        5.400297619047619
+      ],
+      "clustering_coefficient": [
+        0.15885416666666663,
+        0.34635416666666663
+      ]
+    },
+    "constrained_embedded": {
+      "mean_coordination": [
+        3.5,
+        3.5
+      ],
+      "minimum_degree": [
+        2.0,
+        2.0
+      ],
+      "maximum_degree": [
+        4.0,
+        4.0
+      ],
+      "bond_length_mean": [
+        1.049302343095493,
+        1.1608249340227144
+      ],
+      "boundary_site_count": [
+        27.0,
+        32.0
+      ],
+      "shortest_path_mean": [
+        4.819940476190476,
+        5.497023809523809
+      ],
+      "clustering_coefficient": [
+        0.20052083333333331,
+        0.3723958333333333
+      ]
+    }
+  }
+}

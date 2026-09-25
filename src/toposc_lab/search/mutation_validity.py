@@ -242,6 +242,19 @@ def validate_geometry_mutation(
     return MutationValidityReport(issues=tuple(issues), measurements=measurements)
 
 
+def validate_geometry_constraints(
+    geometry: Geometry, *, policy: MutationValidityPolicy
+) -> MutationValidityReport:
+    """Apply the existing policy directly to a geometry without a fictitious mutation."""
+    if not isinstance(policy, MutationValidityPolicy):
+        raise TypeError("policy must be MutationValidityPolicy")
+    report = validate_geometry(geometry)
+    issues = [MutationValidityIssue(i.code, i.message, i.path) for i in report.errors]
+    measurements = _candidate_measurements(geometry)
+    _check_policy(geometry, policy=policy, issues=issues, measurements=measurements)
+    return MutationValidityReport(issues=tuple(issues), measurements=measurements)
+
+
 def _validated_geometry(
     genome: GeometryGenome,
     *,

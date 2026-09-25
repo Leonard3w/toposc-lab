@@ -203,6 +203,14 @@ class FiniteSystemEvaluator:
     protocol: PhysicsProtocol = field(default_factory=PhysicsProtocol)
     provenance: ReproducibilityMetadata | None = None
 
+    adapter_id = ADAPTER_ID
+    evidence_scope = EVIDENCE_SCOPE
+    geometry_family = "fixed_square_sites"
+
+    def probe(self, geometry: Geometry) -> tuple[float, float]:
+        """Applicability hook; the historical adapter retains its strict contract."""
+        return _square_probe(geometry)
+
     def plan(self) -> list[dict[str, Any]]:
         """Same seed protocol for all candidates and matched references."""
         stages = [{"key": "clean", "kind": "clean", "seed": self.protocol.clean_seed, "width": 0.0}]
@@ -232,7 +240,7 @@ class FiniteSystemEvaluator:
         """Compute one clean, confirmation, or single-realization exact stage."""
         if dict(stage) not in self.plan():
             raise ValueError("stage must match the serialized protocol plan")
-        probe = _square_probe(geometry)
+        probe = self.probe(geometry)
         params = ChiralPWaveParameters(
             hopping=self.protocol.hopping,
             chemical_potential=self.protocol.chemical_potential,
@@ -336,7 +344,7 @@ class FiniteSystemEvaluator:
             "kind": "exact",
             "status": "completed",
             "stage": dict(stage),
-            "adapter_id": ADAPTER_ID,
+            "adapter_id": self.adapter_id,
             "seed": seed,
             "onsite_width": width,
             "hamiltonian_id": exact_hamiltonian_id(matrix),
@@ -363,7 +371,7 @@ class FiniteSystemEvaluator:
             "majorana": majorana,
             "phase_claim": False,
             "majorana_claim": False,
-            "scope": EVIDENCE_SCOPE,
+            "scope": self.evidence_scope,
             "distribution": "uniform [-width/2,width/2]",
             "onsite_offsets": np.real(np.diag(matrix - clean_matrix)[: geometry.n_sites]).tolist(),
         }
@@ -383,13 +391,13 @@ class FiniteSystemEvaluator:
             seed=seed,
             solver_settings={
                 **dict(provenance.solver_settings),
-                "adapter_id": ADAPTER_ID,
+                "adapter_id": self.adapter_id,
                 "protocol": asdict(self.protocol),
                 "stage": dict(stage),
             },
         )
         record = create_dataset_record(
-            geometry=GeometryRecord.from_geometry(geometry, family_label="fixed_square_sites"),
+            geometry=GeometryRecord.from_geometry(geometry, family_label=self.geometry_family),
             model=ModelParametersRecord(self.protocol.model, "1", params.model_dump()),
             spectrum=SpectrumRecord(
                 tuple(float(x) for x in energies), "hopping", "all", 2 * geometry.n_sites, True
@@ -403,7 +411,7 @@ class FiniteSystemEvaluator:
                         "finite_system": True,
                         "phase_claim": False,
                         "majorana_claim": False,
-                        "adapter_id": ADAPTER_ID,
+                        "adapter_id": self.adapter_id,
                     },
                 ),
                 ObservableResultRecord("research_majorana_diagnostics", "1", majorana),
@@ -432,7 +440,7 @@ class FiniteSystemEvaluator:
                     },
                     {"numerical": self.protocol.tolerance},
                     reason=None if consistent else "Localizer unresolved or indices disagree",
-                    warnings=(EVIDENCE_SCOPE,),
+                    warnings=(self.evidence_scope,),
                 ),
             ),
             robustness=(),
@@ -782,6 +790,9 @@ def register_physics_adapter(definition: PhysicsAdapterDefinition) -> None:
 def create_physics_protocol(settings: Mapping[str, Any], *, objective: str) -> Any:
     """Resolve a versioned protocol with one canonical objective choice."""
     key = settings.get("adapter_id", ADAPTER_ID)
+    if key == "phase19.embedded-chiral-p-wave.v1" and key not in PHYSICS_REGISTRY:
+        # Lazy built-in registration avoids importing spatial diagnostics for old runs.
+        from toposc_lab.research import embedded  # noqa: F401
     if key not in PHYSICS_REGISTRY:
         raise ValueError(f"unknown physics adapter: {key}")
     if "objective" in settings and settings["objective"] != objective:

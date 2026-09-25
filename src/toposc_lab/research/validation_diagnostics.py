@@ -44,6 +44,7 @@ def boundary_diagnostics(
     *,
     energy_cutoff: float = 0.5,
     group_tolerance: float = 1e-8,
+    distances: np.ndarray | None = None,
 ) -> dict[str, Any]:
     """Whole-window and near-degenerate projector densities, not mode certificates.
 
@@ -58,7 +59,9 @@ def boundary_diagnostics(
         raise ValueError("sorted energies and component-major BdG eigenvectors required")
     if not np.isfinite(energies).all() or not np.isfinite(vectors).all():
         raise ValueError("finite eigensystem required")
-    distance = boundary_distance(coordinates)
+    distance = boundary_distance(coordinates) if distances is None else np.asarray(distances)
+    if distance.shape != (n,) or not np.isfinite(distance).all() or np.any(distance < 0):
+        raise ValueError("One finite nonnegative boundary distance per site required")
     groups = np.split(
         np.arange(len(energies)), np.flatnonzero(np.diff(energies) > group_tolerance) + 1
     )
@@ -106,9 +109,11 @@ def boundary_diagnostics(
 class ValidationEvaluator:
     """Reuse the exact adapter, then augment its result with separately timed diagnostics."""
 
-    def __init__(self, protocol: PhysicsProtocol, provenance: Any = None) -> None:
-        self.base = FiniteSystemEvaluator(protocol, provenance)
+    def __init__(self, protocol: PhysicsProtocol, provenance: Any = None, *,
+                 domain: Any = None, base: Any = None) -> None:
+        self.base = base if base is not None else FiniteSystemEvaluator(protocol, provenance)
         self.protocol = protocol
+        self.domain = domain
 
     def plan(self) -> list[dict[str, Any]]:
         return self.base.plan()
@@ -147,7 +152,8 @@ class ValidationEvaluator:
         )
         basis_coordinates = np.tile(coordinates, (2, 1))
         spatial = []
-        for point in probe_positions(side):
+        points = probe_positions(side) if self.domain is None else self.domain.probes()
+        for point in points:
             for k, kappa in enumerate(self.protocol.kappas):
                 if point == result["probe"]:
                     index, gap = result["indices"][k], result["localizer_gaps"][k]
@@ -196,7 +202,10 @@ class ValidationEvaluator:
                         }
                     )
         unique = np.unique(basis_coordinates, axis=0)
-        mask = boundary_distance(unique) >= 2
+        distance = boundary_distance(coordinates) if self.domain is None else self.domain.distances(coordinates)
+        mask = (boundary_distance(unique) >= 2 if self.domain is None
+                else self.domain.distances(unique) >= self.domain.bulk_inset)
+        areas = 1.0 if self.domain is None else self.domain.areas(unique)
         marker: dict[str, Any]
         if not mask.any():
             marker = {"status": "unavailable", "reason": "No sites in declared bulk strip"}
@@ -205,7 +214,7 @@ class ValidationEvaluator:
         else:
             try:
                 c = local_chern_marker(
-                    matrix, basis_coordinates, 1.0, mask, classification, tolerance=tol
+                    matrix, basis_coordinates, areas, mask, classification, tolerance=tol
                 )
                 marker = {
                     "status": "available",
@@ -219,6 +228,9 @@ class ValidationEvaluator:
                     "convention": "4pi Im diag(P X Q Y P); Nambu sum; area=1",
                     "scope": "Descriptive finite bulk mean; no mobility-gap assumption verified",
                 }
+                if self.domain is not None:
+                    marker["position_areas"] = c.position_areas.tolist()
+                    marker["convention"] = "4pi Im diag(P X Q Y P) / clipped Voronoi area; Nambu sum"
             except (ValueError, RuntimeError, np.linalg.LinAlgError) as error:
                 marker = {"status": "numerical_error", "reason": str(error)}
         center_valid = all(i is not None for i in result["indices"]) and all(
@@ -236,7 +248,11 @@ class ValidationEvaluator:
         result["diagnostic_version"] = DIAGNOSTIC_VERSION
         result["spatial"] = spatial
         result["chern_marker"] = marker
-        result["boundary_window"] = boundary_diagnostics(energies, vectors, coordinates)
+        result["boundary_window"] = boundary_diagnostics(energies, vectors, coordinates, distances=distance)
+        if self.domain is not None:
+            from dataclasses import asdict
+            result["domain"] = asdict(self.domain)
+            result["diagnostic_version"] = "phase19.embedded-spatial-boundary.v1"
         result["timing"] = {
             "primary_seconds": base_seconds,
             "additional_seconds": time.perf_counter() - start - base_seconds,

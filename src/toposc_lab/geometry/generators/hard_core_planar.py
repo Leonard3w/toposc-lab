@@ -84,6 +84,16 @@ def hard_core_planar_reference(*, seed: int) -> Geometry:
     return _hard_core_planar_geometry(seed=seed, mode="reference")
 
 
+def constrained_random_embedded_graph(*, seed: int) -> Geometry:
+    """64-site hard-core graph with random edges from the full radius pool.
+
+    Reuses the frozen point process, spanning/completion algorithm and rejection
+    rules, replacing only the Delaunay edge pool by the existing cutoff builder.
+    This is a constrained rejection ensemble, not uniform over all valid graphs.
+    """
+    return _hard_core_planar_geometry(seed=seed, mode="candidate", edge_pool_kind="radius")
+
+
 def hard_core_planar_edge_pool(coordinates: NDArray[np.float64]) -> tuple[_Edge, ...]:
     """Reconstruct the frozen v1 Delaunay pool without sampling or changing coordinates.
 
@@ -96,7 +106,8 @@ def hard_core_planar_edge_pool(coordinates: NDArray[np.float64]) -> tuple[_Edge,
     return _delaunay_edges(values)
 
 
-def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode) -> Geometry:
+def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode,
+                              edge_pool_kind: Literal["delaunay", "radius"] = "delaunay") -> Geometry:
     prepared_seed = _nonnegative_integer(seed, name="seed")
     rng = np.random.Generator(np.random.PCG64(prepared_seed))
     proposal_count = 0
@@ -134,7 +145,12 @@ def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode) -> Geometry:
             continue
 
         try:
-            candidate_edges = _delaunay_edges(coordinates)
+            if edge_pool_kind == "delaunay":
+                candidate_edges = _delaunay_edges(coordinates)
+            else:
+                from toposc_lab.geometry.generators.coordinate_cutoff import coordinate_cutoff_graph
+                pool = coordinate_cutoff_graph(coordinates, HARD_CORE_PLANAR_MAXIMUM_EDGE_LENGTH)
+                candidate_edges = tuple((e.source, e.target) for e in pool.edges)
         except QhullError:
             rejected_attempts["qhull_failure"] += 1
             continue
@@ -154,6 +170,7 @@ def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode) -> Geometry:
             candidate_edges=candidate_edges,
             priorities=priorities,
             mode=mode,
+            prevent_crossings=edge_pool_kind == "radius",
         )
         if failure_reason is not None:
             rejected_attempts[failure_reason] += 1
@@ -195,7 +212,7 @@ def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode) -> Geometry:
             ),
             metadata={
                 "generator": (
-                    "hard_core_planar_graph"
+                    "constrained_random_embedded_graph" if edge_pool_kind == "radius" else "hard_core_planar_graph"
                     if mode == "candidate"
                     else "hard_core_planar_reference"
                 ),
@@ -213,7 +230,7 @@ def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode) -> Geometry:
                 "affine_normalization": "independent_axes_to_exact_[0,7]",
                 "minimum_separation": HARD_CORE_PLANAR_MINIMUM_SEPARATION,
                 "maximum_edge_length": HARD_CORE_PLANAR_MAXIMUM_EDGE_LENGTH,
-                "delaunay_implementation": "scipy.spatial.Delaunay",
+                "delaunay_implementation": "scipy.spatial.Delaunay" if edge_pool_kind == "delaunay" else "not_used_radius_pool",
                 "delaunay_version": version("scipy"),
                 "qhull_options": HARD_CORE_PLANAR_QHULL_OPTIONS,
                 "qhull_jitter": False,
@@ -311,6 +328,7 @@ def _select_edges(
     candidate_edges: tuple[_Edge, ...],
     priorities: dict[_Edge, int],
     mode: _GeneratorMode,
+    prevent_crossings: bool = False,
 ) -> tuple[tuple[_Edge, ...], tuple[int, ...], str | None]:
     spanning_order = sorted(
         candidate_edges,
@@ -319,7 +337,17 @@ def _select_edges(
     disjoint_set = _DisjointSet.create(HARD_CORE_PLANAR_N_SITES)
     selected: set[_Edge] = set()
     degrees = [0] * HARD_CORE_PLANAR_N_SITES
+
+    def crosses_selected(edge: _Edge) -> bool:
+        return prevent_crossings and any(
+            not set(edge).intersection(other) and _segments_intersect(
+                coordinates[edge[0]], coordinates[edge[1]],
+                coordinates[other[0]], coordinates[other[1]]) for other in selected
+        )
+
     for edge in spanning_order:
+        if crosses_selected(edge):
+            continue
         if not disjoint_set.union(*edge):
             continue
         selected.add(edge)
@@ -354,6 +382,8 @@ def _select_edges(
             degrees[edge[0]] >= HARD_CORE_PLANAR_MAXIMUM_DEGREE
             or degrees[edge[1]] >= HARD_CORE_PLANAR_MAXIMUM_DEGREE
         ):
+            continue
+        if crosses_selected(edge):
             continue
         selected.add(edge)
         degrees[edge[0]] += 1
