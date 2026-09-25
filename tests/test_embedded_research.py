@@ -81,6 +81,25 @@ def test_domain_rejects_wrong_boundary_and_protocol_changes():
         EmbeddedDomain(bounds=(0.0, 2.0, 0.0, 2.0))
 
 
+def test_boundary_distance_accepts_roundoff_but_rejects_outside_geometry():
+    domain = EmbeddedDomain()
+    geometry = square(8, 8)
+    # Study canonicalization uses coordinate-derived displacements, not the
+    # square generator's cached displacements from before this fixture edit.
+    geometry = replace(
+        geometry, edges=tuple(GeometryEdge(e.source, e.target) for e in geometry.edges)
+    )
+    coordinates = geometry.coordinates.copy()
+    coordinates[-1, 0] = np.nextafter(7.0, np.inf)
+    rounded = replace(geometry, coordinates=coordinates)
+    domain.validate(rounded)
+    assert domain.distances(coordinates)[-1] == 0
+    assert rounded.coordinates[-1, 0] > 7  # Input geometry is never altered.
+    coordinates[-1, 0] = 7.0 + 1e-8
+    with pytest.raises(ValueError, match="outside"):
+        domain.validate(replace(geometry, coordinates=coordinates))
+
+
 @pytest.mark.parametrize("family", ["rewired_square", "amorphous_planar", "constrained_embedded"])
 def test_family_seed_reproducibility_and_common_constraints(family):
     from toposc_lab.geometry.generators.protocol import GeometryGenerationRequest

@@ -49,7 +49,7 @@ class EmbeddedDomain:
 
     def distances(self, coordinates: np.ndarray) -> np.ndarray:
         x0, x1, y0, y1 = self.bounds
-        return np.min(
+        distance = np.min(
             np.column_stack(
                 (
                     coordinates[:, 0] - x0,
@@ -60,6 +60,10 @@ class EmbeddedDomain:
             ),
             axis=1,
         )
+        # Affine normalization can put an endpoint one ulp beyond its declared
+        # box. Match the domain-validation tolerance without changing coordinates
+        # or hiding genuinely out-of-domain positions.
+        return np.where((distance < 0) & (distance >= -1e-10), 0.0, distance)
 
     def boundary(self, coordinates: np.ndarray) -> frozenset[int]:
         return frozenset(

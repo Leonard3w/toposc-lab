@@ -114,5 +114,11 @@
     "invalid": 0,
     "max_numeric_residual": 2.0982908904749314e-14,
     "directory": "results/phase19-smoke"
+  },
+  "roundoff_correction_tests": {
+    "passed": 63,
+    "seconds": 46.16,
+    "log": "results/phase19-roundoff-tests.log",
+    "scope": "Embedded adapter, legacy physics, validation lifecycle; full 3150-test suite passed before this isolated new-domain correction"
   }
 }

@@ -24,3 +24,10 @@ Maßgeblich: [Protokoll](../decisions/phase19_exploratory_protocol.md),
 [Gap-Analyse](../decisions/phase19_architecture_gap_analysis.md),
 [Bedienung](../phase19_embedded_usage_de.md).
 Nach Abschluss keine Bestätigungsstudie oder nächste Entwicklungsphase automatisch beginnen.
+
+Erster Start: 53 Versuche, davon 52 abgeschlossene Clean-Referenzen; angehalten
+wegen Rundungsrest bei einem Randabstand. Siehe
+[Vorfall und Korrektur](../decisions/phase19_roundoff_incident.md).
+Isolierte Korrektur: 63 relevante Tests bestanden; Geometrien/Seeds unver?ndert.
+Ersatzlauf `results/phase19-exploration-v2`: 1510 geplant, verbleibendes
+Gesamtbudget 1547 Versuche / 1740 Sekunden.
