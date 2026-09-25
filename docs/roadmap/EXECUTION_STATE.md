@@ -1,4 +1,14 @@
-﻿# TOPOSC-LAB EXECUTION STATE
+# TOPOSC-LAB EXECUTION STATE
+
+CURRENT OVERRIDE 2026-09-25: Phase18 confirmation COMPLETED and audited.
+results/phase18-confirmation: 2510/2510 complete, zero failures, 4073 s,
+unchanged frozen pipeline/cohort; six supplementary statistical tests PASS.
+All 45 simultaneous Q contrasts favor regular; no crossover within W=6..9.
+Low-W advantage remains untested. Spatial score limitations documented.
+Report: docs/decisions/phase18_confirmation_report_de.md. STOP.
+No new search, geometry changes, features, or downstream studies.
+See docs/roadmap/phase18_status.md and the preregistered confirmation analysis plan.
+The state entries below retain historical context.
 
 current_block: Phase 17.2 interrupted-run analysis and focused search improvements
 current_phase: Phase 17.2 engineering checks PASS; discovery-rate improvement remains untested
@@ -128,6 +138,21 @@ phase16b_independent_validation:
 - Report/JSON/visually inspected PNG: docs/decisions/phase_16b_validation.*; protocol adjacent; usage docs/phase_16b_usage_de.md.
 - Raw data/source ZIP/inventory: results/phase16b/; preserve separately because results is git-ignored.
 - No production discovery campaign launched/resumed/stopped/edited. Block H is not started; 16B seeds/families now consumed.
+
+phase18_fixed_cohort_validation:
+- User authorized implementation and bounded pilot only; full confirmation requires an explicit budget.
+- Status 2026-09-25: first milestone complete; docs/roadmap/phase18_status.md is the current handoff.
+- New fixed cohort: 10 geometries, 100 sites, 180 bonds, original Phase17 center criterion preserved.
+- Pilot 110/110 realizations, 110 attempts, all complete; no invalid primary/spatial results.
+- Additional spatial probes, Chern marker, fixed-energy boundary projectors and paired seed-block statistics.
+- 141 focused tests PASS; scoped strict Mypy and Ruff PASS; real hard-exit/recovery and zero-call replay verified.
+- Pilot elapsed about 149s, exact stages 127.16s; no historical candidate/attempt digest changed.
+- Historical best retains weak-disorder advantage but falls behind regular at stronger pilot disorder; two seeds are not confirmation.
+- Frozen confirmation widths 6,6.75,7.5,8.25,9; 50 fresh seeds; 2510 planned realizations.
+- Proposed, not authorized: 2560 attempts, 7200s cooperative wall cap, one worker/BLAS thread, 2GB disk allowance.
+- Confirmation config examples/phase18_validation_confirmation.json has null budgets; no confirmation run created/launched.
+- Report docs/decisions/phase18_pilot_report_de.md; receipt phase18_verification.json; raw results/phase18-pilot/ separately preserve.
+- Size families, neighboring parameters, distance-dependent couplings and chirality/transport remain deferred.
 
 phase17_autonomous_research_workbench:
 - User explicitly authorized Phase 17 after the completed Phase16B gate; scientific conclusions from 16B remain unchanged.

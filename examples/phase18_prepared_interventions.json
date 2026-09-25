@@ -1,0 +1,9081 @@
+{
+  "cohort_sha256": "d5c497362eac8414726664a090ed2b91ecf1ddeee706149a047986e411716aea",
+  "seed": 180050,
+  "proposals_per_parent": 24,
+  "designs": [
+    {
+      "parent": "regular",
+      "feature": "balanced_cut_min_conductance",
+      "direction": 1,
+      "status": "geometry_prepared_not_physics_tested",
+      "before": {
+        "site_count": 100.0,
+        "edge_count": 180.0,
+        "mean_degree": 3.6,
+        "degree_variance": 0.32000000000000006,
+        "component_count": 1.0,
+        "largest_component_site_count": 100.0,
+        "is_connected": 1.0,
+        "cycle_rank": 81.0,
+        "has_cycles": 1.0,
+        "triangle_count": 0.0,
+        "mean_local_clustering": 0.0,
+        "connected_pair_count": 4950.0,
+        "reachable_pair_fraction": 1.0,
+        "mean_finite_shortest_path_length": 6.666666666666667,
+        "maximum_finite_shortest_path_length": 18.0,
+        "mean_coordination": 3.6,
+        "coordination_variance": 0.32000000000000006,
+        "clustering_coefficient": 0.0,
+        "four_cycle_count": 81.0,
+        "edge_density": 0.03636363636363636,
+        "minimum_degree": 2.0,
+        "maximum_degree": 4.0,
+        "boundary_degree_mean": 2.888888888888889,
+        "boundary_degree_variance": 0.09876543209876544,
+        "bulk_degree_mean": 4.0,
+        "bulk_degree_variance": 0.0,
+        "boundary_site_count": 36.0,
+        "bulk_site_count": 64.0,
+        "graph_diameter": 18.0,
+        "shortest_path_mean": 6.666666666666667,
+        "shortest_path_variance": 10.88888888888889,
+        "laplacian_algebraic_connectivity": 0.0978869674096891,
+        "laplacian_spectral_radius": 7.804226065180615,
+        "local_connectivity_disorder": 0.2222222222222222,
+        "short_loop_count": 81.0,
+        "short_loop_mean_size": 4.0,
+        "bond_length_mean": 1.0,
+        "mean_bond_length": 1.0,
+        "long_bond_fraction": 0.0,
+        "max_bond_length_observed": 1.0,
+        "bond_length_variance": 0.0,
+        "bond_length_minimum": 1.0,
+        "bond_length_maximum": 1.0,
+        "bond_length_q25": 1.0,
+        "bond_length_median": 1.0,
+        "bond_length_q75": 1.0,
+        "anisotropy": 0.0,
+        "regular_edge_distance": 0.0,
+        "bridge_count": 0,
+        "bridges": [],
+        "degree_histogram": {
+          "2": 4,
+          "3": 32,
+          "4": 64
+        },
+        "boundary_weak_fraction": 0.1111111111111111,
+        "bulk_weak_fraction": 0.0,
+        "balanced_cut_min_edges": 10,
+        "balanced_cut_min_conductance": 0.05555555555555555,
+        "balanced_axis_cuts": [
+          {
+            "axis": 0,
+            "position": 2.5,
+            "edges": 10,
+            "conductance": 0.09615384615384616
+          },
+          {
+            "axis": 0,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.07042253521126761
+          },
+          {
+            "axis": 0,
+            "position": 4.5,
+            "edges": 10,
+            "conductance": 0.05555555555555555
+          },
+          {
+            "axis": 0,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07042253521126761
+          },
+          {
+            "axis": 0,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.09615384615384616
+          },
+          {
+            "axis": 1,
+            "position": 2.5,
+            "edges": 10,
+            "conductance": 0.09615384615384616
+          },
+          {
+            "axis": 1,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.07042253521126761
+          },
+          {
+            "axis": 1,
+            "position": 4.5,
+            "edges": 10,
+            "conductance": 0.05555555555555555
+          },
+          {
+            "axis": 1,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07042253521126761
+          },
+          {
+            "axis": 1,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.09615384615384616
+          }
+        ],
+        "boundary_anisotropy": 0.0,
+        "boundary_long_bond_fraction": 0.0,
+        "bulk_anisotropy": 0.0,
+        "bulk_long_bond_fraction": 0.0
+      },
+      "after": {
+        "site_count": 100.0,
+        "edge_count": 180.0,
+        "mean_degree": 3.6,
+        "degree_variance": 0.5200000000000001,
+        "component_count": 1.0,
+        "largest_component_site_count": 100.0,
+        "is_connected": 1.0,
+        "cycle_rank": 81.0,
+        "has_cycles": 1.0,
+        "triangle_count": 8.0,
+        "mean_local_clustering": 0.034,
+        "connected_pair_count": 4950.0,
+        "reachable_pair_fraction": 1.0,
+        "mean_finite_shortest_path_length": 6.228282828282828,
+        "maximum_finite_shortest_path_length": 16.0,
+        "mean_coordination": 3.6,
+        "coordination_variance": 0.5200000000000001,
+        "clustering_coefficient": 0.034,
+        "four_cycle_count": 72.0,
+        "edge_density": 0.03636363636363636,
+        "minimum_degree": 2.0,
+        "maximum_degree": 6.0,
+        "boundary_degree_mean": 2.9166666666666665,
+        "boundary_degree_variance": 0.1875,
+        "bulk_degree_mean": 3.984375,
+        "bulk_degree_variance": 0.296630859375,
+        "boundary_site_count": 36.0,
+        "bulk_site_count": 64.0,
+        "graph_diameter": 16.0,
+        "shortest_path_mean": 6.228282828282828,
+        "shortest_path_variance": 8.381018263442506,
+        "laplacian_algebraic_connectivity": 0.09617230221164351,
+        "laplacian_spectral_radius": 7.758311731540293,
+        "local_connectivity_disorder": 0.6111111111111112,
+        "short_loop_count": 80.0,
+        "short_loop_mean_size": 3.9,
+        "bond_length_mean": 1.0147603013860687,
+        "mean_bond_length": 1.0147603013860687,
+        "long_bond_fraction": 0.005555555555555556,
+        "max_bond_length_observed": 2.0,
+        "bond_length_variance": 0.00915041961974375,
+        "bond_length_minimum": 1.0,
+        "bond_length_maximum": 2.0,
+        "bond_length_q25": 1.0,
+        "bond_length_median": 1.0,
+        "bond_length_q75": 1.0,
+        "anisotropy": 0.015713484026367686,
+        "regular_edge_distance": 0.027777777777777776,
+        "bridge_count": 0,
+        "bridges": [],
+        "degree_histogram": {
+          "2": 7,
+          "3": 32,
+          "4": 56,
+          "5": 4,
+          "6": 1
+        },
+        "boundary_weak_fraction": 0.1388888888888889,
+        "bulk_weak_fraction": 0.03125,
+        "balanced_cut_min_edges": 9,
+        "balanced_cut_min_conductance": 0.062146892655367235,
+        "balanced_axis_cuts": [
+          {
+            "axis": 0,
+            "position": 2.5,
+            "edges": 10,
+            "conductance": 0.09433962264150944
+          },
+          {
+            "axis": 0,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.06944444444444445
+          },
+          {
+            "axis": 0,
+            "position": 4.5,
+            "edges": 13,
+            "conductance": 0.07428571428571429
+          },
+          {
+            "axis": 0,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07462686567164178
+          },
+          {
+            "axis": 0,
+            "position": 6.5,
+            "edges": 9,
+            "conductance": 0.09090909090909091
+          },
+          {
+            "axis": 1,
+            "position": 2.5,
+            "edges": 11,
+            "conductance": 0.10476190476190476
+          },
+          {
+            "axis": 1,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.06944444444444445
+          },
+          {
+            "axis": 1,
+            "position": 4.5,
+            "edges": 11,
+            "conductance": 0.062146892655367235
+          },
+          {
+            "axis": 1,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.06944444444444445
+          },
+          {
+            "axis": 1,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.09433962264150944
+          }
+        ],
+        "boundary_anisotropy": 0.0,
+        "boundary_long_bond_fraction": 0.0,
+        "bulk_anisotropy": 0.009009009009008973,
+        "bulk_long_bond_fraction": 0.009009009009009009
+      },
+      "remove": [
+        [
+          36,
+          46
+        ],
+        [
+          46,
+          56
+        ],
+        [
+          47,
+          48
+        ],
+        [
+          48,
+          49
+        ],
+        [
+          76,
+          77
+        ]
+      ],
+      "add": [
+        [
+          24,
+          35
+        ],
+        [
+          36,
+          56
+        ],
+        [
+          40,
+          51
+        ],
+        [
+          75,
+          84
+        ],
+        [
+          84,
+          95
+        ]
+      ],
+      "geometry": {
+        "format": "toposc_geometry_v1",
+        "archive": "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",
+        "n_sites": 100,
+        "coordinates": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ],
+          [
+            3.0,
+            0.0
+          ],
+          [
+            4.0,
+            0.0
+          ],
+          [
+            5.0,
+            0.0
+          ],
+          [
+            6.0,
+            0.0
+          ],
+          [
+            7.0,
+            0.0
+          ],
+          [
+            8.0,
+            0.0
+          ],
+          [
+            9.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0
+          ],
+          [
+            2.0,
+            1.0
+          ],
+          [
+            3.0,
+            1.0
+          ],
+          [
+            4.0,
+            1.0
+          ],
+          [
+            5.0,
+            1.0
+          ],
+          [
+            6.0,
+            1.0
+          ],
+          [
+            7.0,
+            1.0
+          ],
+          [
+            8.0,
+            1.0
+          ],
+          [
+            9.0,
+            1.0
+          ],
+          [
+            0.0,
+            2.0
+          ],
+          [
+            1.0,
+            2.0
+          ],
+          [
+            2.0,
+            2.0
+          ],
+          [
+            3.0,
+            2.0
+          ],
+          [
+            4.0,
+            2.0
+          ],
+          [
+            5.0,
+            2.0
+          ],
+          [
+            6.0,
+            2.0
+          ],
+          [
+            7.0,
+            2.0
+          ],
+          [
+            8.0,
+            2.0
+          ],
+          [
+            9.0,
+            2.0
+          ],
+          [
+            0.0,
+            3.0
+          ],
+          [
+            1.0,
+            3.0
+          ],
+          [
+            2.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0
+          ],
+          [
+            4.0,
+            3.0
+          ],
+          [
+            5.0,
+            3.0
+          ],
+          [
+            6.0,
+            3.0
+          ],
+          [
+            7.0,
+            3.0
+          ],
+          [
+            8.0,
+            3.0
+          ],
+          [
+            9.0,
+            3.0
+          ],
+          [
+            0.0,
+            4.0
+          ],
+          [
+            1.0,
+            4.0
+          ],
+          [
+            2.0,
+            4.0
+          ],
+          [
+            3.0,
+            4.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            5.0,
+            4.0
+          ],
+          [
+            6.0,
+            4.0
+          ],
+          [
+            7.0,
+            4.0
+          ],
+          [
+            8.0,
+            4.0
+          ],
+          [
+            9.0,
+            4.0
+          ],
+          [
+            0.0,
+            5.0
+          ],
+          [
+            1.0,
+            5.0
+          ],
+          [
+            2.0,
+            5.0
+          ],
+          [
+            3.0,
+            5.0
+          ],
+          [
+            4.0,
+            5.0
+          ],
+          [
+            5.0,
+            5.0
+          ],
+          [
+            6.0,
+            5.0
+          ],
+          [
+            7.0,
+            5.0
+          ],
+          [
+            8.0,
+            5.0
+          ],
+          [
+            9.0,
+            5.0
+          ],
+          [
+            0.0,
+            6.0
+          ],
+          [
+            1.0,
+            6.0
+          ],
+          [
+            2.0,
+            6.0
+          ],
+          [
+            3.0,
+            6.0
+          ],
+          [
+            4.0,
+            6.0
+          ],
+          [
+            5.0,
+            6.0
+          ],
+          [
+            6.0,
+            6.0
+          ],
+          [
+            7.0,
+            6.0
+          ],
+          [
+            8.0,
+            6.0
+          ],
+          [
+            9.0,
+            6.0
+          ],
+          [
+            0.0,
+            7.0
+          ],
+          [
+            1.0,
+            7.0
+          ],
+          [
+            2.0,
+            7.0
+          ],
+          [
+            3.0,
+            7.0
+          ],
+          [
+            4.0,
+            7.0
+          ],
+          [
+            5.0,
+            7.0
+          ],
+          [
+            6.0,
+            7.0
+          ],
+          [
+            7.0,
+            7.0
+          ],
+          [
+            8.0,
+            7.0
+          ],
+          [
+            9.0,
+            7.0
+          ],
+          [
+            0.0,
+            8.0
+          ],
+          [
+            1.0,
+            8.0
+          ],
+          [
+            2.0,
+            8.0
+          ],
+          [
+            3.0,
+            8.0
+          ],
+          [
+            4.0,
+            8.0
+          ],
+          [
+            5.0,
+            8.0
+          ],
+          [
+            6.0,
+            8.0
+          ],
+          [
+            7.0,
+            8.0
+          ],
+          [
+            8.0,
+            8.0
+          ],
+          [
+            9.0,
+            8.0
+          ],
+          [
+            0.0,
+            9.0
+          ],
+          [
+            1.0,
+            9.0
+          ],
+          [
+            2.0,
+            9.0
+          ],
+          [
+            3.0,
+            9.0
+          ],
+          [
+            4.0,
+            9.0
+          ],
+          [
+            5.0,
+            9.0
+          ],
+          [
+            6.0,
+            9.0
+          ],
+          [
+            7.0,
+            9.0
+          ],
+          [
+            8.0,
+            9.0
+          ],
+          [
+            9.0,
+            9.0
+          ]
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            10
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            12
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            3,
+            13
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            4,
+            14
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            15
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            6,
+            16
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            7,
+            17
+          ],
+          [
+            8,
+            9
+          ],
+          [
+            8,
+            18
+          ],
+          [
+            9,
+            19
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            10,
+            20
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            11,
+            21
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            12,
+            22
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            13,
+            23
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            14,
+            24
+          ],
+          [
+            15,
+            16
+          ],
+          [
+            15,
+            25
+          ],
+          [
+            16,
+            17
+          ],
+          [
+            16,
+            26
+          ],
+          [
+            17,
+            18
+          ],
+          [
+            17,
+            27
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            18,
+            28
+          ],
+          [
+            19,
+            29
+          ],
+          [
+            20,
+            21
+          ],
+          [
+            20,
+            30
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            21,
+            31
+          ],
+          [
+            22,
+            23
+          ],
+          [
+            22,
+            32
+          ],
+          [
+            23,
+            24
+          ],
+          [
+            23,
+            33
+          ],
+          [
+            24,
+            25
+          ],
+          [
+            24,
+            34
+          ],
+          [
+            24,
+            35
+          ],
+          [
+            25,
+            26
+          ],
+          [
+            25,
+            35
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            26,
+            36
+          ],
+          [
+            27,
+            28
+          ],
+          [
+            27,
+            37
+          ],
+          [
+            28,
+            29
+          ],
+          [
+            28,
+            38
+          ],
+          [
+            29,
+            39
+          ],
+          [
+            30,
+            31
+          ],
+          [
+            30,
+            40
+          ],
+          [
+            31,
+            32
+          ],
+          [
+            31,
+            41
+          ],
+          [
+            32,
+            33
+          ],
+          [
+            32,
+            42
+          ],
+          [
+            33,
+            34
+          ],
+          [
+            33,
+            43
+          ],
+          [
+            34,
+            35
+          ],
+          [
+            34,
+            44
+          ],
+          [
+            35,
+            36
+          ],
+          [
+            35,
+            45
+          ],
+          [
+            36,
+            37
+          ],
+          [
+            36,
+            56
+          ],
+          [
+            37,
+            38
+          ],
+          [
+            37,
+            47
+          ],
+          [
+            38,
+            39
+          ],
+          [
+            38,
+            48
+          ],
+          [
+            39,
+            49
+          ],
+          [
+            40,
+            41
+          ],
+          [
+            40,
+            50
+          ],
+          [
+            40,
+            51
+          ],
+          [
+            41,
+            42
+          ],
+          [
+            41,
+            51
+          ],
+          [
+            42,
+            43
+          ],
+          [
+            42,
+            52
+          ],
+          [
+            43,
+            44
+          ],
+          [
+            43,
+            53
+          ],
+          [
+            44,
+            45
+          ],
+          [
+            44,
+            54
+          ],
+          [
+            45,
+            46
+          ],
+          [
+            45,
+            55
+          ],
+          [
+            46,
+            47
+          ],
+          [
+            47,
+            57
+          ],
+          [
+            48,
+            58
+          ],
+          [
+            49,
+            59
+          ],
+          [
+            50,
+            51
+          ],
+          [
+            50,
+            60
+          ],
+          [
+            51,
+            52
+          ],
+          [
+            51,
+            61
+          ],
+          [
+            52,
+            53
+          ],
+          [
+            52,
+            62
+          ],
+          [
+            53,
+            54
+          ],
+          [
+            53,
+            63
+          ],
+          [
+            54,
+            55
+          ],
+          [
+            54,
+            64
+          ],
+          [
+            55,
+            56
+          ],
+          [
+            55,
+            65
+          ],
+          [
+            56,
+            57
+          ],
+          [
+            56,
+            66
+          ],
+          [
+            57,
+            58
+          ],
+          [
+            57,
+            67
+          ],
+          [
+            58,
+            59
+          ],
+          [
+            58,
+            68
+          ],
+          [
+            59,
+            69
+          ],
+          [
+            60,
+            61
+          ],
+          [
+            60,
+            70
+          ],
+          [
+            61,
+            62
+          ],
+          [
+            61,
+            71
+          ],
+          [
+            62,
+            63
+          ],
+          [
+            62,
+            72
+          ],
+          [
+            63,
+            64
+          ],
+          [
+            63,
+            73
+          ],
+          [
+            64,
+            65
+          ],
+          [
+            64,
+            74
+          ],
+          [
+            65,
+            66
+          ],
+          [
+            65,
+            75
+          ],
+          [
+            66,
+            67
+          ],
+          [
+            66,
+            76
+          ],
+          [
+            67,
+            68
+          ],
+          [
+            67,
+            77
+          ],
+          [
+            68,
+            69
+          ],
+          [
+            68,
+            78
+          ],
+          [
+            69,
+            79
+          ],
+          [
+            70,
+            71
+          ],
+          [
+            70,
+            80
+          ],
+          [
+            71,
+            72
+          ],
+          [
+            71,
+            81
+          ],
+          [
+            72,
+            73
+          ],
+          [
+            72,
+            82
+          ],
+          [
+            73,
+            74
+          ],
+          [
+            73,
+            83
+          ],
+          [
+            74,
+            75
+          ],
+          [
+            74,
+            84
+          ],
+          [
+            75,
+            76
+          ],
+          [
+            75,
+            84
+          ],
+          [
+            75,
+            85
+          ],
+          [
+            76,
+            86
+          ],
+          [
+            77,
+            78
+          ],
+          [
+            77,
+            87
+          ],
+          [
+            78,
+            79
+          ],
+          [
+            78,
+            88
+          ],
+          [
+            79,
+            89
+          ],
+          [
+            80,
+            81
+          ],
+          [
+            80,
+            90
+          ],
+          [
+            81,
+            82
+          ],
+          [
+            81,
+            91
+          ],
+          [
+            82,
+            83
+          ],
+          [
+            82,
+            92
+          ],
+          [
+            83,
+            84
+          ],
+          [
+            83,
+            93
+          ],
+          [
+            84,
+            85
+          ],
+          [
+            84,
+            94
+          ],
+          [
+            84,
+            95
+          ],
+          [
+            85,
+            86
+          ],
+          [
+            85,
+            95
+          ],
+          [
+            86,
+            87
+          ],
+          [
+            86,
+            96
+          ],
+          [
+            87,
+            88
+          ],
+          [
+            87,
+            97
+          ],
+          [
+            88,
+            89
+          ],
+          [
+            88,
+            98
+          ],
+          [
+            89,
+            99
+          ],
+          [
+            90,
+            91
+          ],
+          [
+            91,
+            92
+          ],
+          [
+            92,
+            93
+          ],
+          [
+            93,
+            94
+          ],
+          [
+            94,
+            95
+          ],
+          [
+            95,
+            96
+          ],
+          [
+            96,
+            97
+          ],
+          [
+            97,
+            98
+          ],
+          [
+            98,
+            99
+          ]
+        ],
+        "boundary_sites": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          19,
+          20,
+          29,
+          30,
+          39,
+          40,
+          49,
+          50,
+          59,
+          60,
+          69,
+          70,
+          79,
+          80,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99
+        ]
+      },
+      "reverse": "Remove added edges and restore removed edges exactly",
+      "confounders": {
+        "degree_variance": 0.20000000000000007,
+        "triangle_count": 8.0,
+        "mean_local_clustering": 0.034,
+        "mean_finite_shortest_path_length": -0.43838383838383876,
+        "maximum_finite_shortest_path_length": -2.0,
+        "coordination_variance": 0.20000000000000007,
+        "clustering_coefficient": 0.034,
+        "four_cycle_count": -9.0,
+        "maximum_degree": 2.0,
+        "boundary_degree_mean": 0.02777777777777768,
+        "boundary_degree_variance": 0.08873456790123456,
+        "bulk_degree_mean": -0.015625,
+        "bulk_degree_variance": 0.296630859375,
+        "graph_diameter": -2.0,
+        "shortest_path_mean": -0.43838383838383876,
+        "shortest_path_variance": -2.507870625446383,
+        "laplacian_algebraic_connectivity": -0.001714665198045584,
+        "laplacian_spectral_radius": -0.04591433364032138,
+        "local_connectivity_disorder": 0.38888888888888895,
+        "short_loop_count": -1.0,
+        "short_loop_mean_size": -0.10000000000000009,
+        "bond_length_mean": 0.014760301386068653,
+        "mean_bond_length": 0.014760301386068653,
+        "long_bond_fraction": 0.005555555555555556,
+        "max_bond_length_observed": 1.0,
+        "bond_length_variance": 0.00915041961974375,
+        "bond_length_maximum": 1.0,
+        "anisotropy": 0.015713484026367686,
+        "regular_edge_distance": 0.027777777777777776,
+        "boundary_weak_fraction": 0.02777777777777779,
+        "bulk_weak_fraction": 0.03125,
+        "balanced_cut_min_edges": -1,
+        "balanced_cut_min_conductance": 0.006591337099811682,
+        "bulk_anisotropy": 0.009009009009008973,
+        "bulk_long_bond_fraction": 0.009009009009009009
+      },
+      "causal_claim": false
+    },
+    {
+      "parent": "regular",
+      "feature": "bulk_degree_variance",
+      "status": "unavailable_under_bounded_search",
+      "valid_unique_proposals": 24
+    },
+    {
+      "parent": "regular",
+      "feature": "long_bond_fraction",
+      "direction": 1,
+      "status": "geometry_prepared_not_physics_tested",
+      "before": {
+        "site_count": 100.0,
+        "edge_count": 180.0,
+        "mean_degree": 3.6,
+        "degree_variance": 0.32000000000000006,
+        "component_count": 1.0,
+        "largest_component_site_count": 100.0,
+        "is_connected": 1.0,
+        "cycle_rank": 81.0,
+        "has_cycles": 1.0,
+        "triangle_count": 0.0,
+        "mean_local_clustering": 0.0,
+        "connected_pair_count": 4950.0,
+        "reachable_pair_fraction": 1.0,
+        "mean_finite_shortest_path_length": 6.666666666666667,
+        "maximum_finite_shortest_path_length": 18.0,
+        "mean_coordination": 3.6,
+        "coordination_variance": 0.32000000000000006,
+        "clustering_coefficient": 0.0,
+        "four_cycle_count": 81.0,
+        "edge_density": 0.03636363636363636,
+        "minimum_degree": 2.0,
+        "maximum_degree": 4.0,
+        "boundary_degree_mean": 2.888888888888889,
+        "boundary_degree_variance": 0.09876543209876544,
+        "bulk_degree_mean": 4.0,
+        "bulk_degree_variance": 0.0,
+        "boundary_site_count": 36.0,
+        "bulk_site_count": 64.0,
+        "graph_diameter": 18.0,
+        "shortest_path_mean": 6.666666666666667,
+        "shortest_path_variance": 10.88888888888889,
+        "laplacian_algebraic_connectivity": 0.0978869674096891,
+        "laplacian_spectral_radius": 7.804226065180615,
+        "local_connectivity_disorder": 0.2222222222222222,
+        "short_loop_count": 81.0,
+        "short_loop_mean_size": 4.0,
+        "bond_length_mean": 1.0,
+        "mean_bond_length": 1.0,
+        "long_bond_fraction": 0.0,
+        "max_bond_length_observed": 1.0,
+        "bond_length_variance": 0.0,
+        "bond_length_minimum": 1.0,
+        "bond_length_maximum": 1.0,
+        "bond_length_q25": 1.0,
+        "bond_length_median": 1.0,
+        "bond_length_q75": 1.0,
+        "anisotropy": 0.0,
+        "regular_edge_distance": 0.0,
+        "bridge_count": 0,
+        "bridges": [],
+        "degree_histogram": {
+          "2": 4,
+          "3": 32,
+          "4": 64
+        },
+        "boundary_weak_fraction": 0.1111111111111111,
+        "bulk_weak_fraction": 0.0,
+        "balanced_cut_min_edges": 10,
+        "balanced_cut_min_conductance": 0.05555555555555555,
+        "balanced_axis_cuts": [
+          {
+            "axis": 0,
+            "position": 2.5,
+            "edges": 10,
+            "conductance": 0.09615384615384616
+          },
+          {
+            "axis": 0,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.07042253521126761
+          },
+          {
+            "axis": 0,
+            "position": 4.5,
+            "edges": 10,
+            "conductance": 0.05555555555555555
+          },
+          {
+            "axis": 0,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07042253521126761
+          },
+          {
+            "axis": 0,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.09615384615384616
+          },
+          {
+            "axis": 1,
+            "position": 2.5,
+            "edges": 10,
+            "conductance": 0.09615384615384616
+          },
+          {
+            "axis": 1,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.07042253521126761
+          },
+          {
+            "axis": 1,
+            "position": 4.5,
+            "edges": 10,
+            "conductance": 0.05555555555555555
+          },
+          {
+            "axis": 1,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07042253521126761
+          },
+          {
+            "axis": 1,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.09615384615384616
+          }
+        ],
+        "boundary_anisotropy": 0.0,
+        "boundary_long_bond_fraction": 0.0,
+        "bulk_anisotropy": 0.0,
+        "bulk_long_bond_fraction": 0.0
+      },
+      "after": {
+        "site_count": 100.0,
+        "edge_count": 180.0,
+        "mean_degree": 3.6,
+        "degree_variance": 0.44000000000000017,
+        "component_count": 1.0,
+        "largest_component_site_count": 100.0,
+        "is_connected": 1.0,
+        "cycle_rank": 81.0,
+        "has_cycles": 1.0,
+        "triangle_count": 5.0,
+        "mean_local_clustering": 0.023666666666666666,
+        "connected_pair_count": 4950.0,
+        "reachable_pair_fraction": 1.0,
+        "mean_finite_shortest_path_length": 6.2438383838383835,
+        "maximum_finite_shortest_path_length": 16.0,
+        "mean_coordination": 3.6,
+        "coordination_variance": 0.44000000000000017,
+        "clustering_coefficient": 0.023666666666666666,
+        "four_cycle_count": 70.0,
+        "edge_density": 0.03636363636363636,
+        "minimum_degree": 2.0,
+        "maximum_degree": 5.0,
+        "boundary_degree_mean": 2.9166666666666665,
+        "boundary_degree_variance": 0.13194444444444445,
+        "bulk_degree_mean": 3.984375,
+        "bulk_degree_variance": 0.202880859375,
+        "boundary_site_count": 36.0,
+        "bulk_site_count": 64.0,
+        "graph_diameter": 16.0,
+        "shortest_path_mean": 6.2438383838383835,
+        "shortest_path_variance": 8.640542842567086,
+        "laplacian_algebraic_connectivity": 0.10030261625279982,
+        "laplacian_spectral_radius": 7.745411108436235,
+        "local_connectivity_disorder": 0.4444444444444444,
+        "short_loop_count": 75.0,
+        "short_loop_mean_size": 3.933333333333333,
+        "bond_length_mean": 1.0235702260395514,
+        "mean_bond_length": 1.0235702260395514,
+        "long_bond_fraction": 0.016666666666666666,
+        "max_bond_length_observed": 2.0,
+        "bond_length_variance": 0.01897065903200795,
+        "bond_length_minimum": 1.0,
+        "bond_length_maximum": 2.0,
+        "bond_length_q25": 1.0,
+        "bond_length_median": 1.0,
+        "bond_length_q75": 1.0,
+        "anisotropy": 0.00785674201318387,
+        "regular_edge_distance": 0.03333333333333333,
+        "bridge_count": 0,
+        "bridges": [],
+        "degree_histogram": {
+          "2": 6,
+          "3": 32,
+          "4": 58,
+          "5": 4
+        },
+        "boundary_weak_fraction": 0.1111111111111111,
+        "bulk_weak_fraction": 0.03125,
+        "balanced_cut_min_edges": 10,
+        "balanced_cut_min_conductance": 0.05555555555555555,
+        "balanced_axis_cuts": [
+          {
+            "axis": 0,
+            "position": 2.5,
+            "edges": 10,
+            "conductance": 0.09615384615384616
+          },
+          {
+            "axis": 0,
+            "position": 3.5,
+            "edges": 11,
+            "conductance": 0.07692307692307693
+          },
+          {
+            "axis": 0,
+            "position": 4.5,
+            "edges": 11,
+            "conductance": 0.062146892655367235
+          },
+          {
+            "axis": 0,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07246376811594203
+          },
+          {
+            "axis": 0,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.1
+          },
+          {
+            "axis": 1,
+            "position": 2.5,
+            "edges": 11,
+            "conductance": 0.10679611650485436
+          },
+          {
+            "axis": 1,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.07042253521126761
+          },
+          {
+            "axis": 1,
+            "position": 4.5,
+            "edges": 10,
+            "conductance": 0.05555555555555555
+          },
+          {
+            "axis": 1,
+            "position": 5.5,
+            "edges": 11,
+            "conductance": 0.07692307692307693
+          },
+          {
+            "axis": 1,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.09615384615384616
+          }
+        ],
+        "boundary_anisotropy": 0.0,
+        "boundary_long_bond_fraction": 0.0,
+        "bulk_anisotropy": 0.02014475655405229,
+        "bulk_long_bond_fraction": 0.018018018018018018
+      },
+      "remove": [
+        [
+          17,
+          18
+        ],
+        [
+          17,
+          27
+        ],
+        [
+          18,
+          19
+        ],
+        [
+          27,
+          37
+        ],
+        [
+          51,
+          52
+        ],
+        [
+          52,
+          53
+        ]
+      ],
+      "add": [
+        [
+          4,
+          15
+        ],
+        [
+          17,
+          19
+        ],
+        [
+          17,
+          37
+        ],
+        [
+          24,
+          33
+        ],
+        [
+          51,
+          53
+        ],
+        [
+          52,
+          61
+        ]
+      ],
+      "geometry": {
+        "format": "toposc_geometry_v1",
+        "archive": "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",
+        "n_sites": 100,
+        "coordinates": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ],
+          [
+            3.0,
+            0.0
+          ],
+          [
+            4.0,
+            0.0
+          ],
+          [
+            5.0,
+            0.0
+          ],
+          [
+            6.0,
+            0.0
+          ],
+          [
+            7.0,
+            0.0
+          ],
+          [
+            8.0,
+            0.0
+          ],
+          [
+            9.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0
+          ],
+          [
+            2.0,
+            1.0
+          ],
+          [
+            3.0,
+            1.0
+          ],
+          [
+            4.0,
+            1.0
+          ],
+          [
+            5.0,
+            1.0
+          ],
+          [
+            6.0,
+            1.0
+          ],
+          [
+            7.0,
+            1.0
+          ],
+          [
+            8.0,
+            1.0
+          ],
+          [
+            9.0,
+            1.0
+          ],
+          [
+            0.0,
+            2.0
+          ],
+          [
+            1.0,
+            2.0
+          ],
+          [
+            2.0,
+            2.0
+          ],
+          [
+            3.0,
+            2.0
+          ],
+          [
+            4.0,
+            2.0
+          ],
+          [
+            5.0,
+            2.0
+          ],
+          [
+            6.0,
+            2.0
+          ],
+          [
+            7.0,
+            2.0
+          ],
+          [
+            8.0,
+            2.0
+          ],
+          [
+            9.0,
+            2.0
+          ],
+          [
+            0.0,
+            3.0
+          ],
+          [
+            1.0,
+            3.0
+          ],
+          [
+            2.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0
+          ],
+          [
+            4.0,
+            3.0
+          ],
+          [
+            5.0,
+            3.0
+          ],
+          [
+            6.0,
+            3.0
+          ],
+          [
+            7.0,
+            3.0
+          ],
+          [
+            8.0,
+            3.0
+          ],
+          [
+            9.0,
+            3.0
+          ],
+          [
+            0.0,
+            4.0
+          ],
+          [
+            1.0,
+            4.0
+          ],
+          [
+            2.0,
+            4.0
+          ],
+          [
+            3.0,
+            4.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            5.0,
+            4.0
+          ],
+          [
+            6.0,
+            4.0
+          ],
+          [
+            7.0,
+            4.0
+          ],
+          [
+            8.0,
+            4.0
+          ],
+          [
+            9.0,
+            4.0
+          ],
+          [
+            0.0,
+            5.0
+          ],
+          [
+            1.0,
+            5.0
+          ],
+          [
+            2.0,
+            5.0
+          ],
+          [
+            3.0,
+            5.0
+          ],
+          [
+            4.0,
+            5.0
+          ],
+          [
+            5.0,
+            5.0
+          ],
+          [
+            6.0,
+            5.0
+          ],
+          [
+            7.0,
+            5.0
+          ],
+          [
+            8.0,
+            5.0
+          ],
+          [
+            9.0,
+            5.0
+          ],
+          [
+            0.0,
+            6.0
+          ],
+          [
+            1.0,
+            6.0
+          ],
+          [
+            2.0,
+            6.0
+          ],
+          [
+            3.0,
+            6.0
+          ],
+          [
+            4.0,
+            6.0
+          ],
+          [
+            5.0,
+            6.0
+          ],
+          [
+            6.0,
+            6.0
+          ],
+          [
+            7.0,
+            6.0
+          ],
+          [
+            8.0,
+            6.0
+          ],
+          [
+            9.0,
+            6.0
+          ],
+          [
+            0.0,
+            7.0
+          ],
+          [
+            1.0,
+            7.0
+          ],
+          [
+            2.0,
+            7.0
+          ],
+          [
+            3.0,
+            7.0
+          ],
+          [
+            4.0,
+            7.0
+          ],
+          [
+            5.0,
+            7.0
+          ],
+          [
+            6.0,
+            7.0
+          ],
+          [
+            7.0,
+            7.0
+          ],
+          [
+            8.0,
+            7.0
+          ],
+          [
+            9.0,
+            7.0
+          ],
+          [
+            0.0,
+            8.0
+          ],
+          [
+            1.0,
+            8.0
+          ],
+          [
+            2.0,
+            8.0
+          ],
+          [
+            3.0,
+            8.0
+          ],
+          [
+            4.0,
+            8.0
+          ],
+          [
+            5.0,
+            8.0
+          ],
+          [
+            6.0,
+            8.0
+          ],
+          [
+            7.0,
+            8.0
+          ],
+          [
+            8.0,
+            8.0
+          ],
+          [
+            9.0,
+            8.0
+          ],
+          [
+            0.0,
+            9.0
+          ],
+          [
+            1.0,
+            9.0
+          ],
+          [
+            2.0,
+            9.0
+          ],
+          [
+            3.0,
+            9.0
+          ],
+          [
+            4.0,
+            9.0
+          ],
+          [
+            5.0,
+            9.0
+          ],
+          [
+            6.0,
+            9.0
+          ],
+          [
+            7.0,
+            9.0
+          ],
+          [
+            8.0,
+            9.0
+          ],
+          [
+            9.0,
+            9.0
+          ]
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            10
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            12
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            3,
+            13
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            4,
+            14
+          ],
+          [
+            4,
+            15
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            15
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            6,
+            16
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            7,
+            17
+          ],
+          [
+            8,
+            9
+          ],
+          [
+            8,
+            18
+          ],
+          [
+            9,
+            19
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            10,
+            20
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            11,
+            21
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            12,
+            22
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            13,
+            23
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            14,
+            24
+          ],
+          [
+            15,
+            16
+          ],
+          [
+            15,
+            25
+          ],
+          [
+            16,
+            17
+          ],
+          [
+            16,
+            26
+          ],
+          [
+            17,
+            19
+          ],
+          [
+            17,
+            37
+          ],
+          [
+            18,
+            28
+          ],
+          [
+            19,
+            29
+          ],
+          [
+            20,
+            21
+          ],
+          [
+            20,
+            30
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            21,
+            31
+          ],
+          [
+            22,
+            23
+          ],
+          [
+            22,
+            32
+          ],
+          [
+            23,
+            24
+          ],
+          [
+            23,
+            33
+          ],
+          [
+            24,
+            25
+          ],
+          [
+            24,
+            33
+          ],
+          [
+            24,
+            34
+          ],
+          [
+            25,
+            26
+          ],
+          [
+            25,
+            35
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            26,
+            36
+          ],
+          [
+            27,
+            28
+          ],
+          [
+            28,
+            29
+          ],
+          [
+            28,
+            38
+          ],
+          [
+            29,
+            39
+          ],
+          [
+            30,
+            31
+          ],
+          [
+            30,
+            40
+          ],
+          [
+            31,
+            32
+          ],
+          [
+            31,
+            41
+          ],
+          [
+            32,
+            33
+          ],
+          [
+            32,
+            42
+          ],
+          [
+            33,
+            34
+          ],
+          [
+            33,
+            43
+          ],
+          [
+            34,
+            35
+          ],
+          [
+            34,
+            44
+          ],
+          [
+            35,
+            36
+          ],
+          [
+            35,
+            45
+          ],
+          [
+            36,
+            37
+          ],
+          [
+            36,
+            46
+          ],
+          [
+            37,
+            38
+          ],
+          [
+            37,
+            47
+          ],
+          [
+            38,
+            39
+          ],
+          [
+            38,
+            48
+          ],
+          [
+            39,
+            49
+          ],
+          [
+            40,
+            41
+          ],
+          [
+            40,
+            50
+          ],
+          [
+            41,
+            42
+          ],
+          [
+            41,
+            51
+          ],
+          [
+            42,
+            43
+          ],
+          [
+            42,
+            52
+          ],
+          [
+            43,
+            44
+          ],
+          [
+            43,
+            53
+          ],
+          [
+            44,
+            45
+          ],
+          [
+            44,
+            54
+          ],
+          [
+            45,
+            46
+          ],
+          [
+            45,
+            55
+          ],
+          [
+            46,
+            47
+          ],
+          [
+            46,
+            56
+          ],
+          [
+            47,
+            48
+          ],
+          [
+            47,
+            57
+          ],
+          [
+            48,
+            49
+          ],
+          [
+            48,
+            58
+          ],
+          [
+            49,
+            59
+          ],
+          [
+            50,
+            51
+          ],
+          [
+            50,
+            60
+          ],
+          [
+            51,
+            53
+          ],
+          [
+            51,
+            61
+          ],
+          [
+            52,
+            61
+          ],
+          [
+            52,
+            62
+          ],
+          [
+            53,
+            54
+          ],
+          [
+            53,
+            63
+          ],
+          [
+            54,
+            55
+          ],
+          [
+            54,
+            64
+          ],
+          [
+            55,
+            56
+          ],
+          [
+            55,
+            65
+          ],
+          [
+            56,
+            57
+          ],
+          [
+            56,
+            66
+          ],
+          [
+            57,
+            58
+          ],
+          [
+            57,
+            67
+          ],
+          [
+            58,
+            59
+          ],
+          [
+            58,
+            68
+          ],
+          [
+            59,
+            69
+          ],
+          [
+            60,
+            61
+          ],
+          [
+            60,
+            70
+          ],
+          [
+            61,
+            62
+          ],
+          [
+            61,
+            71
+          ],
+          [
+            62,
+            63
+          ],
+          [
+            62,
+            72
+          ],
+          [
+            63,
+            64
+          ],
+          [
+            63,
+            73
+          ],
+          [
+            64,
+            65
+          ],
+          [
+            64,
+            74
+          ],
+          [
+            65,
+            66
+          ],
+          [
+            65,
+            75
+          ],
+          [
+            66,
+            67
+          ],
+          [
+            66,
+            76
+          ],
+          [
+            67,
+            68
+          ],
+          [
+            67,
+            77
+          ],
+          [
+            68,
+            69
+          ],
+          [
+            68,
+            78
+          ],
+          [
+            69,
+            79
+          ],
+          [
+            70,
+            71
+          ],
+          [
+            70,
+            80
+          ],
+          [
+            71,
+            72
+          ],
+          [
+            71,
+            81
+          ],
+          [
+            72,
+            73
+          ],
+          [
+            72,
+            82
+          ],
+          [
+            73,
+            74
+          ],
+          [
+            73,
+            83
+          ],
+          [
+            74,
+            75
+          ],
+          [
+            74,
+            84
+          ],
+          [
+            75,
+            76
+          ],
+          [
+            75,
+            85
+          ],
+          [
+            76,
+            77
+          ],
+          [
+            76,
+            86
+          ],
+          [
+            77,
+            78
+          ],
+          [
+            77,
+            87
+          ],
+          [
+            78,
+            79
+          ],
+          [
+            78,
+            88
+          ],
+          [
+            79,
+            89
+          ],
+          [
+            80,
+            81
+          ],
+          [
+            80,
+            90
+          ],
+          [
+            81,
+            82
+          ],
+          [
+            81,
+            91
+          ],
+          [
+            82,
+            83
+          ],
+          [
+            82,
+            92
+          ],
+          [
+            83,
+            84
+          ],
+          [
+            83,
+            93
+          ],
+          [
+            84,
+            85
+          ],
+          [
+            84,
+            94
+          ],
+          [
+            85,
+            86
+          ],
+          [
+            85,
+            95
+          ],
+          [
+            86,
+            87
+          ],
+          [
+            86,
+            96
+          ],
+          [
+            87,
+            88
+          ],
+          [
+            87,
+            97
+          ],
+          [
+            88,
+            89
+          ],
+          [
+            88,
+            98
+          ],
+          [
+            89,
+            99
+          ],
+          [
+            90,
+            91
+          ],
+          [
+            91,
+            92
+          ],
+          [
+            92,
+            93
+          ],
+          [
+            93,
+            94
+          ],
+          [
+            94,
+            95
+          ],
+          [
+            95,
+            96
+          ],
+          [
+            96,
+            97
+          ],
+          [
+            97,
+            98
+          ],
+          [
+            98,
+            99
+          ]
+        ],
+        "boundary_sites": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          19,
+          20,
+          29,
+          30,
+          39,
+          40,
+          49,
+          50,
+          59,
+          60,
+          69,
+          70,
+          79,
+          80,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99
+        ]
+      },
+      "reverse": "Remove added edges and restore removed edges exactly",
+      "confounders": {
+        "degree_variance": 0.1200000000000001,
+        "triangle_count": 5.0,
+        "mean_local_clustering": 0.023666666666666666,
+        "mean_finite_shortest_path_length": -0.42282828282828344,
+        "maximum_finite_shortest_path_length": -2.0,
+        "coordination_variance": 0.1200000000000001,
+        "clustering_coefficient": 0.023666666666666666,
+        "four_cycle_count": -11.0,
+        "maximum_degree": 1.0,
+        "boundary_degree_mean": 0.02777777777777768,
+        "boundary_degree_variance": 0.03317901234567901,
+        "bulk_degree_mean": -0.015625,
+        "bulk_degree_variance": 0.202880859375,
+        "graph_diameter": -2.0,
+        "shortest_path_mean": -0.42282828282828344,
+        "shortest_path_variance": -2.248346046321803,
+        "laplacian_algebraic_connectivity": 0.0024156488431107265,
+        "laplacian_spectral_radius": -0.05881495674437964,
+        "local_connectivity_disorder": 0.2222222222222222,
+        "short_loop_count": -6.0,
+        "short_loop_mean_size": -0.06666666666666687,
+        "bond_length_mean": 0.02357022603955139,
+        "mean_bond_length": 0.02357022603955139,
+        "long_bond_fraction": 0.016666666666666666,
+        "max_bond_length_observed": 1.0,
+        "bond_length_variance": 0.01897065903200795,
+        "bond_length_maximum": 1.0,
+        "anisotropy": 0.00785674201318387,
+        "regular_edge_distance": 0.03333333333333333,
+        "bulk_weak_fraction": 0.03125,
+        "bulk_anisotropy": 0.02014475655405229,
+        "bulk_long_bond_fraction": 0.018018018018018018
+      },
+      "causal_claim": false
+    },
+    {
+      "parent": "historical_best",
+      "feature": "balanced_cut_min_conductance",
+      "direction": 1,
+      "status": "geometry_prepared_not_physics_tested",
+      "before": {
+        "site_count": 100.0,
+        "edge_count": 180.0,
+        "mean_degree": 3.6,
+        "degree_variance": 0.44000000000000017,
+        "component_count": 1.0,
+        "largest_component_site_count": 100.0,
+        "is_connected": 1.0,
+        "cycle_rank": 81.0,
+        "has_cycles": 1.0,
+        "triangle_count": 8.0,
+        "mean_local_clustering": 0.04733333333333333,
+        "connected_pair_count": 4950.0,
+        "reachable_pair_fraction": 1.0,
+        "mean_finite_shortest_path_length": 6.498989898989899,
+        "maximum_finite_shortest_path_length": 16.0,
+        "mean_coordination": 3.6,
+        "coordination_variance": 0.44000000000000017,
+        "clustering_coefficient": 0.04733333333333333,
+        "four_cycle_count": 71.0,
+        "edge_density": 0.03636363636363636,
+        "minimum_degree": 2.0,
+        "maximum_degree": 5.0,
+        "boundary_degree_mean": 2.9444444444444446,
+        "boundary_degree_variance": 0.2191358024691358,
+        "bulk_degree_mean": 3.96875,
+        "bulk_degree_variance": 0.1865234375,
+        "boundary_site_count": 36.0,
+        "bulk_site_count": 64.0,
+        "graph_diameter": 16.0,
+        "shortest_path_mean": 6.498989898989899,
+        "shortest_path_variance": 9.78898887868585,
+        "laplacian_algebraic_connectivity": 0.0926822979883122,
+        "laplacian_spectral_radius": 7.775133153907079,
+        "local_connectivity_disorder": 0.5666666666666667,
+        "short_loop_count": 79.0,
+        "short_loop_mean_size": 3.8987341772151898,
+        "bond_length_mean": 1.017061487843697,
+        "mean_bond_length": 1.017061487843697,
+        "long_bond_fraction": 0.005555555555555556,
+        "max_bond_length_observed": 2.0,
+        "bond_length_variance": 0.010030374389609653,
+        "bond_length_minimum": 1.0,
+        "bond_length_maximum": 2.0,
+        "bond_length_q25": 1.0,
+        "bond_length_median": 1.0,
+        "bond_length_q75": 1.0,
+        "anisotropy": 0.017568209223157827,
+        "regular_edge_distance": 0.03333333333333333,
+        "bridge_count": 0,
+        "bridges": [],
+        "degree_histogram": {
+          "2": 5,
+          "3": 35,
+          "4": 55,
+          "5": 5
+        },
+        "boundary_weak_fraction": 0.1388888888888889,
+        "bulk_weak_fraction": 0.0,
+        "balanced_cut_min_edges": 9,
+        "balanced_cut_min_conductance": 0.05027932960893855,
+        "balanced_axis_cuts": [
+          {
+            "axis": 0,
+            "position": 2.5,
+            "edges": 10,
+            "conductance": 0.09433962264150944
+          },
+          {
+            "axis": 0,
+            "position": 3.5,
+            "edges": 11,
+            "conductance": 0.07586206896551724
+          },
+          {
+            "axis": 0,
+            "position": 4.5,
+            "edges": 10,
+            "conductance": 0.056818181818181816
+          },
+          {
+            "axis": 0,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07246376811594203
+          },
+          {
+            "axis": 0,
+            "position": 6.5,
+            "edges": 9,
+            "conductance": 0.0891089108910891
+          },
+          {
+            "axis": 1,
+            "position": 2.5,
+            "edges": 11,
+            "conductance": 0.10476190476190476
+          },
+          {
+            "axis": 1,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.06944444444444445
+          },
+          {
+            "axis": 1,
+            "position": 4.5,
+            "edges": 9,
+            "conductance": 0.05027932960893855
+          },
+          {
+            "axis": 1,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.06944444444444445
+          },
+          {
+            "axis": 1,
+            "position": 6.5,
+            "edges": 9,
+            "conductance": 0.08411214953271028
+          }
+        ],
+        "boundary_anisotropy": 0.028571428571428525,
+        "boundary_long_bond_fraction": 0.02857142857142857,
+        "bulk_anisotropy": 0.020514385114677014,
+        "bulk_long_bond_fraction": 0.0
+      },
+      "after": {
+        "site_count": 100.0,
+        "edge_count": 180.0,
+        "mean_degree": 3.6,
+        "degree_variance": 0.5800000000000002,
+        "component_count": 1.0,
+        "largest_component_site_count": 100.0,
+        "is_connected": 1.0,
+        "cycle_rank": 81.0,
+        "has_cycles": 1.0,
+        "triangle_count": 14.0,
+        "mean_local_clustering": 0.06933333333333333,
+        "connected_pair_count": 4950.0,
+        "reachable_pair_fraction": 1.0,
+        "mean_finite_shortest_path_length": 6.156363636363636,
+        "maximum_finite_shortest_path_length": 16.0,
+        "mean_coordination": 3.6,
+        "coordination_variance": 0.5800000000000002,
+        "clustering_coefficient": 0.06933333333333333,
+        "four_cycle_count": 65.0,
+        "edge_density": 0.03636363636363636,
+        "minimum_degree": 2.0,
+        "maximum_degree": 5.0,
+        "boundary_degree_mean": 2.9166666666666665,
+        "boundary_degree_variance": 0.2430555555555555,
+        "bulk_degree_mean": 3.984375,
+        "bulk_degree_variance": 0.359130859375,
+        "boundary_site_count": 36.0,
+        "bulk_site_count": 64.0,
+        "graph_diameter": 16.0,
+        "shortest_path_mean": 6.156363636363636,
+        "shortest_path_variance": 8.042217079889808,
+        "laplacian_algebraic_connectivity": 0.0954703629703654,
+        "laplacian_spectral_radius": 7.806043672998138,
+        "local_connectivity_disorder": 0.7111111111111111,
+        "short_loop_count": 79.0,
+        "short_loop_mean_size": 3.8227848101265822,
+        "bond_length_mean": 1.0295206027721375,
+        "mean_bond_length": 1.0295206027721375,
+        "long_bond_fraction": 0.011111111111111112,
+        "max_bond_length_observed": 2.0,
+        "bond_length_variance": 0.01786510624547233,
+        "bond_length_minimum": 1.0,
+        "bond_length_maximum": 2.0,
+        "bond_length_q25": 1.0,
+        "bond_length_median": 1.0,
+        "bond_length_q75": 1.0,
+        "anisotropy": 0.011111111111111072,
+        "regular_edge_distance": 0.05555555555555555,
+        "bridge_count": 0,
+        "bridges": [],
+        "degree_histogram": {
+          "2": 7,
+          "3": 36,
+          "4": 47,
+          "5": 10
+        },
+        "boundary_weak_fraction": 0.16666666666666666,
+        "bulk_weak_fraction": 0.015625,
+        "balanced_cut_min_edges": 9,
+        "balanced_cut_min_conductance": 0.06285714285714286,
+        "balanced_axis_cuts": [
+          {
+            "axis": 0,
+            "position": 2.5,
+            "edges": 11,
+            "conductance": 0.102803738317757
+          },
+          {
+            "axis": 0,
+            "position": 3.5,
+            "edges": 11,
+            "conductance": 0.07482993197278912
+          },
+          {
+            "axis": 0,
+            "position": 4.5,
+            "edges": 11,
+            "conductance": 0.06358381502890173
+          },
+          {
+            "axis": 0,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07462686567164178
+          },
+          {
+            "axis": 0,
+            "position": 6.5,
+            "edges": 9,
+            "conductance": 0.09090909090909091
+          },
+          {
+            "axis": 1,
+            "position": 2.5,
+            "edges": 11,
+            "conductance": 0.10679611650485436
+          },
+          {
+            "axis": 1,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.07246376811594203
+          },
+          {
+            "axis": 1,
+            "position": 4.5,
+            "edges": 11,
+            "conductance": 0.06285714285714286
+          },
+          {
+            "axis": 1,
+            "position": 5.5,
+            "edges": 11,
+            "conductance": 0.07586206896551724
+          },
+          {
+            "axis": 1,
+            "position": 6.5,
+            "edges": 9,
+            "conductance": 0.08411214953271028
+          }
+        ],
+        "boundary_anisotropy": 0.028571428571428525,
+        "boundary_long_bond_fraction": 0.02857142857142857,
+        "bulk_anisotropy": 0.018181818181818077,
+        "bulk_long_bond_fraction": 0.00909090909090909
+      },
+      "remove": [
+        [
+          1,
+          12
+        ],
+        [
+          15,
+          16
+        ],
+        [
+          35,
+          36
+        ],
+        [
+          36,
+          37
+        ],
+        [
+          38,
+          39
+        ]
+      ],
+      "add": [
+        [
+          2,
+          11
+        ],
+        [
+          35,
+          37
+        ],
+        [
+          45,
+          54
+        ],
+        [
+          46,
+          55
+        ],
+        [
+          52,
+          63
+        ]
+      ],
+      "geometry": {
+        "format": "toposc_geometry_v1",
+        "archive": "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",
+        "n_sites": 100,
+        "coordinates": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ],
+          [
+            3.0,
+            0.0
+          ],
+          [
+            4.0,
+            0.0
+          ],
+          [
+            5.0,
+            0.0
+          ],
+          [
+            6.0,
+            0.0
+          ],
+          [
+            7.0,
+            0.0
+          ],
+          [
+            8.0,
+            0.0
+          ],
+          [
+            9.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0
+          ],
+          [
+            2.0,
+            1.0
+          ],
+          [
+            3.0,
+            1.0
+          ],
+          [
+            4.0,
+            1.0
+          ],
+          [
+            5.0,
+            1.0
+          ],
+          [
+            6.0,
+            1.0
+          ],
+          [
+            7.0,
+            1.0
+          ],
+          [
+            8.0,
+            1.0
+          ],
+          [
+            9.0,
+            1.0
+          ],
+          [
+            0.0,
+            2.0
+          ],
+          [
+            1.0,
+            2.0
+          ],
+          [
+            2.0,
+            2.0
+          ],
+          [
+            3.0,
+            2.0
+          ],
+          [
+            4.0,
+            2.0
+          ],
+          [
+            5.0,
+            2.0
+          ],
+          [
+            6.0,
+            2.0
+          ],
+          [
+            7.0,
+            2.0
+          ],
+          [
+            8.0,
+            2.0
+          ],
+          [
+            9.0,
+            2.0
+          ],
+          [
+            0.0,
+            3.0
+          ],
+          [
+            1.0,
+            3.0
+          ],
+          [
+            2.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0
+          ],
+          [
+            4.0,
+            3.0
+          ],
+          [
+            5.0,
+            3.0
+          ],
+          [
+            6.0,
+            3.0
+          ],
+          [
+            7.0,
+            3.0
+          ],
+          [
+            8.0,
+            3.0
+          ],
+          [
+            9.0,
+            3.0
+          ],
+          [
+            0.0,
+            4.0
+          ],
+          [
+            1.0,
+            4.0
+          ],
+          [
+            2.0,
+            4.0
+          ],
+          [
+            3.0,
+            4.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            5.0,
+            4.0
+          ],
+          [
+            6.0,
+            4.0
+          ],
+          [
+            7.0,
+            4.0
+          ],
+          [
+            8.0,
+            4.0
+          ],
+          [
+            9.0,
+            4.0
+          ],
+          [
+            0.0,
+            5.0
+          ],
+          [
+            1.0,
+            5.0
+          ],
+          [
+            2.0,
+            5.0
+          ],
+          [
+            3.0,
+            5.0
+          ],
+          [
+            4.0,
+            5.0
+          ],
+          [
+            5.0,
+            5.0
+          ],
+          [
+            6.0,
+            5.0
+          ],
+          [
+            7.0,
+            5.0
+          ],
+          [
+            8.0,
+            5.0
+          ],
+          [
+            9.0,
+            5.0
+          ],
+          [
+            0.0,
+            6.0
+          ],
+          [
+            1.0,
+            6.0
+          ],
+          [
+            2.0,
+            6.0
+          ],
+          [
+            3.0,
+            6.0
+          ],
+          [
+            4.0,
+            6.0
+          ],
+          [
+            5.0,
+            6.0
+          ],
+          [
+            6.0,
+            6.0
+          ],
+          [
+            7.0,
+            6.0
+          ],
+          [
+            8.0,
+            6.0
+          ],
+          [
+            9.0,
+            6.0
+          ],
+          [
+            0.0,
+            7.0
+          ],
+          [
+            1.0,
+            7.0
+          ],
+          [
+            2.0,
+            7.0
+          ],
+          [
+            3.0,
+            7.0
+          ],
+          [
+            4.0,
+            7.0
+          ],
+          [
+            5.0,
+            7.0
+          ],
+          [
+            6.0,
+            7.0
+          ],
+          [
+            7.0,
+            7.0
+          ],
+          [
+            8.0,
+            7.0
+          ],
+          [
+            9.0,
+            7.0
+          ],
+          [
+            0.0,
+            8.0
+          ],
+          [
+            1.0,
+            8.0
+          ],
+          [
+            2.0,
+            8.0
+          ],
+          [
+            3.0,
+            8.0
+          ],
+          [
+            4.0,
+            8.0
+          ],
+          [
+            5.0,
+            8.0
+          ],
+          [
+            6.0,
+            8.0
+          ],
+          [
+            7.0,
+            8.0
+          ],
+          [
+            8.0,
+            8.0
+          ],
+          [
+            9.0,
+            8.0
+          ],
+          [
+            0.0,
+            9.0
+          ],
+          [
+            1.0,
+            9.0
+          ],
+          [
+            2.0,
+            9.0
+          ],
+          [
+            3.0,
+            9.0
+          ],
+          [
+            4.0,
+            9.0
+          ],
+          [
+            5.0,
+            9.0
+          ],
+          [
+            6.0,
+            9.0
+          ],
+          [
+            7.0,
+            9.0
+          ],
+          [
+            8.0,
+            9.0
+          ],
+          [
+            9.0,
+            9.0
+          ]
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            10
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            11
+          ],
+          [
+            2,
+            12
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            3,
+            13
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            4,
+            14
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            15
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            6,
+            16
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            7,
+            17
+          ],
+          [
+            8,
+            9
+          ],
+          [
+            8,
+            18
+          ],
+          [
+            9,
+            19
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            10,
+            30
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            11,
+            21
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            12,
+            22
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            13,
+            23
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            14,
+            24
+          ],
+          [
+            15,
+            25
+          ],
+          [
+            16,
+            17
+          ],
+          [
+            16,
+            26
+          ],
+          [
+            17,
+            18
+          ],
+          [
+            17,
+            27
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            19,
+            28
+          ],
+          [
+            19,
+            29
+          ],
+          [
+            20,
+            21
+          ],
+          [
+            20,
+            31
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            21,
+            31
+          ],
+          [
+            22,
+            23
+          ],
+          [
+            22,
+            32
+          ],
+          [
+            23,
+            24
+          ],
+          [
+            23,
+            33
+          ],
+          [
+            24,
+            25
+          ],
+          [
+            24,
+            34
+          ],
+          [
+            25,
+            26
+          ],
+          [
+            25,
+            35
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            26,
+            36
+          ],
+          [
+            27,
+            28
+          ],
+          [
+            27,
+            37
+          ],
+          [
+            28,
+            29
+          ],
+          [
+            28,
+            38
+          ],
+          [
+            29,
+            39
+          ],
+          [
+            30,
+            31
+          ],
+          [
+            30,
+            40
+          ],
+          [
+            31,
+            32
+          ],
+          [
+            31,
+            41
+          ],
+          [
+            32,
+            33
+          ],
+          [
+            32,
+            42
+          ],
+          [
+            33,
+            34
+          ],
+          [
+            33,
+            43
+          ],
+          [
+            34,
+            35
+          ],
+          [
+            34,
+            44
+          ],
+          [
+            35,
+            37
+          ],
+          [
+            35,
+            45
+          ],
+          [
+            36,
+            46
+          ],
+          [
+            37,
+            38
+          ],
+          [
+            37,
+            47
+          ],
+          [
+            38,
+            48
+          ],
+          [
+            39,
+            49
+          ],
+          [
+            40,
+            41
+          ],
+          [
+            40,
+            50
+          ],
+          [
+            41,
+            42
+          ],
+          [
+            41,
+            51
+          ],
+          [
+            42,
+            43
+          ],
+          [
+            42,
+            52
+          ],
+          [
+            43,
+            44
+          ],
+          [
+            43,
+            53
+          ],
+          [
+            44,
+            45
+          ],
+          [
+            44,
+            54
+          ],
+          [
+            45,
+            46
+          ],
+          [
+            45,
+            54
+          ],
+          [
+            45,
+            55
+          ],
+          [
+            46,
+            55
+          ],
+          [
+            46,
+            56
+          ],
+          [
+            47,
+            48
+          ],
+          [
+            47,
+            57
+          ],
+          [
+            48,
+            49
+          ],
+          [
+            49,
+            59
+          ],
+          [
+            50,
+            51
+          ],
+          [
+            50,
+            60
+          ],
+          [
+            51,
+            52
+          ],
+          [
+            51,
+            61
+          ],
+          [
+            52,
+            53
+          ],
+          [
+            52,
+            62
+          ],
+          [
+            52,
+            63
+          ],
+          [
+            53,
+            54
+          ],
+          [
+            53,
+            63
+          ],
+          [
+            54,
+            55
+          ],
+          [
+            54,
+            64
+          ],
+          [
+            55,
+            56
+          ],
+          [
+            55,
+            65
+          ],
+          [
+            56,
+            57
+          ],
+          [
+            56,
+            66
+          ],
+          [
+            57,
+            58
+          ],
+          [
+            57,
+            67
+          ],
+          [
+            58,
+            59
+          ],
+          [
+            58,
+            68
+          ],
+          [
+            59,
+            69
+          ],
+          [
+            60,
+            61
+          ],
+          [
+            60,
+            70
+          ],
+          [
+            61,
+            62
+          ],
+          [
+            62,
+            63
+          ],
+          [
+            62,
+            72
+          ],
+          [
+            63,
+            64
+          ],
+          [
+            63,
+            73
+          ],
+          [
+            64,
+            65
+          ],
+          [
+            64,
+            74
+          ],
+          [
+            65,
+            66
+          ],
+          [
+            65,
+            75
+          ],
+          [
+            66,
+            67
+          ],
+          [
+            66,
+            76
+          ],
+          [
+            67,
+            68
+          ],
+          [
+            67,
+            77
+          ],
+          [
+            68,
+            69
+          ],
+          [
+            68,
+            78
+          ],
+          [
+            69,
+            79
+          ],
+          [
+            70,
+            71
+          ],
+          [
+            70,
+            80
+          ],
+          [
+            71,
+            72
+          ],
+          [
+            71,
+            81
+          ],
+          [
+            72,
+            73
+          ],
+          [
+            72,
+            82
+          ],
+          [
+            73,
+            74
+          ],
+          [
+            73,
+            83
+          ],
+          [
+            74,
+            75
+          ],
+          [
+            74,
+            83
+          ],
+          [
+            74,
+            84
+          ],
+          [
+            75,
+            76
+          ],
+          [
+            75,
+            85
+          ],
+          [
+            76,
+            77
+          ],
+          [
+            76,
+            86
+          ],
+          [
+            77,
+            78
+          ],
+          [
+            77,
+            87
+          ],
+          [
+            78,
+            79
+          ],
+          [
+            78,
+            88
+          ],
+          [
+            79,
+            89
+          ],
+          [
+            80,
+            81
+          ],
+          [
+            80,
+            90
+          ],
+          [
+            81,
+            82
+          ],
+          [
+            81,
+            91
+          ],
+          [
+            81,
+            92
+          ],
+          [
+            82,
+            83
+          ],
+          [
+            82,
+            92
+          ],
+          [
+            83,
+            84
+          ],
+          [
+            83,
+            93
+          ],
+          [
+            84,
+            85
+          ],
+          [
+            84,
+            94
+          ],
+          [
+            85,
+            86
+          ],
+          [
+            85,
+            95
+          ],
+          [
+            86,
+            87
+          ],
+          [
+            86,
+            96
+          ],
+          [
+            87,
+            88
+          ],
+          [
+            87,
+            97
+          ],
+          [
+            88,
+            89
+          ],
+          [
+            88,
+            98
+          ],
+          [
+            89,
+            99
+          ],
+          [
+            90,
+            91
+          ],
+          [
+            91,
+            92
+          ],
+          [
+            92,
+            93
+          ],
+          [
+            93,
+            94
+          ],
+          [
+            94,
+            95
+          ],
+          [
+            95,
+            96
+          ],
+          [
+            96,
+            97
+          ],
+          [
+            97,
+            98
+          ],
+          [
+            98,
+            99
+          ]
+        ],
+        "boundary_sites": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          19,
+          20,
+          29,
+          30,
+          39,
+          40,
+          49,
+          50,
+          59,
+          60,
+          69,
+          70,
+          79,
+          80,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99
+        ]
+      },
+      "reverse": "Remove added edges and restore removed edges exactly",
+      "confounders": {
+        "degree_variance": 0.14,
+        "triangle_count": 6.0,
+        "mean_local_clustering": 0.022,
+        "mean_finite_shortest_path_length": -0.34262626262626306,
+        "coordination_variance": 0.14,
+        "clustering_coefficient": 0.022,
+        "four_cycle_count": -6.0,
+        "boundary_degree_mean": -0.027777777777778123,
+        "boundary_degree_variance": 0.023919753086419693,
+        "bulk_degree_mean": 0.015625,
+        "bulk_degree_variance": 0.172607421875,
+        "shortest_path_mean": -0.34262626262626306,
+        "shortest_path_variance": -1.7467717987960416,
+        "laplacian_algebraic_connectivity": 0.0027880649820531955,
+        "laplacian_spectral_radius": 0.030910519091058575,
+        "local_connectivity_disorder": 0.1444444444444445,
+        "short_loop_mean_size": -0.07594936708860756,
+        "bond_length_mean": 0.01245911492844054,
+        "mean_bond_length": 0.01245911492844054,
+        "long_bond_fraction": 0.005555555555555556,
+        "bond_length_variance": 0.007834731855862675,
+        "anisotropy": -0.006457098112046755,
+        "regular_edge_distance": 0.02222222222222222,
+        "boundary_weak_fraction": 0.027777777777777762,
+        "bulk_weak_fraction": 0.015625,
+        "balanced_cut_min_conductance": 0.012577813248204311,
+        "bulk_anisotropy": -0.002332566932858937,
+        "bulk_long_bond_fraction": 0.00909090909090909
+      },
+      "causal_claim": false
+    },
+    {
+      "parent": "historical_best",
+      "feature": "bulk_degree_variance",
+      "status": "unavailable_under_bounded_search",
+      "valid_unique_proposals": 24
+    },
+    {
+      "parent": "historical_best",
+      "feature": "long_bond_fraction",
+      "direction": 1,
+      "status": "geometry_prepared_not_physics_tested",
+      "before": {
+        "site_count": 100.0,
+        "edge_count": 180.0,
+        "mean_degree": 3.6,
+        "degree_variance": 0.44000000000000017,
+        "component_count": 1.0,
+        "largest_component_site_count": 100.0,
+        "is_connected": 1.0,
+        "cycle_rank": 81.0,
+        "has_cycles": 1.0,
+        "triangle_count": 8.0,
+        "mean_local_clustering": 0.04733333333333333,
+        "connected_pair_count": 4950.0,
+        "reachable_pair_fraction": 1.0,
+        "mean_finite_shortest_path_length": 6.498989898989899,
+        "maximum_finite_shortest_path_length": 16.0,
+        "mean_coordination": 3.6,
+        "coordination_variance": 0.44000000000000017,
+        "clustering_coefficient": 0.04733333333333333,
+        "four_cycle_count": 71.0,
+        "edge_density": 0.03636363636363636,
+        "minimum_degree": 2.0,
+        "maximum_degree": 5.0,
+        "boundary_degree_mean": 2.9444444444444446,
+        "boundary_degree_variance": 0.2191358024691358,
+        "bulk_degree_mean": 3.96875,
+        "bulk_degree_variance": 0.1865234375,
+        "boundary_site_count": 36.0,
+        "bulk_site_count": 64.0,
+        "graph_diameter": 16.0,
+        "shortest_path_mean": 6.498989898989899,
+        "shortest_path_variance": 9.78898887868585,
+        "laplacian_algebraic_connectivity": 0.0926822979883122,
+        "laplacian_spectral_radius": 7.775133153907079,
+        "local_connectivity_disorder": 0.5666666666666667,
+        "short_loop_count": 79.0,
+        "short_loop_mean_size": 3.8987341772151898,
+        "bond_length_mean": 1.017061487843697,
+        "mean_bond_length": 1.017061487843697,
+        "long_bond_fraction": 0.005555555555555556,
+        "max_bond_length_observed": 2.0,
+        "bond_length_variance": 0.010030374389609653,
+        "bond_length_minimum": 1.0,
+        "bond_length_maximum": 2.0,
+        "bond_length_q25": 1.0,
+        "bond_length_median": 1.0,
+        "bond_length_q75": 1.0,
+        "anisotropy": 0.017568209223157827,
+        "regular_edge_distance": 0.03333333333333333,
+        "bridge_count": 0,
+        "bridges": [],
+        "degree_histogram": {
+          "2": 5,
+          "3": 35,
+          "4": 55,
+          "5": 5
+        },
+        "boundary_weak_fraction": 0.1388888888888889,
+        "bulk_weak_fraction": 0.0,
+        "balanced_cut_min_edges": 9,
+        "balanced_cut_min_conductance": 0.05027932960893855,
+        "balanced_axis_cuts": [
+          {
+            "axis": 0,
+            "position": 2.5,
+            "edges": 10,
+            "conductance": 0.09433962264150944
+          },
+          {
+            "axis": 0,
+            "position": 3.5,
+            "edges": 11,
+            "conductance": 0.07586206896551724
+          },
+          {
+            "axis": 0,
+            "position": 4.5,
+            "edges": 10,
+            "conductance": 0.056818181818181816
+          },
+          {
+            "axis": 0,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07246376811594203
+          },
+          {
+            "axis": 0,
+            "position": 6.5,
+            "edges": 9,
+            "conductance": 0.0891089108910891
+          },
+          {
+            "axis": 1,
+            "position": 2.5,
+            "edges": 11,
+            "conductance": 0.10476190476190476
+          },
+          {
+            "axis": 1,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.06944444444444445
+          },
+          {
+            "axis": 1,
+            "position": 4.5,
+            "edges": 9,
+            "conductance": 0.05027932960893855
+          },
+          {
+            "axis": 1,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.06944444444444445
+          },
+          {
+            "axis": 1,
+            "position": 6.5,
+            "edges": 9,
+            "conductance": 0.08411214953271028
+          }
+        ],
+        "boundary_anisotropy": 0.028571428571428525,
+        "boundary_long_bond_fraction": 0.02857142857142857,
+        "bulk_anisotropy": 0.020514385114677014,
+        "bulk_long_bond_fraction": 0.0
+      },
+      "after": {
+        "site_count": 100.0,
+        "edge_count": 180.0,
+        "mean_degree": 3.6,
+        "degree_variance": 0.64,
+        "component_count": 1.0,
+        "largest_component_site_count": 100.0,
+        "is_connected": 1.0,
+        "cycle_rank": 81.0,
+        "has_cycles": 1.0,
+        "triangle_count": 14.0,
+        "mean_local_clustering": 0.07033333333333333,
+        "connected_pair_count": 4950.0,
+        "reachable_pair_fraction": 1.0,
+        "mean_finite_shortest_path_length": 5.961212121212121,
+        "maximum_finite_shortest_path_length": 15.0,
+        "mean_coordination": 3.6,
+        "coordination_variance": 0.64,
+        "clustering_coefficient": 0.07033333333333333,
+        "four_cycle_count": 58.0,
+        "edge_density": 0.03636363636363636,
+        "minimum_degree": 2.0,
+        "maximum_degree": 5.0,
+        "boundary_degree_mean": 2.9444444444444446,
+        "boundary_degree_variance": 0.2191358024691358,
+        "bulk_degree_mean": 3.96875,
+        "bulk_degree_variance": 0.4990234375,
+        "boundary_site_count": 36.0,
+        "bulk_site_count": 64.0,
+        "graph_diameter": 15.0,
+        "shortest_path_mean": 5.961212121212121,
+        "shortest_path_variance": 7.372232874196509,
+        "laplacian_algebraic_connectivity": 0.09504744497764828,
+        "laplacian_spectral_radius": 7.615589620670003,
+        "local_connectivity_disorder": 0.8888888888888888,
+        "short_loop_count": 72.0,
+        "short_loop_mean_size": 3.8055555555555554,
+        "bond_length_mean": 1.0484884558964325,
+        "mean_bond_length": 1.0484884558964325,
+        "long_bond_fraction": 0.027777777777777776,
+        "max_bond_length_observed": 2.0,
+        "bond_length_variance": 0.034005291185248004,
+        "bond_length_minimum": 1.0,
+        "bond_length_maximum": 2.0,
+        "bond_length_q25": 1.0,
+        "bond_length_median": 1.0,
+        "bond_length_q75": 1.0,
+        "anisotropy": 0.017568209223157716,
+        "regular_edge_distance": 0.07777777777777778,
+        "bridge_count": 0,
+        "bridges": [],
+        "degree_histogram": {
+          "2": 8,
+          "3": 36,
+          "4": 44,
+          "5": 12
+        },
+        "boundary_weak_fraction": 0.1388888888888889,
+        "bulk_weak_fraction": 0.046875,
+        "balanced_cut_min_edges": 9,
+        "balanced_cut_min_conductance": 0.05084745762711865,
+        "balanced_axis_cuts": [
+          {
+            "axis": 0,
+            "position": 2.5,
+            "edges": 11,
+            "conductance": 0.10476190476190476
+          },
+          {
+            "axis": 0,
+            "position": 3.5,
+            "edges": 11,
+            "conductance": 0.07692307692307693
+          },
+          {
+            "axis": 0,
+            "position": 4.5,
+            "edges": 12,
+            "conductance": 0.06741573033707865
+          },
+          {
+            "axis": 0,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07246376811594203
+          },
+          {
+            "axis": 0,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.1
+          },
+          {
+            "axis": 1,
+            "position": 2.5,
+            "edges": 12,
+            "conductance": 0.11538461538461539
+          },
+          {
+            "axis": 1,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.06944444444444445
+          },
+          {
+            "axis": 1,
+            "position": 4.5,
+            "edges": 9,
+            "conductance": 0.05084745762711865
+          },
+          {
+            "axis": 1,
+            "position": 5.5,
+            "edges": 11,
+            "conductance": 0.07482993197278912
+          },
+          {
+            "axis": 1,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.09090909090909091
+          }
+        ],
+        "boundary_anisotropy": 0.028571428571428525,
+        "boundary_long_bond_fraction": 0.02857142857142857,
+        "bulk_anisotropy": 0.020514385114677014,
+        "bulk_long_bond_fraction": 0.027522935779816515
+      },
+      "remove": [
+        [
+          10,
+          11
+        ],
+        [
+          11,
+          12
+        ],
+        [
+          43,
+          44
+        ],
+        [
+          44,
+          45
+        ],
+        [
+          52,
+          53
+        ],
+        [
+          53,
+          54
+        ],
+        [
+          66,
+          67
+        ],
+        [
+          67,
+          68
+        ]
+      ],
+      "add": [
+        [
+          10,
+          12
+        ],
+        [
+          24,
+          35
+        ],
+        [
+          43,
+          45
+        ],
+        [
+          52,
+          54
+        ],
+        [
+          53,
+          62
+        ],
+        [
+          64,
+          75
+        ],
+        [
+          66,
+          68
+        ],
+        [
+          76,
+          87
+        ]
+      ],
+      "geometry": {
+        "format": "toposc_geometry_v1",
+        "archive": "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",
+        "n_sites": 100,
+        "coordinates": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ],
+          [
+            3.0,
+            0.0
+          ],
+          [
+            4.0,
+            0.0
+          ],
+          [
+            5.0,
+            0.0
+          ],
+          [
+            6.0,
+            0.0
+          ],
+          [
+            7.0,
+            0.0
+          ],
+          [
+            8.0,
+            0.0
+          ],
+          [
+            9.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0
+          ],
+          [
+            2.0,
+            1.0
+          ],
+          [
+            3.0,
+            1.0
+          ],
+          [
+            4.0,
+            1.0
+          ],
+          [
+            5.0,
+            1.0
+          ],
+          [
+            6.0,
+            1.0
+          ],
+          [
+            7.0,
+            1.0
+          ],
+          [
+            8.0,
+            1.0
+          ],
+          [
+            9.0,
+            1.0
+          ],
+          [
+            0.0,
+            2.0
+          ],
+          [
+            1.0,
+            2.0
+          ],
+          [
+            2.0,
+            2.0
+          ],
+          [
+            3.0,
+            2.0
+          ],
+          [
+            4.0,
+            2.0
+          ],
+          [
+            5.0,
+            2.0
+          ],
+          [
+            6.0,
+            2.0
+          ],
+          [
+            7.0,
+            2.0
+          ],
+          [
+            8.0,
+            2.0
+          ],
+          [
+            9.0,
+            2.0
+          ],
+          [
+            0.0,
+            3.0
+          ],
+          [
+            1.0,
+            3.0
+          ],
+          [
+            2.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0
+          ],
+          [
+            4.0,
+            3.0
+          ],
+          [
+            5.0,
+            3.0
+          ],
+          [
+            6.0,
+            3.0
+          ],
+          [
+            7.0,
+            3.0
+          ],
+          [
+            8.0,
+            3.0
+          ],
+          [
+            9.0,
+            3.0
+          ],
+          [
+            0.0,
+            4.0
+          ],
+          [
+            1.0,
+            4.0
+          ],
+          [
+            2.0,
+            4.0
+          ],
+          [
+            3.0,
+            4.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            5.0,
+            4.0
+          ],
+          [
+            6.0,
+            4.0
+          ],
+          [
+            7.0,
+            4.0
+          ],
+          [
+            8.0,
+            4.0
+          ],
+          [
+            9.0,
+            4.0
+          ],
+          [
+            0.0,
+            5.0
+          ],
+          [
+            1.0,
+            5.0
+          ],
+          [
+            2.0,
+            5.0
+          ],
+          [
+            3.0,
+            5.0
+          ],
+          [
+            4.0,
+            5.0
+          ],
+          [
+            5.0,
+            5.0
+          ],
+          [
+            6.0,
+            5.0
+          ],
+          [
+            7.0,
+            5.0
+          ],
+          [
+            8.0,
+            5.0
+          ],
+          [
+            9.0,
+            5.0
+          ],
+          [
+            0.0,
+            6.0
+          ],
+          [
+            1.0,
+            6.0
+          ],
+          [
+            2.0,
+            6.0
+          ],
+          [
+            3.0,
+            6.0
+          ],
+          [
+            4.0,
+            6.0
+          ],
+          [
+            5.0,
+            6.0
+          ],
+          [
+            6.0,
+            6.0
+          ],
+          [
+            7.0,
+            6.0
+          ],
+          [
+            8.0,
+            6.0
+          ],
+          [
+            9.0,
+            6.0
+          ],
+          [
+            0.0,
+            7.0
+          ],
+          [
+            1.0,
+            7.0
+          ],
+          [
+            2.0,
+            7.0
+          ],
+          [
+            3.0,
+            7.0
+          ],
+          [
+            4.0,
+            7.0
+          ],
+          [
+            5.0,
+            7.0
+          ],
+          [
+            6.0,
+            7.0
+          ],
+          [
+            7.0,
+            7.0
+          ],
+          [
+            8.0,
+            7.0
+          ],
+          [
+            9.0,
+            7.0
+          ],
+          [
+            0.0,
+            8.0
+          ],
+          [
+            1.0,
+            8.0
+          ],
+          [
+            2.0,
+            8.0
+          ],
+          [
+            3.0,
+            8.0
+          ],
+          [
+            4.0,
+            8.0
+          ],
+          [
+            5.0,
+            8.0
+          ],
+          [
+            6.0,
+            8.0
+          ],
+          [
+            7.0,
+            8.0
+          ],
+          [
+            8.0,
+            8.0
+          ],
+          [
+            9.0,
+            8.0
+          ],
+          [
+            0.0,
+            9.0
+          ],
+          [
+            1.0,
+            9.0
+          ],
+          [
+            2.0,
+            9.0
+          ],
+          [
+            3.0,
+            9.0
+          ],
+          [
+            4.0,
+            9.0
+          ],
+          [
+            5.0,
+            9.0
+          ],
+          [
+            6.0,
+            9.0
+          ],
+          [
+            7.0,
+            9.0
+          ],
+          [
+            8.0,
+            9.0
+          ],
+          [
+            9.0,
+            9.0
+          ]
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            10
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            1,
+            12
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            12
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            3,
+            13
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            4,
+            14
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            15
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            6,
+            16
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            7,
+            17
+          ],
+          [
+            8,
+            9
+          ],
+          [
+            8,
+            18
+          ],
+          [
+            9,
+            19
+          ],
+          [
+            10,
+            12
+          ],
+          [
+            10,
+            30
+          ],
+          [
+            11,
+            21
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            12,
+            22
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            13,
+            23
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            14,
+            24
+          ],
+          [
+            15,
+            16
+          ],
+          [
+            15,
+            25
+          ],
+          [
+            16,
+            17
+          ],
+          [
+            16,
+            26
+          ],
+          [
+            17,
+            18
+          ],
+          [
+            17,
+            27
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            19,
+            28
+          ],
+          [
+            19,
+            29
+          ],
+          [
+            20,
+            21
+          ],
+          [
+            20,
+            31
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            21,
+            31
+          ],
+          [
+            22,
+            23
+          ],
+          [
+            22,
+            32
+          ],
+          [
+            23,
+            24
+          ],
+          [
+            23,
+            33
+          ],
+          [
+            24,
+            25
+          ],
+          [
+            24,
+            34
+          ],
+          [
+            24,
+            35
+          ],
+          [
+            25,
+            26
+          ],
+          [
+            25,
+            35
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            26,
+            36
+          ],
+          [
+            27,
+            28
+          ],
+          [
+            27,
+            37
+          ],
+          [
+            28,
+            29
+          ],
+          [
+            28,
+            38
+          ],
+          [
+            29,
+            39
+          ],
+          [
+            30,
+            31
+          ],
+          [
+            30,
+            40
+          ],
+          [
+            31,
+            32
+          ],
+          [
+            31,
+            41
+          ],
+          [
+            32,
+            33
+          ],
+          [
+            32,
+            42
+          ],
+          [
+            33,
+            34
+          ],
+          [
+            33,
+            43
+          ],
+          [
+            34,
+            35
+          ],
+          [
+            34,
+            44
+          ],
+          [
+            35,
+            36
+          ],
+          [
+            35,
+            45
+          ],
+          [
+            36,
+            37
+          ],
+          [
+            36,
+            46
+          ],
+          [
+            37,
+            38
+          ],
+          [
+            37,
+            47
+          ],
+          [
+            38,
+            39
+          ],
+          [
+            38,
+            48
+          ],
+          [
+            39,
+            49
+          ],
+          [
+            40,
+            41
+          ],
+          [
+            40,
+            50
+          ],
+          [
+            41,
+            42
+          ],
+          [
+            41,
+            51
+          ],
+          [
+            42,
+            43
+          ],
+          [
+            42,
+            52
+          ],
+          [
+            43,
+            45
+          ],
+          [
+            43,
+            53
+          ],
+          [
+            44,
+            54
+          ],
+          [
+            45,
+            46
+          ],
+          [
+            45,
+            55
+          ],
+          [
+            46,
+            56
+          ],
+          [
+            47,
+            48
+          ],
+          [
+            47,
+            57
+          ],
+          [
+            48,
+            49
+          ],
+          [
+            49,
+            59
+          ],
+          [
+            50,
+            51
+          ],
+          [
+            50,
+            60
+          ],
+          [
+            51,
+            52
+          ],
+          [
+            51,
+            61
+          ],
+          [
+            52,
+            54
+          ],
+          [
+            52,
+            62
+          ],
+          [
+            53,
+            62
+          ],
+          [
+            53,
+            63
+          ],
+          [
+            54,
+            55
+          ],
+          [
+            54,
+            64
+          ],
+          [
+            55,
+            56
+          ],
+          [
+            55,
+            65
+          ],
+          [
+            56,
+            57
+          ],
+          [
+            56,
+            66
+          ],
+          [
+            57,
+            58
+          ],
+          [
+            57,
+            67
+          ],
+          [
+            58,
+            59
+          ],
+          [
+            58,
+            68
+          ],
+          [
+            59,
+            69
+          ],
+          [
+            60,
+            61
+          ],
+          [
+            60,
+            70
+          ],
+          [
+            61,
+            62
+          ],
+          [
+            62,
+            63
+          ],
+          [
+            62,
+            72
+          ],
+          [
+            63,
+            64
+          ],
+          [
+            63,
+            73
+          ],
+          [
+            64,
+            65
+          ],
+          [
+            64,
+            74
+          ],
+          [
+            64,
+            75
+          ],
+          [
+            65,
+            66
+          ],
+          [
+            65,
+            75
+          ],
+          [
+            66,
+            68
+          ],
+          [
+            66,
+            76
+          ],
+          [
+            67,
+            77
+          ],
+          [
+            68,
+            69
+          ],
+          [
+            68,
+            78
+          ],
+          [
+            69,
+            79
+          ],
+          [
+            70,
+            71
+          ],
+          [
+            70,
+            80
+          ],
+          [
+            71,
+            72
+          ],
+          [
+            71,
+            81
+          ],
+          [
+            72,
+            73
+          ],
+          [
+            72,
+            82
+          ],
+          [
+            73,
+            74
+          ],
+          [
+            73,
+            83
+          ],
+          [
+            74,
+            75
+          ],
+          [
+            74,
+            83
+          ],
+          [
+            74,
+            84
+          ],
+          [
+            75,
+            76
+          ],
+          [
+            75,
+            85
+          ],
+          [
+            76,
+            77
+          ],
+          [
+            76,
+            86
+          ],
+          [
+            76,
+            87
+          ],
+          [
+            77,
+            78
+          ],
+          [
+            77,
+            87
+          ],
+          [
+            78,
+            79
+          ],
+          [
+            78,
+            88
+          ],
+          [
+            79,
+            89
+          ],
+          [
+            80,
+            81
+          ],
+          [
+            80,
+            90
+          ],
+          [
+            81,
+            82
+          ],
+          [
+            81,
+            91
+          ],
+          [
+            81,
+            92
+          ],
+          [
+            82,
+            83
+          ],
+          [
+            82,
+            92
+          ],
+          [
+            83,
+            84
+          ],
+          [
+            83,
+            93
+          ],
+          [
+            84,
+            85
+          ],
+          [
+            84,
+            94
+          ],
+          [
+            85,
+            86
+          ],
+          [
+            85,
+            95
+          ],
+          [
+            86,
+            87
+          ],
+          [
+            86,
+            96
+          ],
+          [
+            87,
+            88
+          ],
+          [
+            87,
+            97
+          ],
+          [
+            88,
+            89
+          ],
+          [
+            88,
+            98
+          ],
+          [
+            89,
+            99
+          ],
+          [
+            90,
+            91
+          ],
+          [
+            91,
+            92
+          ],
+          [
+            92,
+            93
+          ],
+          [
+            93,
+            94
+          ],
+          [
+            94,
+            95
+          ],
+          [
+            95,
+            96
+          ],
+          [
+            96,
+            97
+          ],
+          [
+            97,
+            98
+          ],
+          [
+            98,
+            99
+          ]
+        ],
+        "boundary_sites": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          19,
+          20,
+          29,
+          30,
+          39,
+          40,
+          49,
+          50,
+          59,
+          60,
+          69,
+          70,
+          79,
+          80,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99
+        ]
+      },
+      "reverse": "Remove added edges and restore removed edges exactly",
+      "confounders": {
+        "degree_variance": 0.19999999999999984,
+        "triangle_count": 6.0,
+        "mean_local_clustering": 0.023,
+        "mean_finite_shortest_path_length": -0.5377777777777784,
+        "maximum_finite_shortest_path_length": -1.0,
+        "coordination_variance": 0.19999999999999984,
+        "clustering_coefficient": 0.023,
+        "four_cycle_count": -13.0,
+        "bulk_degree_variance": 0.3125,
+        "graph_diameter": -1.0,
+        "shortest_path_mean": -0.5377777777777784,
+        "shortest_path_variance": -2.41675600448934,
+        "laplacian_algebraic_connectivity": 0.00236514698933607,
+        "laplacian_spectral_radius": -0.15954353323707604,
+        "local_connectivity_disorder": 0.3222222222222222,
+        "short_loop_count": -7.0,
+        "short_loop_mean_size": -0.09317862165963442,
+        "bond_length_mean": 0.03142696805273548,
+        "mean_bond_length": 0.03142696805273548,
+        "long_bond_fraction": 0.02222222222222222,
+        "bond_length_variance": 0.023974916795638353,
+        "regular_edge_distance": 0.044444444444444446,
+        "bulk_weak_fraction": 0.046875,
+        "balanced_cut_min_conductance": 0.0005681280181800974,
+        "bulk_long_bond_fraction": 0.027522935779816515
+      },
+      "causal_claim": false
+    },
+    {
+      "parent": "historical_boundary",
+      "feature": "balanced_cut_min_conductance",
+      "direction": 1,
+      "status": "geometry_prepared_not_physics_tested",
+      "before": {
+        "site_count": 100.0,
+        "edge_count": 180.0,
+        "mean_degree": 3.6,
+        "degree_variance": 0.3800000000000001,
+        "component_count": 1.0,
+        "largest_component_site_count": 100.0,
+        "is_connected": 1.0,
+        "cycle_rank": 81.0,
+        "has_cycles": 1.0,
+        "triangle_count": 3.0,
+        "mean_local_clustering": 0.011666666666666665,
+        "connected_pair_count": 4950.0,
+        "reachable_pair_fraction": 1.0,
+        "mean_finite_shortest_path_length": 6.450707070707071,
+        "maximum_finite_shortest_path_length": 17.0,
+        "mean_coordination": 3.6,
+        "coordination_variance": 0.3800000000000001,
+        "clustering_coefficient": 0.011666666666666665,
+        "four_cycle_count": 77.0,
+        "edge_density": 0.03636363636363636,
+        "minimum_degree": 2.0,
+        "maximum_degree": 5.0,
+        "boundary_degree_mean": 2.888888888888889,
+        "boundary_degree_variance": 0.09876543209876544,
+        "bulk_degree_mean": 4.0,
+        "bulk_degree_variance": 0.09375,
+        "boundary_site_count": 36.0,
+        "bulk_site_count": 64.0,
+        "graph_diameter": 17.0,
+        "shortest_path_mean": 6.450707070707071,
+        "shortest_path_variance": 9.534438893990409,
+        "laplacian_algebraic_connectivity": 0.09731785211724046,
+        "laplacian_spectral_radius": 7.739478050007983,
+        "local_connectivity_disorder": 0.32222222222222224,
+        "short_loop_count": 80.0,
+        "short_loop_mean_size": 3.9625,
+        "bond_length_mean": 1.0046023729152567,
+        "mean_bond_length": 1.0046023729152567,
+        "long_bond_fraction": 0.0,
+        "max_bond_length_observed": 1.4142135623730951,
+        "bond_length_variance": 0.001885183444146801,
+        "bond_length_minimum": 1.0,
+        "bond_length_maximum": 1.4142135623730951,
+        "bond_length_q25": 1.0,
+        "bond_length_median": 1.0,
+        "bond_length_q75": 1.0,
+        "anisotropy": 0.0,
+        "regular_edge_distance": 0.011111111111111112,
+        "bridge_count": 0,
+        "bridges": [],
+        "degree_histogram": {
+          "2": 4,
+          "3": 35,
+          "4": 58,
+          "5": 3
+        },
+        "boundary_weak_fraction": 0.1111111111111111,
+        "bulk_weak_fraction": 0.0,
+        "balanced_cut_min_edges": 10,
+        "balanced_cut_min_conductance": 0.061452513966480445,
+        "balanced_axis_cuts": [
+          {
+            "axis": 0,
+            "position": 2.5,
+            "edges": 11,
+            "conductance": 0.10476190476190476
+          },
+          {
+            "axis": 0,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.06944444444444445
+          },
+          {
+            "axis": 0,
+            "position": 4.5,
+            "edges": 11,
+            "conductance": 0.062146892655367235
+          },
+          {
+            "axis": 0,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07142857142857142
+          },
+          {
+            "axis": 0,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.09803921568627451
+          },
+          {
+            "axis": 1,
+            "position": 2.5,
+            "edges": 10,
+            "conductance": 0.09615384615384616
+          },
+          {
+            "axis": 1,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.07042253521126761
+          },
+          {
+            "axis": 1,
+            "position": 4.5,
+            "edges": 11,
+            "conductance": 0.061452513966480445
+          },
+          {
+            "axis": 1,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07142857142857142
+          },
+          {
+            "axis": 1,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.09803921568627451
+          }
+        ],
+        "boundary_anisotropy": 0.0,
+        "boundary_long_bond_fraction": 0.0,
+        "bulk_anisotropy": 0.0,
+        "bulk_long_bond_fraction": 0.0
+      },
+      "after": {
+        "site_count": 100.0,
+        "edge_count": 180.0,
+        "mean_degree": 3.6,
+        "degree_variance": 0.40000000000000013,
+        "component_count": 1.0,
+        "largest_component_site_count": 100.0,
+        "is_connected": 1.0,
+        "cycle_rank": 81.0,
+        "has_cycles": 1.0,
+        "triangle_count": 5.0,
+        "mean_local_clustering": 0.022000000000000002,
+        "connected_pair_count": 4950.0,
+        "reachable_pair_fraction": 1.0,
+        "mean_finite_shortest_path_length": 6.448686868686869,
+        "maximum_finite_shortest_path_length": 17.0,
+        "mean_coordination": 3.6,
+        "coordination_variance": 0.40000000000000013,
+        "clustering_coefficient": 0.022000000000000002,
+        "four_cycle_count": 75.0,
+        "edge_density": 0.03636363636363636,
+        "minimum_degree": 2.0,
+        "maximum_degree": 5.0,
+        "boundary_degree_mean": 2.9166666666666665,
+        "boundary_degree_variance": 0.13194444444444445,
+        "bulk_degree_mean": 3.984375,
+        "bulk_degree_variance": 0.140380859375,
+        "boundary_site_count": 36.0,
+        "bulk_site_count": 64.0,
+        "graph_diameter": 17.0,
+        "shortest_path_mean": 6.448686868686869,
+        "shortest_path_variance": 9.55403362922151,
+        "laplacian_algebraic_connectivity": 0.09651530657227964,
+        "laplacian_spectral_radius": 7.721330812182793,
+        "local_connectivity_disorder": 0.4,
+        "short_loop_count": 80.0,
+        "short_loop_mean_size": 3.9375,
+        "bond_length_mean": 1.006903559372885,
+        "mean_bond_length": 1.006903559372885,
+        "long_bond_fraction": 0.0,
+        "max_bond_length_observed": 1.4142135623730951,
+        "bond_length_variance": 0.002811888788881886,
+        "bond_length_minimum": 1.0,
+        "bond_length_maximum": 1.4142135623730951,
+        "bond_length_q25": 1.0,
+        "bond_length_median": 1.0,
+        "bond_length_q75": 1.0,
+        "anisotropy": 0.00785674201318387,
+        "regular_edge_distance": 0.016666666666666666,
+        "bridge_count": 0,
+        "bridges": [],
+        "degree_histogram": {
+          "2": 4,
+          "3": 36,
+          "4": 56,
+          "5": 4
+        },
+        "boundary_weak_fraction": 0.1111111111111111,
+        "bulk_weak_fraction": 0.0,
+        "balanced_cut_min_edges": 10,
+        "balanced_cut_min_conductance": 0.062146892655367235,
+        "balanced_axis_cuts": [
+          {
+            "axis": 0,
+            "position": 2.5,
+            "edges": 11,
+            "conductance": 0.102803738317757
+          },
+          {
+            "axis": 0,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.0684931506849315
+          },
+          {
+            "axis": 0,
+            "position": 4.5,
+            "edges": 11,
+            "conductance": 0.06285714285714286
+          },
+          {
+            "axis": 0,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07142857142857142
+          },
+          {
+            "axis": 0,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.09803921568627451
+          },
+          {
+            "axis": 1,
+            "position": 2.5,
+            "edges": 10,
+            "conductance": 0.09433962264150944
+          },
+          {
+            "axis": 1,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.06944444444444445
+          },
+          {
+            "axis": 1,
+            "position": 4.5,
+            "edges": 11,
+            "conductance": 0.062146892655367235
+          },
+          {
+            "axis": 1,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07246376811594203
+          },
+          {
+            "axis": 1,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.1
+          }
+        ],
+        "boundary_anisotropy": 0.0,
+        "boundary_long_bond_fraction": 0.0,
+        "bulk_anisotropy": 0.009009009009008973,
+        "bulk_long_bond_fraction": 0.0
+      },
+      "remove": [
+        [
+          75,
+          85
+        ]
+      ],
+      "add": [
+        [
+          2,
+          11
+        ]
+      ],
+      "geometry": {
+        "format": "toposc_geometry_v1",
+        "archive": "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",
+        "n_sites": 100,
+        "coordinates": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ],
+          [
+            3.0,
+            0.0
+          ],
+          [
+            4.0,
+            0.0
+          ],
+          [
+            5.0,
+            0.0
+          ],
+          [
+            6.0,
+            0.0
+          ],
+          [
+            7.0,
+            0.0
+          ],
+          [
+            8.0,
+            0.0
+          ],
+          [
+            9.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0
+          ],
+          [
+            2.0,
+            1.0
+          ],
+          [
+            3.0,
+            1.0
+          ],
+          [
+            4.0,
+            1.0
+          ],
+          [
+            5.0,
+            1.0
+          ],
+          [
+            6.0,
+            1.0
+          ],
+          [
+            7.0,
+            1.0
+          ],
+          [
+            8.0,
+            1.0
+          ],
+          [
+            9.0,
+            1.0
+          ],
+          [
+            0.0,
+            2.0
+          ],
+          [
+            1.0,
+            2.0
+          ],
+          [
+            2.0,
+            2.0
+          ],
+          [
+            3.0,
+            2.0
+          ],
+          [
+            4.0,
+            2.0
+          ],
+          [
+            5.0,
+            2.0
+          ],
+          [
+            6.0,
+            2.0
+          ],
+          [
+            7.0,
+            2.0
+          ],
+          [
+            8.0,
+            2.0
+          ],
+          [
+            9.0,
+            2.0
+          ],
+          [
+            0.0,
+            3.0
+          ],
+          [
+            1.0,
+            3.0
+          ],
+          [
+            2.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0
+          ],
+          [
+            4.0,
+            3.0
+          ],
+          [
+            5.0,
+            3.0
+          ],
+          [
+            6.0,
+            3.0
+          ],
+          [
+            7.0,
+            3.0
+          ],
+          [
+            8.0,
+            3.0
+          ],
+          [
+            9.0,
+            3.0
+          ],
+          [
+            0.0,
+            4.0
+          ],
+          [
+            1.0,
+            4.0
+          ],
+          [
+            2.0,
+            4.0
+          ],
+          [
+            3.0,
+            4.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            5.0,
+            4.0
+          ],
+          [
+            6.0,
+            4.0
+          ],
+          [
+            7.0,
+            4.0
+          ],
+          [
+            8.0,
+            4.0
+          ],
+          [
+            9.0,
+            4.0
+          ],
+          [
+            0.0,
+            5.0
+          ],
+          [
+            1.0,
+            5.0
+          ],
+          [
+            2.0,
+            5.0
+          ],
+          [
+            3.0,
+            5.0
+          ],
+          [
+            4.0,
+            5.0
+          ],
+          [
+            5.0,
+            5.0
+          ],
+          [
+            6.0,
+            5.0
+          ],
+          [
+            7.0,
+            5.0
+          ],
+          [
+            8.0,
+            5.0
+          ],
+          [
+            9.0,
+            5.0
+          ],
+          [
+            0.0,
+            6.0
+          ],
+          [
+            1.0,
+            6.0
+          ],
+          [
+            2.0,
+            6.0
+          ],
+          [
+            3.0,
+            6.0
+          ],
+          [
+            4.0,
+            6.0
+          ],
+          [
+            5.0,
+            6.0
+          ],
+          [
+            6.0,
+            6.0
+          ],
+          [
+            7.0,
+            6.0
+          ],
+          [
+            8.0,
+            6.0
+          ],
+          [
+            9.0,
+            6.0
+          ],
+          [
+            0.0,
+            7.0
+          ],
+          [
+            1.0,
+            7.0
+          ],
+          [
+            2.0,
+            7.0
+          ],
+          [
+            3.0,
+            7.0
+          ],
+          [
+            4.0,
+            7.0
+          ],
+          [
+            5.0,
+            7.0
+          ],
+          [
+            6.0,
+            7.0
+          ],
+          [
+            7.0,
+            7.0
+          ],
+          [
+            8.0,
+            7.0
+          ],
+          [
+            9.0,
+            7.0
+          ],
+          [
+            0.0,
+            8.0
+          ],
+          [
+            1.0,
+            8.0
+          ],
+          [
+            2.0,
+            8.0
+          ],
+          [
+            3.0,
+            8.0
+          ],
+          [
+            4.0,
+            8.0
+          ],
+          [
+            5.0,
+            8.0
+          ],
+          [
+            6.0,
+            8.0
+          ],
+          [
+            7.0,
+            8.0
+          ],
+          [
+            8.0,
+            8.0
+          ],
+          [
+            9.0,
+            8.0
+          ],
+          [
+            0.0,
+            9.0
+          ],
+          [
+            1.0,
+            9.0
+          ],
+          [
+            2.0,
+            9.0
+          ],
+          [
+            3.0,
+            9.0
+          ],
+          [
+            4.0,
+            9.0
+          ],
+          [
+            5.0,
+            9.0
+          ],
+          [
+            6.0,
+            9.0
+          ],
+          [
+            7.0,
+            9.0
+          ],
+          [
+            8.0,
+            9.0
+          ],
+          [
+            9.0,
+            9.0
+          ]
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            10
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            11
+          ],
+          [
+            2,
+            12
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            3,
+            13
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            4,
+            14
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            15
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            6,
+            16
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            7,
+            17
+          ],
+          [
+            8,
+            9
+          ],
+          [
+            8,
+            18
+          ],
+          [
+            9,
+            19
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            10,
+            20
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            11,
+            21
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            12,
+            22
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            13,
+            23
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            14,
+            24
+          ],
+          [
+            15,
+            16
+          ],
+          [
+            15,
+            25
+          ],
+          [
+            16,
+            17
+          ],
+          [
+            16,
+            26
+          ],
+          [
+            17,
+            18
+          ],
+          [
+            17,
+            27
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            18,
+            28
+          ],
+          [
+            19,
+            29
+          ],
+          [
+            20,
+            21
+          ],
+          [
+            20,
+            30
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            21,
+            31
+          ],
+          [
+            22,
+            23
+          ],
+          [
+            22,
+            32
+          ],
+          [
+            23,
+            24
+          ],
+          [
+            23,
+            33
+          ],
+          [
+            24,
+            25
+          ],
+          [
+            24,
+            34
+          ],
+          [
+            25,
+            26
+          ],
+          [
+            25,
+            35
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            26,
+            36
+          ],
+          [
+            27,
+            28
+          ],
+          [
+            27,
+            37
+          ],
+          [
+            28,
+            29
+          ],
+          [
+            28,
+            38
+          ],
+          [
+            29,
+            39
+          ],
+          [
+            30,
+            31
+          ],
+          [
+            30,
+            40
+          ],
+          [
+            31,
+            32
+          ],
+          [
+            31,
+            41
+          ],
+          [
+            32,
+            33
+          ],
+          [
+            32,
+            42
+          ],
+          [
+            33,
+            34
+          ],
+          [
+            33,
+            43
+          ],
+          [
+            34,
+            35
+          ],
+          [
+            34,
+            44
+          ],
+          [
+            34,
+            45
+          ],
+          [
+            35,
+            36
+          ],
+          [
+            36,
+            37
+          ],
+          [
+            36,
+            46
+          ],
+          [
+            37,
+            38
+          ],
+          [
+            37,
+            47
+          ],
+          [
+            38,
+            39
+          ],
+          [
+            38,
+            48
+          ],
+          [
+            39,
+            49
+          ],
+          [
+            40,
+            41
+          ],
+          [
+            40,
+            50
+          ],
+          [
+            41,
+            42
+          ],
+          [
+            41,
+            51
+          ],
+          [
+            42,
+            43
+          ],
+          [
+            42,
+            52
+          ],
+          [
+            43,
+            44
+          ],
+          [
+            43,
+            52
+          ],
+          [
+            43,
+            53
+          ],
+          [
+            44,
+            45
+          ],
+          [
+            44,
+            54
+          ],
+          [
+            45,
+            46
+          ],
+          [
+            45,
+            55
+          ],
+          [
+            46,
+            47
+          ],
+          [
+            46,
+            56
+          ],
+          [
+            47,
+            48
+          ],
+          [
+            47,
+            57
+          ],
+          [
+            48,
+            49
+          ],
+          [
+            48,
+            58
+          ],
+          [
+            49,
+            59
+          ],
+          [
+            50,
+            51
+          ],
+          [
+            50,
+            60
+          ],
+          [
+            51,
+            52
+          ],
+          [
+            51,
+            61
+          ],
+          [
+            52,
+            53
+          ],
+          [
+            52,
+            62
+          ],
+          [
+            53,
+            54
+          ],
+          [
+            53,
+            63
+          ],
+          [
+            54,
+            55
+          ],
+          [
+            54,
+            64
+          ],
+          [
+            55,
+            56
+          ],
+          [
+            55,
+            65
+          ],
+          [
+            56,
+            57
+          ],
+          [
+            56,
+            66
+          ],
+          [
+            57,
+            58
+          ],
+          [
+            57,
+            67
+          ],
+          [
+            58,
+            59
+          ],
+          [
+            58,
+            68
+          ],
+          [
+            59,
+            69
+          ],
+          [
+            60,
+            61
+          ],
+          [
+            60,
+            70
+          ],
+          [
+            61,
+            62
+          ],
+          [
+            61,
+            71
+          ],
+          [
+            62,
+            63
+          ],
+          [
+            62,
+            72
+          ],
+          [
+            63,
+            64
+          ],
+          [
+            63,
+            73
+          ],
+          [
+            64,
+            65
+          ],
+          [
+            64,
+            74
+          ],
+          [
+            65,
+            66
+          ],
+          [
+            65,
+            75
+          ],
+          [
+            66,
+            67
+          ],
+          [
+            66,
+            76
+          ],
+          [
+            67,
+            68
+          ],
+          [
+            67,
+            77
+          ],
+          [
+            68,
+            69
+          ],
+          [
+            68,
+            78
+          ],
+          [
+            69,
+            79
+          ],
+          [
+            70,
+            71
+          ],
+          [
+            70,
+            80
+          ],
+          [
+            71,
+            72
+          ],
+          [
+            71,
+            81
+          ],
+          [
+            72,
+            73
+          ],
+          [
+            72,
+            82
+          ],
+          [
+            73,
+            74
+          ],
+          [
+            73,
+            83
+          ],
+          [
+            74,
+            75
+          ],
+          [
+            74,
+            84
+          ],
+          [
+            75,
+            76
+          ],
+          [
+            76,
+            77
+          ],
+          [
+            76,
+            86
+          ],
+          [
+            77,
+            78
+          ],
+          [
+            77,
+            87
+          ],
+          [
+            78,
+            79
+          ],
+          [
+            78,
+            88
+          ],
+          [
+            79,
+            89
+          ],
+          [
+            80,
+            81
+          ],
+          [
+            80,
+            90
+          ],
+          [
+            81,
+            82
+          ],
+          [
+            81,
+            91
+          ],
+          [
+            82,
+            83
+          ],
+          [
+            82,
+            92
+          ],
+          [
+            83,
+            84
+          ],
+          [
+            83,
+            93
+          ],
+          [
+            84,
+            85
+          ],
+          [
+            84,
+            94
+          ],
+          [
+            85,
+            86
+          ],
+          [
+            85,
+            95
+          ],
+          [
+            86,
+            87
+          ],
+          [
+            86,
+            96
+          ],
+          [
+            87,
+            97
+          ],
+          [
+            88,
+            89
+          ],
+          [
+            88,
+            98
+          ],
+          [
+            89,
+            99
+          ],
+          [
+            90,
+            91
+          ],
+          [
+            91,
+            92
+          ],
+          [
+            92,
+            93
+          ],
+          [
+            93,
+            94
+          ],
+          [
+            94,
+            95
+          ],
+          [
+            95,
+            96
+          ],
+          [
+            96,
+            97
+          ],
+          [
+            97,
+            98
+          ],
+          [
+            98,
+            99
+          ]
+        ],
+        "boundary_sites": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          19,
+          20,
+          29,
+          30,
+          39,
+          40,
+          49,
+          50,
+          59,
+          60,
+          69,
+          70,
+          79,
+          80,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99
+        ]
+      },
+      "reverse": "Remove added edges and restore removed edges exactly",
+      "confounders": {
+        "degree_variance": 0.020000000000000018,
+        "triangle_count": 2.0,
+        "mean_local_clustering": 0.010333333333333337,
+        "mean_finite_shortest_path_length": -0.0020202020202022553,
+        "coordination_variance": 0.020000000000000018,
+        "clustering_coefficient": 0.010333333333333337,
+        "four_cycle_count": -2.0,
+        "boundary_degree_mean": 0.02777777777777768,
+        "boundary_degree_variance": 0.03317901234567901,
+        "bulk_degree_mean": -0.015625,
+        "bulk_degree_variance": 0.046630859375,
+        "shortest_path_mean": -0.0020202020202022553,
+        "shortest_path_variance": 0.019594735231100557,
+        "laplacian_algebraic_connectivity": -0.0008025455449608282,
+        "laplacian_spectral_radius": -0.018147237825189677,
+        "local_connectivity_disorder": 0.07777777777777778,
+        "short_loop_mean_size": -0.02499999999999991,
+        "bond_length_mean": 0.0023011864576283347,
+        "mean_bond_length": 0.0023011864576283347,
+        "bond_length_variance": 0.0009267053447350848,
+        "anisotropy": 0.00785674201318387,
+        "regular_edge_distance": 0.005555555555555555,
+        "balanced_cut_min_conductance": 0.0006943786888867903,
+        "bulk_anisotropy": 0.009009009009008973
+      },
+      "causal_claim": false
+    },
+    {
+      "parent": "historical_boundary",
+      "feature": "bulk_degree_variance",
+      "status": "unavailable_under_bounded_search",
+      "valid_unique_proposals": 24
+    },
+    {
+      "parent": "historical_boundary",
+      "feature": "long_bond_fraction",
+      "direction": 1,
+      "status": "geometry_prepared_not_physics_tested",
+      "before": {
+        "site_count": 100.0,
+        "edge_count": 180.0,
+        "mean_degree": 3.6,
+        "degree_variance": 0.3800000000000001,
+        "component_count": 1.0,
+        "largest_component_site_count": 100.0,
+        "is_connected": 1.0,
+        "cycle_rank": 81.0,
+        "has_cycles": 1.0,
+        "triangle_count": 3.0,
+        "mean_local_clustering": 0.011666666666666665,
+        "connected_pair_count": 4950.0,
+        "reachable_pair_fraction": 1.0,
+        "mean_finite_shortest_path_length": 6.450707070707071,
+        "maximum_finite_shortest_path_length": 17.0,
+        "mean_coordination": 3.6,
+        "coordination_variance": 0.3800000000000001,
+        "clustering_coefficient": 0.011666666666666665,
+        "four_cycle_count": 77.0,
+        "edge_density": 0.03636363636363636,
+        "minimum_degree": 2.0,
+        "maximum_degree": 5.0,
+        "boundary_degree_mean": 2.888888888888889,
+        "boundary_degree_variance": 0.09876543209876544,
+        "bulk_degree_mean": 4.0,
+        "bulk_degree_variance": 0.09375,
+        "boundary_site_count": 36.0,
+        "bulk_site_count": 64.0,
+        "graph_diameter": 17.0,
+        "shortest_path_mean": 6.450707070707071,
+        "shortest_path_variance": 9.534438893990409,
+        "laplacian_algebraic_connectivity": 0.09731785211724046,
+        "laplacian_spectral_radius": 7.739478050007983,
+        "local_connectivity_disorder": 0.32222222222222224,
+        "short_loop_count": 80.0,
+        "short_loop_mean_size": 3.9625,
+        "bond_length_mean": 1.0046023729152567,
+        "mean_bond_length": 1.0046023729152567,
+        "long_bond_fraction": 0.0,
+        "max_bond_length_observed": 1.4142135623730951,
+        "bond_length_variance": 0.001885183444146801,
+        "bond_length_minimum": 1.0,
+        "bond_length_maximum": 1.4142135623730951,
+        "bond_length_q25": 1.0,
+        "bond_length_median": 1.0,
+        "bond_length_q75": 1.0,
+        "anisotropy": 0.0,
+        "regular_edge_distance": 0.011111111111111112,
+        "bridge_count": 0,
+        "bridges": [],
+        "degree_histogram": {
+          "2": 4,
+          "3": 35,
+          "4": 58,
+          "5": 3
+        },
+        "boundary_weak_fraction": 0.1111111111111111,
+        "bulk_weak_fraction": 0.0,
+        "balanced_cut_min_edges": 10,
+        "balanced_cut_min_conductance": 0.061452513966480445,
+        "balanced_axis_cuts": [
+          {
+            "axis": 0,
+            "position": 2.5,
+            "edges": 11,
+            "conductance": 0.10476190476190476
+          },
+          {
+            "axis": 0,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.06944444444444445
+          },
+          {
+            "axis": 0,
+            "position": 4.5,
+            "edges": 11,
+            "conductance": 0.062146892655367235
+          },
+          {
+            "axis": 0,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07142857142857142
+          },
+          {
+            "axis": 0,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.09803921568627451
+          },
+          {
+            "axis": 1,
+            "position": 2.5,
+            "edges": 10,
+            "conductance": 0.09615384615384616
+          },
+          {
+            "axis": 1,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.07042253521126761
+          },
+          {
+            "axis": 1,
+            "position": 4.5,
+            "edges": 11,
+            "conductance": 0.061452513966480445
+          },
+          {
+            "axis": 1,
+            "position": 5.5,
+            "edges": 10,
+            "conductance": 0.07142857142857142
+          },
+          {
+            "axis": 1,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.09803921568627451
+          }
+        ],
+        "boundary_anisotropy": 0.0,
+        "boundary_long_bond_fraction": 0.0,
+        "bulk_anisotropy": 0.0,
+        "bulk_long_bond_fraction": 0.0
+      },
+      "after": {
+        "site_count": 100.0,
+        "edge_count": 180.0,
+        "mean_degree": 3.6,
+        "degree_variance": 0.5800000000000002,
+        "component_count": 1.0,
+        "largest_component_site_count": 100.0,
+        "is_connected": 1.0,
+        "cycle_rank": 81.0,
+        "has_cycles": 1.0,
+        "triangle_count": 9.0,
+        "mean_local_clustering": 0.033999999999999996,
+        "connected_pair_count": 4950.0,
+        "reachable_pair_fraction": 1.0,
+        "mean_finite_shortest_path_length": 6.141818181818182,
+        "maximum_finite_shortest_path_length": 16.0,
+        "mean_coordination": 3.6,
+        "coordination_variance": 0.5800000000000002,
+        "clustering_coefficient": 0.033999999999999996,
+        "four_cycle_count": 69.0,
+        "edge_density": 0.03636363636363636,
+        "minimum_degree": 2.0,
+        "maximum_degree": 6.0,
+        "boundary_degree_mean": 2.9166666666666665,
+        "boundary_degree_variance": 0.13194444444444445,
+        "bulk_degree_mean": 3.984375,
+        "bulk_degree_variance": 0.421630859375,
+        "boundary_site_count": 36.0,
+        "bulk_site_count": 64.0,
+        "graph_diameter": 16.0,
+        "shortest_path_mean": 6.141818181818182,
+        "shortest_path_variance": 8.299887603305784,
+        "laplacian_algebraic_connectivity": 0.10013461539812937,
+        "laplacian_spectral_radius": 7.667975465167391,
+        "local_connectivity_disorder": 0.7111111111111111,
+        "short_loop_count": 78.0,
+        "short_loop_mean_size": 3.8846153846153846,
+        "bond_length_mean": 1.0304737854124366,
+        "mean_bond_length": 1.0304737854124366,
+        "long_bond_fraction": 0.016666666666666666,
+        "max_bond_length_observed": 2.0,
+        "bond_length_variance": 0.021457110911097105,
+        "bond_length_minimum": 1.0,
+        "bond_length_maximum": 2.0,
+        "bond_length_q25": 1.0,
+        "bond_length_median": 1.0,
+        "bond_length_q75": 1.0,
+        "anisotropy": 0.02484519974999766,
+        "regular_edge_distance": 0.05,
+        "bridge_count": 0,
+        "bridges": [],
+        "degree_histogram": {
+          "2": 7,
+          "3": 35,
+          "4": 50,
+          "5": 7,
+          "6": 1
+        },
+        "boundary_weak_fraction": 0.1111111111111111,
+        "bulk_weak_fraction": 0.046875,
+        "balanced_cut_min_edges": 10,
+        "balanced_cut_min_conductance": 0.061452513966480445,
+        "balanced_axis_cuts": [
+          {
+            "axis": 0,
+            "position": 2.5,
+            "edges": 11,
+            "conductance": 0.10679611650485436
+          },
+          {
+            "axis": 0,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.07042253521126761
+          },
+          {
+            "axis": 0,
+            "position": 4.5,
+            "edges": 11,
+            "conductance": 0.061452513966480445
+          },
+          {
+            "axis": 0,
+            "position": 5.5,
+            "edges": 11,
+            "conductance": 0.07692307692307693
+          },
+          {
+            "axis": 0,
+            "position": 6.5,
+            "edges": 11,
+            "conductance": 0.10476190476190476
+          },
+          {
+            "axis": 1,
+            "position": 2.5,
+            "edges": 10,
+            "conductance": 0.09259259259259259
+          },
+          {
+            "axis": 1,
+            "position": 3.5,
+            "edges": 10,
+            "conductance": 0.07042253521126761
+          },
+          {
+            "axis": 1,
+            "position": 4.5,
+            "edges": 11,
+            "conductance": 0.062146892655367235
+          },
+          {
+            "axis": 1,
+            "position": 5.5,
+            "edges": 12,
+            "conductance": 0.08450704225352113
+          },
+          {
+            "axis": 1,
+            "position": 6.5,
+            "edges": 10,
+            "conductance": 0.09803921568627451
+          }
+        ],
+        "boundary_anisotropy": 0.0,
+        "boundary_long_bond_fraction": 0.0,
+        "bulk_anisotropy": 0.03714509572628527,
+        "bulk_long_bond_fraction": 0.02702702702702703
+      },
+      "remove": [
+        [
+          31,
+          32
+        ],
+        [
+          32,
+          33
+        ],
+        [
+          35,
+          36
+        ],
+        [
+          36,
+          37
+        ],
+        [
+          42,
+          43
+        ],
+        [
+          44,
+          45
+        ],
+        [
+          45,
+          46
+        ]
+      ],
+      "add": [
+        [
+          16,
+          25
+        ],
+        [
+          16,
+          27
+        ],
+        [
+          31,
+          33
+        ],
+        [
+          35,
+          37
+        ],
+        [
+          44,
+          46
+        ],
+        [
+          53,
+          62
+        ],
+        [
+          59,
+          68
+        ]
+      ],
+      "geometry": {
+        "format": "toposc_geometry_v1",
+        "archive": "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",
+        "n_sites": 100,
+        "coordinates": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0
+          ],
+          [
+            2.0,
+            0.0
+          ],
+          [
+            3.0,
+            0.0
+          ],
+          [
+            4.0,
+            0.0
+          ],
+          [
+            5.0,
+            0.0
+          ],
+          [
+            6.0,
+            0.0
+          ],
+          [
+            7.0,
+            0.0
+          ],
+          [
+            8.0,
+            0.0
+          ],
+          [
+            9.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            1.0
+          ],
+          [
+            2.0,
+            1.0
+          ],
+          [
+            3.0,
+            1.0
+          ],
+          [
+            4.0,
+            1.0
+          ],
+          [
+            5.0,
+            1.0
+          ],
+          [
+            6.0,
+            1.0
+          ],
+          [
+            7.0,
+            1.0
+          ],
+          [
+            8.0,
+            1.0
+          ],
+          [
+            9.0,
+            1.0
+          ],
+          [
+            0.0,
+            2.0
+          ],
+          [
+            1.0,
+            2.0
+          ],
+          [
+            2.0,
+            2.0
+          ],
+          [
+            3.0,
+            2.0
+          ],
+          [
+            4.0,
+            2.0
+          ],
+          [
+            5.0,
+            2.0
+          ],
+          [
+            6.0,
+            2.0
+          ],
+          [
+            7.0,
+            2.0
+          ],
+          [
+            8.0,
+            2.0
+          ],
+          [
+            9.0,
+            2.0
+          ],
+          [
+            0.0,
+            3.0
+          ],
+          [
+            1.0,
+            3.0
+          ],
+          [
+            2.0,
+            3.0
+          ],
+          [
+            3.0,
+            3.0
+          ],
+          [
+            4.0,
+            3.0
+          ],
+          [
+            5.0,
+            3.0
+          ],
+          [
+            6.0,
+            3.0
+          ],
+          [
+            7.0,
+            3.0
+          ],
+          [
+            8.0,
+            3.0
+          ],
+          [
+            9.0,
+            3.0
+          ],
+          [
+            0.0,
+            4.0
+          ],
+          [
+            1.0,
+            4.0
+          ],
+          [
+            2.0,
+            4.0
+          ],
+          [
+            3.0,
+            4.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            5.0,
+            4.0
+          ],
+          [
+            6.0,
+            4.0
+          ],
+          [
+            7.0,
+            4.0
+          ],
+          [
+            8.0,
+            4.0
+          ],
+          [
+            9.0,
+            4.0
+          ],
+          [
+            0.0,
+            5.0
+          ],
+          [
+            1.0,
+            5.0
+          ],
+          [
+            2.0,
+            5.0
+          ],
+          [
+            3.0,
+            5.0
+          ],
+          [
+            4.0,
+            5.0
+          ],
+          [
+            5.0,
+            5.0
+          ],
+          [
+            6.0,
+            5.0
+          ],
+          [
+            7.0,
+            5.0
+          ],
+          [
+            8.0,
+            5.0
+          ],
+          [
+            9.0,
+            5.0
+          ],
+          [
+            0.0,
+            6.0
+          ],
+          [
+            1.0,
+            6.0
+          ],
+          [
+            2.0,
+            6.0
+          ],
+          [
+            3.0,
+            6.0
+          ],
+          [
+            4.0,
+            6.0
+          ],
+          [
+            5.0,
+            6.0
+          ],
+          [
+            6.0,
+            6.0
+          ],
+          [
+            7.0,
+            6.0
+          ],
+          [
+            8.0,
+            6.0
+          ],
+          [
+            9.0,
+            6.0
+          ],
+          [
+            0.0,
+            7.0
+          ],
+          [
+            1.0,
+            7.0
+          ],
+          [
+            2.0,
+            7.0
+          ],
+          [
+            3.0,
+            7.0
+          ],
+          [
+            4.0,
+            7.0
+          ],
+          [
+            5.0,
+            7.0
+          ],
+          [
+            6.0,
+            7.0
+          ],
+          [
+            7.0,
+            7.0
+          ],
+          [
+            8.0,
+            7.0
+          ],
+          [
+            9.0,
+            7.0
+          ],
+          [
+            0.0,
+            8.0
+          ],
+          [
+            1.0,
+            8.0
+          ],
+          [
+            2.0,
+            8.0
+          ],
+          [
+            3.0,
+            8.0
+          ],
+          [
+            4.0,
+            8.0
+          ],
+          [
+            5.0,
+            8.0
+          ],
+          [
+            6.0,
+            8.0
+          ],
+          [
+            7.0,
+            8.0
+          ],
+          [
+            8.0,
+            8.0
+          ],
+          [
+            9.0,
+            8.0
+          ],
+          [
+            0.0,
+            9.0
+          ],
+          [
+            1.0,
+            9.0
+          ],
+          [
+            2.0,
+            9.0
+          ],
+          [
+            3.0,
+            9.0
+          ],
+          [
+            4.0,
+            9.0
+          ],
+          [
+            5.0,
+            9.0
+          ],
+          [
+            6.0,
+            9.0
+          ],
+          [
+            7.0,
+            9.0
+          ],
+          [
+            8.0,
+            9.0
+          ],
+          [
+            9.0,
+            9.0
+          ]
+        ],
+        "edges": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            10
+          ],
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            11
+          ],
+          [
+            2,
+            3
+          ],
+          [
+            2,
+            12
+          ],
+          [
+            3,
+            4
+          ],
+          [
+            3,
+            13
+          ],
+          [
+            4,
+            5
+          ],
+          [
+            4,
+            14
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            5,
+            15
+          ],
+          [
+            6,
+            7
+          ],
+          [
+            6,
+            16
+          ],
+          [
+            7,
+            8
+          ],
+          [
+            7,
+            17
+          ],
+          [
+            8,
+            9
+          ],
+          [
+            8,
+            18
+          ],
+          [
+            9,
+            19
+          ],
+          [
+            10,
+            11
+          ],
+          [
+            10,
+            20
+          ],
+          [
+            11,
+            12
+          ],
+          [
+            11,
+            21
+          ],
+          [
+            12,
+            13
+          ],
+          [
+            12,
+            22
+          ],
+          [
+            13,
+            14
+          ],
+          [
+            13,
+            23
+          ],
+          [
+            14,
+            15
+          ],
+          [
+            14,
+            24
+          ],
+          [
+            15,
+            16
+          ],
+          [
+            15,
+            25
+          ],
+          [
+            16,
+            17
+          ],
+          [
+            16,
+            25
+          ],
+          [
+            16,
+            26
+          ],
+          [
+            16,
+            27
+          ],
+          [
+            17,
+            18
+          ],
+          [
+            17,
+            27
+          ],
+          [
+            18,
+            19
+          ],
+          [
+            18,
+            28
+          ],
+          [
+            19,
+            29
+          ],
+          [
+            20,
+            21
+          ],
+          [
+            20,
+            30
+          ],
+          [
+            21,
+            22
+          ],
+          [
+            21,
+            31
+          ],
+          [
+            22,
+            23
+          ],
+          [
+            22,
+            32
+          ],
+          [
+            23,
+            24
+          ],
+          [
+            23,
+            33
+          ],
+          [
+            24,
+            25
+          ],
+          [
+            24,
+            34
+          ],
+          [
+            25,
+            26
+          ],
+          [
+            25,
+            35
+          ],
+          [
+            26,
+            27
+          ],
+          [
+            26,
+            36
+          ],
+          [
+            27,
+            28
+          ],
+          [
+            27,
+            37
+          ],
+          [
+            28,
+            29
+          ],
+          [
+            28,
+            38
+          ],
+          [
+            29,
+            39
+          ],
+          [
+            30,
+            31
+          ],
+          [
+            30,
+            40
+          ],
+          [
+            31,
+            33
+          ],
+          [
+            31,
+            41
+          ],
+          [
+            32,
+            42
+          ],
+          [
+            33,
+            34
+          ],
+          [
+            33,
+            43
+          ],
+          [
+            34,
+            35
+          ],
+          [
+            34,
+            44
+          ],
+          [
+            34,
+            45
+          ],
+          [
+            35,
+            37
+          ],
+          [
+            36,
+            46
+          ],
+          [
+            37,
+            38
+          ],
+          [
+            37,
+            47
+          ],
+          [
+            38,
+            39
+          ],
+          [
+            38,
+            48
+          ],
+          [
+            39,
+            49
+          ],
+          [
+            40,
+            41
+          ],
+          [
+            40,
+            50
+          ],
+          [
+            41,
+            42
+          ],
+          [
+            41,
+            51
+          ],
+          [
+            42,
+            52
+          ],
+          [
+            43,
+            44
+          ],
+          [
+            43,
+            52
+          ],
+          [
+            43,
+            53
+          ],
+          [
+            44,
+            46
+          ],
+          [
+            44,
+            54
+          ],
+          [
+            45,
+            55
+          ],
+          [
+            46,
+            47
+          ],
+          [
+            46,
+            56
+          ],
+          [
+            47,
+            48
+          ],
+          [
+            47,
+            57
+          ],
+          [
+            48,
+            49
+          ],
+          [
+            48,
+            58
+          ],
+          [
+            49,
+            59
+          ],
+          [
+            50,
+            51
+          ],
+          [
+            50,
+            60
+          ],
+          [
+            51,
+            52
+          ],
+          [
+            51,
+            61
+          ],
+          [
+            52,
+            53
+          ],
+          [
+            52,
+            62
+          ],
+          [
+            53,
+            54
+          ],
+          [
+            53,
+            62
+          ],
+          [
+            53,
+            63
+          ],
+          [
+            54,
+            55
+          ],
+          [
+            54,
+            64
+          ],
+          [
+            55,
+            56
+          ],
+          [
+            55,
+            65
+          ],
+          [
+            56,
+            57
+          ],
+          [
+            56,
+            66
+          ],
+          [
+            57,
+            58
+          ],
+          [
+            57,
+            67
+          ],
+          [
+            58,
+            59
+          ],
+          [
+            58,
+            68
+          ],
+          [
+            59,
+            68
+          ],
+          [
+            59,
+            69
+          ],
+          [
+            60,
+            61
+          ],
+          [
+            60,
+            70
+          ],
+          [
+            61,
+            62
+          ],
+          [
+            61,
+            71
+          ],
+          [
+            62,
+            63
+          ],
+          [
+            62,
+            72
+          ],
+          [
+            63,
+            64
+          ],
+          [
+            63,
+            73
+          ],
+          [
+            64,
+            65
+          ],
+          [
+            64,
+            74
+          ],
+          [
+            65,
+            66
+          ],
+          [
+            65,
+            75
+          ],
+          [
+            66,
+            67
+          ],
+          [
+            66,
+            76
+          ],
+          [
+            67,
+            68
+          ],
+          [
+            67,
+            77
+          ],
+          [
+            68,
+            69
+          ],
+          [
+            68,
+            78
+          ],
+          [
+            69,
+            79
+          ],
+          [
+            70,
+            71
+          ],
+          [
+            70,
+            80
+          ],
+          [
+            71,
+            72
+          ],
+          [
+            71,
+            81
+          ],
+          [
+            72,
+            73
+          ],
+          [
+            72,
+            82
+          ],
+          [
+            73,
+            74
+          ],
+          [
+            73,
+            83
+          ],
+          [
+            74,
+            75
+          ],
+          [
+            74,
+            84
+          ],
+          [
+            75,
+            76
+          ],
+          [
+            75,
+            85
+          ],
+          [
+            76,
+            77
+          ],
+          [
+            76,
+            86
+          ],
+          [
+            77,
+            78
+          ],
+          [
+            77,
+            87
+          ],
+          [
+            78,
+            79
+          ],
+          [
+            78,
+            88
+          ],
+          [
+            79,
+            89
+          ],
+          [
+            80,
+            81
+          ],
+          [
+            80,
+            90
+          ],
+          [
+            81,
+            82
+          ],
+          [
+            81,
+            91
+          ],
+          [
+            82,
+            83
+          ],
+          [
+            82,
+            92
+          ],
+          [
+            83,
+            84
+          ],
+          [
+            83,
+            93
+          ],
+          [
+            84,
+            85
+          ],
+          [
+            84,
+            94
+          ],
+          [
+            85,
+            86
+          ],
+          [
+            85,
+            95
+          ],
+          [
+            86,
+            87
+          ],
+          [
+            86,
+            96
+          ],
+          [
+            87,
+            97
+          ],
+          [
+            88,
+            89
+          ],
+          [
+            88,
+            98
+          ],
+          [
+            89,
+            99
+          ],
+          [
+            90,
+            91
+          ],
+          [
+            91,
+            92
+          ],
+          [
+            92,
+            93
+          ],
+          [
+            93,
+            94
+          ],
+          [
+            94,
+            95
+          ],
+          [
+            95,
+            96
+          ],
+          [
+            96,
+            97
+          ],
+          [
+            97,
+            98
+          ],
+          [
+            98,
+            99
+          ]
+        ],
+        "boundary_sites": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          19,
+          20,
+          29,
+          30,
+          39,
+          40,
+          49,
+          50,
+          59,
+          60,
+          69,
+          70,
+          79,
+          80,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99
+        ]
+      },
+      "reverse": "Remove added edges and restore removed edges exactly",
+      "confounders": {
+        "degree_variance": 0.20000000000000007,
+        "triangle_count": 6.0,
+        "mean_local_clustering": 0.02233333333333333,
+        "mean_finite_shortest_path_length": -0.3088888888888892,
+        "maximum_finite_shortest_path_length": -1.0,
+        "coordination_variance": 0.20000000000000007,
+        "clustering_coefficient": 0.02233333333333333,
+        "four_cycle_count": -8.0,
+        "maximum_degree": 1.0,
+        "boundary_degree_mean": 0.02777777777777768,
+        "boundary_degree_variance": 0.03317901234567901,
+        "bulk_degree_mean": -0.015625,
+        "bulk_degree_variance": 0.327880859375,
+        "graph_diameter": -1.0,
+        "shortest_path_mean": -0.3088888888888892,
+        "shortest_path_variance": -1.2345512906846245,
+        "laplacian_algebraic_connectivity": 0.0028167632808889093,
+        "laplacian_spectral_radius": -0.07150258484059169,
+        "local_connectivity_disorder": 0.3888888888888889,
+        "short_loop_count": -2.0,
+        "short_loop_mean_size": -0.07788461538461533,
+        "bond_length_mean": 0.025871412497179946,
+        "mean_bond_length": 0.025871412497179946,
+        "long_bond_fraction": 0.016666666666666666,
+        "max_bond_length_observed": 0.5857864376269049,
+        "bond_length_variance": 0.019571927466950304,
+        "bond_length_maximum": 0.5857864376269049,
+        "anisotropy": 0.02484519974999766,
+        "regular_edge_distance": 0.03888888888888889,
+        "bulk_weak_fraction": 0.046875,
+        "bulk_anisotropy": 0.03714509572628527,
+        "bulk_long_bond_fraction": 0.02702702702702703
+      },
+      "causal_claim": false
+    }
+  ],
+  "exact_calls": 0,
+  "scope": "Three fixed backgrounds per hypothesis; null feasibility is retained; no confirmation data used"
+}

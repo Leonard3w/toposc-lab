@@ -1,0 +1,22 @@
+{
+  "version": "phase18.fixed-cohort-validation.v1",
+  "mode": "pilot",
+  "cohort_sha256": "d5c497362eac8414726664a090ed2b91ecf1ddeee706149a047986e411716aea",
+  "widths": [
+    1.2,
+    3.0,
+    6.0,
+    9.0,
+    12.0
+  ],
+  "seeds": [
+    180101,
+    180102
+  ],
+  "exact_budget": 120,
+  "wall_seconds": 3600.0,
+  "clean_seed": 180100,
+  "retry_limit": 1,
+  "checkpoint_every": 10,
+  "protocol_document": "docs/decisions/phase18_validation_protocol.md"
+}

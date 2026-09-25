@@ -190,6 +190,16 @@ physics.
 
 ## Autonomous Research workbench
 
+The new fixed-cohort **Phase 18 validation pilot** is complete: ten geometries,
+110 realizations, spatial localizers, boundary-window profiles and paired
+disorder summaries. See the [German pilot report](docs/decisions/phase18_pilot_report_de.md)
+and [validation CLI guide](docs/phase18_validation_usage_de.md).
+The authorized **confirmation study is complete**: 2,500 disorder realizations
+plus ten clean references, no failures. Regular outperforms all nine comparisons
+in mean Q at every tested W=6..9; no crossover is established within that grid.
+See the [German confirmation report](docs/decisions/phase18_confirmation_report_de.md).
+No follow-up study or development phase has been started.
+
 Open **Autonomous Research** in `toposc-live` or the Streamlit application to
 configure, launch, pause, resume and inspect persistent experiments. Four search
 strategies share fixed-site graph mutations, exact validation, a quality-diversity

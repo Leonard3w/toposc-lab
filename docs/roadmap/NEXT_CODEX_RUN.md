@@ -1,5 +1,24 @@
 ﻿# NEXT CODEX RUN
 
+## Aktueller Vorrang: Phase 18, 25.09.2026
+
+Die untenstehende Phase-16B-Übergabe bleibt historische Dokumentation.
+Der Pilot ist abgeschlossen:
+[Phase-18-Status](phase18_status.md),
+[Pilotbericht](../decisions/phase18_pilot_report_de.md).
+110 vollständige Pilot-Realisierungen, 141 relevante Tests bestanden.
+Der Nutzer hat anschließend die vorbereitete Bestätigung ausdrücklich beauftragt.
+Sie ist unter `results/phase18-confirmation` vollständig abgeschlossen:
+2.510/2.510 Realisierungen, keine Ausfälle, 67,9 Minuten; Budget eingehalten.
+Statistik, Audit und [Forschungsbericht](../decisions/phase18_confirmation_report_de.md)
+sind abgeschlossen. Regulär bei allen 45 Q-Kontrasten überlegen; kein Cross-over
+im Raster W=6–9; Vorteil bei W=1,2/3 bleibt unbestätigt, da nicht geprüft.
+STOPP: keine zweite Studie oder weitere Entwicklung automatisch starten. Auswertungsregeln:
+`docs/decisions/phase18_confirmation_analysis_plan.md`.
+Nachgelagerte Größen-, Kopplungs-, Parameter- und Transportarbeiten zurückgestellt.
+
+## Historische Übergabe Phase 16B
+
 previous_block: G / Phase 16B bounded falsification complete
 gate_16: NOT_ESTABLISHED (no confirmed geometric mechanism)
 next_block: none automatically; do not enter H or start a large search

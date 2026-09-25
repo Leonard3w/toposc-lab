@@ -39,6 +39,8 @@ class ResearchEngine:
 
         self.directory = Path(directory)
         self.store = ResearchStore(directory)
+        if self.store.get("validation_settings") is not None:
+            raise ValueError("Fixed-cohort study: use python -m toposc_lab.research.validation")
         self.config = ExperimentConfig(**self.store.get("config"))
         self.manifest = self.store.get("manifest")
         self.space = SPACE_REGISTRY[self.config.geometry_space](**self.config.space)
