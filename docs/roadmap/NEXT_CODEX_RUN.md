@@ -6,8 +6,10 @@ Der Nutzer hat die inkrementelle Graph-Erweiterung nach Phase 18 ausdrücklich
 beauftragt. Siehe [aktuellen Bearbeitungsstand](phase19_status.md),
 [gespeicherten Gesamtauftrag](phase19_user_plan.md) und
 [Gap-Analyse](../decisions/phase19_architecture_gap_analysis.md).
-Alte Ergebnisse unverändert lassen. Kleine Exploration und Bericht abschließen,
-danach stoppen; keine neue Bestätigung oder Entwicklungsphase automatisch starten.
+Alte Ergebnisse unverändert lassen. Kleine Exploration und Bericht sind abgeschlossen:
+1510/1510 Ergebnisse, null ungültig; siehe
+[Forschungsbericht](../decisions/phase19_exploratory_report_de.md).
+STOPP: keine neue Bestätigung oder Entwicklungsphase automatisch starten.
 
 ## Vorheriger Abschluss: Phase 18, 25.09.2026
 

@@ -198,7 +198,14 @@ The authorized **confirmation study is complete**: 2,500 disorder realizations
 plus ten clean references, no failures. Regular outperforms all nine comparisons
 in mean Q at every tested W=6..9; no crossover is established within that grid.
 See the [German confirmation report](docs/decisions/phase18_confirmation_report_de.md).
-No follow-up study or development phase has been started.
+The subsequently authorized **Phase 19 embedded-graph extension is complete**:
+the existing graph/model/storage pipeline was generalized incrementally, followed
+by 151 geometries and 1510 exploratory realizations. No confirmed robustness
+advantage was established; a weak-disorder score signal for some rewired graphs
+requires independent confirmation. See the
+[German research report with plots](docs/decisions/phase19_exploratory_report_de.md)
+and [embedded study guide](docs/phase19_embedded_usage_de.md).
+No further experiment or development phase has been started.
 
 Open **Autonomous Research** in `toposc-live` or the Streamlit application to
 configure, launch, pause, resume and inspect persistent experiments. Four search

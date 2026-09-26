@@ -1,7 +1,7 @@
 # Phase 19 — Bearbeitungsstand
 
-Stand: 25.09.2026. Auftrag: inkrementelle Erweiterung auf eingebettete 2D-Graphen,
-kleine Exploration und Bericht, danach stoppen.
+Stand: 26.09.2026. Auftrag abgeschlossen: inkrementelle Erweiterung auf
+eingebettete 2D-Graphen, kleine Exploration und Bericht. Keine Folgephase starten.
 
 - Bestandsprüfung und Gap-Analyse abgeschlossen. Die vorhandene allgemeine
   Graphdarstellung sowie Hamiltonian, Disorder, Score, Diagnostik und Speicher
@@ -15,10 +15,11 @@ kleine Exploration und Bericht, danach stoppen.
   des Validierungslaufs, deskriptiver Rohdatenexport und Visualisierungen.
 - Quadratgitter-Gleichheit, BdG-Symmetrie, Pairing-Antisymmetrie und gezielte
   Regression bestanden. Technischer Probelauf: 40/40, null ungültige Ergebnisse.
-- Gesamtregression nach der Erweiterung läuft. Die rein geometrische Vorbereitung
-  für 50 gültige Exemplare je Zufallsfamilie läuft ohne physikalische Auswahl.
-- Wissenschaftlicher Lauf zum Start freigepr?ft: 151 Geometrien, 1510 geplante
-  Realisierungen, höchstens 1600 Versuche und 1800 Sekunden Laufbudget.
+- Gesamtregression nach der Erweiterung: 3150 Tests bestanden; nach isolierter
+  Randtoleranzkorrektur weitere 63 relevante Tests bestanden.
+- Wissenschaftlicher Lauf vollständig: 151 Geometrien, 1510 gespeicherte
+  Realisierungen, null ungültige Ergebnisse. Einschließlich Erststart 1564 Versuche
+  und rund 1069 Sekunden protokollierte aktive Zeit, innerhalb des Gesamtbudgets.
 
 Maßgeblich: [Protokoll](../decisions/phase19_exploratory_protocol.md),
 [Gap-Analyse](../decisions/phase19_architecture_gap_analysis.md),
@@ -28,6 +29,15 @@ Nach Abschluss keine Bestätigungsstudie oder nächste Entwicklungsphase automat
 Erster Start: 53 Versuche, davon 52 abgeschlossene Clean-Referenzen; angehalten
 wegen Rundungsrest bei einem Randabstand. Siehe
 [Vorfall und Korrektur](../decisions/phase19_roundoff_incident.md).
-Isolierte Korrektur: 63 relevante Tests bestanden; Geometrien/Seeds unver?ndert.
-Ersatzlauf `results/phase19-exploration-v2`: 1510 geplant, verbleibendes
-Gesamtbudget 1547 Versuche / 1740 Sekunden.
+Isolierte Korrektur: Geometrien und Seeds unverändert.
+Ersatzlauf `results/phase19-exploration-v2`: 1510 vollständig, 1511 Versuche;
+eine Sitzungsunterbrechung wiederaufgenommen. Ausgangslauf bleibt erhalten.
+
+Ergebnis: Bei W=3 übertreffen 12/50 umverdrahtete Gitter die reguläre Referenz
+im mittleren Score; bei W=6/9 keine der 150 Zufallsgeometrien. Kein bestätigter
+Vorteil oder Cross-over bei nur drei Seeds. Freie Familien ohne erfolgreichen
+Disorder-Fall; Interior-/Rand-/Chern-Diagnostik überwiegend schwächer.
+
+[Forschungsbericht mit Plots](../decisions/phase19_exploratory_report_de.md),
+[Abschlussaudit](../decisions/phase19_exploratory_audit.json).
+Die empfohlene unabhängige Studie ist nur beschrieben und wurde nicht gestartet.
