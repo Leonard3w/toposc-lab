@@ -179,7 +179,10 @@ def gui_start(page, app, config: dict) -> None:
     require(button.isEnabled(), "GUI START disabled")
     button.click()
     directory = Path(config["output_directory"])
-    wait_for(lambda: (directory / "research.sqlite3").exists(), app=app)
+    # The file appears before CREATE TABLE finishes. Wait for the real GUI
+    # create/launch operation to finish before inspecting its database.
+    wait_for(lambda: page.operation is not None and not page.operation.isRunning(), app=app)
+    require((directory / "research.sqlite3").is_file(), "GUI creation failed: " + page.message.text())
     from toposc_lab.research.storage import ResearchStore
     wait_for(lambda: (ResearchStore(directory).get("state") or {}).get("status") == "COMPLETED", app=app)
     wait_for(lambda: page.operation is None or not page.operation.isRunning(), app=app)
