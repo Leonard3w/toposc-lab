@@ -10,3 +10,6 @@ build/
 *.log
 results/
 .DS_Store
+output/phase21_validation/
+output/phase21_golden/
+output/phase21_startup/

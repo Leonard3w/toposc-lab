@@ -20,6 +20,8 @@ independent certification of physical conclusions.
 [Studio guide (Deutsch)](docs/phase20_studio_usage_de.md) ·
 [Phase 20 implementation and validation](docs/decisions/phase20_studio_report_de.md)
 
+[Reproducible fresh installation and Phase 21 verification (Deutsch)](docs/phase21_reproducibility_de.md)
+
 ### Phase 10: evolutionäre Geometriesuche
 
 Die Python-API enthält Genome, Mutationen, Gültigkeitsprüfung, Fitness, Auswahl,

@@ -1,0 +1,162 @@
+{
+  "schema_version": 2,
+  "name": "Phase 21 technical reproducibility reference",
+  "question": "Does the frozen implementation reproduce its numerical reference?",
+  "algorithm": "embedded_random",
+  "seed": 210000,
+  "cycles": 1,
+  "exact_budget": 3,
+  "candidate_budget": 1,
+  "pool_size": 1,
+  "batch_size": 1,
+  "checkpoint_every": 1,
+  "retrain_every": 1,
+  "wall_seconds": 300.0,
+  "concurrency": 1,
+  "blas_threads": 1,
+  "retry_limit": 0,
+  "output_directory": "output/phase21_golden",
+  "geometry_space": "embedded_sampling",
+  "surrogate_model": "bootstrap_graph",
+  "objective": "robustness_quality_mean",
+  "baselines": [],
+  "space": {
+    "families": [
+      "regular"
+    ],
+    "side": 6,
+    "generator": {
+      "n_sites": 64,
+      "n_edges": 112,
+      "box_maximum": 7.0,
+      "minimum_separation": 0.55,
+      "maximum_edge_length": 1.75,
+      "minimum_degree": 2,
+      "maximum_degree": 4,
+      "boundary_shell_thickness": 0.875,
+      "minimum_boundary_sites": 24,
+      "maximum_boundary_sites": 32,
+      "max_point_proposals": 1000000,
+      "max_complete_attempts": 10000,
+      "forbid_crossings": true,
+      "require_connected": true
+    },
+    "rewires": [
+      1,
+      4,
+      8
+    ],
+    "min_degree": 2,
+    "max_degree": 4,
+    "max_bond_length": 1.75,
+    "bond_tolerance": 0.0,
+    "forbid_crossings": true,
+    "site_crossings": "forbid"
+  },
+  "search": {},
+  "physics": {
+    "adapter_id": "phase20.configurable-chiral-p-wave.v1",
+    "disorder_widths": [
+      3.0
+    ],
+    "disorder_seeds": [
+      210001,
+      210002
+    ],
+    "clean_seed": 210000,
+    "confirmation": false,
+    "validators": [
+      "spectrum",
+      "topology",
+      "majorana",
+      "robustness",
+      "reproducibility",
+      "finite_size"
+    ],
+    "finite_size": false,
+    "model": "chiral_p_wave",
+    "hopping": 1.0,
+    "chemical_potential": 2.0,
+    "pairing": 1.0,
+    "chirality": 1,
+    "basis": "component_major",
+    "solver": "numpy.linalg.eigh",
+    "tolerance": 1e-10,
+    "success_threshold": 0.2,
+    "kappas": [
+      0.1,
+      0.2,
+      0.3
+    ],
+    "probe_rule": "declared_embedded_domain_center",
+    "domain": {
+      "bounds": [
+        0.0,
+        5.0,
+        0.0,
+        5.0
+      ],
+      "boundary_shell": 0.875,
+      "bulk_inset": 2.0,
+      "cell_padding": 0.5
+    },
+    "clean_reference": true,
+    "paired_seeds": true,
+    "energy_cutoff": 0.5,
+    "group_tolerance": 1e-08,
+    "boundary_widths": [
+      1,
+      2,
+      3
+    ],
+    "near_zero_count": 4,
+    "majorana_zero_tolerance": 1e-10,
+    "majorana_splitting_tolerance": 0.001,
+    "majorana_splitting_phs_tolerance": 1e-08,
+    "confidence_level": 0.95
+  },
+  "surrogate": {
+    "ensemble_size": 8,
+    "n_estimators": 40,
+    "distance_weight": 0.5
+  },
+  "studio": {
+    "description": "Technical regression only; no scientific inference or optimization.",
+    "tags": [],
+    "preset": "quick_test",
+    "objective_mode": "none",
+    "observables": [
+      "Q",
+      "interior_localizer_gap",
+      "edge_weight",
+      "center_weight",
+      "chern",
+      "spectrum",
+      "majorana"
+    ],
+    "definitions": {
+      "robustness_uncertainty_method": "wilson_score",
+      "pairing_plane_axes": [
+        0,
+        1
+      ],
+      "boundary_shell_bin_width": 1.0,
+      "success_threshold": 0.2
+    },
+    "variables": {
+      "connectivity": "locked",
+      "coordinates": "locked",
+      "hopping": "locked",
+      "chemical_potential": "locked",
+      "pairing": "locked"
+    },
+    "output": {
+      "save_every_candidate": true,
+      "save_rejected_candidates": true,
+      "save_eigenvalues": true,
+      "save_raw_realizations": true,
+      "generate_report": true,
+      "save_plots": true
+    }
+  }
+}

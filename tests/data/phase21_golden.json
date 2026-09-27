@@ -1,0 +1,3072 @@
+{
+  "reference_commit": "3bb7f71",
+  "canonical_config_sha256": "7deca7b9e84a43d4425aa3e43850b77df514126d10b1dc68064d2273837ce8a8",
+  "absolute_tolerance": 1e-10,
+  "comparison": "Exact structure, seeds, IDs, integer indices; floats absolute tolerance 1e-10, rtol=0. Timestamps, timing, run UUID and absolute output path excluded from cross-run comparison, never from actual config hashes.",
+  "environment": {
+    "python": "3.14.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "packages": {
+      "altair": "6.2.2",
+      "annotated-types": "0.8.0",
+      "anyio": "4.15.1",
+      "ast_serialize": "0.10.0",
+      "attrs": "26.1.0",
+      "certifi": "2026.7.22",
+      "charset-normalizer": "3.5.1",
+      "click": "8.5.0",
+      "colorama": "0.4.6",
+      "contourpy": "1.3.3",
+      "cycler": "0.12.1",
+      "fonttools": "4.64.0",
+      "h11": "0.16.0",
+      "httptools": "0.8.0",
+      "idna": "3.19",
+      "iniconfig": "2.3.0",
+      "itsdangerous": "2.2.0",
+      "jinja2": "3.1.6",
+      "jsonschema": "4.26.0",
+      "jsonschema-specifications": "2025.9.1",
+      "kiwisolver": "1.5.1",
+      "librt": "0.15.0",
+      "markupsafe": "3.0.3",
+      "matplotlib": "3.11.1",
+      "mypy": "2.3.1",
+      "mypy_extensions": "1.1.0",
+      "narwhals": "2.25.0",
+      "numpy": "2.5.3",
+      "packaging": "26.3",
+      "pandas": "3.0.5",
+      "pathspec": "1.1.1",
+      "pillow": "12.3.0",
+      "plotly": "7.0.0",
+      "pluggy": "1.6.0",
+      "protobuf": "7.36.1",
+      "psutil": "7.2.2",
+      "pyarrow": "25.0.1",
+      "pydantic": "2.13.5",
+      "pydantic_core": "2.46.5",
+      "pydeck": "0.9.3",
+      "pygments": "2.21.0",
+      "pymupdf": "1.28.2",
+      "pyparsing": "3.3.2",
+      "pypdf": "6.19.0",
+      "pyside6": "6.11.2",
+      "pyside6_addons": "6.11.2",
+      "pyside6_essentials": "6.11.2",
+      "pytest": "9.1.1",
+      "python-dateutil": "2.9.0.post0",
+      "python-multipart": "0.0.32",
+      "referencing": "0.37.0",
+      "reportlab": "5.0.1",
+      "requests": "2.34.2",
+      "rpds-py": "2026.6.3",
+      "ruff": "0.16.6",
+      "scipy": "1.18.1",
+      "shiboken6": "6.11.2",
+      "six": "1.17.0",
+      "starlette": "1.6.0",
+      "streamlit": "1.63.0",
+      "toml": "0.10.2",
+      "toposc-lab": "0.1.0",
+      "typing-inspection": "0.4.4",
+      "typing_extensions": "4.16.0",
+      "tzdata": "2026.4",
+      "urllib3": "2.7.0",
+      "uvicorn": "0.53.0",
+      "watchdog": "6.0.0",
+      "websockets": "16.1.1"
+    },
+    "report_schema": 1,
+    "git_commit": "3bb7f7185e3e178033b90095e69be67dd0880c15",
+    "git_status": "D  src/toposc_lab/observables/__pycache__/__init__.cpython-314.pyc\nD  src/toposc_lab/observables/__pycache__/spectrum.cpython-314.pyc\nD  src/toposc_lab/solvers/__pycache__/__init__.cpython-314.pyc\nD  src/toposc_lab/solvers/__pycache__/exact_diagonalization.cpython-314.pyc\nD  src/toposc_lab/visualization/__pycache__/__init__.cpython-314.pyc\nD  src/toposc_lab/visualization/__pycache__/plots.cpython-314.pyc\n?? docs/decisions/phase21_audit_de.md\n?? output/phase21_validation/\n?? requirements/\n?? scripts/phase21_environment.py\n?? scripts/phase21_verify.py\n?? tests/data/",
+    "source_sha256": "3a95b37b8041eda00fb0be3752da163df8f8460aab1ee163efd3406a855f4885",
+    "python_executable": "C:\\Users\\Leonard\\Documents\\GitHub\\toposc-lab\\.venv\\Scripts\\python.exe",
+    "python_implementation": "CPython",
+    "python_compiler": "MSC v.1944 64 bit (AMD64)",
+    "architecture": [
+      "64bit",
+      "WindowsPE"
+    ],
+    "virtual_environment": true,
+    "qt_runtime": "6.11.2",
+    "blas_lapack_build_configuration": {
+      "numpy": "{\n  \"Compilers\": {\n    \"c\": {\n      \"name\": \"msvc\",\n      \"linker\": \"link\",\n      \"version\": \"19.44.35228\",\n      \"commands\": \"cl\"\n    },\n    \"cython\": {\n      \"name\": \"cython\",\n      \"linker\": \"cython\",\n      \"version\": \"3.3.0\",\n      \"commands\": \"cython\"\n    },\n    \"c++\": {\n      \"name\": \"msvc\",\n      \"linker\": \"link\",\n      \"version\": \"19.44.35228\",\n      \"commands\": \"cl\"\n    }\n  },\n  \"Machine Information\": {\n    \"host\": {\n      \"cpu\": \"x86_64\",\n      \"family\": \"x86_64\",\n      \"endian\": \"little\",\n      \"system\": \"windows\"\n    },\n    \"build\": {\n      \"cpu\": \"x86_64\",\n      \"family\": \"x86_64\",\n      \"endian\": \"little\",\n      \"system\": \"windows\"\n    }\n  },\n  \"Build Dependencies\": {\n    \"blas\": {\n      \"name\": \"scipy-openblas\",\n      \"found\": true,\n      \"version\": \"0.3.34.106.0\",\n      \"detection method\": \"pkgconfig\",\n      \"include directory\": \"C:/Users/runneradmin/AppData/Local/Temp/cibw-run-sp8l_b7i/cp314-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/include\",\n      \"lib directory\": \"C:/Users/runneradmin/AppData/Local/Temp/cibw-run-sp8l_b7i/cp314-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/lib\",\n      \"openblas configuration\": \"OpenBLAS 0.3.34.106.0  USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=24\",\n      \"pc file directory\": \"D:/a/numpy-release/numpy-release/.openblas\"\n    },\n    \"lapack\": {\n      \"name\": \"scipy-openblas\",\n      \"found\": true,\n      \"version\": \"0.3.34.106.0\",\n      \"detection method\": \"pkgconfig\",\n      \"include directory\": \"C:/Users/runneradmin/AppData/Local/Temp/cibw-run-sp8l_b7i/cp314-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/include\",\n      \"lib directory\": \"C:/Users/runneradmin/AppData/Local/Temp/cibw-run-sp8l_b7i/cp314-win_amd64/build/venv/Lib/site-packages/scipy_openblas64/lib\",\n      \"openblas configuration\": \"OpenBLAS 0.3.34.106.0  USE64BITINT DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=24\",\n      \"pc file directory\": \"D:/a/numpy-release/numpy-release/.openblas\"\n    }\n  },\n  \"Python Information\": {\n    \"path\": \"C:\\\\Users\\\\runneradmin\\\\AppData\\\\Local\\\\Temp\\\\build-env-mk5sjh7q\\\\Scripts\\\\python.exe\",\n    \"version\": \"3.14\"\n  },\n  \"SIMD Extensions\": {\n    \"baseline\": [\n      \"X86_V2\"\n    ],\n    \"found\": [\n      \"X86_V3\"\n    ]\n  }\n}\n",
+      "scipy": "{\n  \"Compilers\": {\n    \"c\": {\n      \"name\": \"gcc\",\n      \"linker\": \"ld.bfd\",\n      \"version\": \"15.2.0\",\n      \"commands\": \"C:\\\\Strawberry\\\\c\\\\bin\\\\ccache.exe, cc\"\n    },\n    \"cython\": {\n      \"name\": \"cython\",\n      \"linker\": \"cython\",\n      \"version\": \"3.2.9\",\n      \"commands\": \"cython\"\n    },\n    \"c++\": {\n      \"name\": \"gcc\",\n      \"linker\": \"ld.bfd\",\n      \"version\": \"15.2.0\",\n      \"commands\": \"C:\\\\Strawberry\\\\c\\\\bin\\\\ccache.exe, c++\"\n    },\n    \"fortran\": {\n      \"name\": \"gcc\",\n      \"linker\": \"ld.bfd\",\n      \"version\": \"15.2.0\",\n      \"commands\": \"gfortran\"\n    },\n    \"pythran\": {\n      \"version\": \"0.19.0\",\n      \"include directory\": \"C:/Users/runneradmin/AppData/Local/Temp/build-env-4hk_b9m_/Lib/site-packages/pythran\"\n    }\n  },\n  \"Machine Information\": {\n    \"host\": {\n      \"cpu\": \"x86_64\",\n      \"family\": \"x86_64\",\n      \"endian\": \"little\",\n      \"system\": \"windows\"\n    },\n    \"build\": {\n      \"cpu\": \"x86_64\",\n      \"family\": \"x86_64\",\n      \"endian\": \"little\",\n      \"system\": \"windows\"\n    },\n    \"cross-compiled\": false\n  },\n  \"Build Dependencies\": {\n    \"blas\": {\n      \"name\": \"scipy-openblas\",\n      \"found\": true,\n      \"version\": \"0.3.31.dev\",\n      \"detection method\": \"pkgconfig\",\n      \"include directory\": \"C:/Users/runneradmin/AppData/Local/Temp/cibw-run-exvmmjrm/cp314-win_amd64/build/venv/Lib/site-packages/scipy_openblas32/include\",\n      \"lib directory\": \"C:/Users/runneradmin/AppData/Local/Temp/cibw-run-exvmmjrm/cp314-win_amd64/build/venv/Lib/site-packages/scipy_openblas32/lib\",\n      \"openblas configuration\": \"OpenBLAS 0.3.31.dev DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=24\",\n      \"pc file directory\": \"D:/a/scipy-release/scipy-release/.openblas\",\n      \"has ilp64\": false,\n      \"cython blas ilp64\": false\n    },\n    \"lapack\": {\n      \"name\": \"scipy-openblas\",\n      \"found\": true,\n      \"version\": \"0.3.31.dev\",\n      \"detection method\": \"pkgconfig\",\n      \"include directory\": \"C:/Users/runneradmin/AppData/Local/Temp/cibw-run-exvmmjrm/cp314-win_amd64/build/venv/Lib/site-packages/scipy_openblas32/include\",\n      \"lib directory\": \"C:/Users/runneradmin/AppData/Local/Temp/cibw-run-exvmmjrm/cp314-win_amd64/build/venv/Lib/site-packages/scipy_openblas32/lib\",\n      \"openblas configuration\": \"OpenBLAS 0.3.31.dev DYNAMIC_ARCH NO_AFFINITY Haswell MAX_THREADS=24\",\n      \"pc file directory\": \"D:/a/scipy-release/scipy-release/.openblas\",\n      \"has ilp64\": false\n    },\n    \"pybind11\": {\n      \"name\": \"pybind11\",\n      \"version\": \"3.0.4\",\n      \"detection method\": \"config-tool\",\n      \"include directory\": \"unknown\"\n    }\n  },\n  \"Python Information\": {\n    \"path\": \"C:/Users/runneradmin/AppData/Local/Temp/build-env-4hk_b9m_/Scripts/python.exe\",\n    \"version\": \"3.14\"\n  }\n}\n"
+    },
+    "thread_environment": {
+      "OMP_NUM_THREADS": null,
+      "OPENBLAS_NUM_THREADS": null,
+      "MKL_NUM_THREADS": null,
+      "BLIS_NUM_THREADS": null
+    },
+    "schema_versions": {
+      "legacy_experiment": 1,
+      "studio_experiment": 2,
+      "dataset": 1,
+      "geometry_archive": 1
+    },
+    "physics_adapters": {
+      "legacy": "phase17.fixed-sites-chiral-p-wave.v1",
+      "embedded": "phase19.embedded-chiral-p-wave.v1",
+      "studio": "phase20.configurable-chiral-p-wave.v1"
+    }
+  },
+  "science": {
+    "candidate_id": "d1fc93f97f51464f9bd86fbf20a3b30e5bd620d828fc0f0c1af0dcf08c4eeff4",
+    "geometry_sha256": "d1fc93f97f51464f9bd86fbf20a3b30e5bd620d828fc0f0c1af0dcf08c4eeff4",
+    "generated": 1,
+    "stages": {
+      "clean": {
+        "stage": {
+          "key": "clean",
+          "kind": "clean",
+          "seed": 210000,
+          "width": 0.0
+        },
+        "requested_stage": {
+          "key": "clean",
+          "kind": "clean",
+          "seed": 210000,
+          "width": 0.0
+        },
+        "status": "completed",
+        "primary_valid": true,
+        "adapter_id": "phase20.configurable-chiral-p-wave.v1",
+        "spectrum": [
+          -5.709438110609766,
+          -5.295299990247305,
+          -5.287124604311644,
+          -4.9036714158519015,
+          -4.637590864050806,
+          -4.636017647010946,
+          -4.321339706001194,
+          -4.274342925310457,
+          -3.821475508679582,
+          -3.815693909103844,
+          -3.7826145396500013,
+          -3.551046782820616,
+          -3.527155169099437,
+          -3.2006263189187765,
+          -3.0582491969194843,
+          -2.9611833862591355,
+          -2.959460968308279,
+          -2.770316818055455,
+          -2.761367442338684,
+          -2.70238877486513,
+          -2.5174816522755474,
+          -2.3700329314898196,
+          -2.3226852808193232,
+          -2.270895431860206,
+          -2.267119867555198,
+          -2.1952356909284325,
+          -2.189441261982917,
+          -2.1675142361782105,
+          -2.0956530289659363,
+          -2.0549174168416133,
+          -2.041211991898606,
+          -1.937288857143549,
+          -1.6558203016560527,
+          -1.1787933179931571,
+          -0.7019045312789451,
+          -0.23341107866920666,
+          0.23341107866920646,
+          0.7019045312789446,
+          1.1787933179931565,
+          1.6558203016560515,
+          1.9372888571435476,
+          2.0412119918986042,
+          2.0549174168416124,
+          2.0956530289659376,
+          2.1675142361782096,
+          2.1894412619829176,
+          2.195235690928433,
+          2.2671198675551993,
+          2.270895431860208,
+          2.322685280819323,
+          2.3700329314898188,
+          2.5174816522755488,
+          2.7023887748651294,
+          2.761367442338685,
+          2.7703168180554556,
+          2.959460968308276,
+          2.9611833862591355,
+          3.0582491969194834,
+          3.200626318918775,
+          3.5271551690994367,
+          3.5510467828206145,
+          3.7826145396500013,
+          3.815693909103847,
+          3.8214755086795797,
+          4.274342925310456,
+          4.321339706001196,
+          4.636017647010948,
+          4.637590864050807,
+          4.903671415851901,
+          5.287124604311645,
+          5.295299990247304,
+          5.7094381106097645
+        ],
+        "onsite_offsets": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "indices": [
+          1,
+          1,
+          1
+        ],
+        "localizer_gaps": [
+          0.06415621395931044,
+          0.3577284082059117,
+          0.6460509233930616
+        ],
+        "spatial": [
+          {
+            "gap": 0.07919694011842121,
+            "index": 0,
+            "kappa": 0.1,
+            "point": [
+              0.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.040043448605482264,
+            "index": 0,
+            "kappa": 0.2,
+            "point": [
+              0.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.01984505520510993,
+            "index": 0,
+            "kappa": 0.3,
+            "point": [
+              0.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 9.9182982380382e-05,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              1.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.14817502794771595,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              1.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.2739248042159656,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              1.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.047512272318808085,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.2871514980026012,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5086887484730512,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.055577013622119566,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.3166911690128167,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5549362754829631,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.047512272318811166,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.28715149800260503,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.508688748473057,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.0791969401184225,
+            "index": 0,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              0.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.04004344860548493,
+            "index": 0,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              0.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.019845055205103712,
+            "index": 0,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              0.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 9.918298239104579e-05,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              1.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.14817502794772305,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              1.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.27392480421596827,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              1.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.05557701362211657,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.3166911690128149,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.554936275482964,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.06415621395931044,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.3577284082059117,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.6460509233930616,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.055577013622113904,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.31669116901280947,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5549362754829563,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 9.918298238593165e-05,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              4.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.14817502794772408,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              4.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.27392480421597076,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              4.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.0791969401184277,
+            "index": 0,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              5.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.04004344860548509,
+            "index": 0,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              5.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.01984505520510967,
+            "index": 0,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              5.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.04751227231881505,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              3.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.28715149800260237,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              3.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.508688748473057,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              3.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.05557701362211728,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              3.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.3166911690128166,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              3.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5549362754829572,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              3.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.04751227231881226,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              3.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.2871514980026062,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              3.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5086887484730545,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              3.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 9.918298239292605e-05,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              4.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.14817502794772408,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              4.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.27392480421597165,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              4.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.07919694011842382,
+            "index": 0,
+            "kappa": 0.1,
+            "point": [
+              5.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.04004344860548331,
+            "index": 0,
+            "kappa": 0.2,
+            "point": [
+              5.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.019845055205111446,
+            "index": 0,
+            "kappa": 0.3,
+            "point": [
+              5.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          }
+        ],
+        "chern_marker": {
+          "bulk_mask": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "bulk_mean": 0.9909881334331645,
+          "convention": "4pi Im diag(P X Q Y P) / clipped Voronoi area; Nambu sum",
+          "minimum_fermi_distance": 0.23341107866920646,
+          "position_areas": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "positions": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              2.0
+            ],
+            [
+              0.0,
+              3.0
+            ],
+            [
+              0.0,
+              4.0
+            ],
+            [
+              0.0,
+              5.0
+            ],
+            [
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              1.0,
+              2.0
+            ],
+            [
+              1.0,
+              3.0
+            ],
+            [
+              1.0,
+              4.0
+            ],
+            [
+              1.0,
+              5.0
+            ],
+            [
+              2.0,
+              0.0
+            ],
+            [
+              2.0,
+              1.0
+            ],
+            [
+              2.0,
+              2.0
+            ],
+            [
+              2.0,
+              3.0
+            ],
+            [
+              2.0,
+              4.0
+            ],
+            [
+              2.0,
+              5.0
+            ],
+            [
+              3.0,
+              0.0
+            ],
+            [
+              3.0,
+              1.0
+            ],
+            [
+              3.0,
+              2.0
+            ],
+            [
+              3.0,
+              3.0
+            ],
+            [
+              3.0,
+              4.0
+            ],
+            [
+              3.0,
+              5.0
+            ],
+            [
+              4.0,
+              0.0
+            ],
+            [
+              4.0,
+              1.0
+            ],
+            [
+              4.0,
+              2.0
+            ],
+            [
+              4.0,
+              3.0
+            ],
+            [
+              4.0,
+              4.0
+            ],
+            [
+              4.0,
+              5.0
+            ],
+            [
+              5.0,
+              0.0
+            ],
+            [
+              5.0,
+              1.0
+            ],
+            [
+              5.0,
+              2.0
+            ],
+            [
+              5.0,
+              3.0
+            ],
+            [
+              5.0,
+              4.0
+            ],
+            [
+              5.0,
+              5.0
+            ]
+          ],
+          "projector_residual": 1.2212461952918876e-15,
+          "scope": "Descriptive finite bulk mean; no mobility-gap assumption verified",
+          "status": "available",
+          "trace_residual": 3.6193270602780103e-14,
+          "values": [
+            -1.8378734457214667,
+            -0.5598005459570365,
+            -0.4621142930585853,
+            -0.4621142930585881,
+            -0.5598005459570414,
+            -1.8378734457214727,
+            -0.559800545957038,
+            0.9381424978978689,
+            0.9762862462108535,
+            0.9762862462108537,
+            0.938142497897869,
+            -0.559800545957042,
+            -0.4621142930585862,
+            0.9762862462108535,
+            0.9909881334331642,
+            0.9909881334331663,
+            0.9762862462108512,
+            -0.4621142930585851,
+            -0.4621142930585872,
+            0.9762862462108528,
+            0.9909881334331654,
+            0.9909881334331618,
+            0.976286246210855,
+            -0.46211429305859075,
+            -0.5598005459570428,
+            0.9381424978978709,
+            0.9762862462108535,
+            0.976286246210857,
+            0.9381424978978714,
+            -0.5598005459570459,
+            -1.8378734457214732,
+            -0.5598005459570414,
+            -0.4621142930585841,
+            -0.462114293058593,
+            -0.5598005459570465,
+            -1.8378734457214851
+          ]
+        },
+        "observables": {
+          "quality": 0.06415621395931044,
+          "success": false,
+          "minimum_abs_energy": 0.23341107866920646,
+          "boundary_weight": 0.9926922603155047,
+          "interior_localizer_gap": 0.047512272318808085,
+          "edge_weight": 0.995887768241104,
+          "center_weight": 3.120967263322544e-05,
+          "chern_bulk_mean": 0.9909881334331645,
+          "polarization": 0.993195063033391,
+          "self_conjugacy": 7.15437981817245e-16
+        }
+      },
+      "disorder_0_0": {
+        "stage": {
+          "key": "disorder_0_0",
+          "kind": "disorder",
+          "seed": 210001,
+          "width": 3.0
+        },
+        "requested_stage": {
+          "key": "disorder_0_0",
+          "kind": "disorder",
+          "seed": 210001,
+          "width": 3.0
+        },
+        "status": "completed",
+        "primary_valid": true,
+        "adapter_id": "phase20.configurable-chiral-p-wave.v1",
+        "spectrum": [
+          -5.964897871053634,
+          -5.607548947859939,
+          -5.400766811319371,
+          -5.0884098183253235,
+          -4.959383925237753,
+          -4.874504917155358,
+          -4.587245323700889,
+          -4.395981714894406,
+          -4.213720034267747,
+          -4.093046364393538,
+          -3.8748653330795717,
+          -3.728045054836324,
+          -3.609195241358819,
+          -3.327702817740895,
+          -3.247629410138963,
+          -3.162085223901374,
+          -3.0833231318775782,
+          -2.979548787357626,
+          -2.9261118150647425,
+          -2.7087882207388843,
+          -2.6006895297516275,
+          -2.5131199417072536,
+          -2.4829479737180162,
+          -2.386883885499435,
+          -2.323507604621226,
+          -2.1690707757527155,
+          -2.1181862091247723,
+          -2.010734324996232,
+          -1.9872660958341848,
+          -1.884554438194157,
+          -1.618549688788258,
+          -1.5925284335364625,
+          -1.3373111494308139,
+          -1.0090190677805864,
+          -0.6090100882385864,
+          -0.20288556761529797,
+          0.20288556761529947,
+          0.6090100882385864,
+          1.0090190677805868,
+          1.3373111494308139,
+          1.592528433536462,
+          1.6185496887882587,
+          1.8845544381941575,
+          1.9872660958341841,
+          2.010734324996231,
+          2.118186209124773,
+          2.1690707757527163,
+          2.3235076046212275,
+          2.3868838854994365,
+          2.482947973718016,
+          2.513119941707253,
+          2.600689529751628,
+          2.7087882207388847,
+          2.926111815064742,
+          2.979548787357626,
+          3.083323131877578,
+          3.162085223901375,
+          3.2476294101389627,
+          3.3277028177408945,
+          3.6091952413588193,
+          3.728045054836322,
+          3.8748653330795686,
+          4.093046364393538,
+          4.213720034267746,
+          4.395981714894404,
+          4.587245323700889,
+          4.874504917155359,
+          4.959383925237755,
+          5.0884098183253235,
+          5.40076681131937,
+          5.607548947859938,
+          5.964897871053634
+        ],
+        "onsite_offsets": [
+          0.9861603054311181,
+          -0.8130017979549802,
+          0.8942625107816813,
+          -0.13813433329836045,
+          -0.9253432293531909,
+          -0.4468555566168937,
+          0.953404888225613,
+          0.09474982410372101,
+          0.8235693790811021,
+          -0.6364190501497085,
+          -1.0088152166920419,
+          -0.13716931570787194,
+          -0.07598496035956259,
+          0.616038846901716,
+          0.3187652654078943,
+          0.3429282567891081,
+          -0.23052273713990923,
+          1.1862386320819756,
+          -0.44162812077615365,
+          0.17673099568191364,
+          -0.2989279781188623,
+          -0.8453418504752164,
+          -0.7560720899606053,
+          -1.2203453750673559,
+          -0.7435665036642853,
+          1.2520224399753004,
+          -0.18257258522213116,
+          1.260229721623046,
+          -0.6923380165185238,
+          1.3076723279703852,
+          -1.3776285124655923,
+          -0.5748534879240461,
+          1.1587322063781311,
+          -0.729609352997024,
+          -0.8389501255014413,
+          0.2112994565835582
+        ],
+        "indices": [
+          1,
+          1,
+          1
+        ],
+        "localizer_gaps": [
+          0.08858077461740183,
+          0.37256480347805404,
+          0.6453272673430401
+        ],
+        "spatial": [
+          {
+            "gap": 0.062285131781649405,
+            "index": 0,
+            "kappa": 0.1,
+            "point": [
+              0.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.03376648330734955,
+            "index": 0,
+            "kappa": 0.2,
+            "point": [
+              0.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.021734546521976483,
+            "index": 0,
+            "kappa": 0.3,
+            "point": [
+              0.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.021264997938081277,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              1.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.1574568504515543,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              1.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.2729886571177709,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              1.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.07329239402042409,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.31669278395913114,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5458202480793644,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.08144029993016381,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.3339228320816253,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5592562784530456,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.07049047242020401,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.2909446953429103,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.4975121324330976,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.07052964601120085,
+            "index": 0,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              0.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.04692328415221787,
+            "index": 0,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              0.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.038412269918032135,
+            "index": 0,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              0.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.012936598082120825,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              1.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.14190970036652453,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              1.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.25326882169826737,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              1.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.07638074991283324,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.3157541558355846,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5324957664361467,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.08858077461740183,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.37256480347805404,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.6453272673430401,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.08028669649826717,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.3339351356251532,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5645569145452288,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.020231057833601438,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              4.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.16051904821179605,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              4.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.27973560696115174,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              4.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.06257089437353572,
+            "index": 0,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              5.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.029858851625057,
+            "index": 0,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              5.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.01570585943844717,
+            "index": 0,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              5.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.06104295505749319,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              3.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.26583665807014406,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              3.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.46148053577912446,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              3.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.07470018538208936,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              3.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.3134281164400954,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              3.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5349400966722934,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              3.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.07033882979988723,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              3.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.3087469852785132,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              3.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5348817777724281,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              3.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.009312751722474045,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              4.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.14014114924290522,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              4.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.2579514664024255,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              4.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.07469385163705836,
+            "index": 0,
+            "kappa": 0.1,
+            "point": [
+              5.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.04811405542240979,
+            "index": 0,
+            "kappa": 0.2,
+            "point": [
+              5.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.03347765016446225,
+            "index": 0,
+            "kappa": 0.3,
+            "point": [
+              5.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          }
+        ],
+        "chern_marker": {
+          "bulk_mask": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "bulk_mean": 0.984525894612004,
+          "convention": "4pi Im diag(P X Q Y P) / clipped Voronoi area; Nambu sum",
+          "minimum_fermi_distance": 0.20288556761529797,
+          "position_areas": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "positions": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              2.0
+            ],
+            [
+              0.0,
+              3.0
+            ],
+            [
+              0.0,
+              4.0
+            ],
+            [
+              0.0,
+              5.0
+            ],
+            [
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              1.0,
+              2.0
+            ],
+            [
+              1.0,
+              3.0
+            ],
+            [
+              1.0,
+              4.0
+            ],
+            [
+              1.0,
+              5.0
+            ],
+            [
+              2.0,
+              0.0
+            ],
+            [
+              2.0,
+              1.0
+            ],
+            [
+              2.0,
+              2.0
+            ],
+            [
+              2.0,
+              3.0
+            ],
+            [
+              2.0,
+              4.0
+            ],
+            [
+              2.0,
+              5.0
+            ],
+            [
+              3.0,
+              0.0
+            ],
+            [
+              3.0,
+              1.0
+            ],
+            [
+              3.0,
+              2.0
+            ],
+            [
+              3.0,
+              3.0
+            ],
+            [
+              3.0,
+              4.0
+            ],
+            [
+              3.0,
+              5.0
+            ],
+            [
+              4.0,
+              0.0
+            ],
+            [
+              4.0,
+              1.0
+            ],
+            [
+              4.0,
+              2.0
+            ],
+            [
+              4.0,
+              3.0
+            ],
+            [
+              4.0,
+              4.0
+            ],
+            [
+              4.0,
+              5.0
+            ],
+            [
+              5.0,
+              0.0
+            ],
+            [
+              5.0,
+              1.0
+            ],
+            [
+              5.0,
+              2.0
+            ],
+            [
+              5.0,
+              3.0
+            ],
+            [
+              5.0,
+              4.0
+            ],
+            [
+              5.0,
+              5.0
+            ]
+          ],
+          "projector_residual": 8.881829494900484e-16,
+          "scope": "Descriptive finite bulk mean; no mobility-gap assumption verified",
+          "status": "available",
+          "trace_residual": 2.6645352591003757e-15,
+          "values": [
+            -2.7572035087458837,
+            0.008800796359413646,
+            -0.5711207241278404,
+            -0.41068716015342266,
+            -0.308635648156349,
+            -1.326713647572673,
+            -0.47368294772267916,
+            0.8926012288484769,
+            0.9910659685321546,
+            0.916289453970411,
+            0.791601307686007,
+            -0.6127735480790256,
+            -0.38015291104460264,
+            1.0063688593715308,
+            0.9742932490734604,
+            1.0823834732358253,
+            0.9569582225687673,
+            -0.8263874138075264,
+            -0.42865316110449614,
+            0.9033588424977478,
+            0.98097572548387,
+            0.9004511306548602,
+            0.8981743482132931,
+            -0.014402218856753482,
+            -0.6371369358800641,
+            0.7247573720204802,
+            0.8532292589235986,
+            1.1349006774842665,
+            0.8331735828295203,
+            -1.0217301183048357,
+            -0.8545765226320476,
+            -0.7278597612658191,
+            -1.0002242438734315,
+            -0.24597701869060484,
+            -0.18573004385782765,
+            -2.0657359638778034
+          ]
+        },
+        "observables": {
+          "quality": 0.08858077461740183,
+          "success": false,
+          "minimum_abs_energy": 0.20288556761529797,
+          "boundary_weight": 0.9727036773621343,
+          "interior_localizer_gap": 0.06104295505749319,
+          "edge_weight": 0.980140482588006,
+          "center_weight": 0.0006982406745295152,
+          "chern_bulk_mean": 0.984525894612004,
+          "polarization": 0.9780843305448971,
+          "self_conjugacy": 1.0434008081196899e-15
+        }
+      },
+      "disorder_0_1": {
+        "stage": {
+          "key": "disorder_0_1",
+          "kind": "disorder",
+          "seed": 210002,
+          "width": 3.0
+        },
+        "requested_stage": {
+          "key": "disorder_0_1",
+          "kind": "disorder",
+          "seed": 210002,
+          "width": 3.0
+        },
+        "status": "completed",
+        "primary_valid": true,
+        "adapter_id": "phase20.configurable-chiral-p-wave.v1",
+        "spectrum": [
+          -6.16178703982744,
+          -5.872803781822617,
+          -5.588198814994476,
+          -5.392063247771652,
+          -5.272582189526186,
+          -4.960942118835634,
+          -4.684106682654068,
+          -4.519715366872788,
+          -4.295734911042285,
+          -4.115202032776832,
+          -4.059005251413217,
+          -3.8731106984523738,
+          -3.768170797598559,
+          -3.522388012256569,
+          -3.4430711708266655,
+          -3.3582568627033087,
+          -3.292976780195025,
+          -3.0317190233665814,
+          -2.8665037716886763,
+          -2.8030080375295774,
+          -2.7417051247621766,
+          -2.651410535094091,
+          -2.5220902466362602,
+          -2.3776081085106835,
+          -2.325139833667124,
+          -2.2308489563453913,
+          -2.217617445458642,
+          -2.002139739947977,
+          -1.9578854627241047,
+          -1.8741374526389174,
+          -1.7224107846326575,
+          -1.642125668132041,
+          -1.435387742298064,
+          -1.028138650436464,
+          -0.605132197731946,
+          -0.19750970025030484,
+          0.19750970025030642,
+          0.6051321977319457,
+          1.028138650436464,
+          1.435387742298064,
+          1.6421256681320409,
+          1.7224107846326584,
+          1.874137452638919,
+          1.9578854627241047,
+          2.0021397399479763,
+          2.2176174454586435,
+          2.2308489563453917,
+          2.325139833667124,
+          2.3776081085106844,
+          2.5220902466362594,
+          2.65141053509409,
+          2.7417051247621766,
+          2.8030080375295756,
+          2.866503771688675,
+          3.031719023366581,
+          3.292976780195024,
+          3.3582568627033074,
+          3.4430711708266655,
+          3.522388012256568,
+          3.768170797598559,
+          3.8731106984523747,
+          4.059005251413218,
+          4.115202032776831,
+          4.295734911042283,
+          4.519715366872787,
+          4.684106682654067,
+          4.960942118835633,
+          5.272582189526186,
+          5.3920632477716515,
+          5.588198814994474,
+          5.872803781822617,
+          6.1617870398274395
+        ],
+        "onsite_offsets": [
+          0.3232441091264535,
+          0.03998876283844632,
+          1.042339208273547,
+          0.8770232947244878,
+          -0.4773741839057335,
+          -0.3157103747514176,
+          -1.217380642189433,
+          -0.5097223510411002,
+          0.5225168169115673,
+          -0.32538079314138635,
+          -0.7296294785009128,
+          -1.4057739341205373,
+          -0.7203563317549495,
+          -0.2130768368447038,
+          -0.8421273970744991,
+          -1.1556501506310597,
+          -0.5827495895745538,
+          1.4002708394906662,
+          -0.154709603246606,
+          -0.1599296155904546,
+          -0.4955034012581967,
+          -0.2707894649598943,
+          0.6597373959115092,
+          -1.1823654353335744,
+          -0.9948904344739913,
+          -1.4501824702125696,
+          0.36881330040196314,
+          0.4051134784104873,
+          1.037829643208477,
+          -1.4110478704033707,
+          -0.5622933297196497,
+          -0.11580756543394832,
+          -0.8862283870171481,
+          -0.7147446694755426,
+          0.2569031239802859,
+          1.204615573851298
+        ],
+        "indices": [
+          1,
+          1,
+          1
+        ],
+        "localizer_gaps": [
+          0.08970170570083422,
+          0.36634235823873645,
+          0.6267472432969866
+        ],
+        "spatial": [
+          {
+            "gap": 0.06899315271920009,
+            "index": 0,
+            "kappa": 0.1,
+            "point": [
+              0.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.03856893338950032,
+            "index": 0,
+            "kappa": 0.2,
+            "point": [
+              0.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.02368484336303835,
+            "index": 0,
+            "kappa": 0.3,
+            "point": [
+              0.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.014856311032956246,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              1.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.15133030507898435,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              1.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.27082855494873137,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              1.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.06233044224162429,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.28518087420832544,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.49897582402569,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.07832773351206443,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.3251658291517951,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5547365367482489,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.07483879100985733,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.2960190711297203,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5034000548091928,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.08738284675998444,
+            "index": 0,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              0.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.06803476137907798,
+            "index": 0,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              0.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.06240544390744329,
+            "index": 0,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              0.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.0019489209447009536,
+            "index": 0,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              1.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.12006630257809829,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              1.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.22832755751671455,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              1.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.06921120549974823,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.2956902469894314,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5070356124860522,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.08970170570083422,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.36634235823873645,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.6267472432969866,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.08964567496942498,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.347448114395984,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5685462997205818,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.03457118580054166,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              4.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.16982080340209244,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              4.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.28080759729606386,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              4.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.04898814018405756,
+            "index": 0,
+            "kappa": 0.1,
+            "point": [
+              2.5,
+              5.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.023038532423730784,
+            "index": 0,
+            "kappa": 0.2,
+            "point": [
+              2.5,
+              5.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.015352335911588404,
+            "index": 0,
+            "kappa": 0.3,
+            "point": [
+              2.5,
+              5.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.058463925716682456,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              3.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.25595132345149335,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              3.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.4454555346439953,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              3.0,
+              2.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.08014900133738452,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              3.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.31460006700201115,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              3.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5243579727578187,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              3.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.08410674713932655,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              3.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.33657671826059116,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              3.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.5641744576124887,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              3.0,
+              3.0
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.018804512822919936,
+            "index": 1,
+            "kappa": 0.1,
+            "point": [
+              4.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.14443601119288932,
+            "index": 1,
+            "kappa": 0.2,
+            "point": [
+              4.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.2508008056570102,
+            "index": 1,
+            "kappa": 0.3,
+            "point": [
+              4.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.0642513858240944,
+            "index": 0,
+            "kappa": 0.1,
+            "point": [
+              5.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.04357086955087125,
+            "index": 0,
+            "kappa": 0.2,
+            "point": [
+              5.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          },
+          {
+            "gap": 0.03961334023445584,
+            "index": 0,
+            "kappa": 0.3,
+            "point": [
+              5.0,
+              2.5
+            ],
+            "status": "available",
+            "valid": true
+          }
+        ],
+        "chern_marker": {
+          "bulk_mask": [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
+          "bulk_mean": 0.9429383826194855,
+          "convention": "4pi Im diag(P X Q Y P) / clipped Voronoi area; Nambu sum",
+          "minimum_fermi_distance": 0.19750970025030484,
+          "position_areas": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "positions": [
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              2.0
+            ],
+            [
+              0.0,
+              3.0
+            ],
+            [
+              0.0,
+              4.0
+            ],
+            [
+              0.0,
+              5.0
+            ],
+            [
+              1.0,
+              0.0
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              1.0,
+              2.0
+            ],
+            [
+              1.0,
+              3.0
+            ],
+            [
+              1.0,
+              4.0
+            ],
+            [
+              1.0,
+              5.0
+            ],
+            [
+              2.0,
+              0.0
+            ],
+            [
+              2.0,
+              1.0
+            ],
+            [
+              2.0,
+              2.0
+            ],
+            [
+              2.0,
+              3.0
+            ],
+            [
+              2.0,
+              4.0
+            ],
+            [
+              2.0,
+              5.0
+            ],
+            [
+              3.0,
+              0.0
+            ],
+            [
+              3.0,
+              1.0
+            ],
+            [
+              3.0,
+              2.0
+            ],
+            [
+              3.0,
+              3.0
+            ],
+            [
+              3.0,
+              4.0
+            ],
+            [
+              3.0,
+              5.0
+            ],
+            [
+              4.0,
+              0.0
+            ],
+            [
+              4.0,
+              1.0
+            ],
+            [
+              4.0,
+              2.0
+            ],
+            [
+              4.0,
+              3.0
+            ],
+            [
+              4.0,
+              4.0
+            ],
+            [
+              4.0,
+              5.0
+            ],
+            [
+              5.0,
+              0.0
+            ],
+            [
+              5.0,
+              1.0
+            ],
+            [
+              5.0,
+              2.0
+            ],
+            [
+              5.0,
+              3.0
+            ],
+            [
+              5.0,
+              4.0
+            ],
+            [
+              5.0,
+              5.0
+            ]
+          ],
+          "projector_residual": 1.3322680453034438e-15,
+          "scope": "Descriptive finite bulk mean; no mobility-gap assumption verified",
+          "status": "available",
+          "trace_residual": 3.1086244689504383e-15,
+          "values": [
+            -2.0985920051638467,
+            -0.5583185071030424,
+            -0.5766837644571252,
+            -0.6483777167399076,
+            -0.45695457408245943,
+            -1.2967795191313085,
+            -0.2714830740757008,
+            0.8355447020894655,
+            0.9966130946496594,
+            0.9596140153418333,
+            0.8669155113969793,
+            -0.2443559312672829,
+            -0.43274587428518646,
+            0.8818618865067417,
+            0.9209474566276701,
+            0.8883923624148513,
+            0.915622477282594,
+            -1.113804287283251,
+            -0.6542545306351759,
+            0.873523497828802,
+            0.965119450705096,
+            0.9972942607303243,
+            1.0440372029425364,
+            -0.008888690775238203,
+            -0.46132366437840205,
+            0.568199845856491,
+            0.9373963653101444,
+            0.949571279323967,
+            0.9864248312408852,
+            0.012384058112620187,
+            -1.1820314606436377,
+            -0.6395600065962777,
+            -0.30987350583680123,
+            -0.23186430489391743,
+            -0.3287151605497213,
+            -3.084855720462375
+          ]
+        },
+        "observables": {
+          "quality": 0.08970170570083422,
+          "success": false,
+          "minimum_abs_energy": 0.19750970025030484,
+          "boundary_weight": 0.9617365986615198,
+          "interior_localizer_gap": 0.058463925716682456,
+          "edge_weight": 0.9716190307243734,
+          "center_weight": 0.0008674014841224524,
+          "chern_bulk_mean": 0.9429383826194855,
+          "polarization": 0.9656317709782299,
+          "self_conjugacy": 1.1350586662411746e-15
+        }
+      }
+    }
+  }
+}
