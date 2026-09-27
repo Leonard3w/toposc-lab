@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections import Counter
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from importlib.metadata import version
 from numbers import Integral
 from typing import Literal, TypeAlias
@@ -36,6 +36,78 @@ HARD_CORE_PLANAR_TRIANGLE_AREA_TOLERANCE = 1.0e-10
 
 _GeneratorMode: TypeAlias = Literal["candidate", "reference"]
 _Edge: TypeAlias = tuple[int, int]
+
+
+@dataclass(frozen=True)
+class HardCorePlanarConfig:
+    """Explicit construction limits; defaults reproduce the frozen v1 generator."""
+
+    n_sites: int = 64
+    n_edges: int = 112
+    box_maximum: float = 7.0
+    minimum_separation: float = 0.55
+    maximum_edge_length: float = 1.75
+    minimum_degree: int = 2
+    maximum_degree: int = 4
+    boundary_shell_thickness: float = 0.875
+    minimum_boundary_sites: int = 24
+    maximum_boundary_sites: int = 32
+    max_point_proposals: int = 1_000_000
+    max_complete_attempts: int = 10_000
+    forbid_crossings: bool = True
+    require_connected: bool = True
+
+    def __post_init__(self) -> None:
+        for name in ("n_sites", "n_edges", "minimum_degree", "maximum_degree",
+                     "minimum_boundary_sites", "maximum_boundary_sites",
+                     "max_point_proposals", "max_complete_attempts"):
+            if type(getattr(self, name)) is not int or getattr(self, name) < 1:
+                raise ValueError(f"{name} must be a positive integer")
+        if not 4 <= self.n_sites <= 4096:
+            raise ValueError("n_sites must be between 4 and 4096")
+        if not self.minimum_degree <= self.maximum_degree < self.n_sites:
+            raise ValueError("degree bounds must be ordered and below n_sites")
+        if not self.minimum_boundary_sites <= self.maximum_boundary_sites <= self.n_sites:
+            raise ValueError("boundary-site bounds must be ordered and at most n_sites")
+        if not self.n_sites - 1 <= self.n_edges <= self.n_sites * (self.n_sites - 1) // 2:
+            raise ValueError("edge budget is impossible for a connected simple graph")
+        if not self.n_sites * self.minimum_degree <= 2 * self.n_edges <= self.n_sites * self.maximum_degree:
+            raise ValueError("edge budget is incompatible with degree bounds")
+        if type(self.forbid_crossings) is not bool or type(self.require_connected) is not bool:
+            raise ValueError("crossing and connectivity settings must be boolean")
+        if not self.require_connected:
+            raise ValueError("this generator constructs connected graphs only")
+        if self.forbid_crossings and self.n_edges > 3 * self.n_sites - 6:
+            raise ValueError("edge budget exceeds the planar simple-graph bound")
+        for name in ("box_maximum", "minimum_separation", "maximum_edge_length", "boundary_shell_thickness"):
+            value = getattr(self, name)
+            if isinstance(value, bool) or not np.isfinite(value) or value <= 0:
+                raise ValueError(f"{name} must be finite and positive")
+        if self.boundary_shell_thickness >= self.box_maximum / 2:
+            raise ValueError("boundary shell must be smaller than half the box")
+        if self.minimum_separation > min(self.maximum_edge_length, np.sqrt(2) * self.box_maximum):
+            raise ValueError("minimum separation precludes connected bonds")
+        # Disjoint separation disks fit inside this expanded enclosing square.
+        radius = self.minimum_separation / 2
+        if self.n_sites * np.pi * radius**2 > (self.box_maximum + 2 * radius)**2:
+            raise ValueError("site count and minimum separation cannot fit in the box")
+        if not self.n_sites <= self.max_point_proposals <= 10_000_000:
+            raise ValueError("max_point_proposals must be n_sites..10000000")
+        if self.max_complete_attempts > 100_000:
+            raise ValueError("max_complete_attempts must be at most 100000")
+
+
+_DEFAULT_CONFIG = HardCorePlanarConfig()
+
+
+def _config(value: HardCorePlanarConfig | dict | None) -> HardCorePlanarConfig:
+    if value is None:
+        return _DEFAULT_CONFIG
+    if isinstance(value, dict):
+        return HardCorePlanarConfig(**value)
+    if not isinstance(value, HardCorePlanarConfig):
+        raise TypeError("config must be a HardCorePlanarConfig or mapping")
+    return value
 
 
 class HardCorePlanarGenerationError(RuntimeError):
@@ -74,24 +146,24 @@ class _DisjointSet:
         return True
 
 
-def hard_core_planar_graph(*, seed: int) -> Geometry:
+def hard_core_planar_graph(*, seed: int, config: HardCorePlanarConfig | dict | None = None) -> Geometry:
     """Generate the frozen randomly prioritized Phase-9.8 candidate graph."""
-    return _hard_core_planar_geometry(seed=seed, mode="candidate")
+    return _hard_core_planar_geometry(seed=seed, mode="candidate", config=_config(config))
 
 
-def hard_core_planar_reference(*, seed: int) -> Geometry:
+def hard_core_planar_reference(*, seed: int, config: HardCorePlanarConfig | dict | None = None) -> Geometry:
     """Generate the frozen length-completed amorphous reference graph."""
-    return _hard_core_planar_geometry(seed=seed, mode="reference")
+    return _hard_core_planar_geometry(seed=seed, mode="reference", config=_config(config))
 
 
-def constrained_random_embedded_graph(*, seed: int) -> Geometry:
+def constrained_random_embedded_graph(*, seed: int, config: HardCorePlanarConfig | dict | None = None) -> Geometry:
     """64-site hard-core graph with random edges from the full radius pool.
 
     Reuses the frozen point process, spanning/completion algorithm and rejection
     rules, replacing only the Delaunay edge pool by the existing cutoff builder.
     This is a constrained rejection ensemble, not uniform over all valid graphs.
     """
-    return _hard_core_planar_geometry(seed=seed, mode="candidate", edge_pool_kind="radius")
+    return _hard_core_planar_geometry(seed=seed, mode="candidate", edge_pool_kind="radius", config=_config(config))
 
 
 def hard_core_planar_edge_pool(coordinates: NDArray[np.float64]) -> tuple[_Edge, ...]:
@@ -107,24 +179,25 @@ def hard_core_planar_edge_pool(coordinates: NDArray[np.float64]) -> tuple[_Edge,
 
 
 def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode,
-                              edge_pool_kind: Literal["delaunay", "radius"] = "delaunay") -> Geometry:
+                              edge_pool_kind: Literal["delaunay", "radius"] = "delaunay",
+                              config: HardCorePlanarConfig = _DEFAULT_CONFIG) -> Geometry:
     prepared_seed = _nonnegative_integer(seed, name="seed")
     rng = np.random.Generator(np.random.PCG64(prepared_seed))
     proposal_count = 0
     rejected_attempts: Counter[str] = Counter()
 
-    for complete_attempt_count in range(1, HARD_CORE_PLANAR_MAX_COMPLETE_ATTEMPTS + 1):
+    for complete_attempt_count in range(1, config.max_complete_attempts + 1):
         accepted: list[tuple[float, float, int]] = []
-        while len(accepted) < HARD_CORE_PLANAR_N_SITES:
-            if proposal_count >= HARD_CORE_PLANAR_MAX_POINT_PROPOSALS:
+        while len(accepted) < config.n_sites:
+            if proposal_count >= config.max_point_proposals:
                 raise HardCorePlanarGenerationError(
                     "hard-core point construction exceeded "
-                    f"{HARD_CORE_PLANAR_MAX_POINT_PROPOSALS} proposals"
+                    f"{config.max_point_proposals} proposals"
                 )
             proposal_count += 1
             proposal = rng.uniform(
                 0.0,
-                HARD_CORE_PLANAR_BOX_MAXIMUM,
+                config.box_maximum,
                 size=2,
             )
             if accepted:
@@ -133,23 +206,23 @@ def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode,
                     dtype=float,
                 )
                 distances = np.linalg.norm(existing - proposal[np.newaxis, :], axis=1)
-                if float(np.min(distances)) < HARD_CORE_PLANAR_MINIMUM_SEPARATION:
+                if float(np.min(distances)) < config.minimum_separation:
                     continue
             accepted.append(
                 (float(proposal[0]), float(proposal[1]), len(accepted))
             )
 
-        coordinates = _normalized_coordinates(accepted)
-        if _minimum_separation(coordinates) < HARD_CORE_PLANAR_MINIMUM_SEPARATION:
+        coordinates = _normalized_coordinates(accepted, config=config)
+        if _minimum_separation(coordinates) < config.minimum_separation:
             rejected_attempts["normalized_minimum_separation"] += 1
             continue
 
         try:
             if edge_pool_kind == "delaunay":
-                candidate_edges = _delaunay_edges(coordinates)
+                candidate_edges = _delaunay_edges(coordinates, config=config)
             else:
                 from toposc_lab.geometry.generators.coordinate_cutoff import coordinate_cutoff_graph
-                pool = coordinate_cutoff_graph(coordinates, HARD_CORE_PLANAR_MAXIMUM_EDGE_LENGTH)
+                pool = coordinate_cutoff_graph(coordinates, config.maximum_edge_length)
                 candidate_edges = tuple((e.source, e.target) for e in pool.edges)
         except QhullError:
             rejected_attempts["qhull_failure"] += 1
@@ -158,7 +231,7 @@ def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode,
             rejected_attempts["degenerate_delaunay_triangle"] += 1
             continue
 
-        if len(candidate_edges) < HARD_CORE_PLANAR_N_EDGES:
+        if len(candidate_edges) < config.n_edges:
             rejected_attempts["insufficient_candidate_edges"] += 1
             continue
 
@@ -170,23 +243,24 @@ def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode,
             candidate_edges=candidate_edges,
             priorities=priorities,
             mode=mode,
-            prevent_crossings=edge_pool_kind == "radius",
+            prevent_crossings=edge_pool_kind == "radius" and config.forbid_crossings,
+            config=config,
         )
         if failure_reason is not None:
             rejected_attempts[failure_reason] += 1
             continue
-        if min(degrees) < HARD_CORE_PLANAR_MINIMUM_DEGREE:
+        if min(degrees) < config.minimum_degree:
             rejected_attempts["minimum_degree"] += 1
             continue
-        if _has_straight_edge_crossing(coordinates, selected_edges):
+        if config.forbid_crossings and _has_straight_edge_crossing(coordinates, selected_edges):
             rejected_attempts["straight_edge_crossing"] += 1
             continue
 
-        boundary_sites = _outer_boundary_sites(coordinates)
+        boundary_sites = _outer_boundary_sites(coordinates, config=config)
         if not (
-            HARD_CORE_PLANAR_MINIMUM_BOUNDARY_SITES
+            config.minimum_boundary_sites
             <= len(boundary_sites)
-            <= HARD_CORE_PLANAR_MAXIMUM_BOUNDARY_SITES
+            <= config.maximum_boundary_sites
         ):
             rejected_attempts["boundary_site_count"] += 1
             continue
@@ -203,7 +277,7 @@ def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode,
             for source, target in selected_edges
         )
         return Geometry(
-            n_sites=HARD_CORE_PLANAR_N_SITES,
+            n_sites=config.n_sites,
             edges=geometry_edges,
             coordinates=coordinates,
             boundary_sites=boundary_sites,
@@ -216,7 +290,8 @@ def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode,
                     if mode == "candidate"
                     else "hard_core_planar_reference"
                 ),
-                "algorithm_version": HARD_CORE_PLANAR_GENERATOR_VERSION,
+                "algorithm_version": (HARD_CORE_PLANAR_GENERATOR_VERSION if config == _DEFAULT_CONFIG else 2),
+                **({} if config == _DEFAULT_CONFIG else {"resolved_config": asdict(config)}),
                 "construction_mode": mode,
                 "rng_algorithm": "numpy.random.PCG64",
                 "proposal_count": proposal_count,
@@ -224,12 +299,12 @@ def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode,
                 "rejected_attempt_reason_counts": dict(
                     sorted(rejected_attempts.items())
                 ),
-                "point_proposal_distribution": "uniform_[0,7]^2",
+                "point_proposal_distribution": f"uniform_[0,{config.box_maximum:g}]^2",
                 "point_iteration_order": "sequential_acceptance_order",
                 "site_index_order": "lexicographic_x_y_acceptance_index",
-                "affine_normalization": "independent_axes_to_exact_[0,7]",
-                "minimum_separation": HARD_CORE_PLANAR_MINIMUM_SEPARATION,
-                "maximum_edge_length": HARD_CORE_PLANAR_MAXIMUM_EDGE_LENGTH,
+                "affine_normalization": f"independent_axes_to_exact_[0,{config.box_maximum:g}]",
+                "minimum_separation": config.minimum_separation,
+                "maximum_edge_length": config.maximum_edge_length,
                 "delaunay_implementation": "scipy.spatial.Delaunay" if edge_pool_kind == "delaunay" else "not_used_radius_pool",
                 "delaunay_version": version("scipy"),
                 "qhull_options": HARD_CORE_PLANAR_QHULL_OPTIONS,
@@ -247,25 +322,25 @@ def _hard_core_planar_geometry(*, seed: int, mode: _GeneratorMode,
                 ),
                 "edge_storage_order": "lexicographic_source_target",
                 "edge_orientation": "lower_site_index_to_higher_site_index",
-                "boundary_definition": "distance_to_[0,7]^2_side_at_most_0.875",
+                "boundary_definition": f"distance_to_[0,{config.box_maximum:g}]^2_side_at_most_{config.boundary_shell_thickness:g}",
                 "boundary_shell_thickness": (
-                    HARD_CORE_PLANAR_BOUNDARY_SHELL_THICKNESS
+                    config.boundary_shell_thickness
                 ),
                 "hole_boundary_policy": "none_in_declared_outer_boundary_model",
-                "target_site_count": HARD_CORE_PLANAR_N_SITES,
-                "target_edge_count": HARD_CORE_PLANAR_N_EDGES,
+                "target_site_count": config.n_sites,
+                "target_edge_count": config.n_edges,
                 "allowed_degree_range": (
-                    HARD_CORE_PLANAR_MINIMUM_DEGREE,
-                    HARD_CORE_PLANAR_MAXIMUM_DEGREE,
+                    config.minimum_degree,
+                    config.maximum_degree,
                 ),
-                "max_point_proposals": HARD_CORE_PLANAR_MAX_POINT_PROPOSALS,
-                "max_complete_attempts": HARD_CORE_PLANAR_MAX_COMPLETE_ATTEMPTS,
+                "max_point_proposals": config.max_point_proposals,
+                "max_complete_attempts": config.max_complete_attempts,
             },
         )
 
     raise HardCorePlanarGenerationError(
         "hard-core planar construction exhausted "
-        f"{HARD_CORE_PLANAR_MAX_COMPLETE_ATTEMPTS} complete attempts; "
+        f"{config.max_complete_attempts} complete attempts; "
         f"rejected_attempt_reason_counts={dict(sorted(rejected_attempts.items()))!r}"
     )
 
@@ -276,6 +351,7 @@ class _DegenerateTriangleError(ValueError):
 
 def _normalized_coordinates(
     accepted: list[tuple[float, float, int]],
+    *, config: HardCorePlanarConfig = _DEFAULT_CONFIG,
 ) -> np.ndarray:
     ordered = sorted(accepted, key=lambda item: (item[0], item[1], item[2]))
     coordinates = np.asarray(
@@ -289,12 +365,12 @@ def _normalized_coordinates(
             "hard-core point set cannot be affinely normalized"
         )
     return np.asarray(
-        (coordinates - minima) * (HARD_CORE_PLANAR_BOX_MAXIMUM / spans),
+        (coordinates - minima) * (config.box_maximum / spans),
         dtype=float,
     )
 
 
-def _delaunay_edges(coordinates: np.ndarray) -> tuple[_Edge, ...]:
+def _delaunay_edges(coordinates: np.ndarray, *, config: HardCorePlanarConfig = _DEFAULT_CONFIG) -> tuple[_Edge, ...]:
     triangulation = Delaunay(
         coordinates,
         qhull_options=HARD_CORE_PLANAR_QHULL_OPTIONS,
@@ -317,7 +393,7 @@ def _delaunay_edges(coordinates: np.ndarray) -> tuple[_Edge, ...]:
         ):
             edge = (source, target) if source < target else (target, source)
             length = float(np.linalg.norm(coordinates[edge[1]] - coordinates[edge[0]]))
-            if length <= HARD_CORE_PLANAR_MAXIMUM_EDGE_LENGTH:
+            if length <= config.maximum_edge_length:
                 edges.add(edge)
     return tuple(sorted(edges))
 
@@ -329,14 +405,15 @@ def _select_edges(
     priorities: dict[_Edge, int],
     mode: _GeneratorMode,
     prevent_crossings: bool = False,
+    config: HardCorePlanarConfig = _DEFAULT_CONFIG,
 ) -> tuple[tuple[_Edge, ...], tuple[int, ...], str | None]:
     spanning_order = sorted(
         candidate_edges,
         key=lambda edge: (priorities[edge], edge[0], edge[1]),
     )
-    disjoint_set = _DisjointSet.create(HARD_CORE_PLANAR_N_SITES)
+    disjoint_set = _DisjointSet.create(config.n_sites)
     selected: set[_Edge] = set()
-    degrees = [0] * HARD_CORE_PLANAR_N_SITES
+    degrees = [0] * config.n_sites
 
     def crosses_selected(edge: _Edge) -> bool:
         return prevent_crossings and any(
@@ -353,11 +430,11 @@ def _select_edges(
         selected.add(edge)
         degrees[edge[0]] += 1
         degrees[edge[1]] += 1
-        if len(selected) == HARD_CORE_PLANAR_N_SITES - 1:
+        if len(selected) == config.n_sites - 1:
             break
-    if len(selected) != HARD_CORE_PLANAR_N_SITES - 1:
+    if len(selected) != config.n_sites - 1:
         return (), tuple(degrees), "candidate_graph_disconnected"
-    if max(degrees) > HARD_CORE_PLANAR_MAXIMUM_DEGREE:
+    if max(degrees) > config.maximum_degree:
         return (), tuple(degrees), "spanning_tree_degree_limit"
 
     remaining = (edge for edge in candidate_edges if edge not in selected)
@@ -376,11 +453,11 @@ def _select_edges(
             ),
         )
     for edge in completion_order:
-        if len(selected) == HARD_CORE_PLANAR_N_EDGES:
+        if len(selected) == config.n_edges:
             break
         if (
-            degrees[edge[0]] >= HARD_CORE_PLANAR_MAXIMUM_DEGREE
-            or degrees[edge[1]] >= HARD_CORE_PLANAR_MAXIMUM_DEGREE
+            degrees[edge[0]] >= config.maximum_degree
+            or degrees[edge[1]] >= config.maximum_degree
         ):
             continue
         if crosses_selected(edge):
@@ -388,14 +465,14 @@ def _select_edges(
         selected.add(edge)
         degrees[edge[0]] += 1
         degrees[edge[1]] += 1
-    if len(selected) != HARD_CORE_PLANAR_N_EDGES:
+    if len(selected) != config.n_edges:
         return (), tuple(degrees), "edge_budget_unreachable"
     return tuple(sorted(selected)), tuple(degrees), None
 
 
-def _outer_boundary_sites(coordinates: np.ndarray) -> frozenset[int]:
-    maximum = HARD_CORE_PLANAR_BOX_MAXIMUM
-    shell = HARD_CORE_PLANAR_BOUNDARY_SHELL_THICKNESS
+def _outer_boundary_sites(coordinates: np.ndarray, *, config: HardCorePlanarConfig = _DEFAULT_CONFIG) -> frozenset[int]:
+    maximum = config.box_maximum
+    shell = config.boundary_shell_thickness
     return frozenset(
         site
         for site, (x_coordinate, y_coordinate) in enumerate(coordinates)

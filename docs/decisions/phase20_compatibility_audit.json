@@ -1,0 +1,67 @@
+{
+  "new_exact_evaluations": 0,
+  "scope": "Historical checksums and read adapters; no re-evaluation of stored eigensystems.",
+  "source_baseline_commit": "cf3806a",
+  "generator_archive_comparison": {
+    "seed": 190001,
+    "all_equal_to_HEAD_before_phase20": true,
+    "hard_core_planar_graph": "10d32f2a28383d292af5201bb3abd74e44dc0d5dad6430b95cf4415d3117b8a2",
+    "hard_core_planar_reference": "ecae2159667b120f3d4c8653fb7864b531f06486229971c44246816a95ab1147",
+    "constrained_random_embedded_graph": "a587a878b08c602e37c3a9c2ff8924152b73a4c3deb00a6c7ba538fb8986eb78",
+    "method": "Manual comparison to git show HEAD:.../hard_core_planar.py on 2026-09-27; not rerun by this script."
+  },
+  "studies": [
+    {
+      "directory": "results\\phase18-confirmation",
+      "database_sha256": "c65a9af8a720c380a16fde25679dc43ea8e334426e08099322019ebcffb86826",
+      "database_unchanged_by_read": true,
+      "sqlite_integrity": "ok",
+      "all_payload_checksums_valid": true,
+      "object_counts": {
+        "validation_settings": 1,
+        "validation_cohort": 1,
+        "config": 1,
+        "manifest": 1,
+        "execution_runtime": 1,
+        "exact_result": 2510,
+        "checkpoint": 252,
+        "report": 1,
+        "state": 1
+      },
+      "config_sha256": "d580e2bc9b5ac40bbd9d3488a81ff9848b8e9363f10d23a9b8639b44c91cb4ee",
+      "legacy_config_hash_preserved": true,
+      "browser_candidate_count": 10,
+      "browser_exact_attempts": 2510,
+      "browser_completed_evaluations": 2510,
+      "followup_planned_evaluations": 3,
+      "clone_candidate_count": 10,
+      "followup_and_clone_validated_without_start": true
+    },
+    {
+      "directory": "results\\phase19-exploration-v2",
+      "database_sha256": "caddb37c043c30f4d7a6003610def1aa0fec71931b1edb4a1668b53a247f90e1",
+      "database_unchanged_by_read": true,
+      "sqlite_integrity": "ok",
+      "all_payload_checksums_valid": true,
+      "object_counts": {
+        "validation_settings": 1,
+        "validation_cohort": 1,
+        "config": 1,
+        "manifest": 1,
+        "exact_result": 1510,
+        "checkpoint": 76,
+        "execution_runtime": 1,
+        "report": 1,
+        "state": 1
+      },
+      "config_sha256": "9db22d74c50c2be9e0c4bcc5c2829521c0e9517b1b097beffa52a41bf97827f3",
+      "legacy_config_hash_preserved": true,
+      "browser_candidate_count": 151,
+      "browser_exact_attempts": 1511,
+      "browser_completed_evaluations": 1510,
+      "followup_planned_evaluations": 3,
+      "clone_candidate_count": 151,
+      "followup_and_clone_validated_without_start": true
+    }
+  ]
+}

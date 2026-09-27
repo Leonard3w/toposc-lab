@@ -8,7 +8,7 @@ from dataclasses import asdict, dataclass, field
 from hashlib import sha256
 from inspect import Parameter, signature
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 QUESTION = (
     "Can connectivity optimization alone generate two-dimensional superconducting "
@@ -22,7 +22,7 @@ class ExperimentConfig:
     schema_version: int = 1
     name: str = "Autonomous Experiment 001"
     question: str = QUESTION
-    algorithm: str = "surrogate_map_elites"
+    algorithm: str = cast(str, None)
     seed: int = 17001
     cycles: int = 10
     exact_budget: int = 280
@@ -36,37 +36,61 @@ class ExperimentConfig:
     blas_threads: int = 1
     retry_limit: int = 1
     output_directory: str = "results/research"
-    geometry_space: str = "fixed_connectivity"
+    geometry_space: str = cast(str, None)
     surrogate_model: str = "bootstrap_graph"
-    objective: str = "robustness_success_fraction"
-    baselines: list[str] = field(default_factory=lambda: ["regular", "random_rewired"])
-    space: dict[str, Any] = field(
-        default_factory=lambda: {
-            "side": 10,
-            "min_degree": 2,
-            "max_degree": 6,
-            "max_bond_length": 2**0.5,
-            "bond_tolerance": 0.0,
-            "forbid_crossings": True,
-            "minimum_distance": 0.002,
-        }
-    )
-    search: dict[str, Any] = field(
-        default_factory=lambda: {
-            "behavior_descriptors": ["coordination_variance", "clustering_coefficient"],
-            "descriptor_bounds": [[0.0, 4.0], [0.0, 1.0]],
-            "archive_bins": [12, 12],
-        "allocation": {"exploitation": 0.6, "uncertainty": 0.2, "novelty": 0.2},
-        "mutation_rates": {"remove_local_bond": 0.025, "add_local_bond": 0.025,
-                           "edge_swap": 0.15, "local_rewiring": 0.35, "diagonal_flip": 0.1,
-                           "local_motif_replacement": 0.2, "boundary_rewiring": 0.15},
-        "family_fraction": 0.5,
-        }
-    )
+    objective: str = cast(str, None)
+    baselines: list[str] = field(default_factory=lambda: cast(list[str], None))
+    space: dict[str, Any] = field(default_factory=lambda: cast(dict[str, Any], None))
+    search: dict[str, Any] = field(default_factory=lambda: cast(dict[str, Any], None))
     physics: dict[str, Any] = field(default_factory=dict)
     surrogate: dict[str, Any] = field(default_factory=dict)
+    studio: dict[str, Any] | None = None
 
     def __post_init__(self) -> None:
+        if self.schema_version == 2:
+            from toposc_lab.research import studio_physics  # noqa: F401
+            from toposc_lab.research.studio_config import resolve_studio_defaults
+
+            resolve_studio_defaults(self)
+        else:
+            if self.studio:
+                raise ValueError("studio settings require configuration schema_version 2")
+            self.studio = None
+            if self.algorithm is None:
+                self.algorithm = "surrogate_map_elites"
+            if self.geometry_space is None:
+                self.geometry_space = "fixed_connectivity"
+            if self.objective is None:
+                self.objective = "robustness_success_fraction"
+            if self.baselines is None:
+                self.baselines = ["regular", "random_rewired"]
+            if self.space is None:
+                self.space = {
+                    "side": 10,
+                    "min_degree": 2,
+                    "max_degree": 6,
+                    "max_bond_length": 2**0.5,
+                    "bond_tolerance": 0.0,
+                    "forbid_crossings": True,
+                    "minimum_distance": 0.002,
+                }
+            if self.search is None:
+                self.search = {
+                    "behavior_descriptors": ["coordination_variance", "clustering_coefficient"],
+                    "descriptor_bounds": [[0.0, 4.0], [0.0, 1.0]],
+                    "archive_bins": [12, 12],
+                    "allocation": {"exploitation": 0.6, "uncertainty": 0.2, "novelty": 0.2},
+                    "mutation_rates": {
+                        "remove_local_bond": 0.025,
+                        "add_local_bond": 0.025,
+                        "edge_swap": 0.15,
+                        "local_rewiring": 0.35,
+                        "diagonal_flip": 0.1,
+                        "local_motif_replacement": 0.2,
+                        "boundary_rewiring": 0.15,
+                    },
+                    "family_fraction": 0.5,
+                }
         for name in (
             "schema_version",
             "seed",
@@ -85,7 +109,7 @@ class ExperimentConfig:
             minimum = 0 if name in ("seed", "retry_limit") else 1
             if type(value) is not int or value < minimum:
                 raise ValueError(f"{name} must be an integer >= {minimum}")
-        if self.schema_version != 1:
+        if self.schema_version not in (1, 2):
             raise ValueError("unsupported configuration version")
         if self.batch_size > self.pool_size:
             raise ValueError("batch_size cannot exceed pool_size")
@@ -143,6 +167,10 @@ class ExperimentConfig:
         self.surrogate = {**defaults, **self.surrogate}
         self.physics = json.loads(json.dumps(self.physics, allow_nan=False))
         self.surrogate = json.loads(json.dumps(self.surrogate, allow_nan=False))
+        if self.schema_version == 2:
+            from toposc_lab.research.studio_config import validate_studio
+
+            validate_studio(self)
 
     def physics_protocol(self) -> Any:
         from toposc_lab.research.physics import create_physics_protocol
@@ -150,6 +178,11 @@ class ExperimentConfig:
         return create_physics_protocol(self.physics, objective=self.objective)
 
     def validate_plugins(self) -> None:
+        if self.schema_version == 2:
+            from toposc_lab.research import studio_space  # noqa: F401
+            from toposc_lab.research.studio_config import validate_studio
+
+            validate_studio(self)
         from toposc_lab.research.space import SPACE_REGISTRY
         from toposc_lab.research.strategies import create_strategy
         from toposc_lab.research.surrogate import SURROGATE_REGISTRY
@@ -159,12 +192,31 @@ class ExperimentConfig:
         if self.surrogate_model not in SURROGATE_REGISTRY:
             raise ValueError("unknown surrogate model")
         self.physics_protocol()
-        space = SPACE_REGISTRY[self.geometry_space](**self.space)
+        space = self.geometry_space_instance()
         SURROGATE_REGISTRY[self.surrogate_model](seed=self.seed, **self.surrogate)
         create_strategy(self.algorithm, space, self.seed, **self.search)
 
+    def geometry_space_instance(self) -> Any:
+        """Inject the single canonical domain into existing geometry adapters."""
+        from toposc_lab.research.space import SPACE_REGISTRY
+
+        if self.schema_version == 2:
+            from toposc_lab.research import studio_space  # noqa: F401
+
+        settings = dict(self.space)
+        if self.schema_version == 2 and self.geometry_space in {
+            "embedded_sampling",
+            "fixed_candidates",
+        }:
+            settings["domain"] = self.physics["domain"]
+        return SPACE_REGISTRY[self.geometry_space](**settings)
+
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        result = asdict(self)
+        if self.schema_version == 1:
+            # Historical config hashes cover the exact v1 serialized contract.
+            result.pop("studio")
+        return result
 
     @property
     def fingerprint(self) -> str:

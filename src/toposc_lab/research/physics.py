@@ -291,7 +291,7 @@ class FiniteSystemEvaluator:
         gap = float(min(item.localizer_gap for item in localizers))
         quality = gap if eligible else 0.0
         states = []
-        for index in np.argsort(np.abs(energies))[:4]:
+        for index in np.argsort(np.abs(energies))[:getattr(self.protocol, "near_zero_count", 4)]:
             diagnostic = majorana_diagnostics(vectors, int(index), model.nambu_basis)
             states.append(
                 {
@@ -314,10 +314,15 @@ class FiniteSystemEvaluator:
             "status": "diagnostics_only",
             "majorana_claim": False,
             "states": states,
-            "splitting": asdict(finite_size_splitting_diagnostics(energies)),
-            "zero_tolerance": 1e-10,
-            "splitting_tolerance": 1e-3,
-            "splitting_phs_tolerance": 1e-8,
+            "splitting": asdict(finite_size_splitting_diagnostics(
+                energies,
+                zero_tolerance=getattr(self.protocol, "majorana_zero_tolerance", 1e-10),
+                splitting_tolerance=getattr(self.protocol, "majorana_splitting_tolerance", 1e-3),
+                particle_hole_tolerance=getattr(self.protocol, "majorana_splitting_phs_tolerance", 1e-8),
+            )),
+            "zero_tolerance": getattr(self.protocol, "majorana_zero_tolerance", 1e-10),
+            "splitting_tolerance": getattr(self.protocol, "majorana_splitting_tolerance", 1e-3),
+            "splitting_phs_tolerance": getattr(self.protocol, "majorana_splitting_phs_tolerance", 1e-8),
             "reason": "Boundary eigenstates and polarization do not establish separated "
             "Majorana modes; no defect or converged size-extension evidence.",
             "basis_caution": "Eigenstates can rotate within degenerate subspaces.",
@@ -626,7 +631,9 @@ def _ensemble_summaries(
             successes,
             failures,
         )
-        interval = estimate_robustness_uncertainty(metric)
+        interval = estimate_robustness_uncertainty(
+            metric, confidence_level=getattr(protocol, "confidence_level", 0.95)
+        )
         qualities = [member["metrics"]["quality"] for member in members if _valid_result(member)]
         complete = not missing and not failures
         groups.append(
@@ -643,7 +650,7 @@ def _ensemble_summaries(
                 "success_fraction": metric.value if not missing else None,
                 "success_wilson_lower": interval.lower_bound if not missing else None,
                 "success_wilson_upper": interval.upper_bound if not missing else None,
-                "confidence_level": 0.95,
+                "confidence_level": getattr(protocol, "confidence_level", 0.95),
                 "uncertainty_method": "wilson_score",
                 "quality_mean": float(np.mean(qualities)) if qualities else None,
                 "quality_min": float(np.min(qualities)) if qualities else None,

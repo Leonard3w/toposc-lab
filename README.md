@@ -12,7 +12,13 @@ The goal is to provide a clean and extensible framework for:
 
 ## Current status
 
-Version 0.1 focuses on the Kitaev chain.
+Phase 20 consolidates experiment configuration, execution and inspection in the
+existing native TOPOSC Research Studio. The model library and earlier research
+workflows remain available. This is research software under development, not an
+independent certification of physical conclusions.
+
+[Studio guide (Deutsch)](docs/phase20_studio_usage_de.md) ·
+[Phase 20 implementation and validation](docs/decisions/phase20_studio_report_de.md)
 
 ### Phase 10: evolutionäre Geometriesuche
 
@@ -73,32 +79,59 @@ python -m toposc_lab kitaev-scan --L 60 --mu-min -4 --mu-max 4
 
 Use `--num-points`, `--t`, `--delta`, and `--periodic` to adjust the scan.
 
-## Research workspace
+## TOPOSC Research Studio - one supported interface
 
-For native Windows campaign launching, monitoring and candidate inspection,
-use the separate optional **TOPOSC LIVE** application:
+The existing native TOPOSC LIVE application is now the **TOPOSC Research Studio**.
+It retains legacy campaign monitoring, leaderboards and campaign groups, and adds
+canonical experiment configuration, review before Start, live controls and candidate
+follow-up configuration. Opening the application starts no scientific experiment.
+
+On Windows, set up the existing project environment once:
 
 ```powershell
-uv pip install --python .venv/Scripts/python.exe -e ".[live]"
-.venv/Scripts/toposc-live.exe --root results
+uv pip install --python .venv/Scripts/python.exe -e ".[live,app]"
 ```
 
-[TOPOSC LIVE setup, architecture, lifecycle and limitations](docs/toposc_live.md).
-Use [Campaign Groups](docs/campaign_groups.md) to compare compatible independent
-seeds, inspect a combined exact leaderboard, and export read-only summaries.
-Campaigns run independently of the GUI. Scientific calculations remain in the
-existing engine; opening the application does not start a campaign.
+Then double-click **`start_toposc.bat`** in this repository. The launcher uses the
+project `.venv` when present, otherwise the activated Python environment. It never
+installs dependencies or creates an environment, and leaves fatal errors visible.
+The equivalent canonical command is:
 
-### Existing Streamlit workspace
-
-The optional graphical workspace exposes every currently registered model and
-its Pydantic parameters. It uses the same solver, observables and plotting
-code as the Python API.
-
-```bash
-pip install -e ".[app]"
-toposc-ui
+```powershell
+.venv/Scripts/python.exe -B -m toposc_live --root results
 ```
+
+`toposc-live` and the old `toposc-ui` command are compatibility aliases for this
+same native application. There is no separately supported Streamlit application.
+
+In **Research Studio**, choose an ordinary configuration preset, edit the ten
+configuration sections, and use **Expert Mode** for all advanced settings and the
+complete JSON. Standard Mode only hides controls. Save/export and load use the
+same JSON accepted by the research CLI. **Preview run** shows the exact resolved
+configuration, locked/searchable settings, evaluation budget, warnings and config
+hash; only **START this exact configuration** creates and launches a run.
+
+Use the existing **Live Dashboard**, **Search Progress**, **Candidate Explorer**,
+**Baselines**, **Checkpoints / Research Log** and **Final Report** tabs to inspect
+persisted runs. Candidate rows can be filtered, compared, opened as stored spectrum
+and localization views, or used to **Create follow-up experiment**. A follow-up
+prepares a new configuration with chosen disorder widths and seeds, then returns
+to the same Preview / START workflow. Pause, Resume and Graceful Stop operate at
+safe existing checkpoint boundaries; closing the studio leaves research workers
+running.
+
+The **Learning / Model Labs** tab preserves the existing registered-model,
+parameter-scan, study-comparison, gas, ensemble and Quantum Hall interfaces.
+Select **Open learning and model labs** to start their internal localhost service
+inside the native window. These optional labs require the `[app]` extra and
+QtWebEngine from full PySide6. They never launch automatically, and their internal
+service stops when the studio closes.
+
+[Campaign lifecycle and compatibility](docs/toposc_live.md) and
+[Campaign Groups](docs/campaign_groups.md) describe the preserved campaign tools.
+Campaign Groups compare compatible independent seeds and export read-only summaries.
+
+### Preserved learning and model workspaces
 
 The first workspace provides single-model simulations, spectra,
 geometry-aware localization plots, core observables, parameter metadata and
@@ -111,7 +144,7 @@ a Bose--Einstein gas with the standard 3D ideal-gas condensation transition.
 Every calculator uses the same external
 conditions, solves its chemical potential from the number equation and shows
 momentum-state occupations on fixed, parameter-independent colour scales.
-Start `toposc-ui` and select *Quantum-gas laboratory*.
+Open **Learning / Model Labs** in Research Studio and select *Quantum gases*.
 
 For explicit statistical mechanics, the UI also contains **Ensembles and
 dynamics**.  It separates canonical, grand-canonical and microcanonical
@@ -129,7 +162,7 @@ an exact microcanonical quantum result.
 
 ## Landau-level learning laboratory
 
-The Streamlit interface now contains a complete interactive treatment of
+The integrated Learning / Model Labs workspace contains a complete interactive treatment of
 Section 1.4 of David Tong's *The Quantum Hall Effect*
 (arXiv:1606.06687v2). Select **Quantum Hall / Landau levels** in the sidebar
 to explore:
@@ -205,9 +238,9 @@ advantage was established; a weak-disorder score signal for some rewired graphs
 requires independent confirmation. See the
 [German research report with plots](docs/decisions/phase19_exploratory_report_de.md)
 and [embedded study guide](docs/phase19_embedded_usage_de.md).
-No further experiment or development phase has been started.
+Phase 20 extends the application without starting a new research campaign.
 
-Open **Autonomous Research** in `toposc-live` or the Streamlit application to
+Open **Research Studio** in the native application to
 configure, launch, pause, resume and inspect persistent experiments. Four search
 strategies share fixed-site graph mutations, exact validation, a quality-diversity
 archive, surrogate screening, SQLite persistence and reproducible reports.

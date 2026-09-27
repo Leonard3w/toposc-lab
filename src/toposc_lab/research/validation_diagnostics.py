@@ -45,6 +45,7 @@ def boundary_diagnostics(
     energy_cutoff: float = 0.5,
     group_tolerance: float = 1e-8,
     distances: np.ndarray | None = None,
+    boundary_widths: tuple[float, ...] = (1, 2, 3),
 ) -> dict[str, Any]:
     """Whole-window and near-degenerate projector densities, not mode certificates.
 
@@ -53,8 +54,12 @@ def boundary_diagnostics(
     Both BdG signs contribute; the count is not an independent-particle count.
     """
     n = len(coordinates)
-    if energy_cutoff <= 0 or group_tolerance <= 0:
+    if (not np.isfinite((energy_cutoff, group_tolerance)).all()
+            or energy_cutoff <= 0 or group_tolerance <= 0):
         raise ValueError("positive energy cutoff and group tolerance required")
+    if (not boundary_widths or not np.isfinite(boundary_widths).all()
+            or any(w <= 0 for w in boundary_widths) or len(set(boundary_widths)) != len(boundary_widths)):
+        raise ValueError("boundary widths must be distinct finite positive numbers")
     if vectors.shape != (2 * n, len(energies)) or np.any(np.diff(energies) < 0):
         raise ValueError("sorted energies and component-major BdG eigenvectors required")
     if not np.isfinite(energies).all() or not np.isfinite(vectors).all():
@@ -72,7 +77,7 @@ def boundary_diagnostics(
     def profile(weights: np.ndarray) -> dict[str, Any]:
         return {
             "site_probability": weights.tolist(),
-            "strip_weights": {str(w): float(weights[distance < w].sum()) for w in (1, 2, 3)},
+            "strip_weights": {f"{w:g}": float(weights[distance < w].sum()) for w in boundary_widths},
             "shell_weights": [
                 float(weights[(distance >= d) & (distance < d + 1)].sum())
                 for d in range(int(distance.max()) + 1)
@@ -110,10 +115,15 @@ class ValidationEvaluator:
     """Reuse the exact adapter, then augment its result with separately timed diagnostics."""
 
     def __init__(self, protocol: PhysicsProtocol, provenance: Any = None, *,
-                 domain: Any = None, base: Any = None) -> None:
+                 domain: Any = None, base: Any = None,
+                 energy_cutoff: float = 0.5, group_tolerance: float = 1e-8,
+                 boundary_widths: tuple[float, ...] = (1, 2, 3)) -> None:
         self.base = base if base is not None else FiniteSystemEvaluator(protocol, provenance)
         self.protocol = protocol
         self.domain = domain
+        self.energy_cutoff = energy_cutoff
+        self.group_tolerance = group_tolerance
+        self.boundary_widths = boundary_widths
 
     def plan(self) -> list[dict[str, Any]]:
         return self.base.plan()
@@ -123,7 +133,10 @@ class ValidationEvaluator:
         result = self.base.evaluate(geometry, stage)
         base_seconds = time.perf_counter() - start
         model = ChiralPWaveModel(
-            geometry, ChiralPWaveParameters(hopping=1, chemical_potential=2, pairing=1, chirality=1)
+            geometry, ChiralPWaveParameters(
+                hopping=self.protocol.hopping, chemical_potential=self.protocol.chemical_potential,
+                pairing=self.protocol.pairing, chirality=self.protocol.chirality,
+            )
         )
         matrix = model.hamiltonian()
         if stage["kind"] == "disorder":
@@ -248,7 +261,11 @@ class ValidationEvaluator:
         result["diagnostic_version"] = DIAGNOSTIC_VERSION
         result["spatial"] = spatial
         result["chern_marker"] = marker
-        result["boundary_window"] = boundary_diagnostics(energies, vectors, coordinates, distances=distance)
+        result["boundary_window"] = boundary_diagnostics(
+            energies, vectors, coordinates, distances=distance,
+            energy_cutoff=self.energy_cutoff, group_tolerance=self.group_tolerance,
+            boundary_widths=self.boundary_widths,
+        )
         if self.domain is not None:
             from dataclasses import asdict
             result["domain"] = asdict(self.domain)

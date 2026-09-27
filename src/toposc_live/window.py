@@ -56,7 +56,7 @@ class MainWindow(QMainWindow):
         shell = QWidget()
         self.setCentralWidget(shell)
         layout = QVBoxLayout(shell)
-        title = QLabel("TOPOSC LIVE")
+        title = QLabel("TOPOSC RESEARCH STUDIO")
         title.setStyleSheet("font-size: 24px; font-weight: 650; padding: 6px;")
         title.setFixedHeight(48)
         layout.addWidget(title)
@@ -104,8 +104,13 @@ class MainWindow(QMainWindow):
         self.tabs.addTab(self.leaderboard, "Candidate Leaderboard / Best Candidate")
         self.group_page = GroupPage()
         self.tabs.addTab(self.group_page, "Campaign Group")
-        self.research_page = ResearchPage((roots[0] if roots else Path.cwd() / "results") / "research")
-        self.tabs.addTab(self.research_page, "Autonomous Research")
+        self.research_page = ResearchPage(roots[0] if roots else Path.cwd() / "results")
+        self.tabs.addTab(self.research_page, "Research Studio")
+        from toposc_live.labs import LabsPage
+
+        self.labs_page = LabsPage()
+        self.tabs.addTab(self.labs_page, "Learning / Model Labs")
+        self.tabs.setCurrentWidget(self.research_page)
         self.launcher.launch_requested.connect(self.launch)
         splitter.addWidget(self.tabs)
         splitter.setSizes([265, 1175])
@@ -133,8 +138,6 @@ class MainWindow(QMainWindow):
             self.open_group_path(initial_group)
         elif initial:
             self.monitor(initial)
-        elif recent and recent[0].is_dir():
-            self.monitor(recent[0])
         self.refresh_service.refresh()
 
     def show_status_error(self, message: str) -> None:
@@ -181,6 +184,10 @@ class MainWindow(QMainWindow):
         )
 
     def monitor(self, directory: Path) -> None:
+        if (directory / "research.sqlite3").is_file():
+            self.research_page.monitor(directory)
+            self.tabs.setCurrentWidget(self.research_page)
+            return
         self.current = directory.resolve()
         self.snapshot = None
         empty = CampaignSnapshot(self.current, self.current.name, "Loading")
@@ -303,6 +310,7 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event: QCloseEvent) -> None:
         self.refresh_service.shutdown()
         self.research_page.shutdown()
+        self.labs_page.shutdown()
         if self.operation:
             self.operation.wait()  # Configuration/launch I/O only; never process.wait().
         event.accept()

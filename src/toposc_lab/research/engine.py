@@ -43,7 +43,8 @@ class ResearchEngine:
             raise ValueError("Fixed-cohort study: use python -m toposc_lab.research.validation")
         self.config = ExperimentConfig(**self.store.get("config"))
         self.manifest = self.store.get("manifest")
-        self.space = SPACE_REGISTRY[self.config.geometry_space](**self.config.space)
+        self.space = (self.config.geometry_space_instance() if self.config.schema_version == 2
+                      else SPACE_REGISTRY[self.config.geometry_space](**self.config.space))
         self.strategy = create_strategy(self.config.algorithm, self.space, self.config.seed,
                                         experiment_id=self.manifest["experiment_id"],
                                         code_version=self.manifest["git_commit"], **self.config.search)
@@ -69,6 +70,8 @@ class ResearchEngine:
         config = config if isinstance(config, ExperimentConfig) else ExperimentConfig(**config)
         config.validate_plugins()
         directory = Path(directory).resolve()
+        if config.schema_version == 2 and Path(config.output_directory).resolve() != directory:
+            raise ValueError("Run directory must match the reviewed output_directory")
         if directory.exists() and any(directory.iterdir()):
             raise FileExistsError("Experiment directory must be empty; use resume or clone")
         directory.mkdir(parents=True, exist_ok=True)
@@ -78,6 +81,8 @@ class ResearchEngine:
         experiment_id = "EXP-" + uuid4().hex[:16]
         manifest.update(experiment_id=experiment_id, config_sha256=config.fingerprint,
                         blas_threads=config.blas_threads)
+        if config.schema_version == 2:
+            manifest["scientific_scope"] = "Exact finite embedded-system evidence; no phase/Majorana certificate"
         store = ResearchStore(directory, create=True)
         state = {"experiment_id": experiment_id, "status": "CREATED", "cycle": 0,
                  "generated": 0, "exact_evaluations": 0, "elapsed_seconds": 0.0,
@@ -85,6 +90,9 @@ class ResearchEngine:
                  "created": utc_now(), "last_checkpoint_count": 0,
                  "remaining_exact_budget": config.exact_budget,
                  "warnings": ["Finite-system evidence only; no Majorana/phase certificate"]}
+        if config.schema_version == 2:
+            from toposc_lab.research.studio_config import planned_evaluations
+            state["planned_realizations"] = planned_evaluations(config)
         with store.connect() as db:
             store.put(db, "config", "current", config.to_dict())
             store.put(db, "manifest", "current", manifest)
@@ -287,6 +295,9 @@ class ResearchEngine:
             selected = candidates
             state.update(pending_kind="baselines")
         else:
+            if getattr(self.strategy, "exhausted", False):
+                self._finish("COMPLETED", "proposal_schedule_complete")
+                return False
             remaining = self.config.candidate_budget - state["generated"]
             if remaining <= 0 or state["cycle"] >= self.config.cycles:
                 self._finish("COMPLETED", "candidate_or_cycle_budget")
@@ -308,7 +319,11 @@ class ResearchEngine:
                 atomic_json(self.directory / "models" / f"cycle-{state['cycle']:06d}.json",
                             self.surrogate.checkpoint())
             self.strategy.proposal_limit = remaining
-            proposals = self.strategy.propose(min(self.config.pool_size, remaining),
+            count = min(self.config.pool_size, remaining)
+            if self.config.schema_version == 2 and self.config.algorithm in ("embedded_random", "fixed_candidates"):
+                # Sampling evaluates every accepted proposal; no hidden selection loss.
+                count = min(count, self.config.batch_size, slots)
+            proposals = self.strategy.propose(count,
                 max_attempts=min(remaining, max(30, self.config.pool_size * 30)))
             rejections = self.strategy.drain_rejections()
             state["generated"] += len(proposals) + len(rejections)
@@ -327,7 +342,8 @@ class ResearchEngine:
                 self.store.put(db, "candidate", candidate["id"], candidate)
                 if candidate.get("prediction"):
                     self.store.put(db, "surrogate_prediction", candidate["id"], candidate["prediction"])
-                self.store.put(db, "geometry", candidate["id"], candidate["geometry"])
+                if candidate.get("geometry") is not None:
+                    self.store.put(db, "geometry", candidate["id"], candidate["geometry"])
                 self.store.put(db, "descriptors", candidate["id"], candidate.get("descriptors", {}))
                 self.store.put(db, "lineage", candidate["id"], {k: candidate.get(k) for k in
                                ("parent", "lineage", "mutation", "generation", "seed")})
@@ -370,7 +386,12 @@ class ResearchEngine:
         snapshot = ResearchService.snapshot(self.directory, detect_interrupted=False, lightweight=True)
         if snapshot["state"]["status"] == "FINALIZING":
             snapshot["state"]["status"] = snapshot["state"]["final_status"]
-        report = final_report(snapshot)
+        if self.config.schema_version == 2:
+            from toposc_lab.research.studio_results import export_studio, studio_report
+            report = studio_report(snapshot)
+            export_studio(self.directory, snapshot)
+        else:
+            report = final_report(snapshot)
         self.store.save("report", {"markdown": report})
         self._hook("report_saved")
         atomic_text(self.directory / "final_report.md", report)

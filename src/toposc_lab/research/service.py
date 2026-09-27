@@ -40,6 +40,9 @@ class ResearchService:
         a long run and is unnecessary for monitoring or scientific reporting.
         """
         store = ResearchStore(directory)
+        if store.get("validation_settings") is not None:
+            from toposc_lab.research.studio_results import historical_snapshot
+            return historical_snapshot(directory, lightweight=lightweight)
         # One read transaction: the UI cannot combine different cycle commits.
         with store.connect(readonly=True) as db:
             db.execute("BEGIN")
@@ -71,6 +74,8 @@ class ResearchService:
         state = objects["state"]["current"]
         config = objects["config"]["current"]
         state["exact_evaluations"] = len(attempts)
+        state["completed_evaluations"] = sum(a["status"] == "complete" for a in attempts)
+        state["error_count"] = sum(a["status"] == "failed" for a in attempts)
         state["remaining_exact_budget"] = max(0, config["exact_budget"] - len(attempts))
         state["exact_seconds"] = sum(a["seconds"] or 0 for a in attempts)
         if detect_interrupted and state["status"] in ("RUNNING", "FINALIZING") and not _worker_active(Path(directory)):
@@ -114,11 +119,14 @@ class ResearchService:
         state["simulation_throughput"] = len(attempts) / elapsed
         state["warnings"] = list(dict.fromkeys(state.get("warnings", []) + report["anomalies"]))
         snapshot["diagnostics"] = report
+        state["rejection_count"] = sum(c.get("validation_state") == "REJECTED" for c in candidates)
         return snapshot
 
     @staticmethod
     def control(directory: str | Path, action: str) -> None:
         store = ResearchStore(directory)
+        if store.get("validation_settings") is not None:
+            raise ValueError("Historical fixed-cohort studies are read-only in Studio; create a follow-up")
         if action == "resume":
             ResearchService.launch(directory)
             return
@@ -203,6 +211,8 @@ class ResearchService:
         original = ResearchStore(directory)
         config = original.get("config")
         config.update(changes or {})
+        if config.get("schema_version") == 2 and "output_directory" not in (changes or {}):
+            config["output_directory"] = str(destination)
         new = ResearchService.create(config, destination)
         store = ResearchStore(new)
         with store.connect() as db:
@@ -215,3 +225,27 @@ class ResearchService:
         validated = ExperimentConfig(**config)
         validated.validate_plugins()
         atomic_text(Path(path), json.dumps(validated.to_dict(), indent=2))
+
+    @staticmethod
+    def candidate(directory: str | Path, identity: str) -> dict[str, Any]:
+        from toposc_lab.research.studio_results import read_candidate
+        return read_candidate(directory, identity)
+
+    @staticmethod
+    def clone_config(directory: str | Path, *, output_directory: str) -> dict[str, Any]:
+        from toposc_lab.research.studio_results import clone_config
+        return clone_config(directory, output_directory=output_directory)
+
+    @staticmethod
+    def follow_up(directory: str | Path, candidate_ids: list[str], *, widths: list[float],
+                  seeds: list[int], output_directory: str) -> dict[str, Any]:
+        from toposc_lab.research.studio_results import follow_up
+        return follow_up(directory, candidate_ids, widths=widths, seeds=seeds,
+                         output_directory=output_directory)
+
+    @staticmethod
+    def run_experiment(directory: str | Path, *, max_cycles: int | None = None,
+                       evaluator: Any = None, hook: Any = None) -> dict[str, Any]:
+        """CLI and detached UI worker share this exact lifecycle entry point."""
+        from toposc_lab.research.engine import ResearchEngine
+        return ResearchEngine(directory, evaluator=evaluator, hook=hook).run(max_cycles=max_cycles)

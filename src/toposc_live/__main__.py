@@ -7,7 +7,7 @@ from pathlib import Path
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="TOPOSC LIVE native campaign launcher and read-only monitor"
+        description="TOPOSC Research Studio: unified local experiment control"
     )
     parser.add_argument(
         "--root", action="append", type=Path, help="Campaign discovery root; repeatable"
@@ -19,6 +19,7 @@ def main() -> int:
     )
     args = parser.parse_args()
     try:
+        from PySide6.QtCore import QCoreApplication, Qt
         from PySide6.QtWidgets import QApplication
 
         from toposc_live.window import MainWindow
@@ -28,8 +29,9 @@ def main() -> int:
             file=sys.stderr,
         )
         return 2
+    QCoreApplication.setAttribute(Qt.ApplicationAttribute.AA_ShareOpenGLContexts)
     app = QApplication(sys.argv[:1])
-    app.setApplicationName("toposc-live")
+    app.setApplicationName("TOPOSC Research Studio")
     app.setOrganizationName("toposc-lab")
     app.setStyle("Fusion")
     window = MainWindow(

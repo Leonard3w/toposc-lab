@@ -1,0 +1,37 @@
+{
+  "recorded_utc": "2026-09-27T03:03:41.267579+00:00",
+  "source_baseline_commit": "cf3806a",
+  "tested_python_source_sha256": "3a95b37b8041eda00fb0be3752da163df8f8460aab1ee163efd3406a855f4885",
+  "command": ".venv/Scripts/python.exe -B -m pytest -q",
+  "environment_variables": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "QT_QPA_PLATFORM": "offscreen",
+    "OPENBLAS_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1"
+  },
+  "runtime": {
+    "python": "3.14.7",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "pydantic": "2.13.5",
+      "toposc-lab": "0.1.0"
+    }
+  },
+  "exit_code": 0,
+  "passed": 3243,
+  "seconds": 977.8,
+  "new_studio_test_cases": 92,
+  "baseline_relevant_passed": 95,
+  "baseline_seconds": 174.6,
+  "scope": "Complete suite on stable final Python source; small technical integrations, no new research campaign.",
+  "ui_visual_checks": [
+    "Native Standard and Expert screenshots",
+    "Saved Phase-19 regular candidate, 10 stages, 13 clean profiles"
+  ],
+  "ui_limitation": "Embedded labs passed internal AppTest and service lifecycle checks; offscreen QtWebEngine lacked a graphics context for visual verification."
+}

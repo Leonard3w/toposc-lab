@@ -11,7 +11,6 @@ from hashlib import sha256
 from io import BytesIO
 import json
 from pathlib import Path
-import sys
 from types import UnionType
 from typing import Any, get_args, get_origin
 
@@ -1732,7 +1731,6 @@ def run_app() -> None:
                 "Quantum Hall / Landau levels",
                 "Quantum gases",
                 "Research studies",
-                "Autonomous Research",
             ),
         )
         streamlit.divider()
@@ -2127,22 +2125,16 @@ def run_app() -> None:
 
 
 def main() -> None:
-    """Starte die App ueber den Konsolenbefehl ``toposc-ui``."""
-    try:
-        from streamlit.web import cli as streamlit_cli
-    except ModuleNotFoundError as error:
-        raise SystemExit(
-            "Install the optional interface first: pip install -e '.[app]'"
-        ) from error
+    """Compatibility alias: all supported launchers open the native studio."""
+    from toposc_live.__main__ import main as studio_main
 
-    sys.argv = [
-        "streamlit",
-        "run",
-        str(Path(__file__).resolve()),
-        *sys.argv[1:],
-    ]
-    raise SystemExit(streamlit_cli.main())
+    raise SystemExit(studio_main())
 
 
 if __name__ == "__main__":
-    run_app()
+    import os
+
+    if os.environ.get("TOPOSC_INTERNAL_LABS") == "1":
+        run_app()
+    else:
+        main()

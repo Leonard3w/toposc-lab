@@ -18,6 +18,8 @@ from PySide6.QtGui import QColor, QMouseEvent, QPainter, QPaintEvent, QPen
 from PySide6.QtWidgets import (
     QAbstractItemView,
     QComboBox,
+    QDialog,
+    QDialogButtonBox,
     QDoubleSpinBox,
     QFileDialog,
     QFormLayout,
@@ -360,7 +362,7 @@ class ResearchPage(QWidget):
         self._checkpoint_records: list[dict[str, Any]] = []
         self.fields: dict[str, QWidget] = {}
         layout = QVBoxLayout(self)
-        heading = QLabel("AUTONOMOUS RESEARCH")
+        heading = QLabel("TOPOSC RESEARCH STUDIO")
         heading.setStyleSheet("font-size: 21px; font-weight: 650;")
         layout.addWidget(heading)
         self.message = QLabel(
@@ -386,7 +388,9 @@ class ResearchPage(QWidget):
         layout.addWidget(self.tabs, 1)
         self.config_page = QWidget()
         self.tabs.addTab(scroll_page(self.config_page), "New Experiment")
-        defaults = ExperimentConfig().to_dict()
+        from toposc_lab.research.studio_config import preset
+
+        defaults = preset("quick_test")
         defaults["output_directory"] = str(output_root / "new-experiment")
         self._make_config(defaults, STRATEGY_REGISTRY)
         self._make_dashboard()
@@ -405,82 +409,37 @@ class ResearchPage(QWidget):
         self.refresh()
 
     def _make_config(self, defaults: dict[str, Any], registry: Any) -> None:
+        from toposc_live.studio_editor import StudioConfigEditor
+
         layout = QVBoxLayout(self.config_page)
-        hint = QLabel(
-            "Configure Experiment 001. Fixed sites and physical protocol; only connectivity is searched. "
-            "Advanced JSON exposes every geometry, mutation, validation, surrogate and compute setting."
-        )
-        hint.setWordWrap(True)
-        layout.addWidget(hint)
-        form = QFormLayout()
-        layout.addLayout(form)
-        names = tuple(registry.keys()) if hasattr(registry, "keys") else tuple(registry.names())
-        specifications = (
-            ("name", "Experiment name", "text"),
-            ("question", "Research question", "text"),
-            ("algorithm", "Search algorithm", "algorithm"),
-            ("seed", "Random seed", "int"),
-            ("space.side", "Grid side (sites = side²)", "int"),
-            ("exact_budget", "Exact physics attempt budget", "int"),
-            ("candidate_budget", "Generated candidate budget", "int"),
-            ("cycles", "Search cycles", "int"),
-            ("pool_size", "Proposal pool per cycle", "int"),
-            ("batch_size", "Exact selections per cycle", "int"),
-            ("checkpoint_every", "Checkpoint interval (exact attempts)", "int"),
-            ("retrain_every", "Surrogate retraining interval", "int"),
-            ("search.allocation.exploitation", "Exploitation %", "float"),
-            ("search.allocation.uncertainty", "Uncertainty %", "float"),
-            ("search.allocation.novelty", "Novelty %", "float"),
-            ("concurrency", "Exact worker concurrency", "int"),
-            ("output_directory", "New output directory", "text"),
-        )
-        for path, label, kind in specifications:
-            if kind == "algorithm":
-                widget: Any = QComboBox()
-                widget.addItems(names)
-                widget.currentTextChanged.connect(lambda _, p=path: self._form_changed(p))
-            elif kind == "int":
-                widget = QSpinBox()
-                widget.setRange(0, 2147483647)
-                widget.valueChanged.connect(lambda _, p=path: self._form_changed(p))
-            elif kind == "float":
-                widget = QDoubleSpinBox()
-                widget.setRange(0, 100)
-                widget.setDecimals(1)
-                widget.setSingleStep(5)
-                widget.valueChanged.connect(lambda _, p=path: self._form_changed(p))
-            else:
-                widget = QLineEdit()
-                widget.textChanged.connect(lambda _, p=path: self._form_changed(p))
-            self.fields[path] = widget
-            form.addRow(label, widget)
-        self.editor = QPlainTextEdit()
-        self.editor.setMinimumHeight(380)
-        self.editor.setLineWrapMode(QPlainTextEdit.LineWrapMode.NoWrap)
-        layout.addWidget(panel("Complete configuration · human-readable JSON", self.editor))
-        self.editor.textChanged.connect(self._configuration_changed)
+        self.studio_editor = StudioConfigEditor(defaults)
+        self.editor = self.studio_editor.editor
+        self.fields = self.studio_editor.fields
+        self.studio_editor.changed.connect(self._configuration_changed)
+        layout.addWidget(self.studio_editor)
         buttons = QHBoxLayout()
         for label, callback in (
             ("Apply JSON / validate", self.validate_config),
-            ("Save config…", self.save_config),
-            ("Load config…", self.load_config),
+            ("Save / export config...", self.save_config),
+            ("Load config...", self.load_config),
         ):
             button = QPushButton(label)
             button.clicked.connect(callback)
             buttons.addWidget(button)
-        self.start = QPushButton("Start run")
+        self.start = QPushButton("Preview run...")
         self.start.clicked.connect(self.start_run)
         buttons.addWidget(self.start)
         layout.addLayout(buttons)
         self.config_status = QLabel()
         self.config_status.setWordWrap(True)
         layout.addWidget(self.config_status)
-        self.set_config(defaults)
+        self.preview_dialog: QDialog | None = None
+        self.reviewed_preview: dict[str, Any] | None = None
 
     def _configuration_changed(self) -> None:
         if hasattr(self, "config_status"):
             self.config_status.setText(
-                "Configuration edited. Start validates the full JSON before creating a run."
+                "Configuration edited. Preview is required before START."
             )
 
     def _form_changed(self, path: str) -> None:
@@ -504,28 +463,7 @@ class ResearchPage(QWidget):
             self.config_status.setText(f"Fix the JSON before editing form fields: {error}")
 
     def set_config(self, data: dict[str, Any]) -> None:
-        self._syncing = True
-        try:
-            self.editor.setPlainText(json_text(data))
-            for path, widget in self.fields.items():
-                value: Any = data
-                for part in path.split("."):
-                    value = mapping(value).get(part)
-                if isinstance(widget, (QSpinBox, QDoubleSpinBox)):
-                    if path.startswith("search.allocation.") and isinstance(value, (int, float)):
-                        value *= 100
-                    numeric = value if isinstance(value, (int, float)) else 0
-                    if isinstance(widget, QSpinBox):
-                        widget.setValue(int(numeric))
-                    else:
-                        widget.setValue(float(numeric))
-                elif isinstance(widget, QComboBox):
-                    widget.setCurrentText(str(value or ""))
-                elif isinstance(widget, QLineEdit):
-                    widget.setText(str(value or ""))
-                    widget.setCursorPosition(0)
-        finally:
-            self._syncing = False
+        self.studio_editor.set_config(data)
 
     def configuration(self) -> dict[str, Any]:
         raw = json.loads(self.editor.toPlainText())
@@ -784,6 +722,26 @@ class ResearchPage(QWidget):
         self.filter.setPlaceholderText("Filter candidate ID, family, mutation or validation state")
         self.filter.textChanged.connect(self.filter_candidates)
         layout.addWidget(self.filter)
+        filter_row = QHBoxLayout()
+        self.metric_filter = QComboBox()
+        self.metric_filter.addItems(("Any", "Q / quality", "Interior Localizer gap", "Edge weight", "Center weight", "Chern", "W", "Seed", "Graph degree"))
+        self.metric_min, self.metric_max = QLineEdit(), QLineEdit()
+        self.metric_min.setPlaceholderText("Minimum (optional)")
+        self.metric_max.setPlaceholderText("Maximum (optional)")
+        for control in (self.metric_filter, self.metric_min, self.metric_max):
+            filter_row.addWidget(control)
+        self.metric_filter.currentTextChanged.connect(self.filter_candidates)
+        self.metric_min.textChanged.connect(self.filter_candidates)
+        self.metric_max.textChanged.connect(self.filter_candidates)
+        layout.addLayout(filter_row)
+        actions = QHBoxLayout()
+        evidence = QPushButton("Open stored spectrum / localization...")
+        evidence.clicked.connect(self.show_candidate_evidence)
+        follow_up = QPushButton("Create follow-up experiment...")
+        follow_up.clicked.connect(self.follow_up_dialog)
+        actions.addWidget(evidence)
+        actions.addWidget(follow_up)
+        layout.addLayout(actions)
         self.candidates = self._table(
             (
                 "Candidate ID",
@@ -820,8 +778,9 @@ class ResearchPage(QWidget):
         page = QWidget()
         layout = QVBoxLayout(page)
         self.baseline_note = QLabel(
-            "Matched references share fixed sites, physical protocol and exact evaluation accounting. "
-            "Cheap proposal counts do not establish algorithm superiority."
+            "References use the recorded physical protocol and exact evaluation accounting. "
+            "Coordinate matching depends on the geometry family; inspect each stored geometry. "
+            "Proposal counts alone do not establish algorithm superiority."
         )
         self.baseline_note.setWordWrap(True)
         layout.addWidget(self.baseline_note)
@@ -876,12 +835,52 @@ class ResearchPage(QWidget):
         self.operation.start()
 
     def start_run(self) -> None:
+        """Review only. Explicit START in this dialog is the sole launch action."""
+        from toposc_lab.research.studio_config import preview_config
+
         try:
-            config = self.configuration()
-            target = str(config.get("output_directory", "")).strip()
-            if not target:
-                raise ValueError("Choose a new output directory")
-            directory = Path(target).resolve()
+            preview = preview_config(self.studio_editor.raw(), check_output=True)
+        except (ValueError, TypeError, KeyError) as error:
+            self.config_status.setText(f"Start rejected: {error}")
+            return
+        self.reviewed_preview = preview
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Run Preview - confirm resolved configuration")
+        dialog.resize(900, 760)
+        layout = QVBoxLayout(dialog)
+        summary = text_box()
+        summary.setPlainText(
+            str(preview.get("summary", ""))
+            + "\n\nPlanned exact evaluations: " + str(preview.get("planned_evaluations", "unknown"))
+            + "\nConfiguration SHA256: " + str(preview.get("config_sha256", "unavailable"))
+            + "\n\nERRORS\n" + ("\n".join(map(str, preview.get("errors", []))) or "None")
+            + "\n\nWARNINGS\n" + ("\n".join(map(str, preview.get("warnings", []))) or "None")
+            + "\n\nEXACT RESOLVED CONFIGURATION\n" + json_text(preview.get("config", {}))
+        )
+        layout.addWidget(summary)
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        buttons.button(QDialogButtonBox.StandardButton.Ok).setText("START this exact configuration")
+        buttons.button(QDialogButtonBox.StandardButton.Ok).setEnabled(not preview.get("errors"))
+        buttons.accepted.connect(dialog.accept)
+        buttons.rejected.connect(dialog.reject)
+        dialog.accepted.connect(lambda: self.start_reviewed(preview))
+        layout.addWidget(buttons)
+        self.preview_dialog = dialog
+        dialog.open()
+
+    def start_reviewed(self, preview: dict[str, Any]) -> None:
+        from toposc_lab.research.studio_config import preview_config
+
+        try:
+            if preview.get("errors"):
+                raise ValueError("Resolve preview errors before starting")
+            current = preview_config(self.studio_editor.raw(), check_output=True)
+            if current.get("errors"):
+                raise ValueError("; ".join(map(str, current["errors"])))
+            if current["config_sha256"] != preview["config_sha256"]:
+                raise ValueError("Configuration changed after review; preview it again")
+            config = json.loads(json_text(preview["config"]))
+            directory = Path(config["output_directory"]).resolve()
         except (ValueError, TypeError, KeyError) as error:
             self.config_status.setText(f"Start rejected: {error}")
             return
@@ -891,13 +890,14 @@ class ResearchPage(QWidget):
             self.service.launch(created)
             return Path(created)
 
-        self.message.setText(
-            "Creating reproducible experiment and starting its independent worker…"
-        )
+        self.message.setText("Creating the reviewed experiment and starting its independent worker...")
         self._operate(start, self.monitor)
 
     def request_control(self, action: str) -> None:
         if self.directory is None:
+            return
+        if self.snapshot.get("state", {}).get("historical_read_only"):
+            self.message.setText("Historical experiments are read-only. Create a follow-up for new evaluations.")
             return
         directory = self.directory
         self._operate(
@@ -933,6 +933,17 @@ class ResearchPage(QWidget):
 
     def clone_experiment(self) -> None:
         try:
+            if self.directory is not None and hasattr(self.service, "clone_config"):
+                destination = str(self.root / (self.directory.name + "-copy"))
+                directory = self.directory
+
+                def ready(config: dict[str, Any]) -> None:
+                    self.set_config(config)
+                    self.tabs.setCurrentIndex(0)
+                    self.config_status.setText("Cloned to a new editable configuration; the source experiment is unchanged.")
+
+                self._operate(lambda: self.service.clone_config(directory, output_directory=destination), ready)
+                return
             source = self.snapshot.get("config") or self.configuration()
             config = json.loads(json_text(source))
             config["name"] = str(config.get("name", "Experiment")) + " (copy)"
@@ -996,6 +1007,21 @@ class ResearchPage(QWidget):
     def update_snapshot(self, snapshot: dict[str, Any]) -> None:
         self.snapshot = snapshot
         config, state = mapping(snapshot.get("config")), mapping(snapshot.get("state"))
+        observables = mapping(config.get("studio")).get("observables")
+        available = {
+            "Q / quality": "Q", "Interior Localizer gap": "interior_localizer_gap",
+            "Edge weight": "edge_weight", "Center weight": "center_weight", "Chern": "chern",
+        }
+        labels = ["Any"] + [label for label, observable in available.items()
+                            if observables is None or observable in observables]
+        labels += ["W", "Seed", "Graph degree"]
+        selected_metric = self.metric_filter.currentText()
+        if labels != [self.metric_filter.itemText(i) for i in range(self.metric_filter.count())]:
+            self.metric_filter.blockSignals(True)
+            self.metric_filter.clear()
+            self.metric_filter.addItems(labels)
+            self.metric_filter.setCurrentText(selected_metric if selected_metric in labels else "Any")
+            self.metric_filter.blockSignals(False)
         status = str(state.get("status", "unknown"))
         self.run_title.setText(
             f"{config.get('name', 'Experiment')} · {status.upper()} · {state.get('experiment_id', '')}"
@@ -1013,7 +1039,7 @@ class ResearchPage(QWidget):
                 if action == "archive"
                 else status.lower() not in ("completed", "archived")
             )
-            button.setEnabled(self.directory is not None and allowed)
+            button.setEnabled(self.directory is not None and allowed and not state.get("historical_read_only", False))
         used = state.get("exact_evaluations", 0)
         remaining = max(0, config.get("exact_budget", 0) - used)
         metrics = {
@@ -1117,12 +1143,204 @@ class ResearchPage(QWidget):
         table.resizeColumnsToContents()
         table.blockSignals(False)
 
+    @staticmethod
+    def metric_values(candidate: dict[str, Any], selected: str) -> list[float]:
+        from toposc_lab.research.studio_results import scalar_observables
+
+        names = {
+            "Q / quality": {"quality", "Q", "clean_quality"},
+            "Interior Localizer gap": {"interior_localizer_gap"},
+            "Edge weight": {"edge_weight"},
+            "Center weight": {"center_weight"}, "Chern": {"chern_bulk_mean"},
+            "W": {"width", "onsite_width", "W"}, "Seed": {"seed", "generator_seed"},
+            "Graph degree": {"mean_degree", "degree_mean", "max_degree", "min_degree"},
+        }.get(selected, set())
+        values: list[float] = []
+
+        def walk(node: Any, matched: bool = False) -> None:
+            if isinstance(node, dict):
+                for key, item in node.items():
+                    if key not in ("prediction", "surrogate_predictions"):
+                        walk(item, key in names)
+            elif isinstance(node, (list, tuple)):
+                for item in node:
+                    walk(item, matched)
+            elif matched and number(node) is not None:
+                values.append(float(node))
+
+        # Inspect named measurements only. A Localizer index is not a Chern
+        # marker; a single eigenstate's boundary weight is not the window weight.
+        walk(mapping(candidate.get("raw_metrics")))
+        walk(mapping(candidate.get("descriptors")))
+        if selected == "Seed":
+            walk({"seed": candidate.get("seed")})
+        for result in exact(candidate).values():
+            walk(mapping(result.get("stage")))
+            if result.get("status") != "completed":
+                continue
+            measurements = dict(mapping(result.get("metrics")))
+            measurements.update({k: v for k, v in scalar_observables(
+                result, candidate.get("geometry")
+            ).items() if v is not None})
+            if result.get("primary_valid") is False:
+                for key in ("quality", "Q", "clean_quality"):
+                    measurements.pop(key, None)
+            walk(measurements)
+        return values
+
     def filter_candidates(self) -> None:
         query = self.filter.text().casefold()
+        try:
+            low = float(self.metric_min.text()) if self.metric_min.text().strip() else -math.inf
+            high = float(self.metric_max.text()) if self.metric_max.text().strip() else math.inf
+        except ValueError:
+            self.message.setText("Numeric filters require a number; clear a bound to leave it open.")
+            return
+        metric = self.metric_filter.currentText()
         for row in range(self.candidates.rowCount()):
             candidate_id = table_item(self.candidates, row, 0).text()
             candidate = self.find_candidate(candidate_id)
-            self.candidates.setRowHidden(row, query not in json_text(candidate).casefold())
+            metric_match = metric == "Any" or any(low <= value <= high for value in self.metric_values(candidate, metric))
+            self.candidates.setRowHidden(row, query not in json_text(candidate).casefold() or not metric_match)
+
+    def selected_candidate_ids(self) -> list[str]:
+        return [table_item(self.candidates, row.row(), 0).text()
+                for row in self.candidates.selectionModel().selectedRows()]
+
+    def follow_up_dialog(self) -> None:
+        identities = self.selected_candidate_ids()
+        if not identities or self.directory is None:
+            self.message.setText("Select stored candidate rows before creating a follow-up.")
+            return
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Create follow-up configuration")
+        form = QFormLayout(dialog)
+        form.addRow(QLabel(f"Selected candidates: {', '.join(identities)}"))
+        widths, seeds = QLineEdit("[0, 3, 6, 9]"), QLineEdit("[20001, 20002]")
+        output = QLineEdit(str(self.root / (self.directory.name + "-follow-up")))
+        form.addRow("W values (JSON list)", widths)
+        form.addRow("New disorder seeds (JSON list)", seeds)
+        form.addRow("New result directory", output)
+        form.addRow(QLabel("Observables and all other settings remain editable before Preview / START."))
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
+        buttons.button(QDialogButtonBox.StandardButton.Ok).setText("Prepare configuration")
+        buttons.accepted.connect(lambda: self.prepare_follow_up(identities, widths.text(), seeds.text(), output.text(), dialog))
+        buttons.rejected.connect(dialog.reject)
+        form.addRow(buttons)
+        self.followup_dialog = dialog
+        dialog.open()
+
+    def prepare_follow_up(self, identities: list[str], widths: str, seeds: str, output: str,
+                          dialog: QDialog | None = None) -> None:
+        try:
+            config = self.service.follow_up(self.directory, identities, widths=json.loads(widths),
+                                            seeds=json.loads(seeds), output_directory=output)
+            self.set_config(config)
+            self.tabs.setCurrentIndex(0)
+            self.config_status.setText("Follow-up configuration prepared. Choose observables and settings, then Preview / START.")
+            if dialog is not None:
+                dialog.accept()
+        except (ValueError, TypeError, KeyError, OSError) as error:
+            self.message.setText(f"Follow-up rejected: {error}")
+
+    def show_candidate_evidence(self) -> None:
+        identities = self.selected_candidate_ids()
+        if not identities:
+            self.message.setText("Select a candidate to inspect stored spectra and localization.")
+            return
+        identity = identities[0]
+        if hasattr(self.service, "candidate") and self.directory is not None:
+            directory = self.directory
+            self._operate(lambda: self.service.candidate(directory, identity), self._display_candidate_evidence)
+        else:
+            self._display_candidate_evidence(self.find_candidate(identity))
+
+    def _display_candidate_evidence(self, candidate: dict[str, Any]) -> None:
+        dialog = QDialog(self)
+        dialog.setWindowTitle(f"Stored exact evidence - {identifier(candidate)}")
+        dialog.resize(1050, 780)
+        layout = QVBoxLayout(dialog)
+        selectors = QHBoxLayout()
+        stages = QComboBox()
+        records = exact(candidate)
+        stages.addItems(list(records))
+        selectors.addWidget(QLabel("Stored realization / stage"))
+        selectors.addWidget(stages, 1)
+        profiles = QComboBox()
+        selectors.addWidget(QLabel("Stored probability profile"))
+        selectors.addWidget(profiles, 1)
+        layout.addLayout(selectors)
+        from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
+        from matplotlib.figure import Figure
+
+        figure = Figure(figsize=(10, 6), constrained_layout=True)
+        canvas = FigureCanvasQTAgg(figure)
+        dialog.evidence_canvas = canvas
+        dialog.evidence_profiles = profiles
+        layout.addWidget(canvas)
+        status = QLabel()
+        dialog.evidence_status = status
+        status.setWordWrap(True)
+        layout.addWidget(status)
+
+        available_profiles: list[tuple[str, list[float]]] = []
+
+        def update_profiles() -> None:
+            available_profiles.clear()
+
+            def collect(node: Any, path: str = "") -> None:
+                if isinstance(node, dict):
+                    if isinstance(node.get("site_probability"), list):
+                        available_profiles.append((path or "Profile", node["site_probability"]))
+                    for key, value in node.items():
+                        collect(value, f"{path}.{key}" if path else key)
+                elif isinstance(node, list):
+                    for index, value in enumerate(node):
+                        collect(value, f"{path}[{index}]")
+
+            collect(records.get(stages.currentText(), {}))
+            profiles.blockSignals(True)
+            profiles.clear()
+            profiles.addItems([label for label, _ in available_profiles] or ["No stored profile"])
+            profiles.blockSignals(False)
+            render()
+
+        def render() -> None:
+            import numpy as np
+
+            from toposc_lab.research.space import geometry_from_payload
+            from toposc_lab.visualization.geometry_plots import plot_geometry
+            from toposc_lab.visualization.plots import plot_eigenvalue_spectrum
+
+            figure.clear()
+            left, right = figure.subplots(1, 2)
+            record = records.get(stages.currentText(), {})
+            spectrum = record.get("spectrum") if isinstance(record, dict) else None
+            messages = []
+            try:
+                if spectrum:
+                    plot_eigenvalue_spectrum(np.asarray(spectrum), axes=left, show=False)
+                else:
+                    left.text(0.5, 0.5, "Spectrum not stored", ha="center")
+                stored = geometry_from_payload(candidate["geometry"])
+                plot_geometry(stored, axes=right, title="Stored geometry / localization", show=False)
+                probability = available_profiles[profiles.currentIndex()][1] if available_profiles else []
+                if len(probability) == stored.n_sites:
+                    xy = np.asarray(stored.coordinates)
+                    dots = right.scatter(xy[:, 0], xy[:, 1], c=probability, cmap="magma", zorder=10)
+                    figure.colorbar(dots, ax=right, label="Stored site probability")
+                else:
+                    messages.append("No site probability profile was saved for this realization.")
+            except (ValueError, TypeError, KeyError, IndexError) as error:
+                messages.append(f"Stored plot unavailable: {error}")
+            status.setText("Read-only stored evidence; no physics recalculated. " + " ".join(messages))
+            canvas.draw_idle()
+
+        stages.currentTextChanged.connect(update_profiles)
+        profiles.currentTextChanged.connect(render)
+        update_profiles()
+        self.evidence_dialog = dialog
+        dialog.open()
 
     def find_candidate(self, candidate_id: str) -> dict[str, Any]:
         return next(

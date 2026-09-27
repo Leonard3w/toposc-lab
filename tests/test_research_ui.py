@@ -118,13 +118,16 @@ def page(app, tmp_path):
 
 
 def test_config_roundtrip_dynamic_registry_and_validation(page, tmp_path):
+    # Legacy configurations remain editable in the schema-driven Studio.
+    page.set_config(ExperimentConfig().to_dict())
     assert page.fields["space.side"].value() == 10
-    assert page.fields["search.allocation.exploitation"].value() == 60
-    page.fields["search.allocation.exploitation"].setValue(50)
+    assert float(page.fields["search.allocation.exploitation"].text()) == 0.6
+    page.fields["search.allocation.exploitation"].setText("0.5")
+    page.fields["search.allocation.exploitation"].editingFinished.emit()
     assert json.loads(page.editor.toPlainText())["search"]["allocation"]["exploitation"] == 0.5
     assert {
         page.fields["algorithm"].itemText(i) for i in range(page.fields["algorithm"].count())
-    } == set(STRATEGY_REGISTRY)
+    } == set(STRATEGY_REGISTRY) - {"embedded_random", "fixed_candidates"}
     page.fields["name"].setText("UI configured experiment")
     page.fields["seed"].setValue(17040)
     target = tmp_path / "experiment.json"
@@ -238,6 +241,9 @@ def test_archive_click_comparison_filters_and_checkpoint(page, app, tmp_path):
 
 def test_start_controls_and_cloning_use_shared_service(page, app, tmp_path):
     page.start_run()
+    assert page.service.calls == []  # Preview itself never creates a worker.
+    assert page.preview_dialog is not None
+    page.preview_dialog.accept()  # Explicit START confirmation.
     wait_ui(app, lambda: page.directory is not None)
     wait_ui(app, lambda: page.operation is not None and not page.operation.isRunning())
     assert [call[0] for call in page.service.calls] == ["create", "launch"]
