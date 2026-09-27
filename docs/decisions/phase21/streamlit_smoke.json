@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "exceptions": [],
+  "selectboxes": [
+    {
+      "label": "Model",
+      "options": [
+        "Kitaev chain",
+        "SSH chain",
+        "Kitaev ladder",
+        "Qi-Wu-Zhang model",
+        "BHZ model",
+        "Graphene",
+        "Haldane model"
+      ]
+    },
+    {
+      "label": "Boundary",
+      "options": [
+        "open",
+        "periodic"
+      ]
+    }
+  ],
+  "method": "Streamlit AppTest; not embedded WebEngine visual test"
+}

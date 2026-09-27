@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "entry_point": "toposc_live.__main__.main",
+  "window": {
+    "title": "TOPOSC LIVE \u2014 Research campaigns",
+    "visible": true,
+    "screenshot_saved": true
+  },
+  "experiment_started": false,
+  "mode": "windows",
+  "window_hidden_from_desktop": true,
+  "method": "Actual native entry point and Windows Qt backend; WA_DontShowOnScreen for bounded noninteractive rendering test."
+}

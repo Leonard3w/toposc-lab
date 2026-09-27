@@ -1,0 +1,64 @@
+{
+  "clone": "C:\\Users\\Leonard\\AppData\\Local\\Temp\\toposc-phase21-clean-4pxxv3kk\\repository",
+  "source_commit": "b088b8d02c2d9ac63dbd50df5d327bdbec20cbf9",
+  "fresh_venv": true,
+  "existing_results": false,
+  "isolated_user_configuration": true,
+  "python_environment_variables_removed": [
+    "PYTHONPATH",
+    "PYTHONHOME",
+    "VIRTUAL_ENV"
+  ],
+  "same_machine": true,
+  "checks": [
+    {
+      "command": [
+        ".venv/Scripts/python.exe",
+        "-m",
+        "pip",
+        "install",
+        "--no-build-isolation",
+        "--no-deps",
+        "-e",
+        ".[live,app,dev]"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        ".venv/Scripts/python.exe",
+        "-m",
+        "pip",
+        "check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        ".venv/Scripts/python.exe",
+        "-B",
+        "scripts/phase21_startup_smoke.py",
+        "--output",
+        "output/phase21_validation/startup"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        ".venv/Scripts/python.exe",
+        "-B",
+        "scripts/phase21_verify.py",
+        "--output",
+        "output/phase21_validation/verification"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "followup_verification_commit": "bd366072ff94c844bdbf4afec181f1e2da4306bd",
+  "followup_reason": "Only verification-script startup ordering fixed; package and production source unchanged.",
+  "python_launcher_check": {
+    "command": "py -3.14 --version",
+    "exit_code": 0,
+    "stdout": "Python 3.14.7"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "implementation_commit": "bd366072ff94c844bdbf4afec181f1e2da4306bd",
+  "method": "SHA256 of the actual files in the verified clone, including checkout line endings. Not a replacement for TOPOSC scientific hashes.",
+  "files": {
+    "pyproject.toml": "e0e0945b1ddd9a084af7d9ba944ddfb6da755451aaeca0bfa158dfb97cac99f1",
+    "start_toposc.bat": "867a355b04e76d520ca8412a70bf9b9dfaee06e0c445be35764193968a6004a6",
+    "requirements/phase21-windows-py314.txt": "ee719dd2a76814ffaec1bed69fba78f5893ca11468935416bdde0626c507fd89",
+    "scripts/phase21_environment.py": "8499e47ff9dbe7525586afd214e5fc936702a0c0a4194c69da712db4a19936dc",
+    "scripts/phase21_startup_smoke.py": "1a51dbcf2c37d0ff0becbc015618d9d5f3cfbc363e7193e5dd15739e9b263ced",
+    "scripts/phase21_verify.py": "bb8ec7a906a33436cb5770b1ac12342845009291c6409c58e66e101d060f7a5d",
+    "tests/data/phase21_reproducibility_config.json": "83bca256bec9f5cd87b05acf8ea193e28d8667a5b8f969b669144204d397e1cc",
+    "tests/data/phase21_golden.json": "081cf8a4849e00fe2ad2859012c8c89ab2d3daf11272a65b31af0438f4d7e963",
+    "tests/test_phase21_reproducibility.py": "eccb37a51fd0b65a45ea11a8f49cfe3899456c95bb910018b7f9541007db33e0"
+  }
+}

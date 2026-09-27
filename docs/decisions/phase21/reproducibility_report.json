@@ -1,0 +1,118 @@
+{
+  "report_schema": 1,
+  "status": "PASS",
+  "checks": {
+    "environment": {
+      "status": "PASS"
+    },
+    "cli_gui_config_identity": {
+      "status": "PASS",
+      "canonical_sha256": "7deca7b9e84a43d4425aa3e43850b77df514126d10b1dc68064d2273837ce8a8",
+      "relocated_sha256": "3ad638b3747df190ba30c6a774db0268630427a24da7839b54779428afa39180"
+    },
+    "golden_reference": {
+      "status": "PASS",
+      "absolute_tolerance": 1e-10,
+      "canonical_sha256": "7deca7b9e84a43d4425aa3e43850b77df514126d10b1dc68064d2273837ce8a8"
+    },
+    "reference_integrity": {
+      "status": "PASS",
+      "exact_stages": 3,
+      "attempts": 3,
+      "checkpoints": 6,
+      "config_sha256": "3ad638b3747df190ba30c6a774db0268630427a24da7839b54779428afa39180",
+      "plot_verified": true,
+      "source_sha256": "b0603b3f403652e1a31444cf7d0f0c5ba8dc07998c0310e4f15908a01d802a37"
+    },
+    "pause_resume": {
+      "status": "PASS",
+      "exact_stages": 3,
+      "attempts": 3,
+      "checkpoints": 7,
+      "config_sha256": "c0caf5ca10776e2059549993edfeba9137961cce609fce1a7a577bfa83231ecb",
+      "plot_verified": true,
+      "source_sha256": "b0603b3f403652e1a31444cf7d0f0c5ba8dc07998c0310e4f15908a01d802a37",
+      "stages_before_pause": 1,
+      "new_worker_process": true,
+      "completed_stages_unchanged": true
+    },
+    "gui_start_worker": {
+      "status": "PASS",
+      "exact_stages": 3,
+      "attempts": 3,
+      "checkpoints": 6,
+      "config_sha256": "c61e02af8439f20c0ac5bfac6bbf5ccd8650cd858616870b9fabe7002b05758b",
+      "plot_verified": true,
+      "source_sha256": "b0603b3f403652e1a31444cf7d0f0c5ba8dc07998c0310e4f15908a01d802a37"
+    },
+    "follow_up": {
+      "status": "PASS",
+      "exact_stages": 3,
+      "attempts": 3,
+      "checkpoints": 6,
+      "config_sha256": "003755a7add3d70a84ec796dfc294e2e83ff15e28cc23abccf8ac12db2c64ad9",
+      "plot_verified": false,
+      "source_sha256": "b0603b3f403652e1a31444cf7d0f0c5ba8dc07998c0310e4f15908a01d802a37",
+      "source_candidate_id": "d1fc93f97f51464f9bd86fbf20a3b30e5bd620d828fc0f0c1af0dcf08c4eeff4",
+      "geometry_sha256": "d1fc93f97f51464f9bd86fbf20a3b30e5bd620d828fc0f0c1af0dcf08c4eeff4",
+      "overlap_rejected": true
+    },
+    "phase18-confirmation": {
+      "status": "PASS",
+      "directory": "C:\\Users\\Leonard\\Documents\\GitHub\\toposc-lab\\results\\phase18-confirmation",
+      "database_sha256": "c65a9af8a720c380a16fde25679dc43ea8e334426e08099322019ebcffb86826",
+      "database_unchanged_by_read": true,
+      "sqlite_integrity": "ok",
+      "all_payload_checksums_valid": true,
+      "object_counts": {
+        "validation_settings": 1,
+        "validation_cohort": 1,
+        "config": 1,
+        "manifest": 1,
+        "execution_runtime": 1,
+        "exact_result": 2510,
+        "checkpoint": 252,
+        "report": 1,
+        "state": 1
+      },
+      "config_sha256": "d580e2bc9b5ac40bbd9d3488a81ff9848b8e9363f10d23a9b8639b44c91cb4ee",
+      "legacy_config_hash_preserved": true,
+      "browser_candidate_count": 10,
+      "browser_exact_attempts": 2510,
+      "browser_completed_evaluations": 2510,
+      "followup_planned_evaluations": 3,
+      "clone_candidate_count": 10,
+      "followup_and_clone_validated_without_start": true,
+      "explorer_stored_plot": true
+    },
+    "phase19-exploration-v2": {
+      "status": "PASS",
+      "directory": "C:\\Users\\Leonard\\Documents\\GitHub\\toposc-lab\\results\\phase19-exploration-v2",
+      "database_sha256": "caddb37c043c30f4d7a6003610def1aa0fec71931b1edb4a1668b53a247f90e1",
+      "database_unchanged_by_read": true,
+      "sqlite_integrity": "ok",
+      "all_payload_checksums_valid": true,
+      "object_counts": {
+        "validation_settings": 1,
+        "validation_cohort": 1,
+        "config": 1,
+        "manifest": 1,
+        "exact_result": 1510,
+        "checkpoint": 76,
+        "execution_runtime": 1,
+        "report": 1,
+        "state": 1
+      },
+      "config_sha256": "9db22d74c50c2be9e0c4bcc5c2829521c0e9517b1b097beffa52a41bf97827f3",
+      "legacy_config_hash_preserved": true,
+      "browser_candidate_count": 151,
+      "browser_exact_attempts": 1511,
+      "browser_completed_evaluations": 1510,
+      "followup_planned_evaluations": 3,
+      "clone_candidate_count": 151,
+      "followup_and_clone_validated_without_start": true,
+      "explorer_stored_plot": true
+    }
+  },
+  "scope": "Technical same-machine verification; no new physics or independent scientific validation."
+}

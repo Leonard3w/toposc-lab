@@ -1,0 +1,28 @@
+{
+  "source_commit": "bd366072ff94c844bdbf4afec181f1e2da4306bd",
+  "command": [
+    "C:\\Users\\Leonard\\AppData\\Local\\Temp\\toposc-phase21-clean-4pxxv3kk\\repository\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "--junitxml=output/phase21_validation/full-tests.xml"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 1117.3077559000003,
+  "isolated_clone": true,
+  "same_machine": true,
+  "status": "PASS",
+  "passed": 3254,
+  "failed": 0,
+  "skipped": 0,
+  "pytest_seconds": 1115.39,
+  "junit_counts": {
+    "tests": 3254,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "existing_tests_unchanged": true,
+  "new_tests": 11
+}

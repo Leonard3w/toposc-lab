@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "entry_point": "toposc_live.__main__.main",
+  "window": {
+    "title": "TOPOSC LIVE \u2014 Research campaigns",
+    "visible": true,
+    "screenshot_saved": true
+  },
+  "experiment_started": false,
+  "mode": "offscreen"
+}

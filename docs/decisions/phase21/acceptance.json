@@ -1,0 +1,94 @@
+{
+  "status": "PASS",
+  "scope": "Documented same-machine Windows validation; not an independent machine or scientific validation.",
+  "checks": {
+    "supported_installation": {
+      "status": "PASS",
+      "evidence": "clean_setup.json"
+    },
+    "environment_metadata": {
+      "status": "PASS",
+      "evidence": "environment.json"
+    },
+    "application_startup": {
+      "status": "PASS",
+      "evidence": "windows_startup.json"
+    },
+    "small_studio_experiment": {
+      "status": "PASS",
+      "evidence": "reproducibility_report.json"
+    },
+    "golden_reproducibility": {
+      "status": "PASS",
+      "evidence": "reproducibility_report.json"
+    },
+    "pause_resume_no_duplicates": {
+      "status": "PASS",
+      "evidence": "reproducibility_report.json"
+    },
+    "resume_reference_agreement": {
+      "status": "PASS",
+      "evidence": "reproducibility_report.json"
+    },
+    "cli_gui_same_semantics": {
+      "status": "PASS",
+      "evidence": "reproducibility_report.json"
+    },
+    "phase18_unchanged": {
+      "status": "PASS",
+      "evidence": "historical_compatibility.json"
+    },
+    "phase19_unchanged": {
+      "status": "PASS",
+      "evidence": "historical_compatibility.json"
+    },
+    "historical_candidate_explorer": {
+      "status": "PASS",
+      "evidence": "reproducibility_report.json"
+    },
+    "followup_provenance": {
+      "status": "PASS",
+      "evidence": "reproducibility_report.json"
+    },
+    "backward_compatible_hashes": {
+      "status": "PASS",
+      "evidence": "full_test_verification.json"
+    },
+    "full_suite": {
+      "status": "PASS",
+      "evidence": "full_test_verification.json"
+    },
+    "existing_tests_unchanged": {
+      "status": "PASS",
+      "evidence": "git diff 3bb7f71 -- tests (only the new Phase21 file)"
+    },
+    "git_diff_check": {
+      "status": "PASS",
+      "evidence": "exit code 0"
+    },
+    "reproduction_guide": {
+      "status": "PASS",
+      "evidence": "../../phase21_reproducibility_de.md"
+    },
+    "machine_report": {
+      "status": "PASS",
+      "evidence": "reproducibility_report.json"
+    },
+    "final_report": {
+      "status": "PASS",
+      "evidence": "../../roadmap/phase21_report_de.md"
+    },
+    "no_phase22": {
+      "status": "PASS",
+      "evidence": "no production source changes or research campaign"
+    },
+    "scientific_definitions_unchanged": {
+      "status": "PASS",
+      "evidence": "git diff 3bb7f71 -- src/**/*.py is empty"
+    },
+    "targeted_ruff": {
+      "status": "PASS",
+      "evidence": "All checks passed!"
+    }
+  }
+}

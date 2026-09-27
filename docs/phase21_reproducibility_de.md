@@ -15,6 +15,7 @@ Patchversion auswählt, für die Referenz den Pfad zu Python 3.14.7 verwenden.
 ```powershell
 git clone --branch phase19-embedded-graphs https://github.com/Leonard3w/toposc-lab.git
 cd toposc-lab
+git checkout bd366072ff94c844bdbf4afec181f1e2da4306bd
 py -3.14 -m venv .venv
 .venv\Scripts\python.exe --version
 .venv\Scripts\python.exe -m pip install --require-hashes --only-binary=:all: -r requirements/phase21-windows-py314.txt
@@ -22,9 +23,9 @@ py -3.14 -m venv .venv
 .venv\Scripts\python.exe -m pip check
 ```
 
-Vor einem veröffentlichten Release den im Prüfbericht genannten Commit
-auschecken (`git checkout <Commit>`), nicht auf einen beweglichen Branchnamen
-als Versionsangabe vertrauen. Es wurde kein neuer Release-Tag angelegt.
+Der Checkout fixiert den geprüften Implementierungsstand. Der abschließende
+Dokumentationscommit ergänzt nur Prüfbelege und Anleitungen. Den beweglichen
+Branchnamen nicht als Versionsangabe verwenden. Es wurde kein neuer Release-Tag angelegt.
 
 Die erste Installation fixiert sämtliche Laufzeit-, UI-, Test- und Buildpakete
 einschließlich pip und setuptools mit Distributionshashes. Die zweite verwendet
@@ -160,7 +161,11 @@ Quellstand verwenden, keine Prüfsummen manuell ändern. Paket-Hashfehler:
 Installation abbrechen und Herkunft/Lockdatei prüfen.
 
 Offscreen-Qt verifiziert die native Oberfläche, ersetzt jedoch keinen manuellen
-Grafiktreiber-/Browserlabor-Test. Windows x86-64 ist die überprüfte Plattform;
+Grafiktreiber-/Browserlabor-Test. Im isolierten Offscreen-Screenshot fehlen
+Schriftglyphen; daraus wird keine korrekte Desktop-Darstellung abgeleitet.
+Ein zusätzlicher Starttest mit dem Windows-Qt-Backend rendert die Startseite
+mit lesbaren Schriften; der Abschlussbericht enthält den Screenshot.
+Windows x86-64 ist die überprüfte Plattform;
 Linux/macOS und andere Python-Versionen sind damit nicht freigegeben. Ein neuer
 Clone mit eigener venv auf demselben Rechner ist keine unabhängige Maschine.
 Phase 21 beansprucht weder neue physikalische Resultate noch eine unabhängige
